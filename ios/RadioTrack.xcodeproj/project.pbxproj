@@ -8,18 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* RadioTrackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RadioTrackTests.m */; };
+		12904EF1F460DBC31E707401 /* libPods-RadioTrack-RadioTrackTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 222C25624B2F0410CB353051 /* libPods-RadioTrack-RadioTrackTests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		213C6897265BF63FF946420C /* libPods-RadioTrack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE8E0280C875F1377A0AAC5 /* libPods-RadioTrack.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* RadioTrackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RadioTrackTests.m */; };
-		3C075CB1A902511B3526552C /* libPods-RadioTrack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A366412BE1A6D70B42580398 /* libPods-RadioTrack.a */; };
-		57547DE5AEDBA6BA15C48178 /* libPods-RadioTrack-RadioTrackTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6BBF88A5C60629B7608CF5 /* libPods-RadioTrack-RadioTrackTests.a */; };
+		3E16C148F95BC95DC7CBA622 /* libPods-RadioTrack-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0703813FB7523C1028EA4F12 /* libPods-RadioTrack-tvOS.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		B323CC8B35DB2CB220B65FD8 /* libPods-RadioTrack-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4809276E161BFADF55B7B4FD /* libPods-RadioTrack-tvOSTests.a */; };
-		E485089182FC902680DC7D0E /* libPods-RadioTrack-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0D7D85590C5B58A8C6C6BA /* libPods-RadioTrack-tvOS.a */; };
+		CD06242325536EF100168F17 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD06242225536EF100168F17 /* File.swift */; };
+		D9BB4D06F5206CB210E5C2D6 /* libPods-RadioTrack-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A52D1D41C262FF941F7A4267 /* libPods-RadioTrack-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,27 +45,29 @@
 		00E356EE1AD99517003FC87E /* RadioTrackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RadioTrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* RadioTrackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RadioTrackTests.m; sourceTree = "<group>"; };
-		0344D20A436E00D52CBD1EB3 /* Pods-RadioTrack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack.release.xcconfig"; path = "Target Support Files/Pods-RadioTrack/Pods-RadioTrack.release.xcconfig"; sourceTree = "<group>"; };
+		0703813FB7523C1028EA4F12 /* libPods-RadioTrack-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RadioTrack-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* RadioTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RadioTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RadioTrack/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = RadioTrack/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RadioTrack/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RadioTrack/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RadioTrack/main.m; sourceTree = "<group>"; };
+		222C25624B2F0410CB353051 /* libPods-RadioTrack-RadioTrackTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RadioTrack-RadioTrackTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		26E9BD86F12A41D34EA29AFD /* Pods-RadioTrack-RadioTrackTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-RadioTrackTests.debug.xcconfig"; path = "Target Support Files/Pods-RadioTrack-RadioTrackTests/Pods-RadioTrack-RadioTrackTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* RadioTrack-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RadioTrack-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* RadioTrack-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RadioTrack-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D58C6AE85CF7D2E44E443AC /* Pods-RadioTrack-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-RadioTrack-tvOSTests/Pods-RadioTrack-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		329B1354F92CE73DE099EB61 /* Pods-RadioTrack-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-RadioTrack-tvOSTests/Pods-RadioTrack-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		4809276E161BFADF55B7B4FD /* libPods-RadioTrack-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RadioTrack-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7B8A5B7E173A1449CED20D6D /* Pods-RadioTrack-RadioTrackTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-RadioTrackTests.release.xcconfig"; path = "Target Support Files/Pods-RadioTrack-RadioTrackTests/Pods-RadioTrack-RadioTrackTests.release.xcconfig"; sourceTree = "<group>"; };
+		2EB4D145803DE655075E8769 /* Pods-RadioTrack-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-RadioTrack-tvOSTests/Pods-RadioTrack-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		39743202F904CC4E5890D61A /* Pods-RadioTrack-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-RadioTrack-tvOS/Pods-RadioTrack-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		3F8ECDAF75D23889CEDC4788 /* Pods-RadioTrack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack.debug.xcconfig"; path = "Target Support Files/Pods-RadioTrack/Pods-RadioTrack.debug.xcconfig"; sourceTree = "<group>"; };
+		5CE8E0280C875F1377A0AAC5 /* libPods-RadioTrack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RadioTrack.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RadioTrack/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		86651C6E3B41134C887CC53C /* Pods-RadioTrack-RadioTrackTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-RadioTrackTests.debug.xcconfig"; path = "Target Support Files/Pods-RadioTrack-RadioTrackTests/Pods-RadioTrack-RadioTrackTests.debug.xcconfig"; sourceTree = "<group>"; };
-		8B0D7D85590C5B58A8C6C6BA /* libPods-RadioTrack-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RadioTrack-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A366412BE1A6D70B42580398 /* libPods-RadioTrack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RadioTrack.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AC63D833EA95042C41362C6E /* Pods-RadioTrack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack.debug.xcconfig"; path = "Target Support Files/Pods-RadioTrack/Pods-RadioTrack.debug.xcconfig"; sourceTree = "<group>"; };
-		C1BE3CCCEF4574490A40425E /* Pods-RadioTrack-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-tvOS.release.xcconfig"; path = "Target Support Files/Pods-RadioTrack-tvOS/Pods-RadioTrack-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		CF6BBF88A5C60629B7608CF5 /* libPods-RadioTrack-RadioTrackTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RadioTrack-RadioTrackTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E89F404AAB5589B21E3ECCAC /* Pods-RadioTrack-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-RadioTrack-tvOS/Pods-RadioTrack-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A52D1D41C262FF941F7A4267 /* libPods-RadioTrack-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RadioTrack-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8930CB6C7694D339AD28FFC /* Pods-RadioTrack-RadioTrackTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-RadioTrackTests.release.xcconfig"; path = "Target Support Files/Pods-RadioTrack-RadioTrackTests/Pods-RadioTrack-RadioTrackTests.release.xcconfig"; sourceTree = "<group>"; };
+		B44D63070F233D6D29BEE34B /* Pods-RadioTrack-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-tvOS.release.xcconfig"; path = "Target Support Files/Pods-RadioTrack-tvOS/Pods-RadioTrack-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		BE3962BB36BE1506DE8E2C06 /* Pods-RadioTrack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack.release.xcconfig"; path = "Target Support Files/Pods-RadioTrack/Pods-RadioTrack.release.xcconfig"; sourceTree = "<group>"; };
+		CD06242125536EF100168F17 /* RadioTrack-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RadioTrack-Bridging-Header.h"; sourceTree = "<group>"; };
+		CD06242225536EF100168F17 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		EB5B529FBC7037235E842FF8 /* Pods-RadioTrack-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-RadioTrack-tvOSTests/Pods-RadioTrack-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -74,7 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57547DE5AEDBA6BA15C48178 /* libPods-RadioTrack-RadioTrackTests.a in Frameworks */,
+				12904EF1F460DBC31E707401 /* libPods-RadioTrack-RadioTrackTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C075CB1A902511B3526552C /* libPods-RadioTrack.a in Frameworks */,
+				213C6897265BF63FF946420C /* libPods-RadioTrack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E485089182FC902680DC7D0E /* libPods-RadioTrack-tvOS.a in Frameworks */,
+				3E16C148F95BC95DC7CBA622 /* libPods-RadioTrack-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B323CC8B35DB2CB220B65FD8 /* libPods-RadioTrack-tvOSTests.a in Frameworks */,
+				D9BB4D06F5206CB210E5C2D6 /* libPods-RadioTrack-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,28 +144,12 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				A366412BE1A6D70B42580398 /* libPods-RadioTrack.a */,
-				CF6BBF88A5C60629B7608CF5 /* libPods-RadioTrack-RadioTrackTests.a */,
-				8B0D7D85590C5B58A8C6C6BA /* libPods-RadioTrack-tvOS.a */,
-				4809276E161BFADF55B7B4FD /* libPods-RadioTrack-tvOSTests.a */,
+				5CE8E0280C875F1377A0AAC5 /* libPods-RadioTrack.a */,
+				222C25624B2F0410CB353051 /* libPods-RadioTrack-RadioTrackTests.a */,
+				0703813FB7523C1028EA4F12 /* libPods-RadioTrack-tvOS.a */,
+				A52D1D41C262FF941F7A4267 /* libPods-RadioTrack-tvOSTests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		3FD7D2E700FA5A7BD1541FA2 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				AC63D833EA95042C41362C6E /* Pods-RadioTrack.debug.xcconfig */,
-				0344D20A436E00D52CBD1EB3 /* Pods-RadioTrack.release.xcconfig */,
-				86651C6E3B41134C887CC53C /* Pods-RadioTrack-RadioTrackTests.debug.xcconfig */,
-				7B8A5B7E173A1449CED20D6D /* Pods-RadioTrack-RadioTrackTests.release.xcconfig */,
-				E89F404AAB5589B21E3ECCAC /* Pods-RadioTrack-tvOS.debug.xcconfig */,
-				C1BE3CCCEF4574490A40425E /* Pods-RadioTrack-tvOS.release.xcconfig */,
-				2D58C6AE85CF7D2E44E443AC /* Pods-RadioTrack-tvOSTests.debug.xcconfig */,
-				329B1354F92CE73DE099EB61 /* Pods-RadioTrack-tvOSTests.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -175,12 +162,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				CD06242225536EF100168F17 /* File.swift */,
 				13B07FAE1A68108700A75B9A /* RadioTrack */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RadioTrackTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				3FD7D2E700FA5A7BD1541FA2 /* Pods */,
+				D9526B3D3545613905483951 /* Pods */,
+				CD06242125536EF100168F17 /* RadioTrack-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -198,6 +187,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		D9526B3D3545613905483951 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3F8ECDAF75D23889CEDC4788 /* Pods-RadioTrack.debug.xcconfig */,
+				BE3962BB36BE1506DE8E2C06 /* Pods-RadioTrack.release.xcconfig */,
+				26E9BD86F12A41D34EA29AFD /* Pods-RadioTrack-RadioTrackTests.debug.xcconfig */,
+				A8930CB6C7694D339AD28FFC /* Pods-RadioTrack-RadioTrackTests.release.xcconfig */,
+				39743202F904CC4E5890D61A /* Pods-RadioTrack-tvOS.debug.xcconfig */,
+				B44D63070F233D6D29BEE34B /* Pods-RadioTrack-tvOS.release.xcconfig */,
+				EB5B529FBC7037235E842FF8 /* Pods-RadioTrack-tvOSTests.debug.xcconfig */,
+				2EB4D145803DE655075E8769 /* Pods-RadioTrack-tvOSTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -205,11 +209,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RadioTrackTests" */;
 			buildPhases = (
-				1E8F7CC3DE93A1B820C0608E /* [CP] Check Pods Manifest.lock */,
+				269DC86C7AE6E6F6C63D56A7 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				5486A7D6C259A5313D09A344 /* [CP] Copy Pods Resources */,
+				7C4557502F1E8A47DF268599 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -225,13 +229,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RadioTrack" */;
 			buildPhases = (
-				ED36E3C69BCAC03C6A019FAD /* [CP] Check Pods Manifest.lock */,
+				4F943004E66DE10CB7299F86 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				962E2A00D6966CDC4B533D8B /* [CP] Copy Pods Resources */,
+				14A1873D0D890AEF04C52F68 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -246,7 +250,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "RadioTrack-tvOS" */;
 			buildPhases = (
-				ABE75D594087E926CBACA762 /* [CP] Check Pods Manifest.lock */,
+				48647064DBF0D88882FE554C /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -266,7 +270,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "RadioTrack-tvOSTests" */;
 			buildPhases = (
-				7987AB518578D5465EFDAB18 /* [CP] Check Pods Manifest.lock */,
+				34BC68146710B79214FCAD01 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -294,7 +298,8 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						DevelopmentTeam = M967Y25A5P;
+						LastSwiftMigration = 1210;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -377,7 +382,25 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		1E8F7CC3DE93A1B820C0608E /* [CP] Check Pods Manifest.lock */ = {
+		14A1873D0D890AEF04C52F68 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RadioTrack/Pods-RadioTrack-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RadioTrack/Pods-RadioTrack-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		269DC86C7AE6E6F6C63D56A7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -413,25 +436,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		5486A7D6C259A5313D09A344 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RadioTrack-RadioTrackTests/Pods-RadioTrack-RadioTrackTests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RadioTrack-RadioTrackTests/Pods-RadioTrack-RadioTrackTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7987AB518578D5465EFDAB18 /* [CP] Check Pods Manifest.lock */ = {
+		34BC68146710B79214FCAD01 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -453,25 +458,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		962E2A00D6966CDC4B533D8B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RadioTrack/Pods-RadioTrack-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RadioTrack/Pods-RadioTrack-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		ABE75D594087E926CBACA762 /* [CP] Check Pods Manifest.lock */ = {
+		48647064DBF0D88882FE554C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -493,7 +480,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		ED36E3C69BCAC03C6A019FAD /* [CP] Check Pods Manifest.lock */ = {
+		4F943004E66DE10CB7299F86 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -513,6 +500,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7C4557502F1E8A47DF268599 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RadioTrack-RadioTrackTests/Pods-RadioTrack-RadioTrackTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RadioTrack-RadioTrackTests/Pods-RadioTrack-RadioTrackTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -569,6 +574,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				CD06242325536EF100168F17 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -608,8 +614,9 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 86651C6E3B41134C887CC53C /* Pods-RadioTrack-RadioTrackTests.debug.xcconfig */;
+			baseConfigurationReference = 26E9BD86F12A41D34EA29AFD /* Pods-RadioTrack-RadioTrackTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -631,8 +638,9 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7B8A5B7E173A1449CED20D6D /* Pods-RadioTrack-RadioTrackTests.release.xcconfig */;
+			baseConfigurationReference = A8930CB6C7694D339AD28FFC /* Pods-RadioTrack-RadioTrackTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = RadioTrackTests/Info.plist;
@@ -651,11 +659,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AC63D833EA95042C41362C6E /* Pods-RadioTrack.debug.xcconfig */;
+			baseConfigurationReference = 3F8ECDAF75D23889CEDC4788 /* Pods-RadioTrack.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M967Y25A5P;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = RadioTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -666,6 +675,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = RadioTrack;
+				SWIFT_OBJC_BRIDGING_HEADER = "RadioTrack-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -674,11 +684,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0344D20A436E00D52CBD1EB3 /* Pods-RadioTrack.release.xcconfig */;
+			baseConfigurationReference = BE3962BB36BE1506DE8E2C06 /* Pods-RadioTrack.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M967Y25A5P;
 				INFOPLIST_FILE = RadioTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -688,6 +699,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = RadioTrack;
+				SWIFT_OBJC_BRIDGING_HEADER = "RadioTrack-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -695,7 +707,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E89F404AAB5589B21E3ECCAC /* Pods-RadioTrack-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 39743202F904CC4E5890D61A /* Pods-RadioTrack-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -723,7 +735,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C1BE3CCCEF4574490A40425E /* Pods-RadioTrack-tvOS.release.xcconfig */;
+			baseConfigurationReference = B44D63070F233D6D29BEE34B /* Pods-RadioTrack-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -751,7 +763,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D58C6AE85CF7D2E44E443AC /* Pods-RadioTrack-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = EB5B529FBC7037235E842FF8 /* Pods-RadioTrack-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -778,7 +790,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 329B1354F92CE73DE099EB61 /* Pods-RadioTrack-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 2EB4D145803DE655075E8769 /* Pods-RadioTrack-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
