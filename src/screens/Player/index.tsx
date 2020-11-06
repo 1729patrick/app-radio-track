@@ -3,6 +3,9 @@ import { Platform, StyleSheet, Text, View } from 'react-native';
 import TrackPlayer, { usePlaybackState } from 'react-native-track-player';
 
 import Player from '~/components/Player';
+import Albuns from './components/Albuns';
+import Artist from './components/Artist';
+import Controls from './components/Controls';
 
 export default function PlaylistScreen() {
   const playbackState = usePlaybackState();
@@ -63,13 +66,9 @@ export default function PlaylistScreen() {
 
   return (
     <View style={styles.container}>
-      <Player
-        onNext={skipToNext}
-        style={styles.player}
-        onPrevious={skipToPrevious}
-        onTogglePlayback={togglePlayback}
-      />
-      <Text style={styles.state}>{getStateName(playbackState)}</Text>
+      <Albuns />
+      <Artist />
+      <Controls />
     </View>
   );
 }
