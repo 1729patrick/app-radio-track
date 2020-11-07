@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, View } from 'react-native';
+import { View } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -8,13 +8,18 @@ import Animated, {
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
-const { height } = Dimensions.get('window');
-const Controls = ({ y }) => {
+import { SNAP_POINTS } from '~/screens/Player/constants';
+
+interface PropTypes {
+  y: Animated.SharedValue<number>;
+}
+
+const Controls = ({ y }: PropTypes) => {
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
         y.value,
-        [0, (height - 70) * 0.2],
+        [SNAP_POINTS[0], SNAP_POINTS[1] * 0.2],
         [1, 0],
         Extrapolate.CLAMP,
       ),

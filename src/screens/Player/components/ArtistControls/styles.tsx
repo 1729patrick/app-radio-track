@@ -1,24 +1,25 @@
 import { StyleSheet } from 'react-native';
+import { COMPACT_HEIGHT } from '~/screens/Player/constants';
 
 export default StyleSheet.create({
   container: {
     top: 0,
     left: 0,
     position: 'absolute',
-    paddingLeft: 80,
+    paddingLeft: COMPACT_HEIGHT,
     paddingRight: 20,
-    height: 70,
+    height: COMPACT_HEIGHT,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
     width: '100%',
   },
-  info: {},
+  info: { justifyContent: 'center' },
   title: {
     fontWeight: '900',
     fontSize: 20,
   },
   description: {},
   controls: { flexDirection: 'row' },
-  playPause: { marginRight: 20 },
+  playPause: { marginLeft: 20 },
 });

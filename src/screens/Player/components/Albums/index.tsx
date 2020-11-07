@@ -8,44 +8,58 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 
+import styles from './styles';
 const { width, height } = Dimensions.get('window');
-const Albums = ({ points, y }) => {
-  const style = useAnimatedStyle(() => {
-    const scale = interpolate(
-      y.value,
-      [(height - 70) * 0.25, height - 70],
-      [1, 70 / width],
-      Extrapolate.CLAMP,
-    );
 
+import {
+  COMPACT_HEIGHT,
+  SNAP_POINTS,
+  ARTIST_AND_CONTROL_HEIGHT,
+  HORIZONTAL_PADDING,
+} from '../../constants';
+
+interface PropTypes {
+  y: Animated.SharedValue<number>;
+}
+
+const Albums = ({ y }: PropTypes) => {
+  const style = useAnimatedStyle(() => {
     return {
       transform: [
         {
           translateY: interpolate(
             y.value,
-            [(height - 70) * 0.25, height - 70],
-            [0, -(width - 70) / 2 - (height - (width + 181)) / 2],
+            [SNAP_POINTS[1] * 0.25, SNAP_POINTS[1]],
+            [
+              0,
+              -(width - COMPACT_HEIGHT) / 2 -
+                (height - (width + ARTIST_AND_CONTROL_HEIGHT)) / 2,
+            ],
             Extrapolate.CLAMP,
           ),
         },
         {
           translateX: interpolate(
             y.value,
-            [(height - 70) * 0.25, height - 70],
-            [0, -(width - 70) / 2],
+            [SNAP_POINTS[1] * 0.25, SNAP_POINTS[1]],
+            [0, -(width - COMPACT_HEIGHT) / 2],
             Extrapolate.CLAMP,
           ),
         },
         {
-          scale,
+          scale: interpolate(
+            y.value,
+            [SNAP_POINTS[1] * 0.25, SNAP_POINTS[1]],
+            [1, (COMPACT_HEIGHT - HORIZONTAL_PADDING) / width],
+            Extrapolate.CLAMP,
+          ),
         },
       ],
     };
   });
-  console.log((height - (width + 181)) / 2);
 
   return (
-    <Animated.View style={[{ height: width, width }, style]}>
+    <Animated.View style={[styles.container, style]}>
       <FlatList
         showsHorizontalScrollIndicator={false}
         decelerationRate={'fast'}
@@ -56,9 +70,9 @@ const Albums = ({ points, y }) => {
         keyExtractor={(x) => `${x}`}
         renderItem={({ item }) => {
           return (
-            <View style={[styles.container]}>
+            <View style={[styles.item]}>
               <View style={styles.image}>
-                <Text>Radio:</Text>
+                <Text>Radio: {item}</Text>
               </View>
             </View>
           );
@@ -66,20 +80,6 @@ const Albums = ({ points, y }) => {
       />
     </Animated.View>
   );
-};
-
-const styles = {
-  container: {
-    width,
-    padding: 20,
-  },
-  image: {
-    height: '100%',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderRadius: 4,
-    backgroundColor: '#ffbb00',
-  },
 };
 
 export default Albums;

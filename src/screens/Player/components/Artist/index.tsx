@@ -1,19 +1,23 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import { SNAP_POINTS } from '../../constants';
 import styles from './styles';
 
-const { height } = Dimensions.get('window');
-const Artist = ({ y }) => {
+interface PropTypes {
+  y: Animated.SharedValue<number>;
+}
+
+const Artist = ({ y }: PropTypes) => {
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
         y.value,
-        [0, (height - 70) * 0.2],
+        [SNAP_POINTS[0], SNAP_POINTS[1] * 0.2],
         [1, 0],
         Extrapolate.CLAMP,
       ),

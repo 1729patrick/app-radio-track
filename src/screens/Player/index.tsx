@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import TrackPlayer, { usePlaybackState } from 'react-native-track-player';
@@ -19,23 +19,27 @@ import ArtistTop from './components/Artist/components/Top';
 import Controls from './components/Controls';
 
 const { width, height } = Dimensions.get('window');
-const points = [0, height - 70];
-export default function PlaylistScreen() {
-  const scrollRef = useRef();
 
-  const scale = useSharedValue(1);
+import { SNAP_POINTS, TIMING_DURATION } from './constants';
+import styles from './styles';
+import ArtistControls from './components/ArtistControls';
+
+export default function PlaylistScreen() {
   const opacity = useSharedValue(1);
-  const translateY = useSharedValue(0);
+  const translateY = useSharedValue(SNAP_POINTS[1]);
 
   const y = useDerivedValue(() => {
-    return interpolate(translateY.value, points, points, Extrapolate.CLAMP);
+    return interpolate(
+      translateY.value,
+      SNAP_POINTS,
+      SNAP_POINTS,
+      Extrapolate.CLAMP,
+    );
   });
 
   const panHandler = useAnimatedGestureHandler({
-    onStart: (evt, ctx) => {
+    onStart: (_, ctx) => {
       ctx.startY = translateY.value;
-      // scale.value = withSpring(0.5);
-      // opacity.value = withTiming(0.5);
     },
     onActive: (evt, ctx) => {
       translateY.value = evt.translationY + ctx.startY;
@@ -46,30 +50,44 @@ export default function PlaylistScreen() {
 
       if (
         velocity < 1000 &&
-        ((ctx.startY === points[1] && translateY.value < height * 0.5) ||
-          ctx.startY === points[0])
+        ((ctx.startY === SNAP_POINTS[1] && translateY.value < height * 0.5) ||
+          ctx.startY === SNAP_POINTS[0])
       ) {
         if (translateY.value < height * 0.3) {
-          translateY.value = withTiming(points[0]);
+          translateY.value = withTiming(SNAP_POINTS[0], {
+            duration: TIMING_DURATION,
+          });
         } else {
-          translateY.value = withTiming(points[1]);
+          translateY.value = withTiming(SNAP_POINTS[1], {
+            duration: TIMING_DURATION,
+          });
         }
 
         return;
       }
 
-      const point = value + 0.5 * velocity;
+      const point = value + 0.2 * velocity;
+
       const diffPoint = (p: number) => Math.abs(point - p);
-      const deltas = points.map((p) => diffPoint(p));
 
-      const minDelta = Math.min(deltas[0], deltas[1]);
+      const deltas = SNAP_POINTS.map((p) => diffPoint(p));
 
-      const val = points.reduce(
+      const getMinDelta = () => {
+        if (value === SNAP_POINTS[0]) {
+          return Math.min(deltas[0], deltas[1]);
+        }
+
+        return Math.min(deltas[0], deltas[1], deltas[2]);
+      };
+
+      const minDelta = getMinDelta();
+
+      const val = SNAP_POINTS.reduce(
         (acc, p) => (diffPoint(p) === minDelta ? p : acc),
         0,
       );
 
-      translateY.value = withTiming(val);
+      translateY.value = withTiming(val, { duration: TIMING_DURATION });
     },
   });
 
@@ -141,19 +159,19 @@ export default function PlaylistScreen() {
   }
 
   const onPressPlayer = () => {
-    if (height - 70 === translateY.value) {
-      translateY.value = withTiming(0);
+    if (SNAP_POINTS[1] === translateY.value) {
+      translateY.value = withTiming(0, { duration: TIMING_DURATION });
     }
   };
 
   return (
-    <View style={{ flexGrow: 1, backgroundColor: 'blue' }}>
+    <View style={styles.container}>
       <PanGestureHandler onGestureEvent={panHandler}>
         <Animated.View
-          style={[styles.container, style]}
+          style={[styles.player, style]}
           onTouchEndCapture={onPressPlayer}>
-          <ArtistTop y={y} />
-          <Albums y={y} points={points} />
+          <ArtistControls y={y} />
+          <Albums y={y} />
 
           <View
           // onLayout={({ nativeEvent }) =>
@@ -195,23 +213,3 @@ async function skipToPrevious() {
     await TrackPlayer.skipToPrevious();
   } catch (_) {}
 }
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
-    width,
-    height,
-  },
-  description: {
-    width: '80%',
-    marginTop: 20,
-    textAlign: 'center',
-  },
-  player: {
-    marginTop: 40,
-  },
-  state: {
-    marginTop: 20,
-  },
-});
