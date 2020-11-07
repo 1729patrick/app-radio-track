@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
+import Home from './screens/Home';
 
 import Player from './screens/Player';
 
@@ -11,7 +12,7 @@ const App = () => {
         translucent
         backgroundColor="transparent"
       />
-      <Player />
+      <Home />
     </>
   );
 

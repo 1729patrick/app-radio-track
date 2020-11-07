@@ -1,23 +1,21 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import styles from './styles';
 
-import { SNAP_POINTS } from '~/screens/Player/constants';
+import { SNAP_POINTS } from '../../../constants';
 import { RectButton } from 'react-native-gesture-handler';
 
 interface PropTypes {
   y: Animated.SharedValue<number>;
-  onCompactPlayer: () => void;
 }
 
-const TopControls = ({ y, onCompactPlayer }: PropTypes) => {
+const BottomControls = ({ y }: PropTypes) => {
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -31,16 +29,20 @@ const TopControls = ({ y, onCompactPlayer }: PropTypes) => {
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <RectButton style={styles.button} onPress={onCompactPlayer}>
-        <Icon name="ios-chevron-down-sharp" size={25} color="#900" />
+      <RectButton style={styles.button}>
+        <Icon name="play-skip-back-sharp" size={30} color="#900" />
+      </RectButton>
+
+      <RectButton style={styles.playButton}>
+        <Icon name="play" size={30} color="#900" />
+        {/* <Icon name="stop" size={30} color="#900" /> */}
       </RectButton>
 
       <RectButton style={styles.button}>
-        <Icon name="heart-outline" size={25} color="#900" />
+        <Icon name="play-skip-forward" size={30} color="#900" />
       </RectButton>
-      {/* <Icon name="heart-sharp" size={22} color="#900" /> */}
     </Animated.View>
   );
 };
 
-export default TopControls;
+export default BottomControls;

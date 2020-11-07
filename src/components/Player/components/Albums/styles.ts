@@ -7,14 +7,13 @@ export default StyleSheet.create({
     width,
     height: width,
   },
-  item: {
-    width,
+  card: {
+    width: width,
+    height: width,
     padding: 20,
   },
-  image: {
+  cardImage: {
     height: '100%',
-    justifyContent: 'space-around',
-    alignItems: 'center',
     borderRadius: 4,
     backgroundColor: '#ffbb00',
   },

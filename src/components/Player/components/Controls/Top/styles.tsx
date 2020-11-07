@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { COMPACT_HEIGHT, PADDING_HORIZONTAL } from '~/screens/Player/constants';
+import { COMPACT_HEIGHT } from '../../../constants';
 
 export default StyleSheet.create({
   container: {

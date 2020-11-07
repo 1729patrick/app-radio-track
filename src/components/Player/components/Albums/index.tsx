@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  Dimensions,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from 'react-native';
 
 import { FlatList } from 'react-native-gesture-handler';
 import Animated, {
@@ -17,12 +23,21 @@ import {
   ARTIST_AND_CONTROL_HEIGHT,
   PADDING_HORIZONTAL,
 } from '../../constants';
+import { Radios } from '~/components/Radios';
 
-interface PropTypes {
+type AlbumsType = {
   y: Animated.SharedValue<number>;
-}
+  radioIndex?: number;
+  radios?: Radios;
+  setRadioIndex: (nextIndex: number) => void;
+};
 
-const Albums = ({ y }: PropTypes) => {
+const Albums: React.FC<AlbumsType> = ({
+  y,
+  radioIndex,
+  radios,
+  setRadioIndex,
+}) => {
   const style = useAnimatedStyle(() => {
     return {
       transform: [
@@ -58,6 +73,14 @@ const Albums = ({ y }: PropTypes) => {
     };
   });
 
+  const onScrollEndDrag = ({
+    nativeEvent,
+  }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const nextIndex = nativeEvent.contentOffset.x / width;
+
+    setRadioIndex(nextIndex);
+  };
+
   return (
     <Animated.View style={[styles.container, style]}>
       <FlatList
@@ -66,14 +89,13 @@ const Albums = ({ y }: PropTypes) => {
         horizontal
         snapToInterval={width}
         disableIntervalMomentum
-        data={[1, 2, 3, 4, 5]}
-        keyExtractor={(x) => `${x}`}
+        onMomentumScrollEnd={onScrollEndDrag}
+        data={radios}
+        keyExtractor={({ radio_id }) => `${radio_id}`}
         renderItem={({ item }) => {
           return (
-            <View style={[styles.item]}>
-              <View style={styles.image}>
-                <Text>Radio: {item}</Text>
-              </View>
+            <View style={[styles.card]}>
+              <View style={styles.cardImage} />
             </View>
           );
         }}

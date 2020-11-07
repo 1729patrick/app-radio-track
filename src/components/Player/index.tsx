@@ -1,139 +1,295 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import TrackPlayer, {
-  useTrackPlayerProgress,
-  usePlaybackState,
-  useTrackPlayerEvents,
-} from 'react-native-track-player';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewPropTypes,
-} from 'react-native';
+import React, {
+  useEffect,
+  useImperativeHandle,
+  forwardRef,
+  useCallback,
+  useState,
+} from 'react';
+import { BackHandler, Dimensions, View } from 'react-native';
+import { PanGestureHandler } from 'react-native-gesture-handler';
+import TrackPlayer, { usePlaybackState } from 'react-native-track-player';
 
-function ProgressBar() {
-  const progress = useTrackPlayerProgress();
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+  useAnimatedGestureHandler,
+  interpolate,
+  Extrapolate,
+  useDerivedValue,
+} from 'react-native-reanimated';
 
-  return (
-    <View style={styles.progress}>
-      <View style={{ flex: progress.position, backgroundColor: 'red' }} />
-      <View
-        style={{
-          flex: progress.duration - progress.position,
-          backgroundColor: 'grey',
-        }}
-      />
-    </View>
-  );
-}
+import Albums from './components/Albums';
+import Artist from './components/Artist';
+import BottomControls from './components/Controls/Bottom';
+import TopControls from './components/Controls/Top';
 
-function ControlButton({ title, onPress }) {
-  return (
-    <TouchableOpacity style={styles.controlButtonContainer} onPress={onPress}>
-      <Text style={styles.controlButtonText}>{title}</Text>
-    </TouchableOpacity>
-  );
-}
+const { height } = Dimensions.get('window');
 
-ControlButton.propTypes = {
-  title: PropTypes.string.isRequired,
-  onPress: PropTypes.func.isRequired,
+import { SNAP_POINTS, TIMING_DURATION } from './constants';
+import styles from './styles';
+import CompactPlayer from './components/CompactPlayer';
+
+import { Radios } from '../Radios';
+
+export type PlayerState = {
+  title?: string;
+  radios?: Radios;
+  radioIndex: number;
 };
 
-export default function Player(props) {
-  const playbackState = usePlaybackState();
-  const [trackTitle, setTrackTitle] = useState('');
-  const [trackArtwork, setTrackArtwork] = useState();
-  const [trackArtist, setTrackArtist] = useState('');
-  useTrackPlayerEvents(['playback-track-changed'], async (event) => {
-    if (event.type === TrackPlayer.TrackPlayerEvents.PLAYBACK_TRACK_CHANGED) {
-      const track = await TrackPlayer.getTrack(event.nextTrack);
-      const { title, artist, artwork } = track || {};
-      setTrackTitle(title);
-      setTrackArtist(artist);
-      setTrackArtwork(artwork);
-    }
+export type PlayerHandler = {
+  onExpandPlayer: (args: PlayerState | undefined) => void;
+  onCompactPlayer: () => void;
+};
+
+type PlayerProps = {};
+
+const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
+  {},
+  ref,
+) => {
+  const opacity = useSharedValue(2);
+  const translateY = useSharedValue(SNAP_POINTS[2]);
+  const [state, setState] = useState<PlayerState>();
+
+  const y = useDerivedValue(() => {
+    return interpolate(
+      translateY.value,
+      SNAP_POINTS,
+      SNAP_POINTS,
+      Extrapolate.CLAMP,
+    );
+  }, [translateY.value]);
+
+  const panHandler = useAnimatedGestureHandler({
+    onStart: (_, ctx) => {
+      ctx.startY = translateY.value;
+    },
+    onActive: (evt, ctx) => {
+      translateY.value = evt.translationY + ctx.startY;
+    },
+    onEnd: (evt, ctx) => {
+      const value = ctx.startY;
+      const velocity = evt.velocityY;
+
+      if (
+        velocity < 1000 &&
+        ((ctx.startY === SNAP_POINTS[1] && translateY.value < height * 0.5) ||
+          ctx.startY === SNAP_POINTS[0])
+      ) {
+        if (translateY.value < height * 0.3) {
+          translateY.value = withTiming(SNAP_POINTS[0], {
+            duration: TIMING_DURATION,
+          });
+        } else {
+          translateY.value = withTiming(SNAP_POINTS[1], {
+            duration: TIMING_DURATION,
+          });
+        }
+
+        return;
+      }
+
+      const point = value + 0.2 * velocity;
+
+      const diffPoint = (p: number) => Math.abs(point - p);
+
+      const deltas = SNAP_POINTS.map((p) => diffPoint(p));
+
+      const getMinDelta = () => {
+        if (value === SNAP_POINTS[0]) {
+          return Math.min(deltas[0], deltas[1]);
+        }
+
+        return Math.min(deltas[0], deltas[1], deltas[2]);
+      };
+
+      const minDelta = getMinDelta();
+
+      const val = SNAP_POINTS.reduce(
+        (acc, p) => (diffPoint(p) === minDelta ? p : acc),
+        0,
+      );
+
+      translateY.value = withTiming(val, { duration: TIMING_DURATION });
+    },
   });
 
-  const { style, onNext, onPrevious, onTogglePlayback } = props;
+  const style = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: y.value,
+        },
+      ],
+      opacity: opacity.value,
+    };
+  });
 
-  var middleButtonText = 'Play';
+  const playbackState = usePlaybackState();
 
-  if (
-    playbackState === TrackPlayer.STATE_PLAYING ||
-    playbackState === TrackPlayer.STATE_BUFFERING
-  ) {
-    middleButtonText = 'Pause';
+  useEffect(() => {
+    TrackPlayer.addEventListener('remote-duck', async () => {
+      await TrackPlayer.pause();
+    });
+  }, [playbackState]);
+
+  useEffect(() => {
+    setup();
+  }, []);
+
+  async function setup() {
+    await TrackPlayer.setupPlayer({});
+    await TrackPlayer.updateOptions({
+      stopWithApp: true,
+      capabilities: [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+      ],
+      compactCapabilities: [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+      ],
+    });
   }
 
+  async function togglePlayback() {
+    try {
+      const currentTrack = await TrackPlayer.getCurrentTrack();
+
+      if (currentTrack === null || playbackState === TrackPlayer.STATE_PAUSED) {
+        await TrackPlayer.reset();
+
+        await TrackPlayer.add({
+          id: 'local-track',
+          url: 'http://audio07.viaflux.com:5511/live',
+          title: 'Pure (Demo)',
+          artist: 'David Chavez',
+          artwork:
+            'https://pbs.twimg.com/profile_images/1196855902172798979/t_xvyE-D_400x400.jpg',
+        });
+
+        await TrackPlayer.play();
+      } else {
+        await TrackPlayer.pause();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const onExpandPlayer = useCallback(
+    (args: PlayerState) => {
+      translateY.value = withTiming(SNAP_POINTS[0], {
+        duration: TIMING_DURATION,
+      });
+
+      if (args) {
+        setState(args);
+      }
+    },
+    [translateY],
+  );
+
+  const onCompactPlayer = useCallback(() => {
+    if (SNAP_POINTS[0] === translateY.value) {
+      translateY.value = withTiming(SNAP_POINTS[1], {
+        duration: TIMING_DURATION,
+      });
+    }
+  }, [translateY]);
+
+  useImperativeHandle(ref, () => ({
+    onExpandPlayer,
+    onCompactPlayer,
+  }));
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      const open = translateY.value === SNAP_POINTS[0];
+      if (open) {
+        onCompactPlayer();
+      }
+
+      return open;
+    });
+  }, [onCompactPlayer, translateY.value]);
+
+  const setRadioIndex = (nextIndex: number) => {
+    setState({ ...state, radioIndex: nextIndex });
+  };
+
   return (
-    <View style={[styles.card, style]}>
-      <Image style={styles.cover} source={{ uri: trackArtwork }} />
-      <ProgressBar />
-      <Text style={styles.title}>{trackTitle}</Text>
-      <Text style={styles.artist}>{trackArtist}</Text>
-      <View style={styles.controls}>
-        <ControlButton title={'<'} onPress={onPrevious} />
-        <ControlButton title={middleButtonText} onPress={onTogglePlayback} />
-        <ControlButton title={'>'} onPress={onNext} />
-      </View>
+    <View style={styles.container}>
+      <PanGestureHandler onGestureEvent={panHandler}>
+        <Animated.View style={[styles.player, style]}>
+          <CompactPlayer
+            y={y}
+            onExpandPlayer={onExpandPlayer}
+            radioIndex={state?.radioIndex}
+            radios={state?.radios}
+          />
+          <TopControls
+            y={y}
+            onCompactPlayer={onCompactPlayer}
+            title={state?.title}
+          />
+
+          <Albums
+            y={y}
+            radioIndex={state?.radioIndex}
+            radios={state?.radios}
+            setRadioIndex={setRadioIndex}
+          />
+
+          <View
+          // onLayout={({ nativeEvent }) =>
+          //   console.log(nativeEvent.layout.height)
+          // }
+          >
+            <Artist
+              y={y}
+              radioIndex={state?.radioIndex}
+              radios={state?.radios}
+            />
+            <BottomControls y={y} />
+          </View>
+        </Animated.View>
+      </PanGestureHandler>
     </View>
   );
+};
+
+function getStateName(state) {
+  switch (state) {
+    case TrackPlayer.STATE_NONE:
+      return 'None';
+    case TrackPlayer.STATE_PLAYING:
+      return 'Playing';
+    case TrackPlayer.STATE_PAUSED:
+      return 'Paused';
+    case TrackPlayer.STATE_STOPPED:
+      return 'Stopped';
+    case TrackPlayer.STATE_BUFFERING:
+      return 'Buffering';
+  }
 }
 
-Player.propTypes = {
-  style: ViewPropTypes.style,
-  onNext: PropTypes.func.isRequired,
-  onPrevious: PropTypes.func.isRequired,
-  onTogglePlayback: PropTypes.func.isRequired,
-};
+async function skipToNext() {
+  try {
+    await TrackPlayer.skipToNext();
+  } catch (_) {}
+}
 
-Player.defaultProps = {
-  style: {},
-};
+async function skipToPrevious() {
+  try {
+    await TrackPlayer.skipToPrevious();
+  } catch (_) {}
+}
 
-const styles = StyleSheet.create({
-  card: {
-    width: '80%',
-    elevation: 1,
-    borderRadius: 4,
-    shadowRadius: 2,
-    shadowOpacity: 0.1,
-    alignItems: 'center',
-    shadowColor: 'black',
-    backgroundColor: 'white',
-    shadowOffset: { width: 0, height: 1 },
-  },
-  cover: {
-    width: 140,
-    height: 140,
-    marginTop: 20,
-    backgroundColor: 'grey',
-  },
-  progress: {
-    height: 1,
-    width: '90%',
-    marginTop: 10,
-    flexDirection: 'row',
-  },
-  title: {
-    marginTop: 10,
-  },
-  artist: {
-    fontWeight: 'bold',
-  },
-  controls: {
-    marginVertical: 20,
-    flexDirection: 'row',
-  },
-  controlButtonContainer: {
-    flex: 1,
-  },
-  controlButtonText: {
-    fontSize: 18,
-    textAlign: 'center',
-  },
-});
+export default forwardRef(Player);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 import Animated, {
   Extrapolate,
@@ -9,15 +9,25 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 
-import { SNAP_POINTS } from '~/screens/Player/constants';
+import { SNAP_POINTS } from '../../constants';
 import { RectButton } from 'react-native-gesture-handler';
 
-interface PropTypes {
-  y: Animated.SharedValue<number>;
-  onExpandPlayer: () => void;
-}
+import { PlayerState } from '../../';
+import { Radios } from '~/components/Radios';
 
-const CompactPlayer = ({ y, onExpandPlayer }: PropTypes) => {
+type CompactPlayerType = {
+  y: Animated.SharedValue<number>;
+  radioIndex?: number;
+  radios?: Radios;
+  onExpandPlayer: (args: PlayerState) => void;
+};
+
+const CompactPlayer: React.FC<CompactPlayerType> = ({
+  y,
+  onExpandPlayer,
+  radioIndex,
+  radios,
+}) => {
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -29,6 +39,22 @@ const CompactPlayer = ({ y, onExpandPlayer }: PropTypes) => {
     };
   });
 
+  const title = useMemo(() => {
+    if (!radios || radioIndex === undefined) {
+      return '';
+    }
+
+    return radios[radioIndex]?.artist_song;
+  }, [radios, radioIndex]);
+
+  const description = useMemo(() => {
+    if (!radios || radioIndex === undefined) {
+      return '';
+    }
+
+    return radios[radioIndex]?.radio_name;
+  }, [radios, radioIndex]);
+
   return (
     <Animated.View style={[styles.container, style]}>
       <RectButton
@@ -38,8 +64,8 @@ const CompactPlayer = ({ y, onExpandPlayer }: PropTypes) => {
         // enabled={false}
       >
         <View style={styles.info}>
-          <Text style={[styles.title]}>Rádio XXX</Text>
-          <Text style={[styles.description]}>São Miguel do Oeste</Text>
+          <Text style={[styles.title]}>{title}</Text>
+          <Text style={[styles.description]}>{description}</Text>
         </View>
 
         <View style={styles.controls}>
