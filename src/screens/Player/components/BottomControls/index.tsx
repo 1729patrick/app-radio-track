@@ -9,12 +9,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 import { SNAP_POINTS } from '~/screens/Player/constants';
+import { RectButton } from 'react-native-gesture-handler';
 
 interface PropTypes {
   y: Animated.SharedValue<number>;
 }
 
-const Controls = ({ y }: PropTypes) => {
+const BottomControls = ({ y }: PropTypes) => {
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -28,15 +29,20 @@ const Controls = ({ y }: PropTypes) => {
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <Icon name="play-skip-back-sharp" size={30} color="#900" />
+      <RectButton style={styles.button}>
+        <Icon name="play-skip-back-sharp" size={30} color="#900" />
+      </RectButton>
 
-      <View style={[styles.playPause]}>
+      <RectButton style={styles.playButton}>
         <Icon name="play" size={30} color="#900" />
         {/* <Icon name="stop" size={30} color="#900" /> */}
-      </View>
-      <Icon name="play-skip-forward" size={30} color="#900" />
+      </RectButton>
+
+      <RectButton style={styles.button}>
+        <Icon name="play-skip-forward" size={30} color="#900" />
+      </RectButton>
     </Animated.View>
   );
 };
 
-export default Controls;
+export default BottomControls;

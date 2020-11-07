@@ -15,7 +15,7 @@ import {
   COMPACT_HEIGHT,
   SNAP_POINTS,
   ARTIST_AND_CONTROL_HEIGHT,
-  HORIZONTAL_PADDING,
+  PADDING_HORIZONTAL,
 } from '../../constants';
 
 interface PropTypes {
@@ -50,7 +50,7 @@ const Albums = ({ y }: PropTypes) => {
           scale: interpolate(
             y.value,
             [SNAP_POINTS[1] * 0.25, SNAP_POINTS[1]],
-            [1, (COMPACT_HEIGHT - HORIZONTAL_PADDING) / width],
+            [1, (COMPACT_HEIGHT - PADDING_HORIZONTAL) / width],
             Extrapolate.CLAMP,
           ),
         },

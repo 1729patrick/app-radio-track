@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import {
+  PanGestureHandler,
+  RectButton,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
 import TrackPlayer, { usePlaybackState } from 'react-native-track-player';
 
 import Animated, {
@@ -15,14 +19,14 @@ import Animated, {
 
 import Albums from './components/Albums';
 import Artist from './components/Artist';
-import ArtistTop from './components/Artist/components/Top';
-import Controls from './components/Controls';
+import BottomControls from './components/BottomControls';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 import { SNAP_POINTS, TIMING_DURATION } from './constants';
 import styles from './styles';
-import ArtistControls from './components/ArtistControls';
+import CompactPlayer from './components/CompactPlayer';
+import TopControls from './components/TopControls';
 
 export default function PlaylistScreen() {
   const opacity = useSharedValue(1);
@@ -158,19 +162,29 @@ export default function PlaylistScreen() {
     }
   }
 
-  const onPressPlayer = () => {
+  const onExpandPlayer = () => {
     if (SNAP_POINTS[1] === translateY.value) {
-      translateY.value = withTiming(0, { duration: TIMING_DURATION });
+      translateY.value = withTiming(SNAP_POINTS[0], {
+        duration: TIMING_DURATION,
+      });
+    }
+  };
+
+  const onCompactPlayer = () => {
+    if (SNAP_POINTS[0] === translateY.value) {
+      translateY.value = withTiming(SNAP_POINTS[1], {
+        duration: TIMING_DURATION,
+      });
     }
   };
 
   return (
     <View style={styles.container}>
       <PanGestureHandler onGestureEvent={panHandler}>
-        <Animated.View
-          style={[styles.player, style]}
-          onTouchEndCapture={onPressPlayer}>
-          <ArtistControls y={y} />
+        <Animated.View style={[styles.player, style]}>
+          <CompactPlayer y={y} onExpandPlayer={onExpandPlayer} />
+          <TopControls y={y} onCompactPlayer={onCompactPlayer} />
+
           <Albums y={y} />
 
           <View
@@ -179,7 +193,7 @@ export default function PlaylistScreen() {
           // }
           >
             <Artist y={y} />
-            <Controls y={y} />
+            <BottomControls y={y} />
           </View>
         </Animated.View>
       </PanGestureHandler>

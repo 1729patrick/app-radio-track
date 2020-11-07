@@ -10,18 +10,20 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 import { SNAP_POINTS } from '~/screens/Player/constants';
+import { RectButton } from 'react-native-gesture-handler';
 
 interface PropTypes {
   y: Animated.SharedValue<number>;
+  onCompactPlayer: () => void;
 }
 
-const ArtistControls = ({ y }: PropTypes) => {
+const TopControls = ({ y, onCompactPlayer }: PropTypes) => {
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
         y.value,
-        [SNAP_POINTS[1] * 0.85, SNAP_POINTS[1]],
-        [0, 1],
+        [SNAP_POINTS[0], SNAP_POINTS[1] * 0.2],
+        [1, 0],
         Extrapolate.CLAMP,
       ),
     };
@@ -29,21 +31,16 @@ const ArtistControls = ({ y }: PropTypes) => {
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <View style={styles.info}>
-        <Text style={[styles.title]}>Rádio XXX</Text>
-        <Text style={[styles.description]}>São Miguel do Oeste</Text>
-      </View>
+      <RectButton style={styles.button} onPress={onCompactPlayer}>
+        <Icon name="ios-chevron-down-sharp" size={25} color="#900" />
+      </RectButton>
 
-      <View style={styles.controls}>
+      <RectButton style={styles.button}>
         <Icon name="heart-outline" size={25} color="#900" />
-        {/* <Icon name="heart-sharp" size={22} color="#900" /> */}
-        <View style={[styles.playPause]}>
-          <Icon name="play" size={25} color="#900" />
-          {/* <Icon name="stop" size={30} color="#900" /> */}
-        </View>
-      </View>
+      </RectButton>
+      {/* <Icon name="heart-sharp" size={22} color="#900" /> */}
     </Animated.View>
   );
 };
 
-export default ArtistControls;
+export default TopControls;

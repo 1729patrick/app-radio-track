@@ -8,12 +8,22 @@ export default StyleSheet.create({
     width: '100%',
     marginTop: 30,
   },
-  playPause: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: 'blue',
+  playButton: {
+    width: 66,
+    height: 66,
+    borderRadius: 33,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#999',
+    paddingLeft: 4,
+  },
+
+  button: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00000001',
   },
 });
