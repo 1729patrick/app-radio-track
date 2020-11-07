@@ -30,7 +30,7 @@ export default StyleSheet.create({
     borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#00000001',
+    // backgroundColor: '#00000001',
     marginHorizontal: 5,
   },
 });

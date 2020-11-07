@@ -11,11 +11,17 @@ import styles from './styles';
 import { SNAP_POINTS } from '../../../constants';
 import { RectButton } from 'react-native-gesture-handler';
 
-interface PropTypes {
+type BottomControlsProps = {
   y: Animated.SharedValue<number>;
-}
+  onNextRadio: () => void;
+  onPreviousRadio: () => void;
+};
 
-const BottomControls = ({ y }: PropTypes) => {
+const BottomControls: React.FC<BottomControlsProps> = ({
+  y,
+  onNextRadio,
+  onPreviousRadio,
+}) => {
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -29,7 +35,7 @@ const BottomControls = ({ y }: PropTypes) => {
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <RectButton style={styles.button}>
+      <RectButton style={styles.button} onPress={onPreviousRadio}>
         <Icon name="play-skip-back-sharp" size={30} color="#900" />
       </RectButton>
 
@@ -38,7 +44,7 @@ const BottomControls = ({ y }: PropTypes) => {
         {/* <Icon name="stop" size={30} color="#900" /> */}
       </RectButton>
 
-      <RectButton style={styles.button}>
+      <RectButton style={styles.button} onPress={onNextRadio}>
         <Icon name="play-skip-forward" size={30} color="#900" />
       </RectButton>
     </Animated.View>

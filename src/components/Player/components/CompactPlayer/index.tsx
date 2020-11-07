@@ -19,7 +19,7 @@ type CompactPlayerType = {
   y: Animated.SharedValue<number>;
   radioIndex?: number;
   radios?: Radios;
-  onExpandPlayer: (args: PlayerState) => void;
+  onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
 };
 
 const CompactPlayer: React.FC<CompactPlayerType> = ({
@@ -60,7 +60,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
       <RectButton
         style={styles.compactButton}
         rippleColor={'transparent'}
-        onPress={onExpandPlayer}
+        onPress={() => onExpandPlayer()}
         // enabled={false}
       >
         <View style={styles.info}>

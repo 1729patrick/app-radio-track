@@ -7,6 +7,7 @@ module.exports = {
     'prettier/prettier': 'error',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'no-shadow': 'off',
   },
   settings: {
     'import/resolver': {

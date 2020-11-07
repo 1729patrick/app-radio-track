@@ -1,11 +1,5 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  Dimensions,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-} from 'react-native';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import { View, Dimensions } from 'react-native';
 
 import { FlatList } from 'react-native-gesture-handler';
 import Animated, {
@@ -25,19 +19,25 @@ import {
 } from '../../constants';
 import { Radios } from '~/components/Radios';
 
-type AlbumsType = {
+type AlbumsProps = {
   y: Animated.SharedValue<number>;
   radioIndex?: number;
   radios?: Radios;
   setRadioIndex: (nextIndex: number) => void;
 };
 
-const Albums: React.FC<AlbumsType> = ({
-  y,
-  radioIndex,
-  radios,
-  setRadioIndex,
-}) => {
+type ScrollToAlbumArgs = { radioIndex: number; animated: boolean };
+
+export type AlbumsHandler = {
+  scrollToAlbum: (args: ScrollToAlbumArgs) => void;
+};
+
+const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
+  { y, radios, setRadioIndex },
+  ref,
+) => {
+  const flatListRef = useRef<FlatList<any>>(null);
+
   const style = useAnimatedStyle(() => {
     return {
       transform: [
@@ -73,23 +73,50 @@ const Albums: React.FC<AlbumsType> = ({
     };
   });
 
-  const onScrollEndDrag = ({
-    nativeEvent,
-  }: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const nextIndex = nativeEvent.contentOffset.x / width;
-
-    setRadioIndex(nextIndex);
+  const scrollToAlbum = ({ radioIndex, animated }: ScrollToAlbumArgs) => {
+    flatListRef.current?.scrollToOffset({
+      offset: radioIndex * width,
+      animated,
+    });
   };
+
+  useImperativeHandle(ref, () => ({
+    scrollToAlbum,
+  }));
+
+  const onScrollEndDrag = () => {
+    // console.log('onScrollEndDrag');
+  };
+
+  const onViewableItemsChanged = ({
+    changed,
+  }: {
+    changed: { index: number }[];
+  }) => {
+    // console.log('onViewableItemsChanged', changed[0].index);
+    setRadioIndex(changed[0].index);
+  };
+
+  const viewabilityConfig = {
+    viewAreaCoveragePercentThreshold: 90,
+    waitForInteraction: true,
+  };
+
+  const viewabilityConfigCallbackPairs = useRef([
+    { viewabilityConfig, onViewableItemsChanged },
+  ]);
 
   return (
     <Animated.View style={[styles.container, style]}>
       <FlatList
+        ref={flatListRef}
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         showsHorizontalScrollIndicator={false}
         decelerationRate={'fast'}
         horizontal
         snapToInterval={width}
         disableIntervalMomentum
-        onMomentumScrollEnd={onScrollEndDrag}
+        onScrollEndDrag={onScrollEndDrag}
         data={radios}
         keyExtractor={({ radio_id }) => `${radio_id}`}
         renderItem={({ item }) => {
@@ -104,4 +131,4 @@ const Albums: React.FC<AlbumsType> = ({
   );
 };
 
-export default Albums;
+export default forwardRef(Albums);

@@ -4,6 +4,7 @@ import React, {
   forwardRef,
   useCallback,
   useState,
+  useRef,
 } from 'react';
 import { BackHandler, Dimensions, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
@@ -19,7 +20,7 @@ import Animated, {
   useDerivedValue,
 } from 'react-native-reanimated';
 
-import Albums from './components/Albums';
+import Albums, { AlbumsHandler } from './components/Albums';
 import Artist from './components/Artist';
 import BottomControls from './components/Controls/Bottom';
 import TopControls from './components/Controls/Top';
@@ -35,11 +36,10 @@ import { Radios } from '../Radios';
 export type PlayerState = {
   title?: string;
   radios?: Radios;
-  radioIndex: number;
 };
 
 export type PlayerHandler = {
-  onExpandPlayer: (args: PlayerState | undefined) => void;
+  onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
   onCompactPlayer: () => void;
 };
 
@@ -51,7 +51,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 ) => {
   const opacity = useSharedValue(2);
   const translateY = useSharedValue(SNAP_POINTS[2]);
-  const [state, setState] = useState<PlayerState>();
+  const [state, setState] = useState<PlayerState>({});
+  const [radioIndex, setRadioIndex] = useState<number>(0);
+  const albumsRef = useRef<AlbumsHandler>(null);
 
   const y = useDerivedValue(() => {
     return interpolate(
@@ -184,13 +186,17 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }
 
   const onExpandPlayer = useCallback(
-    (args: PlayerState) => {
+    (args?: PlayerState & { radioIndex: number }) => {
       translateY.value = withTiming(SNAP_POINTS[0], {
         duration: TIMING_DURATION,
       });
 
       if (args) {
-        setState(args);
+        const { radioIndex, ...restArgs } = args;
+        setState(restArgs);
+        setRadioIndex(radioIndex);
+        console.log(albumsRef.current?.scrollToAlbum);
+        albumsRef.current?.scrollToAlbum({ radioIndex, animated: false });
       }
     },
     [translateY],
@@ -220,8 +226,26 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     });
   }, [onCompactPlayer, translateY.value]);
 
-  const setRadioIndex = (nextIndex: number) => {
-    setState({ ...state, radioIndex: nextIndex });
+  const onNextRadio = () => {
+    if (radioIndex < state?.radios?.length - 1) {
+      const nextIndex = radioIndex + 1;
+
+      albumsRef.current?.scrollToAlbum({
+        radioIndex: nextIndex,
+        animated: true,
+      });
+    }
+  };
+
+  const onPreviousRadio = () => {
+    if (radioIndex - 1 >= 0) {
+      const previousIndex = radioIndex - 1;
+
+      albumsRef.current?.scrollToAlbum({
+        radioIndex: previousIndex,
+        animated: true,
+      });
+    }
   };
 
   return (
@@ -231,7 +255,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
           <CompactPlayer
             y={y}
             onExpandPlayer={onExpandPlayer}
-            radioIndex={state?.radioIndex}
+            radioIndex={radioIndex}
             radios={state?.radios}
           />
           <TopControls
@@ -241,8 +265,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
           />
 
           <Albums
+            ref={albumsRef}
             y={y}
-            radioIndex={state?.radioIndex}
             radios={state?.radios}
             setRadioIndex={setRadioIndex}
           />
@@ -252,12 +276,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
           //   console.log(nativeEvent.layout.height)
           // }
           >
-            <Artist
+            <Artist y={y} radioIndex={radioIndex} radios={state?.radios} />
+            <BottomControls
               y={y}
-              radioIndex={state?.radioIndex}
-              radios={state?.radios}
+              onNextRadio={onNextRadio}
+              onPreviousRadio={onPreviousRadio}
             />
-            <BottomControls y={y} />
           </View>
         </Animated.View>
       </PanGestureHandler>
