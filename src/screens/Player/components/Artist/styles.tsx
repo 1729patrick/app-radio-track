@@ -4,7 +4,7 @@ export default StyleSheet.create({
   container: {
     textAlign: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 40,
   },
   title: {
     fontWeight: '900',
