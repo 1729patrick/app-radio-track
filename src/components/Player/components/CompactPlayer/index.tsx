@@ -10,10 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 import { SNAP_POINTS } from '../../constants';
-import {
-  RectButton,
-  TouchableNativeFeedback,
-} from 'react-native-gesture-handler';
+import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 
 import { PlayerState } from '../../';
 import { Radios } from '~/components/Radios';
@@ -69,19 +66,15 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
         </View>
 
         <View style={styles.controls}>
-          <RectButton
-            style={styles.button}
-            onPress={() => {
-              console.log('click');
-            }}>
+          <BorderlessButton style={styles.button} onPress={() => {}}>
             <Icon name="heart-outline" size={25} color="#900" />
-          </RectButton>
+          </BorderlessButton>
           {/* <Icon name="heart-sharp" size={22} color="#900" /> */}
 
-          <RectButton style={styles.button}>
+          <BorderlessButton style={styles.button}>
             <Icon name="play" size={25} color="#900" />
             {/* <Icon name="stop" size={30} color="#900" /> */}
-          </RectButton>
+          </BorderlessButton>
         </View>
       </RectButton>
     </Animated.View>

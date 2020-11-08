@@ -19,11 +19,9 @@ export default StyleSheet.create({
   },
 
   button: {
-    width: 48,
-    height: 48,
+    width: 36,
+    height: 36,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#00000001',
-    borderRadius: 21,
   },
 });

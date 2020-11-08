@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 import { SNAP_POINTS } from '../../../constants';
-import { RectButton } from 'react-native-gesture-handler';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 type TopControlsProps = {
   y: Animated.SharedValue<number>;
@@ -36,15 +36,15 @@ const TopControls: React.FC<TopControlsProps> = ({
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <RectButton style={styles.button} onPress={onCompactPlayer}>
+      <BorderlessButton style={styles.button} onPress={onCompactPlayer}>
         <Icon name="ios-chevron-down-sharp" size={25} color="#900" />
-      </RectButton>
+      </BorderlessButton>
 
       <Text>{title}</Text>
 
-      <RectButton style={styles.button}>
+      <BorderlessButton style={styles.button}>
         <Icon name="heart-outline" size={25} color="#900" />
-      </RectButton>
+      </BorderlessButton>
       {/* <Icon name="heart-sharp" size={22} color="#900" /> */}
     </Animated.View>
   );

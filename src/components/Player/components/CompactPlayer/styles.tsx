@@ -9,6 +9,7 @@ export default StyleSheet.create({
     height: COMPACT_HEIGHT,
     width: '100%',
     zIndex: 1,
+    backgroundColor: '#eee',
   },
   compactButton: {
     flex: 1,
@@ -16,6 +17,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
+    paddingRight: 5,
   },
   info: { justifyContent: 'center', flex: 1 },
   title: {
@@ -25,12 +27,11 @@ export default StyleSheet.create({
   description: {},
   controls: { flexDirection: 'row' },
   button: {
-    width: 42,
-    height: 42,
+    width: 32,
+    height: 32,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#00000001',
-    borderRadius: 21,
-    marginHorizontal: 5,
+    marginHorizontal: 7,
   },
 });

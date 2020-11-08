@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 import { SNAP_POINTS } from '../../../constants';
-import { RectButton } from 'react-native-gesture-handler';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 type BottomControlsProps = {
   y: Animated.SharedValue<number>;
@@ -35,18 +35,18 @@ const BottomControls: React.FC<BottomControlsProps> = ({
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <RectButton style={styles.button} onPress={onPreviousRadio}>
+      <BorderlessButton style={styles.button} onPress={() => onPreviousRadio()}>
         <Icon name="play-skip-back-sharp" size={30} color="#900" />
-      </RectButton>
+      </BorderlessButton>
 
-      <RectButton style={styles.playButton}>
+      <BorderlessButton style={styles.playButton}>
         <Icon name="play" size={30} color="#900" />
         {/* <Icon name="stop" size={30} color="#900" /> */}
-      </RectButton>
+      </BorderlessButton>
 
-      <RectButton style={styles.button} onPress={onNextRadio}>
+      <BorderlessButton style={styles.button} onPress={() => onNextRadio()}>
         <Icon name="play-skip-forward" size={30} color="#900" />
-      </RectButton>
+      </BorderlessButton>
     </Animated.View>
   );
 };

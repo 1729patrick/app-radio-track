@@ -6,7 +6,7 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from 'react-native-track-player';
 import { Image, StyleSheet, Text, View, ViewPropTypes } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 function ProgressBar() {
   const progress = useTrackPlayerProgress();
@@ -26,9 +26,9 @@ function ProgressBar() {
 
 function ControlButton({ title, onPress }) {
   return (
-    <RectButton style={styles.controlButtonContainer} onPress={onPress}>
+    <BorderlessButton style={styles.controlButtonContainer} onPress={onPress}>
       <Text style={styles.controlButtonText}>{title}</Text>
-    </RectButton>
+    </BorderlessButton>
   );
 }
 

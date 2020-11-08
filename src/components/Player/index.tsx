@@ -233,7 +233,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     });
   }, [onCompactPlayer, translateY.value]);
 
-  const onNextRadio = () => {
+  const onNextRadio = useCallback(() => {
     if (radioIndex < state?.radios?.length - 1) {
       const nextIndex = radioIndex + 1;
 
@@ -242,9 +242,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         animated: true,
       });
     }
-  };
+  }, [radioIndex, state?.radios?.length]);
 
-  const onPreviousRadio = () => {
+  const onPreviousRadio = useCallback(() => {
     if (radioIndex - 1 >= 0) {
       const previousIndex = radioIndex - 1;
 
@@ -253,7 +253,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         animated: true,
       });
     }
-  };
+  }, [radioIndex]);
 
   return (
     <View style={styles.container} pointerEvents="box-none">

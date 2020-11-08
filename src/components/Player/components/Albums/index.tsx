@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   useRef,
+  useState,
 } from 'react';
 import { Dimensions, View } from 'react-native';
 
@@ -49,6 +50,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   ref,
 ) => {
   const flatListRef = useRef<FlatList<any>>(null);
+  const [hiddenFlatList, setHiddenFlatList] = useState<boolean>(false);
 
   const style = useAnimatedStyle(() => {
     return {
@@ -96,24 +98,19 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     scrollToAlbum,
   }));
 
-  const onScrollEndDrag = () => {
-    console.log('onScrollEndDrag');
-  };
-
   const onViewableItemsChanged = ({
     changed,
   }: {
     changed: { index: number }[];
   }) => {
     if (!loading) {
-      // console.log('onViewableItemsChanged');
       setRadioIndex(changed[0].index);
     }
   };
 
   const viewabilityConfig = {
     viewAreaCoveragePercentThreshold: 90,
-    waitForInteraction: true,
+    waitForInteraction: false,
   };
 
   const viewabilityConfigCallbackPairs = useRef([
@@ -121,22 +118,20 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   ]);
 
   useEffect(() => {
+    setHiddenFlatList(true);
     const timeoutScroll = setTimeout(() => {
-      scrollToAlbum({
-        radioIndex: radioIndexToScroll,
-        animated: false,
-      });
+      setHiddenFlatList(false);
     }, 50);
 
     const timeoutLoading = setTimeout(() => {
       setLoading(false);
-    }, 100);
+    }, 150);
 
     return () => {
       clearTimeout(timeoutScroll);
       clearTimeout(timeoutLoading);
     };
-  }, [radioIndexToScroll, radios, setLoading]);
+  }, [radios, setLoading]);
 
   const renderItem = useCallback(({ item }) => {
     return <Album item={item} />;
@@ -144,27 +139,35 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <FlatList
-        ref={flatListRef}
-        removeClippedSubviews
-        initialNumToRender={3}
-        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        showsHorizontalScrollIndicator={false}
-        getItemLayout={(_, index) => ({
-          length: width,
-          offset: width * index,
-          index,
-        })}
-        decelerationRate={'fast'}
-        horizontal
-        snapToInterval={width}
-        disableIntervalMomentum
-        onScrollEndDrag={onScrollEndDrag}
-        data={radios}
-        keyExtractor={({ title_song }) => `${title_song}`}
-        renderItem={renderItem}
-      />
-      {loading && <View style={styles.loader} />}
+      {!hiddenFlatList && (
+        <FlatList
+          ref={flatListRef}
+          onLayout={() => {
+            scrollToAlbum({
+              radioIndex: radioIndexToScroll,
+              animated: false,
+            });
+          }}
+          removeClippedSubviews
+          viewabilityConfigCallbackPairs={
+            viewabilityConfigCallbackPairs.current
+          }
+          showsHorizontalScrollIndicator={false}
+          getItemLayout={(_, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
+          decelerationRate={'fast'}
+          horizontal
+          snapToInterval={width}
+          disableIntervalMomentum
+          data={radios}
+          keyExtractor={({ title_song }) => `${title_song}`}
+          renderItem={renderItem}
+        />
+      )}
+      {(loading || hiddenFlatList) && <View style={styles.loader} />}
     </Animated.View>
   );
 };
