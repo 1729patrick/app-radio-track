@@ -21,7 +21,7 @@ const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
       return '';
     }
 
-    return radios[radioIndex]?.artist_song;
+    return radios[radioIndex]?.radio_name;
   }, [radios, radioIndex]);
 
   const description = useMemo(() => {
@@ -29,7 +29,7 @@ const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
       return '';
     }
 
-    return radios[radioIndex]?.radio_name;
+    return radios[radioIndex]?.title_song;
   }, [radios, radioIndex]);
 
   const style = useAnimatedStyle(() => {

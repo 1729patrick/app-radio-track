@@ -46,7 +46,15 @@ export type AlbumsHandler = {
 };
 
 const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
-  { y, radios, setRadioIndex, radioIndexToScroll, loading, setLoading },
+  {
+    y,
+    radios,
+    setRadioIndex,
+    radioIndexToScroll,
+    loading,
+    setLoading,
+    onAlbumsMounted,
+  },
   ref,
 ) => {
   const flatListRef = useRef<FlatList<any>>(null);
@@ -118,19 +126,24 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   ]);
 
   useEffect(() => {
-    setHiddenFlatList(true);
-    const timeoutScroll = setTimeout(() => {
+    if (hiddenFlatList) {
       setHiddenFlatList(false);
-    }, 50);
+    }
+  }, [hiddenFlatList]);
 
-    const timeoutLoading = setTimeout(() => {
-      setLoading(false);
-    }, 150);
+  useEffect(() => {
+    if (!hiddenFlatList) {
+      const timeout = setTimeout(() => {
+        setLoading(false);
+        onAlbumsMounted();
+      }, 150);
 
-    return () => {
-      clearTimeout(timeoutScroll);
-      clearTimeout(timeoutLoading);
-    };
+      return () => clearTimeout(timeout);
+    }
+  }, [hiddenFlatList, onAlbumsMounted, setLoading]);
+
+  useEffect(() => {
+    setHiddenFlatList(true);
   }, [radios, setLoading]);
 
   const renderItem = useCallback(({ item }) => {
@@ -167,7 +180,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           renderItem={renderItem}
         />
       )}
-      {(loading || hiddenFlatList) && <View style={styles.loader} />}
+      {loading && <View style={styles.loader} />}
     </Animated.View>
   );
 };

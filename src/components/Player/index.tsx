@@ -6,7 +6,7 @@ import React, {
   useState,
   useRef,
 } from 'react';
-import { BackHandler, Dimensions, View } from 'react-native';
+import { BackHandler, Dimensions, Text, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import TrackPlayer, { usePlaybackState } from 'react-native-track-player';
 
@@ -18,6 +18,8 @@ import Animated, {
   interpolate,
   Extrapolate,
   useDerivedValue,
+  //@ts-ignore
+  runOnJS,
 } from 'react-native-reanimated';
 
 import Albums, { AlbumsHandler } from './components/Albums';
@@ -31,11 +33,11 @@ import { SNAP_POINTS, TIMING_DURATION } from './constants';
 import styles from './styles';
 import CompactPlayer from './components/CompactPlayer';
 
-import { Radios } from '../Radios';
+import { Radio, Radios } from '../Radios';
 
 export type PlayerState = {
-  title?: string;
-  radios?: Radios;
+  title: string;
+  radios: Radios;
 };
 
 export type PlayerHandler = {
@@ -51,19 +53,36 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 ) => {
   const translateY = useSharedValue(SNAP_POINTS[2]);
 
-  const [state, setState] = useState<PlayerState>({});
+  const [state, setState] = useState<PlayerState>({
+    title: '',
+    radios: [],
+  });
   const [radioIndex, setRadioIndex] = useState<number>(0);
   const albumsRef = useRef<AlbumsHandler>(null);
   const radioIndexToScroll = useRef<number>(0);
   const [loading, setLoading] = useState(false);
+  const albumsMountedRef = useRef<boolean>(false);
+  const [playerState, setPlayerState] = useState<
+    'compact' | 'expanded' | 'closed' | ''
+  >('closed');
 
   const y = useDerivedValue(() => {
-    return interpolate(
+    const validY = interpolate(
       translateY.value,
       SNAP_POINTS,
       SNAP_POINTS,
       Extrapolate.CLAMP,
     );
+
+    if (validY === SNAP_POINTS[0]) {
+      runOnJS(setPlayerState)('expanded');
+    } else if (validY === SNAP_POINTS[1]) {
+      runOnJS(setPlayerState)('compact');
+    } else if (validY === SNAP_POINTS[2]) {
+      runOnJS(setPlayerState)('closed');
+    }
+
+    return validY;
   }, [translateY.value]);
 
   const panHandler = useAnimatedGestureHandler({
@@ -142,7 +161,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     setup();
   }, []);
 
-  async function setup() {
+  const setup = useCallback(async () => {
     await TrackPlayer.setupPlayer({});
     await TrackPlayer.updateOptions({
       stopWithApp: true,
@@ -159,24 +178,28 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
       ],
     });
-  }
+  }, []);
 
-  async function togglePlayback() {
+  const addRadioToTrackPlayer = useCallback(async (radio: Radio) => {
+    // console.log({ title: radio.radio_name });
+    await TrackPlayer.reset();
+
+    await TrackPlayer.add({
+      id: radio.title_song,
+      url: radio.radio_stream,
+      title: radio.radio_name,
+      artist: radio.title_song,
+      artwork: `https://www.radioair.info/images_radios/${radio.radio_logo}`,
+    });
+
+    TrackPlayer.play();
+  }, []);
+
+  const onTogglePlayback = useCallback(async () => {
     try {
       const currentTrack = await TrackPlayer.getCurrentTrack();
 
       if (currentTrack === null || playbackState === TrackPlayer.STATE_PAUSED) {
-        await TrackPlayer.reset();
-
-        await TrackPlayer.add({
-          id: 'local-track',
-          url: 'http://audio07.viaflux.com:5511/live',
-          title: 'Pure (Demo)',
-          artist: 'David Chavez',
-          artwork:
-            'https://pbs.twimg.com/profile_images/1196855902172798979/t_xvyE-D_400x400.jpg',
-        });
-
         await TrackPlayer.play();
       } else {
         await TrackPlayer.pause();
@@ -184,22 +207,23 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     } catch (e) {
       console.log(e);
     }
-  }
+  }, [playbackState]);
 
   const onExpandPlayer = useCallback(
     (args?: PlayerState & { radioIndex: number }) => {
       if (args) {
         const { radioIndex, ...restArgs } = args;
 
+        setState(restArgs);
+        setRadioIndex(radioIndex);
+        radioIndexToScroll.current = radioIndex;
+
         if (restArgs.title === state.title) {
           albumsRef.current?.scrollToAlbum({ radioIndex, animated: false });
         } else {
           setLoading(true);
+          albumsMountedRef.current = false;
         }
-
-        setState(restArgs);
-        setRadioIndex(radioIndex);
-        radioIndexToScroll.current = radioIndex;
       }
 
       translateY.value = withTiming(SNAP_POINTS[0], {
@@ -234,7 +258,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [onCompactPlayer, translateY.value]);
 
   const onNextRadio = useCallback(() => {
-    if (radioIndex < state?.radios?.length - 1) {
+    if (radioIndex < state.radios?.length - 1) {
       const nextIndex = radioIndex + 1;
 
       albumsRef.current?.scrollToAlbum({
@@ -242,7 +266,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         animated: true,
       });
     }
-  }, [radioIndex, state?.radios?.length]);
+  }, [radioIndex, state.radios]);
 
   const onPreviousRadio = useCallback(() => {
     if (radioIndex - 1 >= 0) {
@@ -255,6 +279,25 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     }
   }, [radioIndex]);
 
+  const onSetRadioIndex = useCallback((radioIndex: number) => {
+    if (albumsMountedRef.current) {
+      console.log({ radioIndex });
+      setRadioIndex(radioIndex);
+    }
+  }, []);
+
+  const onAlbumsMounted = useCallback(() => {
+    albumsMountedRef.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (!state.radios.length || playerState !== 'expanded') {
+      return;
+    }
+
+    addRadioToTrackPlayer(state.radios[radioIndex]);
+  }, [addRadioToTrackPlayer, radioIndex, state.radios, playerState]);
+
   return (
     <View style={styles.container} pointerEvents="box-none">
       <PanGestureHandler onGestureEvent={panHandler}>
@@ -263,22 +306,24 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             y={y}
             onExpandPlayer={onExpandPlayer}
             radioIndex={radioIndex}
-            radios={state?.radios}
+            radios={state.radios}
           />
           <TopControls
             y={y}
             onCompactPlayer={onCompactPlayer}
-            title={state?.title}
+            title={state.title}
           />
 
+          {/* <Text style={styles.state}>{getStateName(playbackState)}</Text> */}
           <Albums
             ref={albumsRef}
             y={y}
-            radios={state?.radios}
-            setRadioIndex={setRadioIndex}
+            radios={state.radios}
+            setRadioIndex={onSetRadioIndex}
             radioIndexToScroll={radioIndexToScroll.current}
             loading={loading}
             setLoading={setLoading}
+            onAlbumsMounted={onAlbumsMounted}
           />
 
           <View
@@ -286,11 +331,13 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
           //   console.log(nativeEvent.layout.height)
           // }
           >
-            <Artist y={y} radioIndex={radioIndex} radios={state?.radios} />
+            <Artist y={y} radioIndex={radioIndex} radios={state.radios} />
             <BottomControls
               y={y}
               onNextRadio={onNextRadio}
               onPreviousRadio={onPreviousRadio}
+              onTogglePlayback={onTogglePlayback}
+              playbackState={playbackState}
             />
           </View>
         </Animated.View>
@@ -298,32 +345,5 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     </View>
   );
 };
-
-function getStateName(state) {
-  switch (state) {
-    case TrackPlayer.STATE_NONE:
-      return 'None';
-    case TrackPlayer.STATE_PLAYING:
-      return 'Playing';
-    case TrackPlayer.STATE_PAUSED:
-      return 'Paused';
-    case TrackPlayer.STATE_STOPPED:
-      return 'Stopped';
-    case TrackPlayer.STATE_BUFFERING:
-      return 'Buffering';
-  }
-}
-
-async function skipToNext() {
-  try {
-    await TrackPlayer.skipToNext();
-  } catch (_) {}
-}
-
-async function skipToPrevious() {
-  try {
-    await TrackPlayer.skipToPrevious();
-  } catch (_) {}
-}
 
 export default forwardRef(Player);

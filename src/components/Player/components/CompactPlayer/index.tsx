@@ -39,6 +39,17 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
     };
   });
 
+  const styleBackground = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        y.value,
+        [SNAP_POINTS[1] * 0.99, SNAP_POINTS[1]],
+        [0, 1],
+        Extrapolate.CLAMP,
+      ),
+    };
+  });
+
   const title = useMemo(() => {
     if (!radios || radioIndex === undefined) {
       return '';
@@ -56,28 +67,33 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
   }, [radios, radioIndex]);
 
   return (
-    <Animated.View style={[styles.container, style]}>
-      <RectButton style={styles.compactButton} onPress={() => onExpandPlayer()}>
-        <View style={styles.info}>
-          <Text style={[styles.title]} numberOfLines={1}>
-            {title}
-          </Text>
-          <Text style={[styles.description]}>{description}</Text>
-        </View>
+    <>
+      <Animated.View style={[styles.container, style]}>
+        <RectButton
+          style={styles.compactButton}
+          onPress={() => onExpandPlayer()}>
+          <View style={styles.info}>
+            <Text style={[styles.title]} numberOfLines={1}>
+              {title}
+            </Text>
+            <Text style={[styles.description]}>{description}</Text>
+          </View>
 
-        <View style={styles.controls}>
-          <BorderlessButton style={styles.button} onPress={() => {}}>
-            <Icon name="heart-outline" size={25} color="#900" />
-          </BorderlessButton>
-          {/* <Icon name="heart-sharp" size={22} color="#900" /> */}
+          <View style={styles.controls}>
+            <BorderlessButton style={styles.button} onPress={() => {}}>
+              <Icon name="heart-outline" size={25} color="#900" />
+            </BorderlessButton>
+            {/* <Icon name="heart-sharp" size={22} color="#900" /> */}
 
-          <BorderlessButton style={styles.button}>
-            <Icon name="play" size={25} color="#900" />
-            {/* <Icon name="stop" size={30} color="#900" /> */}
-          </BorderlessButton>
-        </View>
-      </RectButton>
-    </Animated.View>
+            <BorderlessButton style={styles.button}>
+              <Icon name="play" size={25} color="#900" />
+              {/* <Icon name="stop" size={30} color="#900" /> */}
+            </BorderlessButton>
+          </View>
+        </RectButton>
+      </Animated.View>
+      <Animated.View style={[styles.background, styleBackground]} />
+    </>
   );
 };
 

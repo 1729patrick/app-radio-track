@@ -20,7 +20,18 @@ const Home = () => {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <Radios
           title="Ouvidas recentemente"
-          radios={[radios[0]]}
+          radios={[
+            radios[0],
+            radios[31],
+            radios[32],
+            radios[33],
+            radios[34],
+            radios[35],
+            radios[37],
+            radios[38],
+            radios[39],
+            radios[40],
+          ]}
           onOpenRadio={onOpenRadio}
         />
         <Radios

@@ -7,7 +7,8 @@ export default StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
-    paddingVertical: 30,
+    paddingTop: 30,
+    paddingBottom: 60,
     // backgroundColor: 'red',
   },
 });

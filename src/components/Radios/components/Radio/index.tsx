@@ -18,10 +18,12 @@ const Radio: React.FC<{}> = ({ item, index, onOpenRadio }) => {
         />
       </TouchableOpacity>
 
-      <Text style={styles.cardTitle} numberOfLines={2}>
-        {item.artist_song}
+      <Text style={styles.cardTitle} numberOfLines={1}>
+        {item.radio_name}
       </Text>
-      <Text style={styles.cardDescription}>{item.radio_name}</Text>
+      <Text style={styles.cardDescription} numberOfLines={1}>
+        {item.title_song}
+      </Text>
     </View>
   );
 };

@@ -6,7 +6,7 @@ import styles from './styles';
 
 import Radio from './components/Radio';
 
-export type Radios = {
+export type Radio = {
   title_song: string;
   artist_song: string;
   radio_name: string;
@@ -14,7 +14,9 @@ export type Radios = {
   radio_stream: string;
   radio_logo: string;
   date: string;
-}[];
+};
+
+export type Radios = Radio[];
 
 type RadiosProps = {
   title: string;

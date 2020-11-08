@@ -15,9 +15,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#999',
     borderRadius: 33,
-    paddingLeft: 4,
+    paddingLeft: 2,
   },
-
   button: {
     width: 36,
     height: 36,

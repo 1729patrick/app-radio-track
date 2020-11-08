@@ -1,5 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { COMPACT_HEIGHT } from '../../constants';
+
+const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
@@ -9,7 +11,6 @@ export default StyleSheet.create({
     height: COMPACT_HEIGHT,
     width: '100%',
     zIndex: 1,
-    backgroundColor: '#eee',
   },
   compactButton: {
     flex: 1,
@@ -33,5 +34,12 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#00000001',
     marginHorizontal: 7,
+  },
+  background: {
+    backgroundColor: '#eee',
+    position: 'absolute',
+    width: width,
+    height: COMPACT_HEIGHT,
+    top: 0,
   },
 });
