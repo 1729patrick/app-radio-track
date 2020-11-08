@@ -46,8 +46,12 @@ const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
   return (
     <View>
       <Animated.View style={[styles.container, style]}>
-        <Text style={[styles.title]}>{title}</Text>
-        <Text style={[styles.description]}>{description}</Text>
+        <Text style={[styles.title]} numberOfLines={1}>
+          {title}
+        </Text>
+        <Text style={[styles.description]} numberOfLines={1}>
+          {description}
+        </Text>
       </Animated.View>
     </View>
   );

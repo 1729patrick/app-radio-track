@@ -49,12 +49,13 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   {},
   ref,
 ) => {
-  const opacity = useSharedValue(2);
   const translateY = useSharedValue(SNAP_POINTS[2]);
+
   const [state, setState] = useState<PlayerState>({});
   const [radioIndex, setRadioIndex] = useState<number>(0);
   const albumsRef = useRef<AlbumsHandler>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const radioIndexToScroll = useRef<number>(0);
+  const [loading, setLoading] = useState(false);
 
   const y = useDerivedValue(() => {
     return interpolate(
@@ -126,7 +127,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
           translateY: y.value,
         },
       ],
-      opacity: opacity.value,
     };
   });
 
@@ -190,14 +190,16 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     (args?: PlayerState & { radioIndex: number }) => {
       if (args) {
         const { radioIndex, ...restArgs } = args;
-        setRadioIndex(radioIndex);
-        setState(restArgs);
 
         if (restArgs.title === state.title) {
           albumsRef.current?.scrollToAlbum({ radioIndex, animated: false });
         } else {
           setLoading(true);
         }
+
+        setState(restArgs);
+        setRadioIndex(radioIndex);
+        radioIndexToScroll.current = radioIndex;
       }
 
       translateY.value = withTiming(SNAP_POINTS[0], {
@@ -254,7 +256,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} pointerEvents="box-none">
       <PanGestureHandler onGestureEvent={panHandler}>
         <Animated.View style={[styles.player, style]}>
           <CompactPlayer
@@ -274,7 +276,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             y={y}
             radios={state?.radios}
             setRadioIndex={setRadioIndex}
-            radioIndex={radioIndex}
+            radioIndexToScroll={radioIndexToScroll.current}
+            loading={loading}
+            setLoading={setLoading}
           />
 
           <View

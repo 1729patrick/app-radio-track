@@ -30,29 +30,40 @@ const Home = () => {
         />
         <Radios
           title="Descubra uma nova rádio"
-          radios={[radios[1], radios[2], radios[3], radios[4]]}
+          radios={[radios[4], radios[5], radios[6], radios[7]]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Rádios populares"
-          radios={[radios[1], radios[2], radios[3], radios[4], radios[5]]}
+          radios={[radios[8], radios[9], radios[10], radios[11], radios[12]]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Rádios recomendadas"
           radios={[
-            radios[1],
-            radios[2],
-            radios[3],
-            radios[4],
-            radios[5],
-            radios[7],
+            radios[13],
+            radios[14],
+            radios[15],
+            radios[17],
+            radios[18],
+            radios[19],
+            radios[20],
           ]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Rádios da sua região"
-          radios={radios}
+          radios={[
+            radios[21],
+            radios[22],
+            radios[23],
+            radios[24],
+            radios[25],
+            radios[27],
+            radios[28],
+            radios[29],
+            radios[30],
+          ]}
           onOpenRadio={onOpenRadio}
         />
       </ScrollView>

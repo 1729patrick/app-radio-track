@@ -16,7 +16,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
   },
   info: { justifyContent: 'center', flex: 1 },
   title: {

@@ -5,7 +5,7 @@ import React, {
   useImperativeHandle,
   useRef,
 } from 'react';
-import { View, Dimensions, Image } from 'react-native';
+import { Dimensions, View } from 'react-native';
 
 import { FlatList } from 'react-native-gesture-handler';
 import Animated, {
@@ -26,21 +26,26 @@ import {
 import { Radios } from '~/components/Radios';
 import Album from './components';
 
-type AlbumsProps = {
-  y: Animated.SharedValue<number>;
-  radioIndex?: number;
-  radios?: Radios;
-  setRadioIndex: (nextIndex: number) => void;
+type ScrollToAlbumArgs = {
+  radioIndex: number;
+  animated: boolean;
 };
 
-type ScrollToAlbumArgs = { radioIndex: number; animated: boolean };
+type AlbumsProps = {
+  y: Animated.SharedValue<number>;
+  radios?: Radios;
+  setRadioIndex: (nextIndex: number) => void;
+  radioIndexToScroll?: number;
+  loading?: boolean;
+  setLoading: () => void;
+};
 
 export type AlbumsHandler = {
   scrollToAlbum: (args: ScrollToAlbumArgs) => void;
 };
 
 const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
-  { y, radios, setRadioIndex, radioIndex },
+  { y, radios, setRadioIndex, radioIndexToScroll, loading, setLoading },
   ref,
 ) => {
   const flatListRef = useRef<FlatList<any>>(null);
@@ -86,16 +91,13 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
       animated,
     });
   };
-  useEffect(() => {
-    scrollToAlbum({ radioIndex, animated: false });
-  }, [radios]);
 
   useImperativeHandle(ref, () => ({
     scrollToAlbum,
   }));
 
   const onScrollEndDrag = () => {
-    // console.log('onScrollEndDrag');
+    console.log('onScrollEndDrag');
   };
 
   const onViewableItemsChanged = ({
@@ -103,7 +105,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   }: {
     changed: { index: number }[];
   }) => {
-    console.log('onViewableItemsChanged', changed[0].index);
+    console.log('onViewableItemsChanged');
     setRadioIndex(changed[0].index);
   };
 
@@ -116,6 +118,24 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     { viewabilityConfig, onViewableItemsChanged },
   ]);
 
+  useEffect(() => {
+    const timeoutScroll = setTimeout(() => {
+      scrollToAlbum({
+        radioIndex: radioIndexToScroll,
+        animated: false,
+      });
+    }, 50);
+
+    const timeoutLoading = setTimeout(() => {
+      setLoading(false);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutScroll);
+      clearTimeout(timeoutLoading);
+    };
+  }, [radioIndexToScroll, radios, setLoading]);
+
   const renderItem = useCallback(({ item }) => {
     return <Album item={item} />;
   }, []);
@@ -124,9 +144,15 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     <Animated.View style={[styles.container, style]}>
       <FlatList
         ref={flatListRef}
+        removeClippedSubviews
+        initialNumToRender={3}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         showsHorizontalScrollIndicator={false}
-        initialNumToRender={200}
+        getItemLayout={(data, index) => ({
+          length: width,
+          offset: width * index,
+          index,
+        })}
         decelerationRate={'fast'}
         horizontal
         snapToInterval={width}
@@ -136,6 +162,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
         keyExtractor={({ title_song }) => `${title_song}`}
         renderItem={renderItem}
       />
+      {loading && <View style={styles.loader} />}
     </Animated.View>
   );
 };

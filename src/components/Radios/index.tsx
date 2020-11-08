@@ -44,9 +44,11 @@ const Radios: React.FC<RadiosProps> = ({ title, radios, onOpenRadio }) => {
 
       <FlatList
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.contentContainer}
+        removeClippedSubviews
         initialNumToRender={3}
+        contentContainerStyle={styles.contentContainer}
         horizontal
+        showsVerticalScrollIndicator={false}
         data={radios}
         keyExtractor={({ title_song }) => `${title_song}`}
         renderItem={renderItem}

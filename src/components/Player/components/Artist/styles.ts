@@ -8,6 +8,12 @@ export default StyleSheet.create({
   title: {
     fontWeight: '900',
     fontSize: 20,
+    width: '80%',
+    textAlign: 'center',
   },
-  description: {},
+  description: {
+    marginTop: 5,
+    width: '80%',
+    textAlign: 'center',
+  },
 });
