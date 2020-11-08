@@ -62,9 +62,14 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const radioIndexToScroll = useRef<number>(0);
   const [loading, setLoading] = useState(false);
   const albumsMountedRef = useRef<boolean>(false);
+  const playerStateRef = useRef<'compact' | 'expanded' | 'closed'>('closed');
   const [playerState, setPlayerState] = useState<
-    'compact' | 'expanded' | 'closed' | ''
+    'compact' | 'expanded' | 'closed'
   >('closed');
+
+  useEffect(() => {
+    playerStateRef.current = playerState;
+  }, [playerState]);
 
   const y = useDerivedValue(() => {
     const validY = interpolate(
@@ -152,12 +157,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const playbackState = usePlaybackState();
 
   useEffect(() => {
-    TrackPlayer.addEventListener('remote-duck', async () => {
-      await TrackPlayer.pause();
-    });
-  }, [playbackState]);
-
-  useEffect(() => {
     setup();
   }, []);
 
@@ -182,15 +181,23 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const addRadioToTrackPlayer = useCallback(async (radio: Radio) => {
     // console.log({ title: radio.radio_name });
-    await TrackPlayer.reset();
 
-    await TrackPlayer.add({
+    const currentTrack = await TrackPlayer.getCurrentTrack();
+
+    const track = {
       id: radio.title_song,
       url: radio.radio_stream,
       title: radio.radio_name,
       artist: radio.title_song,
       artwork: `https://www.radioair.info/images_radios/${radio.radio_logo}`,
-    });
+    };
+
+    if (currentTrack === track.id) {
+      return;
+    }
+
+    await TrackPlayer.reset();
+    await TrackPlayer.add(track);
 
     TrackPlayer.play();
   }, []);
@@ -296,7 +303,16 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     }
 
     addRadioToTrackPlayer(state.radios[radioIndex]);
-  }, [addRadioToTrackPlayer, radioIndex, state.radios, playerState]);
+  }, [addRadioToTrackPlayer, playerState, radioIndex, state.radios]);
+
+  useEffect(() => {
+    TrackPlayer.addEventListener('remote-duck', async () => {
+      await TrackPlayer.pause();
+    });
+
+    TrackPlayer.addEventListener('remote-next', async () => {});
+    TrackPlayer.addEventListener('remote-previous', async () => {});
+  }, [playbackState]);
 
   return (
     <View style={styles.container} pointerEvents="box-none">
