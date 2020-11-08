@@ -19,6 +19,7 @@ export default StyleSheet.create({
     height: 42,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ccc',
+    backgroundColor: '#00000001',
+    borderRadius: 21,
   },
 });

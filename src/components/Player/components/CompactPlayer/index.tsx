@@ -60,11 +60,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <RectButton
-        style={styles.compactButton}
-        onPress={() => onExpandPlayer()}
-        // enabled={false}
-      >
+      <RectButton style={styles.compactButton} onPress={() => onExpandPlayer()}>
         <View style={styles.info}>
           <Text style={[styles.title]} numberOfLines={1}>
             {title}

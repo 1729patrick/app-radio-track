@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import { Image, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { BaseButton } from 'react-native-gesture-handler';
 import styles from './styles';
 
 const Radio: React.FC<{}> = ({ item, index, onOpenRadio }) => {
   return (
-    <TouchableOpacity onPress={() => onOpenRadio({ radioIndex: index })}>
+    <BaseButton onPress={() => onOpenRadio({ radioIndex: index })}>
       <View style={[styles.card]}>
         <Image
           style={styles.cardImage}
@@ -19,7 +19,7 @@ const Radio: React.FC<{}> = ({ item, index, onOpenRadio }) => {
         </Text>
         <Text style={styles.cardDescription}>{item.radio_name}</Text>
       </View>
-    </TouchableOpacity>
+    </BaseButton>
   );
 };
 

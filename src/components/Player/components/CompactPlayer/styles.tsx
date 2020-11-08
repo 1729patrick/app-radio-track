@@ -16,7 +16,6 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    // backgroundColor: '#fff',
   },
   info: { justifyContent: 'center', flex: 1 },
   title: {
@@ -30,7 +29,8 @@ export default StyleSheet.create({
     height: 42,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ccc',
+    backgroundColor: '#00000001',
+    borderRadius: 21,
     marginHorizontal: 5,
   },
 });

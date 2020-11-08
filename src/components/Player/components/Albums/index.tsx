@@ -35,9 +35,9 @@ type AlbumsProps = {
   y: Animated.SharedValue<number>;
   radios?: Radios;
   setRadioIndex: (nextIndex: number) => void;
-  radioIndexToScroll?: number;
+  radioIndexToScroll: number;
   loading?: boolean;
-  setLoading: () => void;
+  setLoading: (loading: boolean) => void;
 };
 
 export type AlbumsHandler = {
@@ -105,8 +105,10 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   }: {
     changed: { index: number }[];
   }) => {
-    console.log('onViewableItemsChanged');
-    setRadioIndex(changed[0].index);
+    if (!loading) {
+      // console.log('onViewableItemsChanged');
+      setRadioIndex(changed[0].index);
+    }
   };
 
   const viewabilityConfig = {
@@ -148,7 +150,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
         initialNumToRender={3}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         showsHorizontalScrollIndicator={false}
-        getItemLayout={(data, index) => ({
+        getItemLayout={(_, index) => ({
           length: width,
           offset: width * index,
           index,

@@ -5,14 +5,8 @@ import TrackPlayer, {
   usePlaybackState,
   useTrackPlayerEvents,
 } from 'react-native-track-player';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewPropTypes,
-} from 'react-native';
+import { Image, StyleSheet, Text, View, ViewPropTypes } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 
 function ProgressBar() {
   const progress = useTrackPlayerProgress();
@@ -32,9 +26,9 @@ function ProgressBar() {
 
 function ControlButton({ title, onPress }) {
   return (
-    <TouchableOpacity style={styles.controlButtonContainer} onPress={onPress}>
+    <RectButton style={styles.controlButtonContainer} onPress={onPress}>
       <Text style={styles.controlButtonText}>{title}</Text>
-    </TouchableOpacity>
+    </RectButton>
   );
 }
 
