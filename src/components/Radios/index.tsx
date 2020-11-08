@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Text, View } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import { PlayerState } from '../Player';
 import styles from './styles';
+
+import Radio from './components/Radio';
 
 export type Radios = {
   title_song: string;
@@ -21,6 +23,21 @@ type RadiosProps = {
 };
 
 const Radios: React.FC<RadiosProps> = ({ title, radios, onOpenRadio }) => {
+  const renderItem = useCallback(
+    ({ item, index }) => {
+      return (
+        <Radio
+          item={item}
+          index={index}
+          onOpenRadio={({ radioIndex }) =>
+            onOpenRadio({ title, radios, radioIndex })
+          }
+        />
+      );
+    },
+    [onOpenRadio, radios, title],
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -28,23 +45,11 @@ const Radios: React.FC<RadiosProps> = ({ title, radios, onOpenRadio }) => {
       <FlatList
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
-        decelerationRate={'fast'}
+        initialNumToRender={3}
         horizontal
         data={radios}
-        keyExtractor={({ radio_id }) => `${radio_id}`}
-        renderItem={({ item, index }) => {
-          return (
-            <TouchableOpacity
-              onPress={() => onOpenRadio({ title, radios, radioIndex: index })}>
-              <View style={[styles.card]}>
-                <View style={styles.cardImage} />
-
-                <Text style={styles.cardTitle}>{item.artist_song}</Text>
-                <Text style={styles.cardDescription}>{item.radio_name}</Text>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
+        keyExtractor={({ title_song }) => `${title_song}`}
+        renderItem={renderItem}
       />
     </View>
   );

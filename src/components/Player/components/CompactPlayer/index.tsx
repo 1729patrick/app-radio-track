@@ -10,7 +10,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 import { SNAP_POINTS } from '../../constants';
-import { RectButton } from 'react-native-gesture-handler';
+import {
+  RectButton,
+  TouchableNativeFeedback,
+} from 'react-native-gesture-handler';
 
 import { PlayerState } from '../../';
 import { Radios } from '~/components/Radios';
@@ -59,17 +62,22 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
     <Animated.View style={[styles.container, style]}>
       <RectButton
         style={styles.compactButton}
-        rippleColor={'transparent'}
         onPress={() => onExpandPlayer()}
         // enabled={false}
       >
         <View style={styles.info}>
-          <Text style={[styles.title]}>{title}</Text>
+          <Text style={[styles.title]} numberOfLines={1}>
+            {title}
+          </Text>
           <Text style={[styles.description]}>{description}</Text>
         </View>
 
         <View style={styles.controls}>
-          <RectButton style={styles.button}>
+          <RectButton
+            style={styles.button}
+            onPress={() => {
+              console.log('click');
+            }}>
             <Icon name="heart-outline" size={25} color="#900" />
           </RectButton>
           {/* <Icon name="heart-sharp" size={22} color="#900" /> */}

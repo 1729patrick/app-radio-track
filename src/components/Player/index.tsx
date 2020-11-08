@@ -54,6 +54,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const [state, setState] = useState<PlayerState>({});
   const [radioIndex, setRadioIndex] = useState<number>(0);
   const albumsRef = useRef<AlbumsHandler>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const y = useDerivedValue(() => {
     return interpolate(
@@ -93,7 +94,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         return;
       }
 
-      const point = value + 0.2 * velocity;
+      const point = value + 0.8 * velocity;
 
       const diffPoint = (p: number) => Math.abs(point - p);
 
@@ -187,19 +188,23 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const onExpandPlayer = useCallback(
     (args?: PlayerState & { radioIndex: number }) => {
+      if (args) {
+        const { radioIndex, ...restArgs } = args;
+        setRadioIndex(radioIndex);
+        setState(restArgs);
+
+        if (restArgs.title === state.title) {
+          albumsRef.current?.scrollToAlbum({ radioIndex, animated: false });
+        } else {
+          setLoading(true);
+        }
+      }
+
       translateY.value = withTiming(SNAP_POINTS[0], {
         duration: TIMING_DURATION,
       });
-
-      if (args) {
-        const { radioIndex, ...restArgs } = args;
-        setState(restArgs);
-        setRadioIndex(radioIndex);
-        console.log(albumsRef.current?.scrollToAlbum);
-        albumsRef.current?.scrollToAlbum({ radioIndex, animated: false });
-      }
     },
-    [translateY],
+    [state.title, translateY],
   );
 
   const onCompactPlayer = useCallback(() => {
@@ -269,6 +274,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             y={y}
             radios={state?.radios}
             setRadioIndex={setRadioIndex}
+            radioIndex={radioIndex}
           />
 
           <View

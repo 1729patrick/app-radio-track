@@ -17,7 +17,7 @@ type ArtistType = {
 
 const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
   const title = useMemo(() => {
-    if (!radios || radioIndex === undefined) {
+    if (!radios?.length || radioIndex === undefined) {
       return '';
     }
 
@@ -25,7 +25,7 @@ const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
   }, [radios, radioIndex]);
 
   const description = useMemo(() => {
-    if (!radios || radioIndex === undefined) {
+    if (!radios?.length || radioIndex === undefined) {
       return '';
     }
 

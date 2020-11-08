@@ -11,7 +11,6 @@ export default StyleSheet.create({
   playButton: {
     width: 66,
     height: 66,
-    borderRadius: 33,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#999',
@@ -21,9 +20,8 @@ export default StyleSheet.create({
   button: {
     width: 48,
     height: 48,
-    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '#00000001',
+    // backgroundColor: '#ccc',
   },
 });

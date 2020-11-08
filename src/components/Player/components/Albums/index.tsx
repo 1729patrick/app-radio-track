@@ -1,5 +1,11 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import { View, Dimensions } from 'react-native';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
+import { View, Dimensions, Image } from 'react-native';
 
 import { FlatList } from 'react-native-gesture-handler';
 import Animated, {
@@ -18,6 +24,7 @@ import {
   PADDING_HORIZONTAL,
 } from '../../constants';
 import { Radios } from '~/components/Radios';
+import Album from './components';
 
 type AlbumsProps = {
   y: Animated.SharedValue<number>;
@@ -33,7 +40,7 @@ export type AlbumsHandler = {
 };
 
 const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
-  { y, radios, setRadioIndex },
+  { y, radios, setRadioIndex, radioIndex },
   ref,
 ) => {
   const flatListRef = useRef<FlatList<any>>(null);
@@ -79,6 +86,9 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
       animated,
     });
   };
+  useEffect(() => {
+    scrollToAlbum({ radioIndex, animated: false });
+  }, [radios]);
 
   useImperativeHandle(ref, () => ({
     scrollToAlbum,
@@ -93,7 +103,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   }: {
     changed: { index: number }[];
   }) => {
-    // console.log('onViewableItemsChanged', changed[0].index);
+    console.log('onViewableItemsChanged', changed[0].index);
     setRadioIndex(changed[0].index);
   };
 
@@ -106,26 +116,25 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     { viewabilityConfig, onViewableItemsChanged },
   ]);
 
+  const renderItem = useCallback(({ item }) => {
+    return <Album item={item} />;
+  }, []);
+
   return (
     <Animated.View style={[styles.container, style]}>
       <FlatList
         ref={flatListRef}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         showsHorizontalScrollIndicator={false}
+        initialNumToRender={200}
         decelerationRate={'fast'}
         horizontal
         snapToInterval={width}
         disableIntervalMomentum
         onScrollEndDrag={onScrollEndDrag}
         data={radios}
-        keyExtractor={({ radio_id }) => `${radio_id}`}
-        renderItem={({ item }) => {
-          return (
-            <View style={[styles.card]}>
-              <View style={styles.cardImage} />
-            </View>
-          );
-        }}
+        keyExtractor={({ title_song }) => `${title_song}`}
+        renderItem={renderItem}
       />
     </Animated.View>
   );

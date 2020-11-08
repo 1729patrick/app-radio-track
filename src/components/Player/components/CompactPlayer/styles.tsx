@@ -16,8 +16,9 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
+    backgroundColor: '#fff',
   },
-  info: { justifyContent: 'center' },
+  info: { justifyContent: 'center', flex: 1 },
   title: {
     fontWeight: '900',
     fontSize: 20,
@@ -27,10 +28,9 @@ export default StyleSheet.create({
   button: {
     width: 42,
     height: 42,
-    borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '#00000001',
+    backgroundColor: '#ccc',
     marginHorizontal: 5,
   },
 });

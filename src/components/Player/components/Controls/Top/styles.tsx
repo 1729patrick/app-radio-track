@@ -17,9 +17,8 @@ export default StyleSheet.create({
   button: {
     width: 42,
     height: 42,
-    borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '#00000001',
+    backgroundColor: '#ccc',
   },
 });
