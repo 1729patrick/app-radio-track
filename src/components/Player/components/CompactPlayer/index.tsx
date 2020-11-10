@@ -6,7 +6,7 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import LottieView from 'lottie-react-native';
 import styles from './styles';
 
 import { SNAP_POINTS } from '../../constants';
@@ -20,6 +20,10 @@ type CompactPlayerType = {
   radioIndex?: number;
   radios?: Radios;
   onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
+  playing: boolean;
+  stopped: boolean;
+  buffering: boolean;
+  onTogglePlayback: () => void;
 };
 
 const CompactPlayer: React.FC<CompactPlayerType> = ({
@@ -27,6 +31,10 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
   onExpandPlayer,
   radioIndex,
   radios,
+  playing,
+  stopped,
+  buffering,
+  onTogglePlayback,
 }) => {
   const style = useAnimatedStyle(() => {
     return {
@@ -55,7 +63,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
       return '';
     }
 
-    return radios[radioIndex]?.artist_song;
+    return radios[radioIndex]?.radio_name;
   }, [radios, radioIndex]);
 
   const description = useMemo(() => {
@@ -63,7 +71,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
       return '';
     }
 
-    return radios[radioIndex]?.radio_name;
+    return radios[radioIndex]?.title_song;
   }, [radios, radioIndex]);
 
   return (
@@ -81,14 +89,41 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
 
           <View style={styles.controls}>
             <BorderlessButton style={styles.button} onPress={() => {}}>
-              <Icon name="heart-outline" size={25} color="#900" />
+              <Icon name="heart-outline" size={25} color="#444" />
             </BorderlessButton>
-            {/* <Icon name="heart-sharp" size={22} color="#900" /> */}
 
-            <BorderlessButton style={styles.button}>
-              <Icon name="play" size={25} color="#900" />
-              {/* <Icon name="stop" size={30} color="#900" /> */}
-            </BorderlessButton>
+            <View style={styles.buttonContainer}>
+              <BorderlessButton
+                style={styles.button}
+                onPress={onTogglePlayback}
+                enabled={!buffering}>
+                {stopped && (
+                  <Icon
+                    name="play"
+                    size={30}
+                    color="#444"
+                    style={styles.playButton}
+                  />
+                )}
+                {playing && (
+                  <Icon
+                    name="ios-pause-sharp"
+                    size={30}
+                    color="#444"
+                    style={styles.stopButton}
+                  />
+                )}
+              </BorderlessButton>
+              {buffering && (
+                <LottieView
+                  source={require('~/assets/loader.json')}
+                  autoPlay
+                  loop
+                  style={styles.loader}
+                  speed={1.3}
+                />
+              )}
+            </View>
           </View>
         </RectButton>
       </Animated.View>

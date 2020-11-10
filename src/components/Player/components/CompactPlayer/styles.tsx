@@ -26,14 +26,26 @@ export default StyleSheet.create({
     fontSize: 20,
   },
   description: {},
-  controls: { flexDirection: 'row' },
+  controls: { flexDirection: 'row', alignItems: 'center' },
+  buttonContainer: {
+    height: COMPACT_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   button: {
     width: 32,
     height: 32,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#00000001',
     marginHorizontal: 7,
+  },
+  playButton: { paddingLeft: 3 },
+  stopButton: { paddingLeft: 2 },
+
+  loader: {
+    position: 'absolute',
+    height: 110,
+    width: 110,
   },
   background: {
     backgroundColor: '#eee',

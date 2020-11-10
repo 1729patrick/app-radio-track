@@ -9,18 +9,34 @@ export default StyleSheet.create({
     marginTop: 30,
   },
   playButton: {
-    width: 66,
-    height: 66,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#999',
-    borderRadius: 33,
     paddingLeft: 2,
+    overflow: 'hidden',
+    flex: 1,
   },
   button: {
     width: 36,
     height: 36,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  playContainer: {
+    width: 66,
+    height: 66,
+    borderRadius: 33,
+  },
+  playBackground: {
+    // backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    position: 'absolute',
+    width: 66,
+    height: 66,
+    borderRadius: 33,
+  },
+  loader: {
+    width: 170,
+    height: 170,
+    position: 'absolute',
   },
 });

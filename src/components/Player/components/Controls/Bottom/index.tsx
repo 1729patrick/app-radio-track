@@ -7,17 +7,19 @@ import Animated, {
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
-import TrackPlayer from 'react-native-track-player';
 
 import { SNAP_POINTS } from '../../../constants';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import LottieView from 'lottie-react-native';
 
 type BottomControlsProps = {
   y: Animated.SharedValue<number>;
   onNextRadio: () => void;
   onPreviousRadio: () => void;
+  playing: boolean;
+  stopped: boolean;
+  buffering: boolean;
   onTogglePlayback: () => void;
-  playbackState: string;
 };
 
 const BottomControls: React.FC<BottomControlsProps> = ({
@@ -25,7 +27,9 @@ const BottomControls: React.FC<BottomControlsProps> = ({
   onNextRadio,
   onPreviousRadio,
   onTogglePlayback,
-  playbackState,
+  playing,
+  stopped,
+  buffering,
 }) => {
   const style = useAnimatedStyle(() => {
     return {
@@ -38,35 +42,40 @@ const BottomControls: React.FC<BottomControlsProps> = ({
     };
   });
 
-  // case TrackPlayer.STATE_PLAYING:
-  //     return 'Playing';
-  //   case TrackPlayer.STATE_PAUSED:
-  //     return 'Paused';
-  //   case TrackPlayer.STATE_STOPPED:
-  //     return 'Stopped';
-  //   case TrackPlayer.STATE_BUFFERING:
-  //     return 'Buffering';
-
   return (
     <Animated.View style={[styles.container, style]}>
       <BorderlessButton style={styles.button} onPress={onPreviousRadio}>
-        <Icon name="play-skip-back-sharp" size={30} color="#900" />
+        <Icon name="play-skip-back-sharp" size={30} color="#444" />
       </BorderlessButton>
 
-      <BorderlessButton style={styles.playButton} onPress={onTogglePlayback}>
-        {playbackState !== TrackPlayer.STATE_PLAYING && (
-          <Icon name="play" size={30} color="#900" />
-        )}
-        {playbackState === TrackPlayer.STATE_PLAYING && (
-          <Icon name="stop" size={30} color="#900" />
-        )}
-      </BorderlessButton>
+      <View style={styles.playContainer}>
+        <View style={styles.playBackground} />
+        <BorderlessButton
+          style={styles.playButton}
+          onPress={onTogglePlayback}
+          enabled={!buffering}>
+          {stopped && <Icon name="play" size={30} color="#444" />}
+          {playing && <Icon name="ios-pause-sharp" size={30} color="#444" />}
+
+          {buffering && (
+            <LottieView
+              source={require('~/assets/loader.json')}
+              autoPlay
+              loop
+              style={styles.loader}
+              speed={1.3}
+            />
+          )}
+        </BorderlessButton>
+      </View>
 
       <BorderlessButton style={styles.button} onPress={onNextRadio}>
-        <Icon name="play-skip-forward" size={30} color="#900" />
+        <Icon name="play-skip-forward" size={30} color="#444" />
       </BorderlessButton>
     </Animated.View>
   );
 };
 
 export default BottomControls;
+
+// https://lottiefiles.com/6722-loading

@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useState,
   useRef,
+  useMemo,
 } from 'react';
 import { BackHandler, Dimensions, Text, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
@@ -63,6 +64,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const [loading, setLoading] = useState(false);
   const albumsMountedRef = useRef<boolean>(false);
   const playerStateRef = useRef<'compact' | 'expanded' | 'closed'>('closed');
+  const radioIndexRef = useRef<number>(0);
   const [playerState, setPlayerState] = useState<
     'compact' | 'expanded' | 'closed'
   >('closed');
@@ -179,28 +181,45 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     });
   }, []);
 
-  const addRadioToTrackPlayer = useCallback(async (radio: Radio) => {
-    // console.log({ title: radio.radio_name });
+  const addRadioToTrackPlayer = useCallback(
+    async (radios: Radios, radioIndex: number) => {
+      const radio = radios[radioIndex];
 
-    const currentTrack = await TrackPlayer.getCurrentTrack();
+      const currentTrack = {
+        id: radio.title_song,
+        url: radio.radio_stream,
+        title: radio.radio_name,
+        artist: radio.title_song,
+        artwork: `https://www.radioair.info/images_radios/${radio.radio_logo}`,
+      };
 
-    const track = {
-      id: radio.title_song,
-      url: radio.radio_stream,
-      title: radio.radio_name,
-      artist: radio.title_song,
-      artwork: `https://www.radioair.info/images_radios/${radio.radio_logo}`,
-    };
+      const playlists = radios.reduce(
+        (acc: { before: any; after: any }, radio, index) => {
+          const track = {
+            id: radio.title_song,
+            url: radio.radio_stream,
+            title: radio.radio_name,
+            artist: radio.title_song,
+            artwork: `https://www.radioair.info/images_radios/${radio.radio_logo}`,
+          };
 
-    if (currentTrack === track.id) {
-      return;
-    }
+          return {
+            before: index < radioIndex ? [...acc.before, track] : acc.before,
+            after: index > radioIndex ? [...acc.before, track] : acc.after,
+          };
+        },
+        { before: [], after: [] },
+      );
 
-    await TrackPlayer.reset();
-    await TrackPlayer.add(track);
+      await TrackPlayer.reset();
 
-    TrackPlayer.play();
-  }, []);
+      await TrackPlayer.add(currentTrack);
+      await TrackPlayer.play();
+      await TrackPlayer.add(playlists.before, currentTrack.id);
+      await TrackPlayer.add(playlists.after);
+    },
+    [],
+  );
 
   const onTogglePlayback = useCallback(async () => {
     try {
@@ -265,6 +284,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [onCompactPlayer, translateY.value]);
 
   const onNextRadio = useCallback(() => {
+    console.log('onNextRadio');
     if (radioIndex < state.radios?.length - 1) {
       const nextIndex = radioIndex + 1;
 
@@ -288,8 +308,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const onSetRadioIndex = useCallback((radioIndex: number) => {
     if (albumsMountedRef.current) {
-      console.log({ radioIndex });
       setRadioIndex(radioIndex);
+      radioIndexRef.current = radioIndex;
     }
   }, []);
 
@@ -302,16 +322,46 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       return;
     }
 
-    addRadioToTrackPlayer(state.radios[radioIndex]);
+    addRadioToTrackPlayer(state.radios, radioIndex);
   }, [addRadioToTrackPlayer, playerState, radioIndex, state.radios]);
 
   useEffect(() => {
     TrackPlayer.addEventListener('remote-duck', async () => {
       await TrackPlayer.pause();
     });
+  }, []);
 
-    TrackPlayer.addEventListener('remote-next', async () => {});
-    TrackPlayer.addEventListener('remote-previous', async () => {});
+  useEffect(() => {
+    TrackPlayer.addEventListener('remote-next', () => {
+      console.log('remote-next');
+
+      albumsRef.current?.scrollToAlbum({
+        radioIndex: radioIndexRef.current + 1,
+        animated: true,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    TrackPlayer.addEventListener('remote-previous', () => {
+      console.log('remote-previous');
+      albumsRef.current?.scrollToAlbum({
+        radioIndex: radioIndexRef.current - 1,
+        animated: true,
+      });
+    });
+  }, []);
+
+  const playing = useMemo(() => {
+    return playbackState === TrackPlayer.STATE_PLAYING;
+  }, [playbackState]);
+
+  const stopped = useMemo(() => {
+    return playbackState !== TrackPlayer.STATE_PLAYING;
+  }, [playbackState]);
+
+  const buffering = useMemo(() => {
+    return playbackState === TrackPlayer.STATE_BUFFERING;
   }, [playbackState]);
 
   return (
@@ -323,6 +373,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             onExpandPlayer={onExpandPlayer}
             radioIndex={radioIndex}
             radios={state.radios}
+            playing={playing}
+            stopped={stopped}
+            buffering={buffering}
+            onTogglePlayback={onTogglePlayback}
           />
           <TopControls
             y={y}
@@ -353,7 +407,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               onNextRadio={onNextRadio}
               onPreviousRadio={onPreviousRadio}
               onTogglePlayback={onTogglePlayback}
-              playbackState={playbackState}
+              playing={playing}
+              stopped={stopped}
+              buffering={buffering}
             />
           </View>
         </Animated.View>

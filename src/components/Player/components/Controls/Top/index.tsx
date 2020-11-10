@@ -37,15 +37,15 @@ const TopControls: React.FC<TopControlsProps> = ({
   return (
     <Animated.View style={[styles.container, style]}>
       <BorderlessButton style={styles.button} onPress={onCompactPlayer}>
-        <Icon name="ios-chevron-down-sharp" size={25} color="#900" />
+        <Icon name="ios-chevron-down-sharp" size={25} color="#444" />
       </BorderlessButton>
 
       <Text>{title}</Text>
 
       <BorderlessButton style={styles.button}>
-        <Icon name="heart-outline" size={25} color="#900" />
+        <Icon name="heart-outline" size={25} color="#444" />
       </BorderlessButton>
-      {/* <Icon name="heart-sharp" size={22} color="#900" /> */}
+      {/* <Icon name="heart-sharp" size={22} color="#444" /> */}
     </Animated.View>
   );
 };
