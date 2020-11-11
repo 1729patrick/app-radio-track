@@ -23,7 +23,7 @@ const Home = () => {
           radios={[
             radios[0],
             radios[31],
-            radios[32],
+
             radios[33],
             radios[34],
             radios[35],
@@ -36,12 +36,19 @@ const Home = () => {
         />
         <Radios
           title="Suas rádios favoritas"
-          radios={[radios[1], radios[2], radios[3]]}
+          radios={[
+            radios[4],
+            radios[2],
+            radios[3],
+            radios[5],
+            radios[6],
+            radios[7],
+          ]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Descubra uma nova rádio"
-          radios={[radios[4], radios[5], radios[6], radios[7]]}
+          radios={[radios[32]]}
           onOpenRadio={onOpenRadio}
         />
         <Radios

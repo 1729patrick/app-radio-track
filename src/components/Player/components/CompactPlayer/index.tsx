@@ -84,7 +84,9 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
             <Text style={[styles.title]} numberOfLines={1}>
               {title}
             </Text>
-            <Text style={[styles.description]}>{description}</Text>
+            <Text style={[styles.description]} numberOfLines={1}>
+              {description}
+            </Text>
           </View>
 
           <View style={styles.controls}>

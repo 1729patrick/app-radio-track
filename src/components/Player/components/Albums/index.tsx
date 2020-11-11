@@ -36,9 +36,10 @@ type AlbumsProps = {
   y: Animated.SharedValue<number>;
   radios?: Radios;
   setRadioIndex: (nextIndex: number) => void;
-  radioIndexToScroll: number;
+  radioIndex: number;
   loading?: boolean;
   setLoading: (loading: boolean) => void;
+  onAlbumsMounted: () => void;
 };
 
 export type AlbumsHandler = {
@@ -50,7 +51,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     y,
     radios,
     setRadioIndex,
-    radioIndexToScroll,
+    radioIndex,
     loading,
     setLoading,
     onAlbumsMounted,
@@ -157,7 +158,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           ref={flatListRef}
           onLayout={() => {
             scrollToAlbum({
-              radioIndex: radioIndexToScroll,
+              radioIndex,
               animated: false,
             });
           }}
