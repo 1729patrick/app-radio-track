@@ -34,7 +34,7 @@ type ScrollToAlbumArgs = {
 
 type AlbumsProps = {
   y: Animated.SharedValue<number>;
-  radios?: Radios;
+  radios: Radios;
   setRadioIndex: (nextIndex: number) => void;
   radioIndex: number;
   loading?: boolean;
@@ -181,7 +181,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           renderItem={renderItem}
         />
       )}
-      {loading && <View style={styles.loader} />}
+      {loading && <Album item={radios[radioIndex]} />}
     </Animated.View>
   );
 };

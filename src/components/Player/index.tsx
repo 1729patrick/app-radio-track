@@ -7,9 +7,16 @@ import React, {
   useRef,
   useMemo,
 } from 'react';
-import { BackHandler, Dimensions, Text, View } from 'react-native';
+import { BackHandler, Dimensions, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import TrackPlayer, { usePlaybackState } from 'react-native-track-player';
+import TrackPlayer, {
+  //@ts-ignore
+  usePlaybackState,
+  //@ts-ignore
+  useTrackPlayerEvents,
+  //@ts-ignore
+  TrackPlayerEvents,
+} from 'react-native-track-player';
 
 import Animated, {
   useAnimatedStyle,
@@ -34,13 +41,45 @@ import { SNAP_POINTS, TIMING_DURATION } from './constants';
 import styles from './styles';
 import CompactPlayer from './components/CompactPlayer';
 
-import { Radio, Radios } from '../Radios';
-import { createIconSetFromFontello } from 'react-native-vector-icons';
+import { Radios } from '../Radios';
+
+TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
+
+const events = [
+  TrackPlayerEvents.PLAYBACK_ERROR,
+  TrackPlayerEvents.REMOTE_NEXT,
+  TrackPlayerEvents.REMOTE_PREVIOUS,
+  TrackPlayerEvents.REMOTE_DUCK,
+  TrackPlayerEvents.REMOTE_PLAY,
+];
+
+const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+};
 
 export type PlayerState = {
   title: string;
   radios: Radios;
 };
+
+function getStateName(state) {
+  switch (state) {
+    case TrackPlayer.STATE_NONE:
+      return 'None';
+    case TrackPlayer.STATE_PLAYING:
+      return 'Playing';
+    case TrackPlayer.STATE_PAUSED:
+      return 'Paused';
+    case TrackPlayer.STATE_STOPPED:
+      return 'Stopped';
+    case TrackPlayer.STATE_BUFFERING:
+      return 'Buffering';
+  }
+}
 
 export type PlayerHandler = {
   onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
@@ -54,6 +93,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   ref,
 ) => {
   const playbackState = usePlaybackState();
+  const playbackStatePrevious = usePrevious(playbackState);
 
   const translateY = useSharedValue(SNAP_POINTS[2]);
 
@@ -177,28 +217,39 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, []);
 
   const playing = useMemo(() => {
-    return playbackState === TrackPlayer.STATE_PLAYING;
-  }, [playbackState]);
+    const seeking =
+      playbackStatePrevious === TrackPlayer.STATE_PAUSED &&
+      playbackState === TrackPlayer.STATE_PLAYING;
+
+    return playbackState === TrackPlayer.STATE_PLAYING && !seeking;
+  }, [playbackState, playbackStatePrevious]);
 
   const stopped = useMemo(() => {
-    return playbackState !== TrackPlayer.STATE_PLAYING;
-  }, [playbackState]);
+    const seeking =
+      playbackStatePrevious === TrackPlayer.STATE_PAUSED &&
+      playbackState === TrackPlayer.STATE_PLAYING;
+
+    return playbackState !== TrackPlayer.STATE_PLAYING || seeking;
+  }, [playbackState, playbackStatePrevious]);
 
   const buffering = useMemo(() => {
     return playbackState === TrackPlayer.STATE_BUFFERING;
   }, [playbackState]);
+
+  const playTrackPlayer = async () => {
+    TrackPlayer.play();
+    TrackPlayer.seekTo(24 * 60 * 60);
+  };
 
   const stopTrackPlayer = () => {
     TrackPlayer.stop();
   };
 
   const nextTrackPlayer = () => {
-    // console.log('nextTrackPlayer');
     TrackPlayer.skipToNext();
   };
 
   const previousTrackPlayer = () => {
-    // console.log('previousTrackPlayer');
     TrackPlayer.skipToPrevious();
   };
 
@@ -223,6 +274,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         return;
       }
 
+      await TrackPlayer.reset();
+
+      await TrackPlayer.add(currentTrack);
+      await TrackPlayer.play();
+
       const playlists = radios.reduce(
         (acc: { before: any; after: any }, radio, index) => {
           const track = {
@@ -241,28 +297,21 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         { before: [], after: [] },
       );
 
-      await TrackPlayer.reset();
-
-      await TrackPlayer.add(currentTrack);
-      await TrackPlayer.play();
       await TrackPlayer.add(playlists.before, currentTrack.id);
       await TrackPlayer.add(playlists.after);
-
-      // console.log(await TrackPlayer.getCurrentTrack());
-      // console.log((await TrackPlayer.getQueue()).map(({ id }) => id));
     },
     [],
   );
 
   const onTogglePlayback = useCallback(async () => {
-    const currentTrack = await TrackPlayer.getCurrentTrack();
-
-    if (currentTrack === null || playbackState !== TrackPlayer.STATE_PLAYING) {
-      await TrackPlayer.play();
+    if (playbackState === TrackPlayer.STATE_STOPPED) {
+      addRadiosToTrackPlayer(state.radios, radioIndex);
+    } else if (playbackState !== TrackPlayer.STATE_PLAYING) {
+      playTrackPlayer();
     } else {
-      await TrackPlayer.pause();
+      pauseTrackPlayer();
     }
-  }, [playbackState]);
+  }, [addRadiosToTrackPlayer, playbackState, radioIndex, state.radios]);
 
   const onExpandPlayer = useCallback(
     (args?: PlayerState & { radioIndex: number }) => {
@@ -301,7 +350,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [translateY]);
 
   const onNextRadio = useCallback(() => {
-    // console.log('onNextRadio');
     if (radioIndexRef.current < radiosLengthRef.current - 1) {
       radioIndexRef.current = radioIndexRef.current + 1;
 
@@ -315,7 +363,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, []);
 
   const onPreviousRadio = useCallback(() => {
-    // console.log('onPreviousRadio');
     if (radioIndexRef.current - 1 >= 0) {
       radioIndexRef.current = radioIndexRef.current - 1;
 
@@ -345,31 +392,38 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     albumsMountedRef.current = true;
   }, []);
 
-  useEffect(() => {
-    TrackPlayer.addEventListener('remote-duck', async () => {
+  const onRemoteDuck = useCallback(
+    ({ permanent, paused }: { permanent: boolean; paused: boolean }) => {
+      if (!permanent && !paused) {
+        playTrackPlayer();
+        return;
+      }
+
       pauseTrackPlayer();
-    });
-  }, []);
+    },
+    [],
+  );
 
-  useEffect(() => {
-    TrackPlayer.addEventListener('playback-error', () => console.log('error'));
-  }, []);
+  useTrackPlayerEvents(events, ({ type, ...args }: { type: string }) => {
+    if (type === TrackPlayerEvents.PLAYBACK_ERROR) {
+      console.warn('An error occurred while playing the current track.', args);
+    }
 
-  useEffect(() => {
-    TrackPlayer.addEventListener('remote-next', () => {
-      // console.log('remote-next');
-
+    if (type === TrackPlayerEvents.REMOTE_NEXT) {
       onNextRadio();
-    });
-  }, []);
-
-  useEffect(() => {
-    TrackPlayer.addEventListener('remote-previous', () => {
-      // console.log('remote-previous');
-
+    }
+    if (type === TrackPlayerEvents.REMOTE_PREVIOUS) {
       onPreviousRadio();
-    });
-  }, []);
+    }
+
+    if (type === TrackPlayerEvents.REMOTE_DUCK) {
+      onRemoteDuck(args);
+    }
+
+    if (type === TrackPlayerEvents.REMOTE_PLAY) {
+      playTrackPlayer();
+    }
+  });
 
   useImperativeHandle(ref, () => ({
     onExpandPlayer,

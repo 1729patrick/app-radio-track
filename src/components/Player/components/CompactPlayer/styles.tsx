@@ -44,8 +44,8 @@ export default StyleSheet.create({
 
   loader: {
     position: 'absolute',
-    height: 110,
-    width: 110,
+    height: 90,
+    width: 90,
   },
   background: {
     backgroundColor: '#eee',

@@ -35,8 +35,8 @@ export default StyleSheet.create({
     borderRadius: 35,
   },
   loader: {
-    width: 182,
-    height: 182,
+    width: 180,
+    height: 180,
     position: 'absolute',
   },
 });
