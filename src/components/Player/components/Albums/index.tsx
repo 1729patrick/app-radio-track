@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions } from 'react-native';
 
 import { FlatList } from 'react-native-gesture-handler';
 import Animated, {
@@ -112,9 +112,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   }: {
     changed: { index: number }[];
   }) => {
-    if (!loading) {
-      setRadioIndex(changed[0].index);
-    }
+    setRadioIndex(changed[0].index);
   };
 
   const viewabilityConfig = {

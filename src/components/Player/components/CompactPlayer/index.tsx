@@ -14,7 +14,6 @@ import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 
 import { PlayerState } from '../../';
 import { Radios } from '~/components/Radios';
-import { play } from 'react-native-track-player';
 
 type CompactPlayerType = {
   y: Animated.SharedValue<number>;
@@ -25,7 +24,6 @@ type CompactPlayerType = {
   stopped: boolean;
   buffering: boolean;
   onTogglePlayback: () => void;
-  seeking: boolean;
 };
 
 const CompactPlayer: React.FC<CompactPlayerType> = ({
@@ -37,9 +35,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
   stopped,
   buffering,
   onTogglePlayback,
-  seeking,
 }) => {
-  // console.log(seeking);
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -103,7 +99,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 style={styles.button}
                 onPress={onTogglePlayback}
                 enabled={!buffering}>
-                {stopped && !seeking && (
+                {stopped && (
                   <Icon
                     name="play"
                     size={buffering ? 20 : 30}
@@ -111,7 +107,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                     style={styles.playButton}
                   />
                 )}
-                {(playing || seeking) && (
+                {playing && (
                   <Icon
                     name="ios-pause-sharp"
                     size={30}
@@ -120,7 +116,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                   />
                 )}
               </BorderlessButton>
-              {(buffering || seeking) && (
+              {buffering && (
                 <LottieView
                   source={require('~/assets/loader.json')}
                   autoPlay

@@ -42,6 +42,7 @@ import styles from './styles';
 import CompactPlayer from './components/CompactPlayer';
 
 import { Radios } from '../Radios';
+import usePrevious from '~/hooks/usePrevious';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -53,33 +54,10 @@ const events = [
   TrackPlayerEvents.REMOTE_PLAY,
 ];
 
-const usePrevious = (value) => {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-};
-
 export type PlayerState = {
   title: string;
   radios: Radios;
 };
-
-function getStateName(state) {
-  switch (state) {
-    case TrackPlayer.STATE_NONE:
-      return 'None';
-    case TrackPlayer.STATE_PLAYING:
-      return 'Playing';
-    case TrackPlayer.STATE_PAUSED:
-      return 'Paused';
-    case TrackPlayer.STATE_STOPPED:
-      return 'Stopped';
-    case TrackPlayer.STATE_BUFFERING:
-      return 'Buffering';
-  }
-}
 
 export type PlayerHandler = {
   onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
@@ -113,6 +91,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const radioIndexRef = useRef<number>(0);
   const radiosLengthRef = useRef<number>(0);
   const albumsMountedRef = useRef<boolean>(false);
+  const waitLoadCorrectRadioRef = useRef<boolean>(true);
 
   const y = useDerivedValue(() => {
     const validY = interpolate(
@@ -216,29 +195,28 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     });
   }, []);
 
-  const playing = useMemo(() => {
-    const seeking =
+  const seeking = useMemo(() => {
+    return (
       playbackStatePrevious === TrackPlayer.STATE_PAUSED &&
-      playbackState === TrackPlayer.STATE_PLAYING;
-
-    return playbackState === TrackPlayer.STATE_PLAYING && !seeking;
+      playbackState === TrackPlayer.STATE_PLAYING
+    );
   }, [playbackState, playbackStatePrevious]);
+
+  const playing = useMemo(() => {
+    return playbackState === TrackPlayer.STATE_PLAYING && !seeking;
+  }, [playbackState, seeking]);
 
   const stopped = useMemo(() => {
-    const seeking =
-      playbackStatePrevious === TrackPlayer.STATE_PAUSED &&
-      playbackState === TrackPlayer.STATE_PLAYING;
-
     return playbackState !== TrackPlayer.STATE_PLAYING || seeking;
-  }, [playbackState, playbackStatePrevious]);
+  }, [playbackState, seeking]);
 
   const buffering = useMemo(() => {
     return playbackState === TrackPlayer.STATE_BUFFERING;
   }, [playbackState]);
 
   const playTrackPlayer = async () => {
+    await TrackPlayer.seekTo(24 * 60 * 60);
     TrackPlayer.play();
-    TrackPlayer.seekTo(24 * 60 * 60);
   };
 
   const stopTrackPlayer = () => {
@@ -318,6 +296,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       if (args) {
         const { radioIndex, ...restArgs } = args;
 
+        waitLoadCorrectRadioRef.current = true;
         radioIndexRef.current = radioIndex;
         radiosLengthRef.current = restArgs.radios.length;
 
@@ -376,16 +355,20 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, []);
 
   const onSetRadioIndex = useCallback((radioIndex: number) => {
-    if (albumsMountedRef.current) {
-      if (radioIndex < radioIndexRef.current) {
-        previousTrackPlayer();
-      } else if (radioIndex > radioIndexRef.current) {
-        nextTrackPlayer();
-      }
+    if (waitLoadCorrectRadioRef.current) {
+      waitLoadCorrectRadioRef.current = radioIndexRef.current !== radioIndex;
 
-      setRadioIndex(radioIndex);
-      radioIndexRef.current = radioIndex;
+      return;
     }
+
+    if (radioIndex < radioIndexRef.current) {
+      previousTrackPlayer();
+    } else if (radioIndex > radioIndexRef.current) {
+      nextTrackPlayer();
+    }
+
+    setRadioIndex(radioIndex);
+    radioIndexRef.current = radioIndex;
   }, []);
 
   const onAlbumsMounted = useCallback(() => {
@@ -471,7 +454,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             title={state.title}
           />
 
-          {/* <Text style={styles.state}>{getStateName(playbackState)}</Text> */}
           <Albums
             ref={albumsRef}
             y={y}
