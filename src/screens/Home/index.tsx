@@ -1,19 +1,57 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Player, { PlayerHandler, PlayerState } from '~/components/Player';
+import ImageColors from 'react-native-image-colors';
 
+import { darken, getContrast } from 'polished';
 import styles from './styles';
 import Radios from '~/components/Radios';
 
 import radios from './radios';
 
 const Home = () => {
+  const [working, setWorking] = useState([]);
+
   const playerRef = useRef<PlayerHandler>(null);
 
   const onOpenRadio = (args: PlayerState) => {
     playerRef.current?.onExpandPlayer(args);
   };
+
+  const xxxx = async () => {
+    const working_ = await Promise.all(
+      [radios[4], radios[2], radios[3], radios[5], radios[6], radios[7]].map(
+        async (radio) => {
+          const radio_logo = `https://www.radioair.info/images_radios/${radio.radio_logo}`;
+
+          const colors = await ImageColors.getColors(radio_logo);
+
+          const contrastRatio1 = getContrast(
+            darken(0.2, colors.dominant),
+            '#fff',
+          );
+          const contrastRatio2 = getContrast(
+            darken(0.2, colors.dominant),
+            '#000',
+          );
+
+          console.log({ contrastRatio1, contrastRatio2 });
+          return {
+            ...radio,
+            radio_logo,
+            color: darken(0.2, colors.dominant),
+          };
+        },
+      ),
+    );
+
+    setWorking(working_);
+  };
+
+  useEffect(() => {
+    xxxx();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -36,14 +74,7 @@ const Home = () => {
         />
         <Radios
           title="Suas rádios favoritas"
-          radios={[
-            radios[4],
-            radios[2],
-            radios[3],
-            radios[5],
-            radios[6],
-            radios[7],
-          ]}
+          radios={working}
           onOpenRadio={onOpenRadio}
         />
         <Radios

@@ -14,6 +14,7 @@ export type Radio = {
   radio_stream: string;
   radio_logo: string;
   date: string;
+  color: string;
 };
 
 export type Radios = Radio[];

@@ -44,6 +44,8 @@ import CompactPlayer from './components/CompactPlayer';
 import { Radios } from '../Radios';
 import usePrevious from '~/hooks/usePrevious';
 
+import AnimatedBackground from '~/components/AnimatedBackground';
+
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
 const events = [
@@ -87,9 +89,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   >('closed');
 
   const albumsRef = useRef<AlbumsHandler>(null);
+  const animatedBackgroundRef = useRef<any>(null);
 
   const radioIndexRef = useRef<number>(0);
-  const radiosLengthRef = useRef<number>(0);
+  const radiosRef = useRef<Radios>([]);
   const albumsMountedRef = useRef<boolean>(false);
   const waitLoadCorrectRadioRef = useRef<boolean>(true);
 
@@ -244,7 +247,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         url: radio.radio_stream,
         title: radio.radio_name,
         artist: radio.title_song,
-        artwork: `https://www.radioair.info/images_radios/${radio.radio_logo}`,
+        artwork: radio.radio_logo,
       };
 
       const currentPlaying = await TrackPlayer.getCurrentTrack();
@@ -264,7 +267,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             url: radio.radio_stream,
             title: radio.radio_name,
             artist: radio.title_song,
-            artwork: `https://www.radioair.info/images_radios/${radio.radio_logo}`,
+            artwork: radio.radio_logo,
           };
 
           return {
@@ -298,7 +301,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
         waitLoadCorrectRadioRef.current = true;
         radioIndexRef.current = radioIndex;
-        radiosLengthRef.current = restArgs.radios.length;
+        radiosRef.current = restArgs.radios;
 
         setRadioIndex(radioIndex);
         setState(restArgs);
@@ -329,7 +332,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [translateY]);
 
   const onNextRadio = useCallback(() => {
-    if (radioIndexRef.current < radiosLengthRef.current - 1) {
+    if (radioIndexRef.current < radiosRef.current.length - 1) {
       radioIndexRef.current = radioIndexRef.current + 1;
 
       nextTrackPlayer();
@@ -431,56 +434,67 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [playerState]);
 
   useEffect(() => {
+    if (radiosRef.current[radioIndex]?.color) {
+      console.log('chamou', radioIndex);
+      animatedBackgroundRef.current.setColor(
+        radiosRef.current[radioIndex]?.color,
+      );
+    }
+  }, [radioIndex]);
+
+  useEffect(() => {
     setup();
   }, [setup]);
 
   return (
     <View style={styles.container} pointerEvents="box-none">
       <PanGestureHandler onGestureEvent={panHandler}>
-        <Animated.View style={[styles.player, style]}>
-          <CompactPlayer
-            y={y}
-            onExpandPlayer={onExpandPlayer}
-            radioIndex={radioIndex}
-            radios={state.radios}
-            playing={playing}
-            stopped={stopped}
-            buffering={buffering}
-            onTogglePlayback={onTogglePlayback}
-          />
-          <TopControls
-            y={y}
-            onCompactPlayer={onCompactPlayer}
-            title={state.title}
-          />
-
-          <Albums
-            ref={albumsRef}
-            y={y}
-            radios={state.radios}
-            setRadioIndex={onSetRadioIndex}
-            radioIndex={radioIndexRef.current}
-            loading={loading}
-            setLoading={setLoading}
-            onAlbumsMounted={onAlbumsMounted}
-          />
-
-          <View
-          // onLayout={({ nativeEvent }) =>
-          //   console.log(nativeEvent.layout.height)
-          // }
-          >
-            <Artist y={y} radioIndex={radioIndex} radios={state.radios} />
-            <BottomControls
+        <Animated.View style={style}>
+          <AnimatedBackground style={styles.player} ref={animatedBackgroundRef}>
+            <CompactPlayer
               y={y}
-              onNextRadio={onNextRadio}
-              onPreviousRadio={onPreviousRadio}
-              onTogglePlayback={onTogglePlayback}
+              onExpandPlayer={onExpandPlayer}
+              radioIndex={radioIndex}
+              radios={state.radios}
               playing={playing}
               stopped={stopped}
               buffering={buffering}
+              onTogglePlayback={onTogglePlayback}
             />
-          </View>
+            <TopControls
+              y={y}
+              onCompactPlayer={onCompactPlayer}
+              title={state.title}
+            />
+
+            <Albums
+              ref={albumsRef}
+              y={y}
+              radios={state.radios}
+              setRadioIndex={onSetRadioIndex}
+              radioIndex={radioIndexRef.current}
+              loading={loading}
+              setLoading={setLoading}
+              onAlbumsMounted={onAlbumsMounted}
+            />
+
+            <View
+            // onLayout={({ nativeEvent }) =>
+            //   console.log(nativeEvent.layout.height)
+            // }
+            >
+              <Artist y={y} radioIndex={radioIndex} radios={state.radios} />
+              <BottomControls
+                y={y}
+                onNextRadio={onNextRadio}
+                onPreviousRadio={onPreviousRadio}
+                onTogglePlayback={onTogglePlayback}
+                playing={playing}
+                stopped={stopped}
+                buffering={buffering}
+              />
+            </View>
+          </AnimatedBackground>
         </Animated.View>
       </PanGestureHandler>
     </View>

@@ -13,7 +13,8 @@ const Radio: React.FC<{}> = ({ item, index, onOpenRadio }) => {
         <Image
           style={styles.cardImage}
           source={{
-            uri: `https://www.radioair.info/images_radios/${item.radio_logo}`,
+            // uri: `https://www.radioair.info/images_radios/${item.radio_logo}`,
+            uri: item.radio_logo,
           }}
         />
       </TouchableOpacity>
