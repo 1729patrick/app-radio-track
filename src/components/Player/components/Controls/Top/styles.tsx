@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
+import StyleGuide from '~/utils/StyleGuide';
 import { COMPACT_HEIGHT } from '../../../constants';
 
 export default StyleSheet.create({
   container: {
-    top: 25,
+    top: 20,
     left: 0,
     position: 'absolute',
     height: COMPACT_HEIGHT,
@@ -21,6 +22,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    color: '#fff',
+    ...StyleGuide.typography.headline,
+    color: StyleGuide.palette.primary,
   },
 });

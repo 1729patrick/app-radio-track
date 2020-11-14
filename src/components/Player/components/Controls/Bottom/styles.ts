@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import StyleGuide from '~/utils/StyleGuide';
 
 export default StyleSheet.create({
   container: {
@@ -27,7 +28,7 @@ export default StyleSheet.create({
     borderRadius: 35,
   },
   playBackground: {
-    backgroundColor: '#fff',
+    backgroundColor: StyleGuide.palette.primary,
     opacity: 0.06,
     position: 'absolute',
     width: 70,
@@ -35,8 +36,8 @@ export default StyleSheet.create({
     borderRadius: 35,
   },
   loader: {
-    width: 180,
-    height: 180,
+    width: 178,
+    height: 178,
     position: 'absolute',
   },
 });

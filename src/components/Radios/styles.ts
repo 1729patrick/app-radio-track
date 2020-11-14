@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import StyleGuide from '~/utils/StyleGuide';
 
 export default StyleSheet.create({
   container: {
@@ -6,9 +7,12 @@ export default StyleSheet.create({
     marginBottom: 30,
   },
   title: {
-    fontSize: 20,
+    ...StyleGuide.typography.title1,
     paddingLeft: 15,
-    color: '#fff',
+    color: StyleGuide.palette.primary,
   },
-  contentContainer: { paddingHorizontal: 5, marginTop: 10 },
+  contentContainer: {
+    paddingHorizontal: 5,
+    marginTop: 15,
+  },
 });

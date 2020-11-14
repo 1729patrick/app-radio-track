@@ -14,6 +14,7 @@ import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 
 import { PlayerState } from '../../';
 import { Radios } from '~/components/Radios';
+import StyleGuide from '~/utils/StyleGuide';
 
 type CompactPlayerType = {
   y: Animated.SharedValue<number>;
@@ -91,15 +92,19 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
 
           <View style={styles.controls}>
             <BorderlessButton
-              rippleColor="#fff"
+              rippleColor={StyleGuide.palette.primary}
               style={styles.button}
               onPress={() => {}}>
-              <Icon name="heart-outline" size={25} color="#fff" />
+              <Icon
+                name="heart-outline"
+                size={25}
+                color={StyleGuide.palette.primary}
+              />
             </BorderlessButton>
 
             <View style={styles.buttonContainer}>
               <BorderlessButton
-                rippleColor="#fff"
+                rippleColor={StyleGuide.palette.primary}
                 style={styles.button}
                 onPress={onTogglePlayback}
                 enabled={!buffering}>
@@ -107,7 +112,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                   <Icon
                     name="play"
                     size={buffering ? 20 : 30}
-                    color="#fff"
+                    color={StyleGuide.palette.primary}
                     style={styles.playButton}
                   />
                 )}
@@ -115,7 +120,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                   <Icon
                     name="ios-pause-sharp"
                     size={30}
-                    color="#fff"
+                    color={StyleGuide.palette.primary}
                     style={styles.stopButton}
                   />
                 )}

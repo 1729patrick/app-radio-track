@@ -11,6 +11,7 @@ import styles from './styles';
 import { SNAP_POINTS } from '../../../constants';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
+import StyleGuide from '~/utils/StyleGuide';
 
 type BottomControlsProps = {
   y: Animated.SharedValue<number>;
@@ -44,18 +45,34 @@ const BottomControls: React.FC<BottomControlsProps> = ({
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <BorderlessButton rippleColor="#fff" style={styles.button} onPress={onPreviousRadio}>
-        <Icon name="play-skip-back-sharp" size={30} color="#fff" />
+      <BorderlessButton
+        rippleColor={StyleGuide.palette.primary}
+        style={styles.button}
+        onPress={onPreviousRadio}>
+        <Icon
+          name="play-skip-back-sharp"
+          size={30}
+          color={StyleGuide.palette.primary}
+        />
       </BorderlessButton>
 
       <View style={styles.playContainer}>
         <View style={styles.playBackground} />
-        <BorderlessButton rippleColor="#fff"
+        <BorderlessButton
+          rippleColor={StyleGuide.palette.primary}
           style={styles.playButton}
           onPress={onTogglePlayback}
           enabled={!buffering}>
-          {stopped && <Icon name="play" size={30} color="#fff" />}
-          {playing && <Icon name="ios-pause-sharp" size={30} color="#fff" />}
+          {stopped && (
+            <Icon name="play" size={30} color={StyleGuide.palette.primary} />
+          )}
+          {playing && (
+            <Icon
+              name="ios-pause-sharp"
+              size={30}
+              color={StyleGuide.palette.primary}
+            />
+          )}
 
           {buffering && (
             <LottieView
@@ -69,8 +86,15 @@ const BottomControls: React.FC<BottomControlsProps> = ({
         </BorderlessButton>
       </View>
 
-      <BorderlessButton rippleColor="#fff" style={styles.button} onPress={onNextRadio}>
-        <Icon name="play-skip-forward" size={30} color="#fff" />
+      <BorderlessButton
+        rippleColor={StyleGuide.palette.primary}
+        style={styles.button}
+        onPress={onNextRadio}>
+        <Icon
+          name="play-skip-forward"
+          size={30}
+          color={StyleGuide.palette.primary}
+        />
       </BorderlessButton>
     </Animated.View>
   );

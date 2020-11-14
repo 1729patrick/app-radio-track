@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import StyleGuide from '~/utils/StyleGuide';
 import { CARD_SIZE } from '../../constants';
 
 export default StyleSheet.create({
@@ -13,11 +14,12 @@ export default StyleSheet.create({
     backgroundColor: '#232323',
   },
   cardTitle: {
+    ...StyleGuide.typography.headline,
+    color: StyleGuide.palette.primary,
     marginTop: 5,
-    fontSize: 19,
-    color: '#fff',
   },
   cardDescription: {
-    color: '#fff',
+    ...StyleGuide.typography.subhead,
+    color: StyleGuide.palette.secondary,
   },
 });

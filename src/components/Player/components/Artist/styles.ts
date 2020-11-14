@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import StyleGuide from '~/utils/StyleGuide';
 
 export default StyleSheet.create({
   container: {
@@ -6,16 +7,16 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontWeight: '900',
-    fontSize: 20,
+    ...StyleGuide.typography.title2,
+    color: StyleGuide.palette.primary,
     width: '80%',
     textAlign: 'center',
-    color: '#fff',
   },
   description: {
     marginTop: 5,
     width: '80%',
     textAlign: 'center',
-    color: '#fff',
+    ...StyleGuide.typography.title3,
+    color: StyleGuide.palette.secondary,
   },
 });

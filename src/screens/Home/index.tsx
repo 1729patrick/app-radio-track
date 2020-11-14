@@ -8,7 +8,7 @@ import styles from './styles';
 import Radios from '~/components/Radios';
 
 import radios, { playlist } from './radios';
-import { colors, getSimilar } from '~/utils/colors';
+import { colors, getSimilar } from '~/utils/Colors';
 
 const Home = () => {
   const [working, setWorking] = useState([]);

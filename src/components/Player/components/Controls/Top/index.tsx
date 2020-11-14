@@ -36,7 +36,10 @@ const TopControls: React.FC<TopControlsProps> = ({
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <BorderlessButton rippleColor="#fff" style={styles.button} onPress={onCompactPlayer}>
+      <BorderlessButton
+        rippleColor="#fff"
+        style={styles.button}
+        onPress={onCompactPlayer}>
         <Icon name="ios-chevron-down-sharp" size={25} color="#fff" />
       </BorderlessButton>
 

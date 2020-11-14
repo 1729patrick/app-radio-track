@@ -8,7 +8,7 @@ const Radio: React.FC<{}> = ({ item, index, onOpenRadio }) => {
       <TouchableOpacity
         onPress={() => onOpenRadio({ radioIndex: index })}
         hitSlop={{ top: 0, bottom: 500, left: 0, right: 0 }}
-        activeOpacity={0.5}
+        activeOpacity={0.4}
         style={{ zIndex: 1 }}>
         <Image
           style={styles.cardImage}

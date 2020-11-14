@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
+import StyleGuide from '~/utils/StyleGuide';
 import { COMPACT_HEIGHT } from '../../constants';
 
 const { width } = Dimensions.get('window');
@@ -22,12 +23,12 @@ export default StyleSheet.create({
   },
   info: { justifyContent: 'center', flex: 1 },
   title: {
-    fontWeight: '900',
-    fontSize: 20,
-    color: '#fff',
+    ...StyleGuide.typography.headline,
+    color: StyleGuide.palette.primary,
   },
   description: {
-    color: '#fff',
+    ...StyleGuide.typography.subhead,
+    color: StyleGuide.palette.secondary,
   },
   controls: { flexDirection: 'row', alignItems: 'center' },
   buttonContainer: {
@@ -50,7 +51,7 @@ export default StyleSheet.create({
     width: 90,
   },
   background: {
-    backgroundColor: '#232323',
+    backgroundColor: StyleGuide.palette.backgroundPrimary,
     position: 'absolute',
     width: width,
     height: COMPACT_HEIGHT,
