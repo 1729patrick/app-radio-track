@@ -8,6 +8,7 @@ export default StyleSheet.create({
   title: {
     fontSize: 20,
     paddingLeft: 15,
+    color: '#fff',
   },
   contentContainer: { paddingHorizontal: 5, marginTop: 10 },
 });

@@ -10,11 +10,11 @@ export default StyleSheet.create({
   loader: {
     width: width - 40,
     height: width - 40,
-    backgroundColor: 'black',
+    backgroundColor: '#fff',
     padding: 20,
     left: 20,
     top: 20,
-    borderRadius: 4,
+    borderRadius: 6,
     position: 'absolute',
   },
 });

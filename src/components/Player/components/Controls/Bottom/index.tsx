@@ -44,18 +44,18 @@ const BottomControls: React.FC<BottomControlsProps> = ({
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <BorderlessButton style={styles.button} onPress={onPreviousRadio}>
-        <Icon name="play-skip-back-sharp" size={30} color="#444" />
+      <BorderlessButton rippleColor="#fff" style={styles.button} onPress={onPreviousRadio}>
+        <Icon name="play-skip-back-sharp" size={30} color="#fff" />
       </BorderlessButton>
 
       <View style={styles.playContainer}>
         <View style={styles.playBackground} />
-        <BorderlessButton
+        <BorderlessButton rippleColor="#fff"
           style={styles.playButton}
           onPress={onTogglePlayback}
           enabled={!buffering}>
-          {stopped && <Icon name="play" size={30} color="#444" />}
-          {playing && <Icon name="ios-pause-sharp" size={30} color="#444" />}
+          {stopped && <Icon name="play" size={30} color="#fff" />}
+          {playing && <Icon name="ios-pause-sharp" size={30} color="#fff" />}
 
           {buffering && (
             <LottieView
@@ -69,8 +69,8 @@ const BottomControls: React.FC<BottomControlsProps> = ({
         </BorderlessButton>
       </View>
 
-      <BorderlessButton style={styles.button} onPress={onNextRadio}>
-        <Icon name="play-skip-forward" size={30} color="#444" />
+      <BorderlessButton rippleColor="#fff" style={styles.button} onPress={onNextRadio}>
+        <Icon name="play-skip-forward" size={30} color="#fff" />
       </BorderlessButton>
     </Animated.View>
   );

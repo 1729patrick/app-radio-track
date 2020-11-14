@@ -1,4 +1,4 @@
-export default [
+export const playlist = [
   {
     radio_id: '9427',
     artist_song: '128',
@@ -9,16 +9,16 @@ export default [
     radio_logo: 'peperi-am.jpg',
   },
   {
-    title_song: 'Fasten seat belt',
-    artist_song: 'Space',
-    radio_name:
-      '\u0420\u0430\u0434\u0438\u043e \u0410\u043b\u044c\u0444\u0430 (radio Alfa)',
-    radio_id: '25794',
-    radio_stream: 'http://online.alfafm.ru:8000/alfa_mp3',
-    radio_logo:
-      '\u0420\u0430\u0434\u0438\u043e-\u0410\u043b\u044c\u0444\u0430-(radio-alfa).jpg',
-    date: '2020-11-03 00:56:39',
+    title_song: 'In your eyes',
+    artist_song: 'The weeknd',
+    radio_name: '40 Principales 93.9 FM',
+    radio_id: '14342',
+    radio_stream:
+      'http://playerservices.streamtheworld.com/api/livestream-redirect/LOS40.mp3\r',
+    radio_logo: '40-principales-93-9-fm.jpg',
+    date: '2020-11-03 00:53:25',
   },
+
   {
     title_song: 'My way soon',
     artist_song: 'Greta van fleet',
@@ -37,16 +37,7 @@ export default [
     radio_logo: 'eldoradio.jpg',
     date: '2020-11-03 00:54:02',
   },
-  {
-    title_song: 'In your eyes',
-    artist_song: 'The weeknd',
-    radio_name: '40 Principales 93.9 FM',
-    radio_id: '14342',
-    radio_stream:
-      'http://playerservices.streamtheworld.com/api/livestream-redirect/LOS40.mp3\r',
-    radio_logo: '40-principales-93-9-fm.jpg',
-    date: '2020-11-03 00:53:25',
-  },
+
   {
     title_song: 'Mi religi\u00f3n',
     artist_song: 'Nil moliner',
@@ -77,6 +68,9 @@ export default [
     radio_logo: 'cadena-100.jpg',
     date: '2020-11-03 00:53:16',
   },
+];
+
+export default [
   {
     title_song: 'Einfeld',
     artist_song: 'Ulrich schnauss',
@@ -95,24 +89,35 @@ export default [
     radio_logo: '100-xr-rock-radio.jpg',
     date: '2020-11-03 00:52:03',
   },
+  // {
+  //   title_song: 'Dime porque te vais',
+  //   artist_song: 'Kamaleon / lyana',
+  //   radio_name: 'Kiss Fm',
+  //   radio_id: '0',
+  //   radio_stream: '',
+  //   radio_logo: 'kiss-fm.jpg',
+  //   date: '2020-11-03 00:51:14',
+  // },
   {
-    title_song: 'Dime porque te vais',
-    artist_song: 'Kamaleon / lyana',
-    radio_name: 'Kiss Fm',
-    radio_id: '0',
-    radio_stream: '',
-    radio_logo: 'kiss-fm.jpg',
-    date: '2020-11-03 00:51:14',
+    title_song: 'Fasten seat belt',
+    artist_song: 'Space',
+    radio_name:
+      '\u0420\u0430\u0434\u0438\u043e \u0410\u043b\u044c\u0444\u0430 (radio Alfa)',
+    radio_id: '25794',
+    radio_stream: 'http://online.alfafm.ru:8000/alfa_mp3',
+    radio_logo:
+      '\u0420\u0430\u0434\u0438\u043e-\u0410\u043b\u044c\u0444\u0430-(radio-alfa).jpg',
+    date: '2020-11-03 00:56:39',
   },
-  {
-    title_song: 'Cooler than me',
-    artist_song: 'Lucky luke',
-    radio_name: 'Kiss Fm',
-    radio_id: '0',
-    radio_stream: '',
-    radio_logo: 'kiss-fm.jpg',
-    date: '2020-11-03 00:51:06',
-  },
+  // {
+  //   title_song: 'Cooler than me',
+  //   artist_song: 'Lucky luke',
+  //   radio_name: 'Kiss Fm',
+  //   radio_id: '0',
+  //   radio_stream: '',
+  //   radio_logo: 'kiss-fm.jpg',
+  //   date: '2020-11-03 00:51:06',
+  // },
   {
     title_song: 'Wtf (feat. amber van day)',
     artist_song: 'Hugel',

@@ -90,12 +90,16 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
           </View>
 
           <View style={styles.controls}>
-            <BorderlessButton style={styles.button} onPress={() => {}}>
-              <Icon name="heart-outline" size={25} color="#444" />
+            <BorderlessButton
+              rippleColor="#fff"
+              style={styles.button}
+              onPress={() => {}}>
+              <Icon name="heart-outline" size={25} color="#fff" />
             </BorderlessButton>
 
             <View style={styles.buttonContainer}>
               <BorderlessButton
+                rippleColor="#fff"
                 style={styles.button}
                 onPress={onTogglePlayback}
                 enabled={!buffering}>
@@ -103,7 +107,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                   <Icon
                     name="play"
                     size={buffering ? 20 : 30}
-                    color="#444"
+                    color="#fff"
                     style={styles.playButton}
                   />
                 )}
@@ -111,7 +115,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                   <Icon
                     name="ios-pause-sharp"
                     size={30}
-                    color="#444"
+                    color="#fff"
                     style={styles.stopButton}
                   />
                 )}

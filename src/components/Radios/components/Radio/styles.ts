@@ -10,11 +10,14 @@ export default StyleSheet.create({
     height: CARD_SIZE - 20,
     width: CARD_SIZE - 20,
     borderRadius: 4,
-    backgroundColor: '#000',
+    backgroundColor: '#232323',
   },
   cardTitle: {
     marginTop: 5,
     fontSize: 19,
+    color: '#fff',
   },
-  cardDescription: {},
+  cardDescription: {
+    color: '#fff',
+  },
 });

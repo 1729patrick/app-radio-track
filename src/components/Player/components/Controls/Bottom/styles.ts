@@ -27,8 +27,8 @@ export default StyleSheet.create({
     borderRadius: 35,
   },
   playBackground: {
-    // backgroundColor: 'rgba(255, 255, 255, 0.4)',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: '#fff',
+    opacity: 0.06,
     position: 'absolute',
     width: 70,
     height: 70,

@@ -8,7 +8,6 @@ export default StyleSheet.create({
   },
   player: {
     justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
     width,
     height,
   },

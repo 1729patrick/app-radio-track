@@ -4,36 +4,61 @@ import React, {
   forwardRef,
   useState,
   useImperativeHandle,
+  memo,
 } from 'react';
-import { Animated, View, Easing } from 'react-native';
-import usePrevious from '~/hooks/usePrevious';
+import { Animated } from 'react-native';
+import { Easing } from 'react-native-reanimated';
 
-const { Value, timing, sequence } = Animated;
+const { Value, timing } = Animated;
 
-const AnimatedBackground = ({ children, style }, ref) => {
+type OnSetColorType = {
+  color: string;
+  firstColor: boolean;
+};
+
+export type AnimatedBackgroundHandler = {
+  setColor: (args: OnSetColorType) => void;
+};
+
+type AnimatedBackgroundProps = {
+  style: object;
+  children: any;
+};
+
+const AnimatedBackground: React.ForwardRefRenderFunction<
+  AnimatedBackgroundHandler,
+  AnimatedBackgroundProps
+> = ({ children, style }, ref) => {
   const progress = useMemo(() => new Value(0), []);
 
-  const [color, setColor] = useState('#fff');
-  const prevColor = usePrevious<string>(color);
+  const [colors, setColors] = useState(['#fff', '#fff']);
+
+  const onSetColor = ({ color, firstColor }: OnSetColorType) => {
+    if (firstColor) {
+      setColors([color, color]);
+      return;
+    }
+
+    setColors([...colors, color]);
+  };
 
   useImperativeHandle(ref, () => ({
-    setColor,
+    setColor: onSetColor,
   }));
 
   useEffect(() => {
-    progress.setValue(0);
-
     timing(progress, {
-      toValue: 1,
-      duration: 1000,
+      toValue: colors.length - 1,
+      duration: 200,
+      easing: Easing.out(Easing.cubic),
       useNativeDriver: false,
     }).start();
-  }, [progress, color]);
+  }, [colors.length, progress]);
 
-  console.log([prevColor, color]);
   const backgroundColor = progress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [prevColor, color],
+    inputRange: [...new Array(colors.length)].map((_, i) => i),
+    // outputRange: ['#fff', '#523f3d'],
+    outputRange: colors,
   });
 
   return (
@@ -43,4 +68,4 @@ const AnimatedBackground = ({ children, style }, ref) => {
   );
 };
 
-export default forwardRef(AnimatedBackground);
+export default memo(forwardRef(AnimatedBackground));

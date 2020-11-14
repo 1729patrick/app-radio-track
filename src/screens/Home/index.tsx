@@ -1,17 +1,18 @@
-import React, { useRef, useMemo, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Player, { PlayerHandler, PlayerState } from '~/components/Player';
 import ImageColors from 'react-native-image-colors';
 
-import { darken, getContrast } from 'polished';
 import styles from './styles';
 import Radios from '~/components/Radios';
 
-import radios from './radios';
+import radios, { playlist } from './radios';
+import { colors, getSimilar } from '~/utils/colors';
 
 const Home = () => {
   const [working, setWorking] = useState([]);
+  const [rest, setRest] = useState([]);
 
   const playerRef = useRef<PlayerHandler>(null);
 
@@ -19,38 +20,67 @@ const Home = () => {
     playerRef.current?.onExpandPlayer(args);
   };
 
-  const xxxx = async () => {
+  const getWorking = async () => {
     const working_ = await Promise.all(
-      [radios[4], radios[2], radios[3], radios[5], radios[6], radios[7]].map(
-        async (radio) => {
-          const radio_logo = `https://www.radioair.info/images_radios/${radio.radio_logo}`;
+      playlist.map(async (radio) => {
+        const radio_logo = `https://www.radioair.info/images_radios/${radio.radio_logo}`;
 
-          const colors = await ImageColors.getColors(radio_logo);
+        const { vibrant, primary, background } = await ImageColors.getColors(
+          radio_logo,
+        );
+        const contrasts = colors.reduce((acc, color) => {
+          const colorImage =
+            vibrant || (primary === '#FFFFFF' ? background : primary);
 
-          const contrastRatio1 = getContrast(
-            darken(0.2, colors.dominant),
-            '#fff',
-          );
-          const contrastRatio2 = getContrast(
-            darken(0.2, colors.dominant),
-            '#000',
-          );
+          const contrast = getSimilar(color, colorImage);
+          return { ...acc, [contrast]: color };
+        }, {});
 
-          console.log({ contrastRatio1, contrastRatio2 });
-          return {
-            ...radio,
-            radio_logo,
-            color: darken(0.2, colors.dominant),
-          };
-        },
-      ),
+        const minContrast = Math.max(...Object.keys(contrasts));
+
+        const color = contrasts[minContrast];
+
+        return {
+          ...radio,
+          radio_logo,
+          color,
+        };
+      }),
     );
 
     setWorking(working_);
   };
 
+  const getRest = async () => {
+    const rest_ = await Promise.all(
+      radios.map(async (radio) => {
+        const radio_logo = `https://www.radioair.info/images_radios/${radio.radio_logo}`;
+
+        const { vibrant } = await ImageColors.getColors(radio_logo);
+
+        const contrasts = colors.reduce((acc, color) => {
+          const contrast = getSimilar(color, vibrant);
+          return { ...acc, [contrast]: color };
+        }, {});
+
+        const minContrast = Math.max(...Object.keys(contrasts));
+
+        const color = contrasts[minContrast];
+
+        return {
+          ...radio,
+          radio_logo,
+          color,
+        };
+      }),
+    );
+
+    setRest(rest_);
+  };
+
   useEffect(() => {
-    xxxx();
+    getWorking();
+    // getRest();
   }, []);
 
   return (
@@ -58,18 +88,7 @@ const Home = () => {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <Radios
           title="Ouvidas recentemente"
-          radios={[
-            radios[0],
-            radios[31],
-
-            radios[33],
-            radios[34],
-            radios[35],
-            radios[37],
-            radios[38],
-            radios[39],
-            radios[40],
-          ]}
+          radios={rest}
           onOpenRadio={onOpenRadio}
         />
         <Radios
@@ -77,12 +96,12 @@ const Home = () => {
           radios={working}
           onOpenRadio={onOpenRadio}
         />
-        <Radios
+        {/* <Radios
           title="Descubra uma nova rádio"
           radios={[radios[32]]}
           onOpenRadio={onOpenRadio}
-        />
-        <Radios
+        /> */}
+        {/* <Radios
           title="Rádios populares"
           radios={[radios[8], radios[9], radios[10], radios[11], radios[12]]}
           onOpenRadio={onOpenRadio}
@@ -114,7 +133,7 @@ const Home = () => {
             radios[30],
           ]}
           onOpenRadio={onOpenRadio}
-        />
+        /> */}
       </ScrollView>
       <Player ref={playerRef} />
     </View>

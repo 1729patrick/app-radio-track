@@ -24,8 +24,11 @@ export default StyleSheet.create({
   title: {
     fontWeight: '900',
     fontSize: 20,
+    color: '#fff',
   },
-  description: {},
+  description: {
+    color: '#fff',
+  },
   controls: { flexDirection: 'row', alignItems: 'center' },
   buttonContainer: {
     height: COMPACT_HEIGHT,
@@ -41,14 +44,13 @@ export default StyleSheet.create({
   },
   playButton: { paddingLeft: 3 },
   stopButton: { paddingLeft: 2 },
-
   loader: {
     position: 'absolute',
     height: 90,
     width: 90,
   },
   background: {
-    backgroundColor: '#eee',
+    backgroundColor: '#232323',
     position: 'absolute',
     width: width,
     height: COMPACT_HEIGHT,

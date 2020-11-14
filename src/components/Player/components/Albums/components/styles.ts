@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
   cardImage: {
     height: '100%',
-    borderRadius: 4,
-    backgroundColor: '#000',
+    borderRadius: 6,
+    backgroundColor: '#fff',
   },
 });

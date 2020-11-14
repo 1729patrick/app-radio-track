@@ -7,7 +7,7 @@ import React, {
   useRef,
   useMemo,
 } from 'react';
-import { BackHandler, Dimensions, View } from 'react-native';
+import { BackHandler, Dimensions, Platform, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import TrackPlayer, {
   //@ts-ignore
@@ -44,7 +44,9 @@ import CompactPlayer from './components/CompactPlayer';
 import { Radios } from '../Radios';
 import usePrevious from '~/hooks/usePrevious';
 
-import AnimatedBackground from '~/components/AnimatedBackground';
+import AnimatedBackground, {
+  AnimatedBackgroundHandler,
+} from '~/components/AnimatedBackground';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -85,11 +87,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const [loading, setLoading] = useState(false);
   const [playerState, setPlayerState] = useState<
-    'compact' | 'expanded' | 'closed'
+    'compact' | 'expanded' | 'closed' | 'active'
   >('closed');
 
   const albumsRef = useRef<AlbumsHandler>(null);
-  const animatedBackgroundRef = useRef<any>(null);
+  const animatedBackgroundRef = useRef<AnimatedBackgroundHandler>(null);
 
   const radioIndexRef = useRef<number>(0);
   const radiosRef = useRef<Radios>([]);
@@ -110,6 +112,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       runOnJS(setPlayerState)('compact');
     } else if (validY === SNAP_POINTS[2]) {
       runOnJS(setPlayerState)('closed');
+    } else {
+      runOnJS(setPlayerState)('active');
     }
 
     return validY;
@@ -177,7 +181,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         },
       ],
     };
-  });
+  }, [y.value]);
 
   const setup = useCallback(async () => {
     await TrackPlayer.setupPlayer({});
@@ -284,6 +288,16 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     [],
   );
 
+  const setBackgroundColor = (
+    radios: Radios,
+    radioIndex: number,
+    firstColor = false,
+  ) => {
+    const { color } = radios[radioIndex];
+
+    animatedBackgroundRef.current?.setColor({ color, firstColor });
+  };
+
   const onTogglePlayback = useCallback(async () => {
     if (playbackState === TrackPlayer.STATE_STOPPED) {
       addRadiosToTrackPlayer(state.radios, radioIndex);
@@ -306,7 +320,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         setRadioIndex(radioIndex);
         setState(restArgs);
 
-        addRadiosToTrackPlayer(restArgs.radios, radioIndex);
+        setBackgroundColor(restArgs.radios, radioIndex, true);
+
+        if (Platform.OS === 'android') {
+          addRadiosToTrackPlayer(restArgs.radios, radioIndex);
+        }
 
         if (restArgs.title === state.title) {
           albumsRef.current?.scrollToAlbum({ radioIndex, animated: false });
@@ -362,6 +380,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       waitLoadCorrectRadioRef.current = radioIndexRef.current !== radioIndex;
 
       return;
+    }
+
+    if (radioIndex !== radioIndexRef.current) {
+      setBackgroundColor(radiosRef.current, radioIndex);
     }
 
     if (radioIndex < radioIndexRef.current) {
@@ -432,15 +454,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       stopTrackPlayer();
     }
   }, [playerState]);
-
-  useEffect(() => {
-    if (radiosRef.current[radioIndex]?.color) {
-      console.log('chamou', radioIndex);
-      animatedBackgroundRef.current.setColor(
-        radiosRef.current[radioIndex]?.color,
-      );
-    }
-  }, [radioIndex]);
 
   useEffect(() => {
     setup();

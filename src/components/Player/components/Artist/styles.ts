@@ -10,10 +10,12 @@ export default StyleSheet.create({
     fontSize: 20,
     width: '80%',
     textAlign: 'center',
+    color: '#fff',
   },
   description: {
     marginTop: 5,
     width: '80%',
     textAlign: 'center',
+    color: '#fff',
   },
 });
