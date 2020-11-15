@@ -1,8 +1,15 @@
 import React, { memo } from 'react';
-import { Image, Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import styles from './styles';
 
-const Radio: React.FC<{}> = ({ item, index, onOpenRadio }) => {
+import FastImage from 'react-native-fast-image';
+type RadioProps = {
+  item: any;
+  index: number;
+  onOpenRadio: (args: { radioIndex: number }) => void;
+};
+
+const Radio: React.FC<RadioProps> = ({ item, index, onOpenRadio }) => {
   return (
     <View style={[styles.card]}>
       <TouchableOpacity
@@ -10,21 +17,21 @@ const Radio: React.FC<{}> = ({ item, index, onOpenRadio }) => {
         hitSlop={{ top: 0, bottom: 500, left: 0, right: 0 }}
         activeOpacity={0.4}
         style={{ zIndex: 1 }}>
-        <Image
+        <FastImage
           style={styles.cardImage}
+          resizeMode={FastImage.resizeMode.center}
           source={{
-            // uri: `https://www.radioair.info/images_radios/${item.radio_logo}`,
-            uri: item.radio_logo,
+            uri: item.favicon,
           }}
         />
       </TouchableOpacity>
 
       <Text style={styles.cardTitle} numberOfLines={1}>
-        {item.radio_name}
+        {item.name}
       </Text>
-      <Text style={styles.cardDescription} numberOfLines={1}>
-        {item.title_song}
-      </Text>
+      {/* <Text style={styles.cardDescription} numberOfLines={1}>
+        {item.tags}
+      </Text> */}
     </View>
   );
 };

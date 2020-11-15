@@ -21,15 +21,7 @@ const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
       return '';
     }
 
-    return radios[radioIndex]?.radio_name;
-  }, [radios, radioIndex]);
-
-  const description = useMemo(() => {
-    if (!radios?.length || radioIndex === undefined) {
-      return '';
-    }
-
-    return radios[radioIndex]?.title_song;
+    return radios[radioIndex]?.name;
   }, [radios, radioIndex]);
 
   const style = useAnimatedStyle(() => {
@@ -48,9 +40,6 @@ const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
       <Animated.View style={[styles.container, style]}>
         <Text style={[styles.title]} numberOfLines={1}>
           {title}
-        </Text>
-        <Text style={[styles.description]} numberOfLines={1}>
-          {description}
         </Text>
       </Animated.View>
     </View>

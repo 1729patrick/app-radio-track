@@ -13,6 +13,6 @@ export default StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: 5,
-    marginTop: 15,
+    marginTop: 25,
   },
 });

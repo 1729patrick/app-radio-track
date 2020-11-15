@@ -230,12 +230,14 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     TrackPlayer.stop();
   };
 
-  const nextTrackPlayer = () => {
-    TrackPlayer.skipToNext();
+  const nextTrackPlayer = async () => {
+    await TrackPlayer.skipToNext();
+    TrackPlayer.play();
   };
 
-  const previousTrackPlayer = () => {
-    TrackPlayer.skipToPrevious();
+  const previousTrackPlayer = async () => {
+    await TrackPlayer.skipToPrevious();
+    TrackPlayer.play();
   };
 
   const pauseTrackPlayer = () => {
@@ -247,11 +249,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       const radio = radios[radioIndex];
 
       const currentTrack = {
-        id: radio.title_song,
-        url: radio.radio_stream,
-        title: radio.radio_name,
-        artist: radio.title_song,
-        artwork: radio.radio_logo,
+        id: radio.stationuuid,
+        url: radio.url,
+        title: radio.name,
+        artist: radio.tags,
+        artwork: radio.favicon,
+        type: radio.url.endsWith('.m3u8') ? 'hls' : 'default',
       };
 
       const currentPlaying = await TrackPlayer.getCurrentTrack();
@@ -267,11 +270,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       const playlists = radios.reduce(
         (acc: { before: any; after: any }, radio, index) => {
           const track = {
-            id: radio.title_song,
-            url: radio.radio_stream,
-            title: radio.radio_name,
-            artist: radio.title_song,
-            artwork: radio.radio_logo,
+            id: radio.stationuuid,
+            url: radio.url,
+            title: radio.name,
+            artist: radio.tags,
+            artwork: radio.favicon,
+            type: radio.url.endsWith('.m3u8') ? 'hls' : 'default',
           };
 
           return {
@@ -492,10 +496,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             />
 
             <View
-            // onLayout={({ nativeEvent }) =>
-            //   console.log(nativeEvent.layout.height)
-            // }
-            >
+              onLayout={({ nativeEvent }) =>
+                console.log(nativeEvent.layout.height)
+              }>
               <Artist y={y} radioIndex={radioIndex} radios={state.radios} />
               <BottomControls
                 y={y}

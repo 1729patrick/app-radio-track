@@ -1,15 +1,18 @@
 import React, { memo } from 'react';
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
+
+import FastImage from 'react-native-fast-image';
 
 import styles from './styles';
 
 const Album = ({ item }) => {
   return (
     <View style={[styles.card]}>
-      <Image
+      <FastImage
         style={styles.cardImage}
+        resizeMode={FastImage.resizeMode.center}
         source={{
-          uri: item.radio_logo,
+          uri: item.favicon,
         }}
       />
     </View>

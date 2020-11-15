@@ -19,6 +19,12 @@
 		2DCD954D1E0B4F2C00145EB5 /* RadioTrackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RadioTrackTests.m */; };
 		3E16C148F95BC95DC7CBA622 /* libPods-RadioTrack-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0703813FB7523C1028EA4F12 /* libPods-RadioTrack-tvOS.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		CD40EBF625603E2D00435B62 /* AirbnbCerealApp-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD40EBF025603E2D00435B62 /* AirbnbCerealApp-Book.ttf */; };
+		CD40EBF725603E2D00435B62 /* AirbnbCerealApp-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD40EBF125603E2D00435B62 /* AirbnbCerealApp-Black.ttf */; };
+		CD40EBF825603E2D00435B62 /* AirbnbCerealApp-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD40EBF225603E2D00435B62 /* AirbnbCerealApp-Light.ttf */; };
+		CD40EBF925603E2D00435B62 /* AirbnbCerealApp-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD40EBF325603E2D00435B62 /* AirbnbCerealApp-Medium.ttf */; };
+		CD40EBFA25603E2D00435B62 /* AirbnbCerealApp-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD40EBF425603E2D00435B62 /* AirbnbCerealApp-ExtraBold.ttf */; };
+		CD40EBFB25603E2D00435B62 /* AirbnbCerealApp-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD40EBF525603E2D00435B62 /* AirbnbCerealApp-Bold.ttf */; };
 		CDAABC2C2554C8D000161091 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAABC2B2554C8D000161091 /* File.swift */; };
 		D9BB4D06F5206CB210E5C2D6 /* libPods-RadioTrack-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A52D1D41C262FF941F7A4267 /* libPods-RadioTrack-tvOSTests.a */; };
 /* End PBXBuildFile section */
@@ -65,6 +71,12 @@
 		A8930CB6C7694D339AD28FFC /* Pods-RadioTrack-RadioTrackTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-RadioTrackTests.release.xcconfig"; path = "Target Support Files/Pods-RadioTrack-RadioTrackTests/Pods-RadioTrack-RadioTrackTests.release.xcconfig"; sourceTree = "<group>"; };
 		B44D63070F233D6D29BEE34B /* Pods-RadioTrack-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-tvOS.release.xcconfig"; path = "Target Support Files/Pods-RadioTrack-tvOS/Pods-RadioTrack-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		BE3962BB36BE1506DE8E2C06 /* Pods-RadioTrack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack.release.xcconfig"; path = "Target Support Files/Pods-RadioTrack/Pods-RadioTrack.release.xcconfig"; sourceTree = "<group>"; };
+		CD40EBF025603E2D00435B62 /* AirbnbCerealApp-Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AirbnbCerealApp-Book.ttf"; sourceTree = "<group>"; };
+		CD40EBF125603E2D00435B62 /* AirbnbCerealApp-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AirbnbCerealApp-Black.ttf"; sourceTree = "<group>"; };
+		CD40EBF225603E2D00435B62 /* AirbnbCerealApp-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AirbnbCerealApp-Light.ttf"; sourceTree = "<group>"; };
+		CD40EBF325603E2D00435B62 /* AirbnbCerealApp-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AirbnbCerealApp-Medium.ttf"; sourceTree = "<group>"; };
+		CD40EBF425603E2D00435B62 /* AirbnbCerealApp-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AirbnbCerealApp-ExtraBold.ttf"; sourceTree = "<group>"; };
+		CD40EBF525603E2D00435B62 /* AirbnbCerealApp-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AirbnbCerealApp-Bold.ttf"; sourceTree = "<group>"; };
 		CDAABC2B2554C8D000161091 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		EB5B529FBC7037235E842FF8 /* Pods-RadioTrack-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioTrack-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-RadioTrack-tvOSTests/Pods-RadioTrack-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -161,6 +173,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				CD40EBEF25603E1B00435B62 /* Fonts */,
 				CDAABC2B2554C8D000161091 /* File.swift */,
 				13B07FAE1A68108700A75B9A /* RadioTrack */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -183,6 +196,19 @@
 				2D02E4901E0B4A5D006451C7 /* RadioTrack-tvOSTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CD40EBEF25603E1B00435B62 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				CD40EBF125603E2D00435B62 /* AirbnbCerealApp-Black.ttf */,
+				CD40EBF525603E2D00435B62 /* AirbnbCerealApp-Bold.ttf */,
+				CD40EBF025603E2D00435B62 /* AirbnbCerealApp-Book.ttf */,
+				CD40EBF425603E2D00435B62 /* AirbnbCerealApp-ExtraBold.ttf */,
+				CD40EBF225603E2D00435B62 /* AirbnbCerealApp-Light.ttf */,
+				CD40EBF325603E2D00435B62 /* AirbnbCerealApp-Medium.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		D9526B3D3545613905483951 /* Pods */ = {
@@ -343,7 +369,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD40EBFA25603E2D00435B62 /* AirbnbCerealApp-ExtraBold.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				CD40EBF925603E2D00435B62 /* AirbnbCerealApp-Medium.ttf in Resources */,
+				CD40EBF825603E2D00435B62 /* AirbnbCerealApp-Light.ttf in Resources */,
+				CD40EBF625603E2D00435B62 /* AirbnbCerealApp-Book.ttf in Resources */,
+				CD40EBFB25603E2D00435B62 /* AirbnbCerealApp-Bold.ttf in Resources */,
+				CD40EBF725603E2D00435B62 /* AirbnbCerealApp-Black.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

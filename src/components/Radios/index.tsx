@@ -53,7 +53,7 @@ const Radios: React.FC<RadiosProps> = ({ title, radios, onOpenRadio }) => {
         horizontal
         showsVerticalScrollIndicator={false}
         data={radios}
-        keyExtractor={({ title_song }) => `${title_song}`}
+        keyExtractor={({ stationuuid }) => `${stationuuid}`}
         renderItem={renderItem}
       />
     </View>

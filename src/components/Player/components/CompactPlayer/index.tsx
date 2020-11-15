@@ -64,15 +64,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
       return '';
     }
 
-    return radios[radioIndex]?.radio_name;
-  }, [radios, radioIndex]);
-
-  const description = useMemo(() => {
-    if (!radios || radioIndex === undefined) {
-      return '';
-    }
-
-    return radios[radioIndex]?.title_song;
+    return radios[radioIndex]?.name;
   }, [radios, radioIndex]);
 
   return (
@@ -85,9 +77,9 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
             <Text style={[styles.title]} numberOfLines={1}>
               {title}
             </Text>
-            <Text style={[styles.description]} numberOfLines={1}>
+            {/* <Text style={[styles.description]} numberOfLines={1}>
               {description}
-            </Text>
+            </Text> */}
           </View>
 
           <View style={styles.controls}>

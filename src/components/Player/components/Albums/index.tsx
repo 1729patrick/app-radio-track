@@ -175,7 +175,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           snapToInterval={width}
           disableIntervalMomentum
           data={radios}
-          keyExtractor={({ title_song }) => `${title_song}`}
+          keyExtractor={({ stationuuid }) => `${stationuuid}`}
           renderItem={renderItem}
         />
       )}

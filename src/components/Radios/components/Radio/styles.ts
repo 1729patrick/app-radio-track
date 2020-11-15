@@ -16,7 +16,7 @@ export default StyleSheet.create({
   cardTitle: {
     ...StyleGuide.typography.headline,
     color: StyleGuide.palette.primary,
-    marginTop: 5,
+    marginTop: 10,
   },
   cardDescription: {
     ...StyleGuide.typography.subhead,

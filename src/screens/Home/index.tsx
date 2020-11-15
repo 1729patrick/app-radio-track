@@ -7,12 +7,12 @@ import ImageColors from 'react-native-image-colors';
 import styles from './styles';
 import Radios from '~/components/Radios';
 
-import radios, { playlist } from './radios';
+import radios from './radios';
 import { colors, getSimilar } from '~/utils/Colors';
+import stations from '~/services/stations';
 
 const Home = () => {
-  const [working, setWorking] = useState([]);
-  const [rest, setRest] = useState([]);
+  const [stations, setStations] = useState([]);
 
   const playerRef = useRef<PlayerHandler>(null);
 
@@ -21,79 +21,56 @@ const Home = () => {
   };
 
   const getWorking = async () => {
-    const working_ = await Promise.all(
-      playlist.map(async (radio) => {
-        const radio_logo = `https://www.radioair.info/images_radios/${radio.radio_logo}`;
-
-        const { vibrant, primary, background } = await ImageColors.getColors(
-          radio_logo,
-        );
-        const contrasts = colors.reduce((acc, color) => {
-          const colorImage =
-            vibrant || (primary === '#FFFFFF' ? background : primary);
-
-          const contrast = getSimilar(color, colorImage);
-          return { ...acc, [contrast]: color };
-        }, {});
-
-        const minContrast = Math.max(...Object.keys(contrasts));
-
-        const color = contrasts[minContrast];
-
-        return {
-          ...radio,
-          radio_logo,
-          color,
-        };
-      }),
-    );
-
-    setWorking(working_);
-  };
-
-  const getRest = async () => {
-    const rest_ = await Promise.all(
+    const stations = await Promise.all(
       radios.map(async (radio) => {
-        const radio_logo = `https://www.radioair.info/images_radios/${radio.radio_logo}`;
+        return { ...radio, color: colors[0] };
 
-        const { vibrant } = await ImageColors.getColors(radio_logo);
+        try {
+          const { vibrant, primary, background } = await ImageColors.getColors(
+            radio.favicon,
+            {},
+          );
 
-        const contrasts = colors.reduce((acc, color) => {
-          const contrast = getSimilar(color, vibrant);
-          return { ...acc, [contrast]: color };
-        }, {});
+          const contrasts = colors.reduce((acc, color) => {
+            const colorImage =
+              vibrant || (primary === '#FFFFFF' ? background : primary);
 
-        const minContrast = Math.max(...Object.keys(contrasts));
+            const contrast = getSimilar(color, colorImage);
+            return { ...acc, [contrast]: color };
+          }, {});
 
-        const color = contrasts[minContrast];
+          const minContrast = Math.max(...Object.keys(contrasts));
 
-        return {
-          ...radio,
-          radio_logo,
-          color,
-        };
+          const color = contrasts[minContrast];
+
+          return {
+            ...radio,
+            color,
+          };
+        } catch (err) {
+          return { ...radio, color: colors[0] };
+        }
       }),
     );
 
-    setRest(rest_);
+    setStations(stations);
   };
 
   useEffect(() => {
     getWorking();
-    // getRest();
   }, []);
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Radios
+        {/* <Radios
           title="Ouvidas recentemente"
           radios={rest}
           onOpenRadio={onOpenRadio}
-        />
+        /> */}
         <Radios
           title="Suas rádios favoritas"
-          radios={working}
+          radios={stations}
           onOpenRadio={onOpenRadio}
         />
         {/* <Radios

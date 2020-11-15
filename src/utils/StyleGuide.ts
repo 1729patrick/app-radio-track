@@ -1,9 +1,9 @@
-// AirbnbCerealLight
-// AirbnbCerealBook
-// AirbnbCerealMedium
-// AirbnbCerealBold
-// AirbnbCerealExtraBold
-// AirbnbCerealBlack
+// AirbnbCerealApp-Light
+// AirbnbCerealApp-Book
+// AirbnbCerealApp-Medium
+// AirbnbCerealApp-Bold
+// AirbnbCerealApp-ExtraBold
+// AirbnbCerealApp-Black
 
 const StyleGuide = {
   spacing: 8,
@@ -24,36 +24,36 @@ const StyleGuide = {
       lineHeight: 20,
     },
     caption: {
-      fontFamily: 'AirbnbCerealBook',
+      fontFamily: 'AirbnbCerealApp-Book',
       fontSize: 17,
       lineHeight: 22,
     },
     headline: {
       fontSize: 17,
       lineHeight: 22,
-      fontFamily: 'AirbnbCerealMedium',
+      fontFamily: 'AirbnbCerealApp-Medium',
       letterSpacing: 0.21,
     },
     subhead: {
       fontSize: 15,
       lineHeight: 20,
-      fontFamily: 'AirbnbCerealBook',
+      fontFamily: 'AirbnbCerealApp-Book',
       letterSpacing: -0.11,
     },
     title1: {
-      fontFamily: 'AirbnbCerealExtraBold',
+      fontFamily: 'AirbnbCerealApp-ExtraBold',
       fontSize: 24,
       lineHeight: 41,
       letterSpacing: 0.21,
     },
     title2: {
-      fontFamily: 'AirbnbCerealExtraBold',
+      fontFamily: 'AirbnbCerealApp-ExtraBold',
       fontSize: 20,
       lineHeight: 22,
       letterSpacing: 0.21,
     },
     title3: {
-      fontFamily: 'AirbnbCerealBook',
+      fontFamily: 'AirbnbCerealApp-Book',
       fontSize: 16,
       lineHeight: 22,
       letterSpacing: 0.21,
