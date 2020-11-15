@@ -12,6 +12,6 @@ export default StyleSheet.create({
   cardImage: {
     height: '100%',
     borderRadius: 4,
-    backgroundColor: StyleGuide.palette.backgroundPrimary,
+    backgroundColor: StyleGuide.palette.background,
   },
 });

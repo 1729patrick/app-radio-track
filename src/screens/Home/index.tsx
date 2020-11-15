@@ -1,61 +1,58 @@
 import React, { useRef, useMemo } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import Player, { PlayerHandler, PlayerState } from '~/components/Player';
 
 import styles from './styles';
 import Radios, { Radios as RadiosTpe } from '~/components/Radios';
 
-import Icon from 'react-native-vector-icons/Ionicons';
-import StyleGuide from '~/utils/StyleGuide';
 import Animated, {
-  Extrapolate,
-  interpolate,
   useAnimatedScrollHandler,
-  useAnimatedStyle,
   useSharedValue,
-  useDerivedValue,
 } from 'react-native-reanimated';
-import { HEADER_SIZE, HEADER_HEIGHT } from './constants';
 
-const Home = () => {
+import Header from '~/components/Header';
+import { HEADER_HEIGHT } from '~/components/Header/constants';
+import { colors } from '~/utils/Colors';
+
+import radios from '~/services/radios.js';
+
+type ScrollHandlerContext = {
+  upTranslateY: number;
+  downTranslateY: number;
+  upOffsetY: number;
+  downOffsetY: number;
+  startY: number;
+};
+
+const Home: React.FC = () => {
   const translateY = useSharedValue(0);
 
-  const y = useDerivedValue(() => {
-    const validY = interpolate(
-      translateY.value,
-      [-HEADER_HEIGHT, 0],
-      [-HEADER_HEIGHT, 0],
-      Extrapolate.CLAMP,
-    );
-
-    return validY;
-  }, [translateY.value]);
-
-  const scrollHandler = useAnimatedScrollHandler(
+  const scrollHandler = useAnimatedScrollHandler<ScrollHandlerContext>(
     {
-      onBeginDrag: (event, context) => {
+      onBeginDrag: (_, context) => {
         context.upTranslateY = context.upTranslateY || 0;
         context.upOffsetY = context.upOffsetY || 0;
       },
       onScroll: (event, context) => {
-        if (context.startY <= event.contentOffset.y) {
-          const y =
-            event.contentOffset.y -
-            context.downOffsetY -
-            context.downTranslateY;
+        if (context.startY < event.contentOffset.y) {
+          const offsetY = Math.max(event.contentOffset.y, 0);
+          const { downOffsetY, downTranslateY } = context;
+
+          const y = offsetY - downOffsetY - downTranslateY;
 
           context.upTranslateY = Math.min(y, HEADER_HEIGHT);
 
-          context.upOffsetY = event.contentOffset.y;
+          context.upOffsetY = offsetY;
 
           translateY.value = -context.upTranslateY;
         } else {
-          const y =
-            context.upOffsetY - event.contentOffset.y - context.upTranslateY;
+          const offsetY = Math.max(event.contentOffset.y, 0);
+          const { upOffsetY, upTranslateY } = context;
+          const y = upOffsetY - offsetY - upTranslateY;
 
           context.downTranslateY = Math.min(y, 0);
 
-          context.downOffsetY = event.contentOffset.y;
+          context.downOffsetY = offsetY;
 
           translateY.value = context.downTranslateY;
         }
@@ -66,47 +63,21 @@ const Home = () => {
     [],
   );
 
-  const stylez = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: y.value,
-        },
-      ],
-    };
-  });
-
-  const stylezz = useAnimatedStyle(() => {
-    return { opacity: interpolate(y.value, [-HEADER_SIZE, 0], [0, 1]) };
-  });
-
-  // const stations = useMemo<RadiosTpe>(() => {
-  //   return radios.map((radio) => {
-  //     return { ...radio, color: colors[0] };
-  //   });
-  // }, []);
   const stations = useMemo<RadiosTpe>(() => {
-    return [];
+    return radios.map((radio) => {
+      return { ...radio, color: colors[0] };
+    });
   }, []);
 
   const playerRef = useRef<PlayerHandler>(null);
 
-  const onOpenRadio = (args: PlayerState) => {
+  const onOpenRadio = (args: PlayerState & { radioIndex: number }) => {
     playerRef.current?.onExpandPlayer(args);
   };
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.header, stylez]}>
-        <Animated.View style={[styles.contentHeader, stylezz]}>
-          <Text style={styles.title}>Radio Track</Text>
-          <Icon
-            name="md-search-outline"
-            color={StyleGuide.palette.primary}
-            size={22}
-          />
-        </Animated.View>
-      </Animated.View>
+      <Header translateY={translateY} />
 
       <Animated.ScrollView
         contentContainerStyle={styles.contentContainer}
@@ -115,52 +86,52 @@ const Home = () => {
         showsVerticalScrollIndicator={false}>
         <Radios
           title="Ouvidas recentemente"
-          radios={stations.sort(() => 0.5 - Math.random())}
+          radios={[...stations]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Suas rádios favoritas"
-          radios={stations.sort(() => 0.5 - Math.random())}
+          radios={[...stations]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Descubra uma nova rádio"
-          radios={stations.sort(() => 0.5 - Math.random())}
+          radios={[...stations]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Rádios populares"
-          radios={stations.sort(() => 0.5 - Math.random())}
+          radios={[...stations]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Rádios recomendadas"
-          radios={stations.sort(() => 0.5 - Math.random())}
+          radios={[...stations]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Rádios da sua região"
-          radios={stations.sort(() => 0.5 - Math.random())}
+          radios={[...stations]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Rádios da sua região"
-          radios={stations.sort(() => 0.5 - Math.random())}
+          radios={[...stations]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Rádios da sua região"
-          radios={stations.sort(() => 0.5 - Math.random())}
+          radios={[...stations]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Rádios da sua região"
-          radios={stations.sort(() => 0.5 - Math.random())}
+          radios={[...stations]}
           onOpenRadio={onOpenRadio}
         />
         <Radios
           title="Rádios da sua região"
-          radios={stations.sort(() => 0.5 - Math.random())}
+          radios={[...stations]}
           onOpenRadio={onOpenRadio}
         />
       </Animated.ScrollView>

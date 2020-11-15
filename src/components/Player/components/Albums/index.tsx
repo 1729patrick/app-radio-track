@@ -38,7 +38,6 @@ type AlbumsProps = {
   setRadioIndex: (nextIndex: number) => void;
   radioIndex: number;
   loading?: boolean;
-  setLoading: (loading: boolean) => void;
   onAlbumsMounted: () => void;
 };
 
@@ -47,15 +46,7 @@ export type AlbumsHandler = {
 };
 
 const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
-  {
-    y,
-    radios,
-    setRadioIndex,
-    radioIndex,
-    loading,
-    setLoading,
-    onAlbumsMounted,
-  },
+  { y, radios, setRadioIndex, radioIndex, loading, onAlbumsMounted },
   ref,
 ) => {
   const flatListRef = useRef<FlatList<any>>(null);
@@ -132,18 +123,15 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
 
   useEffect(() => {
     if (!hiddenFlatList) {
-      const timeout = setTimeout(() => {
-        setLoading(false);
-        onAlbumsMounted();
-      }, 150);
+      const timeout = setTimeout(onAlbumsMounted, 150);
 
       return () => clearTimeout(timeout);
     }
-  }, [hiddenFlatList, onAlbumsMounted, setLoading]);
+  }, [hiddenFlatList, onAlbumsMounted]);
 
   useEffect(() => {
     setHiddenFlatList(true);
-  }, [radios, setLoading]);
+  }, [radios]);
 
   const renderItem = useCallback(({ item }) => {
     return <Album item={item} />;

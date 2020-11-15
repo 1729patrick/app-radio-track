@@ -8,7 +8,10 @@ import React, {
   useMemo,
 } from 'react';
 import { BackHandler, Dimensions, Platform, View } from 'react-native';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import {
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
 import TrackPlayer, {
   //@ts-ignore
   usePlaybackState,
@@ -61,6 +64,10 @@ const events = [
 export type PlayerState = {
   title: string;
   radios: Radios;
+};
+
+type GestureHandlerContext = {
+  startY: number;
 };
 
 export type PlayerHandler = {
@@ -119,20 +126,25 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     return validY;
   }, [translateY.value]);
 
-  const panHandler = useAnimatedGestureHandler({
+  const panHandler = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    GestureHandlerContext
+  >({
     onStart: (_, context) => {
       context.startY = translateY.value;
     },
     onActive: (event, context) => {
       translateY.value = event.translationY + context.startY;
     },
+
     onEnd: (event, context) => {
       const value = context.startY;
       const velocity = event.velocityY;
 
       if (
         velocity < 1000 &&
-        ((context.startY === SNAP_POINTS[1] && translateY.value < height * 0.5) ||
+        ((context.startY === SNAP_POINTS[1] &&
+          translateY.value < height * 0.5) ||
           context.startY === SNAP_POINTS[0])
       ) {
         if (translateY.value < height * 0.3) {
@@ -254,7 +266,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         title: radio.name,
         artist: radio.tags,
         artwork: radio.favicon,
-        type: radio.url.endsWith('.m3u8') ? 'dash' : 'dash',
+        type: radio.url.endsWith('.m3u8') ? 'hls' : undefined,
       };
 
       const currentPlaying = await TrackPlayer.getCurrentTrack();
@@ -275,7 +287,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             title: radio.name,
             artist: radio.tags,
             artwork: radio.favicon,
-            type: radio.url.endsWith('.m3u8') ? 'hls' : 'default',
+            type: radio.url.endsWith('.m3u8') ? 'hls' : undefined,
           };
 
           return {
@@ -402,6 +414,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const onAlbumsMounted = useCallback(() => {
     albumsMountedRef.current = true;
+    setLoading(false);
   }, []);
 
   const onRemoteDuck = useCallback(
@@ -416,26 +429,39 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     [],
   );
 
-  useTrackPlayerEvents(events, ({ type, ...args }: { type: string }) => {
-    if (type === TrackPlayerEvents.PLAYBACK_ERROR) {
-      console.warn('An error occurred while playing the current track.', args);
-    }
+  useTrackPlayerEvents(
+    events,
+    ({
+      type,
+      ...args
+    }: {
+      type: string;
+      permanent: boolean;
+      paused: boolean;
+    }) => {
+      if (type === TrackPlayerEvents.PLAYBACK_ERROR) {
+        console.warn(
+          'An error occurred while playing the current track.',
+          args,
+        );
+      }
 
-    if (type === TrackPlayerEvents.REMOTE_NEXT) {
-      onNextRadio();
-    }
-    if (type === TrackPlayerEvents.REMOTE_PREVIOUS) {
-      onPreviousRadio();
-    }
+      if (type === TrackPlayerEvents.REMOTE_NEXT) {
+        onNextRadio();
+      }
+      if (type === TrackPlayerEvents.REMOTE_PREVIOUS) {
+        onPreviousRadio();
+      }
 
-    if (type === TrackPlayerEvents.REMOTE_DUCK) {
-      onRemoteDuck(args);
-    }
+      if (type === TrackPlayerEvents.REMOTE_DUCK) {
+        onRemoteDuck(args);
+      }
 
-    if (type === TrackPlayerEvents.REMOTE_PLAY) {
-      playTrackPlayer();
-    }
-  });
+      if (type === TrackPlayerEvents.REMOTE_PLAY) {
+        playTrackPlayer();
+      }
+    },
+  );
 
   useImperativeHandle(ref, () => ({
     onExpandPlayer,
@@ -491,7 +517,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               setRadioIndex={onSetRadioIndex}
               radioIndex={radioIndexRef.current}
               loading={loading}
-              setLoading={setLoading}
               onAlbumsMounted={onAlbumsMounted}
             />
 

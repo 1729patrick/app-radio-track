@@ -1,3 +1,0 @@
-export const STATUS_BAR_HEIGHT = 25;
-export const HEADER_SIZE = 47;
-export const HEADER_HEIGHT = HEADER_SIZE + STATUS_BAR_HEIGHT;

@@ -20,7 +20,7 @@ export type Radios = Radio[];
 
 type RadiosProps = {
   title: string;
-  onOpenRadio: (args: PlayerState) => void;
+  onOpenRadio: (args: PlayerState & { radioIndex: number }) => void;
   radios: Radios;
 };
 

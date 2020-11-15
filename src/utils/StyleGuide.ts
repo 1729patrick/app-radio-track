@@ -22,6 +22,7 @@ const StyleGuide = {
     callout: {
       fontSize: 16,
       lineHeight: 20,
+      fontFamily: 'AirbnbCerealApp-Book',
     },
     caption: {
       fontFamily: 'AirbnbCerealApp-Book',
