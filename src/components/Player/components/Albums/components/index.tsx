@@ -2,10 +2,15 @@ import React, { memo } from 'react';
 import { View } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
+import { Radio } from '~/components/Radios';
 
 import styles from './styles';
 
-const Album = ({ item }) => {
+type AlbumsProps = {
+  item: Radio;
+};
+
+const Album: React.FC<AlbumsProps> = ({ item }) => {
   return (
     <View style={[styles.card]}>
       <FastImage

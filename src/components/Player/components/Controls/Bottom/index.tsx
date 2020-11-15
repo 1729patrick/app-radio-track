@@ -101,5 +101,3 @@ const BottomControls: React.FC<BottomControlsProps> = ({
 };
 
 export default BottomControls;
-
-// https://lottiefiles.com/6722-loading

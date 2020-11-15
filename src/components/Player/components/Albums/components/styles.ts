@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
+import StyleGuide from '~/utils/StyleGuide';
 
 const { width } = Dimensions.get('window');
 
@@ -10,7 +11,7 @@ export default StyleSheet.create({
   },
   cardImage: {
     height: '100%',
-    borderRadius: 6,
-    backgroundColor: '#232323',
+    borderRadius: 4,
+    backgroundColor: StyleGuide.palette.backgroundPrimary,
   },
 });

@@ -5,13 +5,14 @@ import { CARD_SIZE } from '../../constants';
 export default StyleSheet.create({
   card: {
     width: CARD_SIZE,
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
   },
+  button: { zIndex: 1 },
   cardImage: {
-    height: CARD_SIZE - 20,
-    width: CARD_SIZE - 20,
+    height: CARD_SIZE - 16,
+    width: CARD_SIZE - 16,
     borderRadius: 4,
-    backgroundColor: '#232323',
+    backgroundColor: StyleGuide.palette.backgroundPrimary,
   },
   cardTitle: {
     ...StyleGuide.typography.headline,

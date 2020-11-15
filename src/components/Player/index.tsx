@@ -120,20 +120,20 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [translateY.value]);
 
   const panHandler = useAnimatedGestureHandler({
-    onStart: (_, ctx) => {
-      ctx.startY = translateY.value;
+    onStart: (_, context) => {
+      context.startY = translateY.value;
     },
-    onActive: (evt, ctx) => {
-      translateY.value = evt.translationY + ctx.startY;
+    onActive: (event, context) => {
+      translateY.value = event.translationY + context.startY;
     },
-    onEnd: (evt, ctx) => {
-      const value = ctx.startY;
-      const velocity = evt.velocityY;
+    onEnd: (event, context) => {
+      const value = context.startY;
+      const velocity = event.velocityY;
 
       if (
         velocity < 1000 &&
-        ((ctx.startY === SNAP_POINTS[1] && translateY.value < height * 0.5) ||
-          ctx.startY === SNAP_POINTS[0])
+        ((context.startY === SNAP_POINTS[1] && translateY.value < height * 0.5) ||
+          context.startY === SNAP_POINTS[0])
       ) {
         if (translateY.value < height * 0.3) {
           translateY.value = withTiming(SNAP_POINTS[0], {
@@ -254,7 +254,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         title: radio.name,
         artist: radio.tags,
         artwork: radio.favicon,
-        type: radio.url.endsWith('.m3u8') ? 'hls' : 'default',
+        type: radio.url.endsWith('.m3u8') ? 'dash' : 'dash',
       };
 
       const currentPlaying = await TrackPlayer.getCurrentTrack();
@@ -496,9 +496,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             />
 
             <View
-              onLayout={({ nativeEvent }) =>
-                console.log(nativeEvent.layout.height)
-              }>
+            // onLayout={({ nativeEvent }) =>
+            //   console.log(nativeEvent.layout.height)
+            // }
+            >
               <Artist y={y} radioIndex={radioIndex} radios={state.radios} />
               <BottomControls
                 y={y}

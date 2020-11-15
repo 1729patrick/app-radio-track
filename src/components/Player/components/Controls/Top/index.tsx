@@ -11,6 +11,7 @@ import styles from './styles';
 
 import { SNAP_POINTS } from '../../../constants';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import StyleGuide from '~/utils/StyleGuide';
 
 type TopControlsProps = {
   y: Animated.SharedValue<number>;
@@ -37,18 +38,27 @@ const TopControls: React.FC<TopControlsProps> = ({
   return (
     <Animated.View style={[styles.container, style]}>
       <BorderlessButton
-        rippleColor="#fff"
+        rippleColor={StyleGuide.palette.primary}
         style={styles.button}
         onPress={onCompactPlayer}>
-        <Icon name="ios-chevron-down-sharp" size={25} color="#fff" />
+        <Icon
+          name="ios-chevron-down-sharp"
+          size={25}
+          color={StyleGuide.palette.primary}
+        />
       </BorderlessButton>
 
       <Text style={styles.title}>{title}</Text>
 
-      <BorderlessButton rippleColor="#fff" style={styles.button}>
-        <Icon name="heart-outline" size={25} color="#fff" />
+      <BorderlessButton
+        rippleColor={StyleGuide.palette.primary}
+        style={styles.button}>
+        <Icon
+          name="heart-outline"
+          size={25}
+          color={StyleGuide.palette.primary}
+        />
       </BorderlessButton>
-      {/* <Icon name="heart-sharp" size={22} color="#fff" /> */}
     </Animated.View>
   );
 };

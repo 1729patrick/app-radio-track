@@ -7,13 +7,12 @@ import styles from './styles';
 import Radio from './components/Radio';
 
 export type Radio = {
-  title_song: string;
-  artist_song: string;
-  radio_name: string;
-  radio_id: string;
-  radio_stream: string;
-  radio_logo: string;
-  date: string;
+  stationuuid: string;
+  url: string;
+  name: string;
+  title: string;
+  tags: string;
+  favicon: string;
   color: string;
 };
 

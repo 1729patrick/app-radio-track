@@ -57,7 +57,6 @@ const AnimatedBackground: React.ForwardRefRenderFunction<
 
   const backgroundColor = progress.interpolate({
     inputRange: [...new Array(colors.length)].map((_, i) => i),
-    // outputRange: ['#fff', '#523f3d'],
     outputRange: colors,
   });
 
