@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
+import { HEADER_HEIGHT, STATUS_BAR_HEIGHT } from './constants';
 
 export default StyleSheet.create({
   container: {
@@ -8,15 +9,22 @@ export default StyleSheet.create({
     backgroundColor: StyleGuide.palette.background,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'blue',
+    justifyContent: 'center',
+
+    backgroundColor: StyleGuide.palette.background,
     paddingHorizontal: StyleGuide.spacing * 2,
-    height: 55,
+    position: 'absolute',
+    height: HEADER_HEIGHT,
     top: 0,
     right: 0,
     left: 0,
+    zIndex: 1,
+    paddingTop: STATUS_BAR_HEIGHT,
+  },
+  contentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
     ...StyleGuide.typography.headline,
@@ -24,7 +32,7 @@ export default StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
-    paddingTop: 55,
+    paddingTop: 105,
     paddingBottom: 60,
   },
 });
