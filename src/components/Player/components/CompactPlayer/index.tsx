@@ -101,7 +101,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 {stopped && (
                   <Icon
                     name="play"
-                    size={buffering ? 20 : 30}
+                    size={buffering ? 20 : 27}
                     color={StyleGuide.palette.primary}
                     style={styles.playButton}
                   />
@@ -109,7 +109,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 {playing && (
                   <Icon
                     name="ios-pause-sharp"
-                    size={30}
+                    size={27}
                     color={StyleGuide.palette.primary}
                     style={styles.stopButton}
                   />

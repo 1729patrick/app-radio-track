@@ -50,6 +50,7 @@ import usePrevious from '~/hooks/usePrevious';
 import AnimatedBackground, {
   AnimatedBackgroundHandler,
 } from '~/components/AnimatedBackground';
+import { usePlayer } from '~/contexts/PlayerContext';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -81,10 +82,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   {},
   ref,
 ) => {
+  const { translateY } = usePlayer();
   const playbackState = usePlaybackState();
   const playbackStatePrevious = usePrevious(playbackState);
-
-  const translateY = useSharedValue(SNAP_POINTS[2]);
 
   const [state, setState] = useState<PlayerState>({
     title: '',

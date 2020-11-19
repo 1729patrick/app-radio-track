@@ -1,10 +1,12 @@
 import React, { useCallback } from 'react';
 import { Text, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { PlayerState } from '../Player';
 import styles from './styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import Radio from './components/Radio';
+import RoundButton from '../Button/Round';
 
 export type Radio = {
   stationuuid: string;
@@ -22,9 +24,17 @@ type RadiosProps = {
   title: string;
   onOpenPlayer: (args: PlayerState & { radioIndex: number }) => void;
   radios: Radios;
+  showAll: boolean;
+  onShowAll: (title: string) => void;
 };
 
-const Radios: React.FC<RadiosProps> = ({ title, radios, onOpenPlayer }) => {
+const Radios: React.FC<RadiosProps> = ({
+  title,
+  radios,
+  onOpenPlayer,
+  showAll,
+  onShowAll,
+}) => {
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
@@ -42,7 +52,19 @@ const Radios: React.FC<RadiosProps> = ({ title, radios, onOpenPlayer }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <View style={styles.header}>
+        <TouchableOpacity>
+          <Text style={styles.title}>{title}</Text>
+        </TouchableOpacity>
+        {showAll && (
+          <RoundButton
+            onPress={() => onShowAll(title)}
+            name={'md-arrow-forward'}
+            size={24}
+            Icon={Icon}
+          />
+        )}
+      </View>
 
       <FlatList
         showsHorizontalScrollIndicator={false}

@@ -12,7 +12,7 @@ import { HEADER_HEIGHT } from './constants';
 
 import styles from './styles';
 import { Text } from 'react-native';
-import Search from '~/screens/Search';
+import Search from '~/components/Search';
 import RoundButton from '../Button/Round';
 
 type HeaderProps = {

@@ -13,7 +13,7 @@ import radios from '~/services/radios.js';
 import { usePlayer } from '~/contexts/PlayerContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 
-const Home: React.FC = () => {
+const Explore: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
 
   const { onOpenPlayer } = usePlayer();
@@ -23,6 +23,8 @@ const Home: React.FC = () => {
       return { ...radio, color: colors[0] };
     });
   }, []);
+
+  const onShowAll = () => {};
 
   return (
     <View style={styles.container}>
@@ -34,58 +36,29 @@ const Home: React.FC = () => {
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
         <Radios
-          title="Ouvidas recentemente"
+          title="Santa Catarina"
           radios={[...stations]}
           onOpenPlayer={onOpenPlayer}
+          showAll
+          onShowAll={onShowAll}
         />
         <Radios
-          title="Suas rádios favoritas"
+          title="Rio Grande do Sul"
           radios={[...stations]}
           onOpenPlayer={onOpenPlayer}
+          showAll
+          onShowAll={onShowAll}
         />
         <Radios
-          title="Descubra uma nova rádio"
+          title="Paraná"
           radios={[...stations]}
           onOpenPlayer={onOpenPlayer}
-        />
-        <Radios
-          title="Rádios populares"
-          radios={[...stations]}
-          onOpenPlayer={onOpenPlayer}
-        />
-        <Radios
-          title="Rádios recomendadas"
-          radios={[...stations]}
-          onOpenPlayer={onOpenPlayer}
-        />
-        <Radios
-          title="Rádios da sua região"
-          radios={[...stations]}
-          onOpenPlayer={onOpenPlayer}
-        />
-        <Radios
-          title="Rádios da sua região"
-          radios={[...stations]}
-          onOpenPlayer={onOpenPlayer}
-        />
-        <Radios
-          title="Rádios da sua região"
-          radios={[...stations]}
-          onOpenPlayer={onOpenPlayer}
-        />
-        <Radios
-          title="Rádios da sua região"
-          radios={[...stations]}
-          onOpenPlayer={onOpenPlayer}
-        />
-        <Radios
-          title="Rádios da sua região"
-          radios={[...stations]}
-          onOpenPlayer={onOpenPlayer}
+          showAll
+          onShowAll={onShowAll}
         />
       </Animated.ScrollView>
     </View>
   );
 };
 
-export default Home;
+export default Explore;

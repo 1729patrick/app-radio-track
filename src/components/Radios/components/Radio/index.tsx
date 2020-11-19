@@ -15,7 +15,6 @@ const Radio: React.FC<RadioProps> = ({ item, index, onOpenPlayer }) => {
       <TouchableOpacity
         onPress={() => onOpenPlayer({ radioIndex: index })}
         hitSlop={{ top: 0, bottom: 500, left: 0, right: 0 }}
-        activeOpacity={0.4}
         style={styles.button}>
         <FastImage
           style={styles.cardImage}

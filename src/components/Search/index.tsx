@@ -1,10 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { BackHandler, Text, TextInput, View } from 'react-native';
-import {
-  BorderlessButton,
-  RectButton,
-  ScrollView,
-} from 'react-native-gesture-handler';
+import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MdIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -12,15 +8,29 @@ import RoundButton from '~/components/Button/Round';
 import StyleGuide from '~/utils/StyleGuide';
 
 import styles from './styles';
-const Search = ({ onCloseSearch }) => {
+
+type SearchProps = {
+  onCloseSearch: () => void;
+};
+
+const Search: React.FC<SearchProps> = ({ onCloseSearch }) => {
   const inputRef = useRef<TextInput>(null);
 
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => {
+    const onBackPress = () => {
+      if (!onCloseSearch) {
+        return false;
+      }
+
       onCloseSearch();
 
       return true;
-    });
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
   }, [onCloseSearch]);
 
   return (
