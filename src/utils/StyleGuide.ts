@@ -5,12 +5,13 @@
 // AirbnbCerealApp-ExtraBold
 // AirbnbCerealApp-Black
 
+// #6d6e7c
 const StyleGuide = {
   spacing: 8,
   palette: {
     primary: '#fff',
     secondary: '#bbb',
-    backgroundPrimary: '#424242',
+    backgroundPrimary: '#1d1e21',
     background: '#000',
     border: '#46464646',
   },
@@ -20,8 +21,8 @@ const StyleGuide = {
       lineHeight: 20,
     },
     callout: {
-      fontSize: 16,
-      lineHeight: 20,
+      fontSize: 15,
+      // lineHeight: 20,
       fontFamily: 'AirbnbCerealApp-Book',
     },
     caption: {
@@ -58,6 +59,10 @@ const StyleGuide = {
       fontSize: 16,
       lineHeight: 22,
       letterSpacing: 0.21,
+    },
+    tabBarLabel: {
+      fontSize: 11,
+      fontFamily: 'AirbnbCerealApp-Medium',
     },
   },
 };

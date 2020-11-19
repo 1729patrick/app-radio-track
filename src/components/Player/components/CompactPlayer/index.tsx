@@ -15,6 +15,7 @@ import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 import { PlayerState } from '../../';
 import { Radios } from '~/components/Radios';
 import StyleGuide from '~/utils/StyleGuide';
+import RoundButton from '~/components/Button/Round';
 
 type CompactPlayerType = {
   y: Animated.SharedValue<number>;
@@ -72,7 +73,8 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
       <Animated.View style={[styles.container, style]}>
         <RectButton
           style={styles.compactButton}
-          onPress={() => onExpandPlayer()}>
+          onPress={() => onExpandPlayer()}
+          rippleColor={StyleGuide.palette.secondary}>
           <View style={styles.info}>
             <Text style={[styles.title]} numberOfLines={1}>
               {title}
@@ -83,16 +85,12 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
           </View>
 
           <View style={styles.controls}>
-            <BorderlessButton
-              rippleColor={StyleGuide.palette.primary}
-              style={styles.button}
-              onPress={() => {}}>
-              <Icon
-                name="heart-outline"
-                size={25}
-                color={StyleGuide.palette.primary}
-              />
-            </BorderlessButton>
+            <RoundButton
+              name="heart-outline"
+              size={25}
+              onPress={() => {}}
+              Icon={Icon}
+            />
 
             <View style={styles.buttonContainer}>
               <BorderlessButton

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import Home from './screens/Home';
+import Routes from './routes';
 
 const App = () => {
   return (
@@ -11,7 +11,7 @@ const App = () => {
         backgroundColor="transparent"
       />
 
-      <Home />
+      <Routes />
     </>
   );
 };

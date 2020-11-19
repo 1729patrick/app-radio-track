@@ -12,6 +12,7 @@ import { SNAP_POINTS } from '../../../constants';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
 import StyleGuide from '~/utils/StyleGuide';
+import RoundButton from '~/components/Button/Round';
 
 type BottomControlsProps = {
   y: Animated.SharedValue<number>;
@@ -45,19 +46,16 @@ const BottomControls: React.FC<BottomControlsProps> = ({
 
   return (
     <Animated.View style={[styles.container, style]}>
-      <BorderlessButton
-        rippleColor={StyleGuide.palette.primary}
-        style={styles.button}
-        onPress={onPreviousRadio}>
-        <Icon
-          name="play-skip-back-sharp"
-          size={30}
-          color={StyleGuide.palette.primary}
-        />
-      </BorderlessButton>
+      <RoundButton
+        name={'play-skip-back-sharp'}
+        size={30}
+        onPress={onPreviousRadio}
+        Icon={Icon}
+      />
 
       <View style={styles.playContainer}>
         <View style={styles.playBackground} />
+
         <BorderlessButton
           rippleColor={StyleGuide.palette.primary}
           style={styles.playButton}
@@ -86,16 +84,12 @@ const BottomControls: React.FC<BottomControlsProps> = ({
         </BorderlessButton>
       </View>
 
-      <BorderlessButton
-        rippleColor={StyleGuide.palette.primary}
-        style={styles.button}
-        onPress={onNextRadio}>
-        <Icon
-          name="play-skip-forward"
-          size={30}
-          color={StyleGuide.palette.primary}
-        />
-      </BorderlessButton>
+      <RoundButton
+        name="play-skip-forward"
+        size={30}
+        onPress={onNextRadio}
+        Icon={Icon}
+      />
     </Animated.View>
   );
 };

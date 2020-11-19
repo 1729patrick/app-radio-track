@@ -6,12 +6,14 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "release:android": "cd android && ./gradlew assembleRelease && cd .. && open android/app/build/outputs/apk/release",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "postinstall": "jetifier -r"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-navigation/bottom-tabs": "^5.11.1",
     "@react-navigation/native": "^5.8.2",
     "@react-navigation/stack": "^5.11.1",
     "@types/react-native-vector-icons": "^6.4.6",

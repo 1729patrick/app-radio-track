@@ -25,6 +25,7 @@ export default StyleSheet.create({
   title: {
     ...StyleGuide.typography.headline,
     color: StyleGuide.palette.primary,
+    paddingRight: StyleGuide.spacing * 2,
   },
   description: {
     ...StyleGuide.typography.subhead,

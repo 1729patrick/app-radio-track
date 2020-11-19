@@ -15,7 +15,7 @@ const Album: React.FC<AlbumsProps> = ({ item }) => {
     <View style={[styles.card]}>
       <FastImage
         style={styles.cardImage}
-        resizeMode={FastImage.resizeMode.contain}
+        resizeMode={FastImage.resizeMode.cover}
         source={{
           uri: item.favicon,
         }}

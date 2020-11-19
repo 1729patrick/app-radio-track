@@ -20,24 +20,24 @@ export type Radios = Radio[];
 
 type RadiosProps = {
   title: string;
-  onOpenRadio: (args: PlayerState & { radioIndex: number }) => void;
+  onOpenPlayer: (args: PlayerState & { radioIndex: number }) => void;
   radios: Radios;
 };
 
-const Radios: React.FC<RadiosProps> = ({ title, radios, onOpenRadio }) => {
+const Radios: React.FC<RadiosProps> = ({ title, radios, onOpenPlayer }) => {
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
         <Radio
           item={item}
           index={index}
-          onOpenRadio={({ radioIndex }) =>
-            onOpenRadio({ title, radios, radioIndex })
+          onOpenPlayer={({ radioIndex }) =>
+            onOpenPlayer({ title, radios, radioIndex })
           }
         />
       );
     },
-    [onOpenRadio, radios, title],
+    [onOpenPlayer, radios, title],
   );
 
   return (

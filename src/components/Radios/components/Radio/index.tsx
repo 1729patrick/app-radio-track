@@ -6,14 +6,14 @@ import FastImage from 'react-native-fast-image';
 type RadioProps = {
   item: any;
   index: number;
-  onOpenRadio: (args: { radioIndex: number }) => void;
+  onOpenPlayer: (args: { radioIndex: number }) => void;
 };
 
-const Radio: React.FC<RadioProps> = ({ item, index, onOpenRadio }) => {
+const Radio: React.FC<RadioProps> = ({ item, index, onOpenPlayer }) => {
   return (
     <View style={[styles.card]}>
       <TouchableOpacity
-        onPress={() => onOpenRadio({ radioIndex: index })}
+        onPress={() => onOpenPlayer({ radioIndex: index })}
         hitSlop={{ top: 0, bottom: 500, left: 0, right: 0 }}
         activeOpacity={0.4}
         style={styles.button}>

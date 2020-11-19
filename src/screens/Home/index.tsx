@@ -15,6 +15,7 @@ import { HEADER_HEIGHT } from '~/components/Header/constants';
 import { colors } from '~/utils/Colors';
 
 import radios from '~/services/radios.js';
+import { usePlayer } from '~/contexts/PlayerContext';
 
 type ScrollHandlerContext = {
   upTranslateY: number;
@@ -26,6 +27,7 @@ type ScrollHandlerContext = {
 
 const Home: React.FC = () => {
   const translateY = useSharedValue(0);
+  const { onOpenPlayer } = usePlayer();
 
   const scrollHandler = useAnimatedScrollHandler<ScrollHandlerContext>(
     {
@@ -69,12 +71,6 @@ const Home: React.FC = () => {
     });
   }, []);
 
-  const playerRef = useRef<PlayerHandler>(null);
-
-  const onOpenRadio = (args: PlayerState & { radioIndex: number }) => {
-    playerRef.current?.onExpandPlayer(args);
-  };
-
   return (
     <View style={styles.container}>
       <Header translateY={translateY} />
@@ -87,55 +83,54 @@ const Home: React.FC = () => {
         <Radios
           title="Ouvidas recentemente"
           radios={[...stations]}
-          onOpenRadio={onOpenRadio}
+          onOpenPlayer={onOpenPlayer}
         />
         <Radios
           title="Suas rádios favoritas"
           radios={[...stations]}
-          onOpenRadio={onOpenRadio}
+          onOpenPlayer={onOpenPlayer}
         />
         <Radios
           title="Descubra uma nova rádio"
           radios={[...stations]}
-          onOpenRadio={onOpenRadio}
+          onOpenPlayer={onOpenPlayer}
         />
         <Radios
           title="Rádios populares"
           radios={[...stations]}
-          onOpenRadio={onOpenRadio}
+          onOpenPlayer={onOpenPlayer}
         />
         <Radios
           title="Rádios recomendadas"
           radios={[...stations]}
-          onOpenRadio={onOpenRadio}
+          onOpenPlayer={onOpenPlayer}
         />
         <Radios
           title="Rádios da sua região"
           radios={[...stations]}
-          onOpenRadio={onOpenRadio}
+          onOpenPlayer={onOpenPlayer}
         />
         <Radios
           title="Rádios da sua região"
           radios={[...stations]}
-          onOpenRadio={onOpenRadio}
+          onOpenPlayer={onOpenPlayer}
         />
         <Radios
           title="Rádios da sua região"
           radios={[...stations]}
-          onOpenRadio={onOpenRadio}
+          onOpenPlayer={onOpenPlayer}
         />
         <Radios
           title="Rádios da sua região"
           radios={[...stations]}
-          onOpenRadio={onOpenRadio}
+          onOpenPlayer={onOpenPlayer}
         />
         <Radios
           title="Rádios da sua região"
           radios={[...stations]}
-          onOpenRadio={onOpenRadio}
+          onOpenPlayer={onOpenPlayer}
         />
       </Animated.ScrollView>
-      <Player ref={playerRef} />
     </View>
   );
 };

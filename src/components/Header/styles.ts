@@ -24,4 +24,10 @@ export default StyleSheet.create({
     ...StyleGuide.typography.headline,
     color: StyleGuide.palette.primary,
   },
+  button: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

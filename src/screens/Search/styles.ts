@@ -17,6 +17,8 @@ export default StyleSheet.create({
   input: {
     flex: 1,
     paddingLeft: StyleGuide.spacing * 3,
+    fontFamily: 'AirbnbCerealApp-Book',
+    color: StyleGuide.palette.primary,
   },
   contentContainer: {},
   itemContainer: {
@@ -29,7 +31,7 @@ export default StyleSheet.create({
   itemTitle: {
     ...StyleGuide.typography.callout,
     color: StyleGuide.palette.secondary,
-    paddingLeft: StyleGuide.spacing * 3,
+    paddingHorizontal: StyleGuide.spacing * 3,
     flex: 1,
   },
 });
