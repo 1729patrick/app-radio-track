@@ -17,10 +17,11 @@ export default StyleSheet.create({
     borderTopColor: StyleGuide.palette.border,
     borderTopWidth: 1,
   },
-  tab: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  tab: { flex: 1, justifyContent: 'flex-end', alignItems: 'center' },
   title: {
     ...StyleGuide.typography.tabBarLabel,
     color: StyleGuide.palette.primary,
     marginTop: 4,
+    marginBottom: 8,
   },
 });
