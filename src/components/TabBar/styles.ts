@@ -1,17 +1,18 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 import { HEIGHT } from './constants';
 
+const { height } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     height: HEIGHT,
     backgroundColor: StyleGuide.palette.backgroundPrimary,
     right: 0,
     left: 0,
+    top: height - HEIGHT,
     zIndex: 60,
     elevation: 60,
     position: 'absolute',
-    bottom: 0,
     flexDirection: 'row',
     borderTopColor: StyleGuide.palette.border,
     borderTopWidth: 1,

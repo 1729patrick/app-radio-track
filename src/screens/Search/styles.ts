@@ -16,9 +16,10 @@ export default StyleSheet.create({
   },
   input: {
     flex: 1,
-    paddingLeft: StyleGuide.spacing * 3,
+    paddingLeft: StyleGuide.spacing * 2,
     fontFamily: 'AirbnbCerealApp-Book',
     color: StyleGuide.palette.primary,
+    fontSize: 15,
   },
   contentContainer: {},
   itemContainer: {
@@ -26,12 +27,12 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: StyleGuide.spacing * 2,
+    paddingHorizontal: StyleGuide.spacing * 2 + 2.5,
   },
   itemTitle: {
     ...StyleGuide.typography.callout,
     color: StyleGuide.palette.secondary,
-    paddingHorizontal: StyleGuide.spacing * 3,
+    paddingHorizontal: StyleGuide.spacing * 2 + 5,
     flex: 1,
   },
 });

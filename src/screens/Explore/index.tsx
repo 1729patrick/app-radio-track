@@ -12,9 +12,11 @@ import { colors } from '~/utils/Colors';
 import radios from '~/services/radios.js';
 import { usePlayer } from '~/contexts/PlayerContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
+import { useNavigation } from '@react-navigation/native';
 
 const Explore: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
+  const { navigate } = useNavigation();
 
   const { onOpenPlayer } = usePlayer();
 
@@ -24,11 +26,13 @@ const Explore: React.FC = () => {
     });
   }, []);
 
-  const onShowAll = () => {};
+  const onShowAll = (title: string) => {
+    navigate('Playlist', { title });
+  };
 
   return (
     <View style={styles.container}>
-      <Header translateY={translateY} />
+      <Header translateY={translateY} showBack={false} />
 
       <Animated.ScrollView
         contentContainerStyle={styles.contentContainer}

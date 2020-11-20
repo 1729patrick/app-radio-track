@@ -26,7 +26,7 @@ const Home: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Header translateY={translateY} />
+      <Header translateY={translateY} showBack={false} />
 
       <Animated.ScrollView
         contentContainerStyle={styles.contentContainer}

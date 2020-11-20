@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Animated, {
   Extrapolate,
@@ -11,16 +11,26 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { HEADER_HEIGHT } from './constants';
 
 import styles from './styles';
-import { Text } from 'react-native';
-import Search from '~/components/Search';
+import { Text, View } from 'react-native';
 import RoundButton from '../Button/Round';
+import { useNavigation } from '@react-navigation/native';
+import StyleGuide from '~/utils/StyleGuide';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type HeaderProps = {
   translateY: Animated.SharedValue<number>;
+  title?: string;
+  backgroundColor?: string;
+  showBack?: boolean;
 };
 
-const Header: React.FC<HeaderProps> = ({ translateY }) => {
-  const [searchVisible, setSearchVisible] = useState(false);
+const Header: React.FC<HeaderProps> = ({
+  translateY,
+  title,
+  backgroundColor = StyleGuide.palette.background,
+  showBack = true,
+}) => {
+  const { navigate, pop } = useNavigation<StackNavigationProp<{}>>();
 
   const y = useDerivedValue(() => {
     const validY = interpolate(
@@ -48,28 +58,39 @@ const Header: React.FC<HeaderProps> = ({ translateY }) => {
   });
 
   const onOpenSearch = () => {
-    setSearchVisible(true);
+    navigate('Search');
   };
 
-  const onCloseSearch = () => {
-    setSearchVisible(false);
+  const onBackPress = () => {
+    pop();
   };
 
   return (
-    <>
-      <Animated.View style={[styles.container, styleContainer]}>
-        <Animated.View style={[styles.content, styleContent]}>
-          <Text style={styles.title}>Radio Track</Text>
-          <RoundButton
-            size={22}
-            name="md-search-outline"
-            onPress={onOpenSearch}
-            Icon={Icon}
-          />
-        </Animated.View>
+    <Animated.View
+      style={[styles.container, styleContainer, { backgroundColor }]}>
+      <Animated.View style={[styles.content, styleContent]}>
+        <View style={styles.left}>
+          {showBack && (
+            <RoundButton
+              onPress={onBackPress}
+              name={'arrow-back'}
+              size={24}
+              Icon={Icon}
+              style={styles.backButton}
+            />
+          )}
+
+          <Text style={styles.title}>{title || 'Radio Track'}</Text>
+        </View>
+
+        <RoundButton
+          size={22}
+          name="md-search-outline"
+          onPress={onOpenSearch}
+          Icon={Icon}
+        />
       </Animated.View>
-      {searchVisible && <Search onCloseSearch={onCloseSearch} />}
-    </>
+    </Animated.View>
   );
 };
 

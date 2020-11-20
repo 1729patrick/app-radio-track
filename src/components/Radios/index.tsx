@@ -24,8 +24,8 @@ type RadiosProps = {
   title: string;
   onOpenPlayer: (args: PlayerState & { radioIndex: number }) => void;
   radios: Radios;
-  showAll: boolean;
-  onShowAll: (title: string) => void;
+  showAll?: boolean;
+  onShowAll?: (title: string) => void;
 };
 
 const Radios: React.FC<RadiosProps> = ({
@@ -50,15 +50,19 @@ const Radios: React.FC<RadiosProps> = ({
     [onOpenPlayer, radios, title],
   );
 
+  const onShowAllPress = () => {
+    onShowAll && onShowAll(title);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.4} onPress={onShowAllPress}>
           <Text style={styles.title}>{title}</Text>
         </TouchableOpacity>
         {showAll && (
           <RoundButton
-            onPress={() => onShowAll(title)}
+            onPress={onShowAllPress}
             name={'md-arrow-forward'}
             size={24}
             Icon={Icon}

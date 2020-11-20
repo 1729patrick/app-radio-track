@@ -5,7 +5,6 @@ import StyleGuide from '~/utils/StyleGuide';
 export default StyleSheet.create({
   container: {
     justifyContent: 'center',
-    backgroundColor: StyleGuide.palette.background,
     paddingHorizontal: StyleGuide.spacing * 2,
     position: 'absolute',
     height: HEADER_HEIGHT + STATUS_BAR_HEIGHT,
@@ -19,6 +18,13 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  left: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backButton: {
+    marginRight: StyleGuide.spacing * 2,
   },
   title: {
     ...StyleGuide.typography.headline,

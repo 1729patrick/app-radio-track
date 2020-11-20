@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef } from 'react';
 import { BackHandler, Text, TextInput, View } from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
@@ -13,31 +14,19 @@ type SearchProps = {
   onCloseSearch: () => void;
 };
 
-const Search: React.FC<SearchProps> = ({ onCloseSearch }) => {
+const Search: React.FC<SearchProps> = () => {
   const inputRef = useRef<TextInput>(null);
+  const { pop } = useNavigation();
 
-  useEffect(() => {
-    const onBackPress = () => {
-      if (!onCloseSearch) {
-        return false;
-      }
-
-      onCloseSearch();
-
-      return true;
-    };
-
-    BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-  }, [onCloseSearch]);
+  const onBackPress = () => {
+    pop();
+  };
 
   return (
     <Animated.View style={[styles.container]}>
       <View style={styles.header}>
         <RoundButton
-          onPress={onCloseSearch}
+          onPress={onBackPress}
           name={'arrow-back'}
           size={24}
           Icon={Icon}
