@@ -61,7 +61,7 @@ const StyleGuide = {
       letterSpacing: 0.21,
     },
     tabBarLabel: {
-      fontSize: 11,
+      fontSize: 13,
       fontFamily: 'AirbnbCerealApp-Medium',
     },
   },

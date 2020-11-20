@@ -21,6 +21,6 @@ export default StyleSheet.create({
   title: {
     ...StyleGuide.typography.tabBarLabel,
     color: StyleGuide.palette.primary,
-    marginTop: 2,
+    marginTop: 4,
   },
 });

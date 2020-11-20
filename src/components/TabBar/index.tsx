@@ -3,8 +3,6 @@ import { Text } from 'react-native';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Player from '../Player';
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import StyleGuide from '~/utils/StyleGuide';
 import styles from './styles';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -20,22 +18,21 @@ import Animated, {
 import { SNAP_POINTS } from '../Player/constants';
 import { HEIGHT } from './constants';
 
+import { ActiveCompass, InactiveCompass } from './Icons/Compass';
+import { ActiveHome, InactiveHome } from './Icons/Home';
+
 const TABS = [
   {
     name: 'Home',
     title: 'Inicío',
-    iconInactive: 'home',
-    iconActive: 'home',
-    size: 24,
-    Icon: Icon,
+    InactiveIcon: InactiveHome,
+    ActiveIcon: ActiveHome,
   },
   {
     name: 'Explore',
     title: 'Explorar',
-    iconInactive: 'md-search-outline',
-    iconActive: 'md-search-outline',
-    size: 24,
-    Icon: Ionicons,
+    InactiveIcon: InactiveCompass,
+    ActiveIcon: ActiveCompass,
   },
 ];
 
@@ -77,21 +74,15 @@ const TabBar: React.FC<TabBarProps> = ({ state, navigation }) => {
             style={styles.tab}
             onPress={() => jumpTo(tab)}
             key={tab.name}>
-            <tab.Icon
-              name={isFocused(index) ? tab.iconActive : tab.iconInactive}
-              size={tab.size}
-              color={
-                isFocused(index)
-                  ? StyleGuide.palette.primary
-                  : StyleGuide.palette.secondary
-              }
-            />
+            {isFocused(index) ? <tab.ActiveIcon /> : <tab.InactiveIcon />}
             <Text
               style={[
                 styles.title,
                 // eslint-disable-next-line react-native/no-inline-styles
                 {
-                  color: isFocused(index) ? StyleGuide.palette.primary : '#666',
+                  color: isFocused(index)
+                    ? StyleGuide.palette.primary
+                    : '#6d6e7c',
                 },
               ]}>
               {tab.title}
