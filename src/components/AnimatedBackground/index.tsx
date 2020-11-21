@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { Animated } from 'react-native';
 import { Easing } from 'react-native-reanimated';
+import StyleGuide from '~/utils/StyleGuide';
 
 const { Value, timing } = Animated;
 
@@ -31,7 +32,10 @@ const AnimatedBackground: React.ForwardRefRenderFunction<
 > = ({ children, style }, ref) => {
   const progress = useMemo(() => new Value(0), []);
 
-  const [colors, setColors] = useState(['#fff', '#fff']);
+  const [colors, setColors] = useState([
+    StyleGuide.palette.backgroundPrimary,
+    StyleGuide.palette.backgroundPrimary,
+  ]);
 
   const onSetColor = ({ color, firstColor }: OnSetColorType) => {
     if (firstColor) {

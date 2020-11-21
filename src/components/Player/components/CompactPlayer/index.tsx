@@ -25,6 +25,7 @@ type CompactPlayerType = {
   playing: boolean;
   stopped: boolean;
   buffering: boolean;
+  seeking: boolean;
   onTogglePlayback: () => void;
 };
 
@@ -36,6 +37,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
   playing,
   stopped,
   buffering,
+  seeking,
   onTogglePlayback,
 }) => {
   const style = useAnimatedStyle(() => {
@@ -98,7 +100,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 style={styles.button}
                 onPress={onTogglePlayback}
                 enabled={!buffering}>
-                {stopped && (
+                {(stopped || seeking) && (
                   <Icon
                     name="play"
                     size={buffering ? 18 : 25}
@@ -106,7 +108,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                     style={styles.playButton}
                   />
                 )}
-                {playing && (
+                {playing && !seeking && (
                   <Icon
                     name="ios-pause-sharp"
                     size={25}

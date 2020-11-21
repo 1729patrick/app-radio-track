@@ -121,13 +121,13 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     }
   }, [hiddenFlatList]);
 
-  useEffect(() => {
-    if (!hiddenFlatList) {
-      const timeout = setTimeout(onAlbumsMounted, 150);
+  // useEffect(() => {
+  //   if (!hiddenFlatList) {
+  //     const timeout = setTimeout(onAlbumsMounted, 1000);
 
-      return () => clearTimeout(timeout);
-    }
-  }, [hiddenFlatList, onAlbumsMounted]);
+  //     return () => clearTimeout(timeout);
+  //   }
+  // }, [hiddenFlatList, onAlbumsMounted]);
 
   useEffect(() => {
     setHiddenFlatList(true);
@@ -147,6 +147,8 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
               radioIndex,
               animated: false,
             });
+
+            onAlbumsMounted();
           }}
           removeClippedSubviews
           viewabilityConfigCallbackPairs={
@@ -167,7 +169,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           renderItem={renderItem}
         />
       )}
-      {/* {loading && <Album item={radios[radioIndex]} />} */}
+      {loading && <Album item={radios[radioIndex]} />}
     </Animated.View>
   );
 };

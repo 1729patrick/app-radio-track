@@ -104,7 +104,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const radioIndexRef = useRef<number>(0);
   const radiosRef = useRef<Radios>([]);
   const albumsMountedRef = useRef<boolean>(false);
-  const waitLoadCorrectRadioRef = useRef<boolean>(true);
+  const isCorrectRadioRef = useRef<boolean>(false);
 
   const y = useDerivedValue(() => {
     const validY = interpolate(
@@ -223,12 +223,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [playbackState, playbackStatePrevious]);
 
   const playing = useMemo(() => {
-    return playbackState === TrackPlayer.STATE_PLAYING && !seeking;
-  }, [playbackState, seeking]);
+    return playbackState === TrackPlayer.STATE_PLAYING;
+  }, [playbackState]);
 
   const stopped = useMemo(() => {
-    return playbackState !== TrackPlayer.STATE_PLAYING || seeking;
-  }, [playbackState, seeking]);
+    return playbackState !== TrackPlayer.STATE_PLAYING;
+  }, [playbackState]);
 
   const buffering = useMemo(() => {
     return playbackState === TrackPlayer.STATE_BUFFERING;
@@ -261,6 +261,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     async (radios: Radios, radioIndex: number) => {
       const radio = radios[radioIndex];
 
+      const previousRadio = radiosRef.current[radioIndexRef.current];
+      if (previousRadio?.stationuuid === radio.stationuuid) {
+        return;
+      }
+
       const currentTrack = {
         id: radio.stationuuid,
         url: radio.url,
@@ -269,11 +274,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         artwork: radio.favicon,
         type: radio.url.endsWith('.m3u8') ? 'hls' : undefined,
       };
-
-      const currentPlaying = await TrackPlayer.getCurrentTrack();
-      if (currentPlaying === currentTrack.id) {
-        return;
-      }
 
       await TrackPlayer.reset();
 
@@ -314,9 +314,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     radioIndex: number,
     firstColor = false,
   ) => {
-    const { color } = radios[radioIndex] || {
-      color: StyleGuide.palette.backgroundPrimary,
-    };
+    const { color } = radios[radioIndex];
 
     animatedBackgroundRef.current?.setColor({ color, firstColor });
   };
@@ -335,19 +333,18 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     (args?: PlayerState & { radioIndex: number }) => {
       if (args) {
         const { radioIndex, ...restArgs } = args;
-
-        waitLoadCorrectRadioRef.current = true;
-        radioIndexRef.current = radioIndex;
-        radiosRef.current = restArgs.radios;
-
-        setRadioIndex(radioIndex);
-        setState(restArgs);
-
         setBackgroundColor(restArgs.radios, radioIndex, true);
 
         if (Platform.OS === 'android') {
           addRadiosToTrackPlayer(restArgs.radios, radioIndex);
         }
+
+        isCorrectRadioRef.current = false;
+        radioIndexRef.current = radioIndex;
+        radiosRef.current = restArgs.radios;
+
+        setRadioIndex(radioIndex);
+        setState(restArgs);
 
         if (restArgs.title === state.title) {
           albumsRef.current?.scrollToAlbum({ radioIndex, animated: false });
@@ -399,8 +396,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, []);
 
   const onSetRadioIndex = useCallback((radioIndex: number) => {
-    if (waitLoadCorrectRadioRef.current) {
-      waitLoadCorrectRadioRef.current = radioIndexRef.current !== radioIndex;
+    if (!albumsMountedRef.current) {
+      return;
+    } else if (!isCorrectRadioRef.current) {
+      isCorrectRadioRef.current = true;
 
       return;
     }
@@ -509,6 +508,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               playing={playing}
               stopped={stopped}
               buffering={buffering}
+              seeking={seeking}
               onTogglePlayback={onTogglePlayback}
             />
             <TopControls
@@ -551,3 +551,18 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 };
 
 export default forwardRef(Player);
+
+function getStateName(state) {
+  switch (state) {
+    case TrackPlayer.STATE_NONE:
+      return 'None';
+    case TrackPlayer.STATE_PLAYING:
+      return 'Playing';
+    case TrackPlayer.STATE_PAUSED:
+      return 'Paused';
+    case TrackPlayer.STATE_STOPPED:
+      return 'Stopped';
+    case TrackPlayer.STATE_BUFFERING:
+      return 'Buffering';
+  }
+}

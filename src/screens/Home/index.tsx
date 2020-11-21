@@ -9,7 +9,7 @@ import Animated from 'react-native-reanimated';
 import Header from '~/components/Header';
 import { colors } from '~/utils/Colors';
 
-import radios from '~/services/radios.js';
+import radios, { mae } from '~/services/radios.js';
 import { usePlayer } from '~/contexts/PlayerContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 
@@ -33,6 +33,7 @@ const Home: React.FC = () => {
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
+        <Radios title="Mãe" radios={mae} onOpenPlayer={onOpenPlayer} />
         <Radios
           title="Ouvidas recentemente"
           radios={[
