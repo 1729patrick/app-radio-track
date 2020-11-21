@@ -14,8 +14,12 @@ import radios from '~/services/radios.js';
 import { usePlayer } from '~/contexts/PlayerContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 import { useNavigation } from '@react-navigation/native';
+import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
+import StyleGuide from '~/utils/StyleGuide';
+import FastImage from 'react-native-fast-image';
 
 const GENRES = [
+  { title: 'Top 40', colors: ['#3f4c6b', '#606c88'] },
   { title: 'Sports', colors: ['#F2994A', '#F2C94C'] },
   { title: 'MBP', colors: ['#29323c', '#485563'] },
   { title: 'News', colors: ['#2B32B2', '#1488CC'] },
@@ -32,7 +36,6 @@ const GENRES = [
   { title: 'Catholic', colors: ['#414d0b', '#727a17'] },
   { title: 'Gospel', colors: ['#7a2828', '#a73737'] },
   { title: 'Hip Hop', colors: ['#3f4c6b', '#606c88'] },
-  // { title: 'Top 40',  },
 ];
 
 const Explore: React.FC = () => {
@@ -47,7 +50,7 @@ const Explore: React.FC = () => {
     });
   }, []);
 
-  const onShowAll = (title: string) => {
+  const onShowGenre = (title: string) => {
     navigate('Playlist', { title });
   };
 
@@ -60,10 +63,6 @@ const Explore: React.FC = () => {
           onScroll={scrollHandler}
           scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}>
-          <View style={{ width: '100%' }}>
-            <Text style={{ backgroundColor: 'blue' }}>xxx</Text>
-          </View>
-
           {GENRES.map((genre) => (
             <LinearGradient
               key={genre.title}
@@ -72,7 +71,20 @@ const Explore: React.FC = () => {
               locations={[0.2, 1]}
               colors={genre.colors}
               style={styles.card}>
-              <Text style={styles.title}>{genre.title}</Text>
+              <RectButton
+                rippleColor={StyleGuide.palette.background}
+                style={styles.button}
+                onPress={() => onShowGenre(genre.title)}>
+                <Text style={styles.title}>{genre.title}</Text>
+
+                <FastImage
+                  style={styles.image}
+                  source={{
+                    uri:
+                      'https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png',
+                  }}
+                />
+              </RectButton>
             </LinearGradient>
           ))}
         </Animated.ScrollView>
@@ -82,3 +94,5 @@ const Explore: React.FC = () => {
 };
 
 export default Explore;
+
+// https://uigradients.com/#DeepPurple

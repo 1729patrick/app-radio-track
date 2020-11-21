@@ -1,1 +1,1 @@
-export const HEIGHT = 55;
+export const TAB_BAR_HEIGHT = 55;

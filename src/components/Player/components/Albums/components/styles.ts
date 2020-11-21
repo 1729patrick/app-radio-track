@@ -9,7 +9,7 @@ export default StyleSheet.create({
     height: width,
     padding: 20,
   },
-  cardImage: {
+  image: {
     height: '100%',
     borderRadius: 4,
     backgroundColor: StyleGuide.palette.background,

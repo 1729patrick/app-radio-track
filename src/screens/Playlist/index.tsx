@@ -59,7 +59,7 @@ const Explore: React.FC = () => {
       <FlatList
         showsHorizontalScrollIndicator={false}
         removeClippedSubviews
-        initialNumToRender={3}
+        initialNumToRender={25}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
         data={radios_}

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HEADER_HEIGHT } from '~/components/Header/constants';
 import StyleGuide from '~/utils/StyleGuide';
 
 export default StyleSheet.create({
@@ -7,10 +8,9 @@ export default StyleSheet.create({
     flexGrow: 1,
     backgroundColor: StyleGuide.palette.background,
   },
-
   contentContainer: {
     flexGrow: 1,
-    paddingTop: 70,
+    paddingTop: HEADER_HEIGHT,
     paddingBottom: 60,
   },
 });

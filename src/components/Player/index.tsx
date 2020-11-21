@@ -51,6 +51,7 @@ import AnimatedBackground, {
   AnimatedBackgroundHandler,
 } from '~/components/AnimatedBackground';
 import { usePlayer } from '~/contexts/PlayerContext';
+import StyleGuide from '~/utils/StyleGuide';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -279,6 +280,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       await TrackPlayer.add(currentTrack);
       await TrackPlayer.play();
 
+      if (radios.length === 1) {
+        return;
+      }
+
       const playlists = radios.reduce(
         (acc: { before: any; after: any }, radio, index) => {
           const track = {
@@ -309,7 +314,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     radioIndex: number,
     firstColor = false,
   ) => {
-    const { color } = radios[radioIndex];
+    const { color } = radios[radioIndex] || {
+      color: StyleGuide.palette.backgroundPrimary,
+    };
 
     animatedBackgroundRef.current?.setColor({ color, firstColor });
   };

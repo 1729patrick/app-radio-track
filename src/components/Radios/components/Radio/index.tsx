@@ -18,7 +18,7 @@ const Radio: React.FC<RadioProps> = ({ item, index, onOpenPlayer }) => {
         style={styles.button}
         activeOpacity={0.4}>
         <FastImage
-          style={styles.cardImage}
+          style={styles.image}
           resizeMode={FastImage.resizeMode.center}
           source={{
             uri: item.favicon,
@@ -26,10 +26,10 @@ const Radio: React.FC<RadioProps> = ({ item, index, onOpenPlayer }) => {
         />
       </TouchableOpacity>
 
-      <Text style={styles.cardTitle} numberOfLines={1}>
+      <Text style={styles.title} numberOfLines={1}>
         {item.name}
       </Text>
-      {/* <Text style={styles.cardDescription} numberOfLines={1}>
+      {/* <Text style={styles.description} numberOfLines={1}>
         {item.tags}
       </Text> */}
     </View>

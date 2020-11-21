@@ -35,12 +35,18 @@ const Home: React.FC = () => {
         showsVerticalScrollIndicator={false}>
         <Radios
           title="Ouvidas recentemente"
-          radios={[...stations]}
+          radios={[
+            stations[0],
+            stations[1],
+            stations[2],
+            stations[3],
+            stations[4],
+          ]}
           onOpenPlayer={onOpenPlayer}
         />
         <Radios
           title="Suas rádios favoritas"
-          radios={[...stations]}
+          radios={[stations[5], stations[6], stations[7]]}
           onOpenPlayer={onOpenPlayer}
         />
         <Radios

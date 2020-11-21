@@ -45,7 +45,9 @@ const TopControls: React.FC<TopControlsProps> = ({
         Icon={Icon}
       />
 
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title} numberOfLines={1}>
+        {title}
+      </Text>
 
       <RoundButton
         name="heart-outline"

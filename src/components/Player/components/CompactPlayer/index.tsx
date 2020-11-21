@@ -87,7 +87,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
           <View style={styles.controls}>
             <RoundButton
               name="heart-outline"
-              size={25}
+              size={23}
               onPress={() => {}}
               Icon={Icon}
             />
@@ -101,7 +101,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 {stopped && (
                   <Icon
                     name="play"
-                    size={buffering ? 20 : 27}
+                    size={buffering ? 18 : 25}
                     color={StyleGuide.palette.primary}
                     style={styles.playButton}
                   />
@@ -109,7 +109,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 {playing && (
                   <Icon
                     name="ios-pause-sharp"
-                    size={27}
+                    size={25}
                     color={StyleGuide.palette.primary}
                     style={styles.stopButton}
                   />

@@ -8,18 +8,18 @@ export default StyleSheet.create({
     paddingHorizontal: 8,
   },
   button: { zIndex: 1 },
-  cardImage: {
+  image: {
     height: CARD_SIZE - 16,
     width: CARD_SIZE - 16,
     borderRadius: 4,
     backgroundColor: StyleGuide.palette.backgroundPrimary,
   },
-  cardTitle: {
+  title: {
     ...StyleGuide.typography.headline,
     color: StyleGuide.palette.primary,
     marginTop: 10,
   },
-  cardDescription: {
+  description: {
     ...StyleGuide.typography.subhead,
     color: StyleGuide.palette.secondary,
   },

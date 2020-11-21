@@ -15,11 +15,10 @@ export default StyleSheet.create({
     paddingHorizontal: StyleGuide.spacing * 2,
   },
   input: {
+    ...StyleGuide.typography.headline,
     flex: 1,
     paddingLeft: StyleGuide.spacing * 2,
-    fontFamily: 'AirbnbCerealApp-Book',
     color: StyleGuide.palette.primary,
-    fontSize: 15,
   },
   contentContainer: {},
   itemContainer: {

@@ -167,7 +167,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           renderItem={renderItem}
         />
       )}
-      {loading && <Album item={radios[radioIndex]} />}
+      {/* {loading && <Album item={radios[radioIndex]} />} */}
     </Animated.View>
   );
 };

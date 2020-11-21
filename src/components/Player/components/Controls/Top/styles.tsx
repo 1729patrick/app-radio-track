@@ -24,5 +24,8 @@ export default StyleSheet.create({
   title: {
     ...StyleGuide.typography.headline,
     color: StyleGuide.palette.primary,
+    paddingHorizontal: StyleGuide.spacing * 2,
+    flex: 1,
+    textAlign: 'center',
   },
 });

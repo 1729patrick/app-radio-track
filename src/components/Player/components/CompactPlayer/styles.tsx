@@ -36,7 +36,7 @@ export default StyleSheet.create({
     height: COMPACT_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 3,
+    marginLeft: 5,
   },
   button: {
     width: 32,
