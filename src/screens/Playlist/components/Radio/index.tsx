@@ -29,7 +29,7 @@ const Radio: React.FC<RadioProps> = ({ item, index, onOpenPlayer }) => {
       onPress={onRadioPress}>
       <FastImage
         style={styles.image}
-        resizeMode={FastImage.resizeMode.center}
+        resizeMode={FastImage.resizeMode.cover}
         source={{
           uri: image(item.img),
         }}

@@ -52,6 +52,8 @@ const Search: React.FC<SearchProps> = () => {
     [data?.items, onOpenPlayer],
   );
 
+  const notFound = useMemo(() => data && !data?.items?.length, [data]);
+
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
@@ -90,16 +92,30 @@ const Search: React.FC<SearchProps> = () => {
         )}
       </View>
 
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        removeClippedSubviews
-        initialNumToRender={25}
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}
-        data={data?.items}
-        keyExtractor={({ id }) => `${id}`}
-        renderItem={renderItem}
-      />
+      {notFound && (
+        <View style={styles.notFound}>
+          <Text style={styles.notFoundTitle}>
+            Rádio "{searchTerm}" não encontrada.
+          </Text>
+
+          <Text style={styles.notFoundDescription}>
+            Tente de novo com um novo termo de busca.
+          </Text>
+        </View>
+      )}
+
+      {!notFound && (
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          removeClippedSubviews
+          initialNumToRender={24}
+          contentContainerStyle={styles.contentContainer}
+          showsVerticalScrollIndicator={false}
+          data={data?.items}
+          keyExtractor={({ id }) => `${id}`}
+          renderItem={renderItem}
+        />
+      )}
     </Animated.View>
   );
 };

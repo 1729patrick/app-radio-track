@@ -11,6 +11,7 @@ const StyleGuide = {
   palette: {
     primary: '#fff',
     secondary: '#6d6e7c',
+    light: '#ccc',
     backgroundPrimary: '#1d1e21',
     background: '#000',
     border: '#46464646',

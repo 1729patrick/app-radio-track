@@ -10,13 +10,11 @@ export function useFetchPagination<Error = any>(
   const [page, setPage] = useState(random ? undefined : 1);
   const [allData, setAllData] = useState<FetchWithPagination>();
 
+  const fetcher = (url: string) => api.get(url).then((res) => res.data);
+
   const { data, error } = useSWR<FetchWithPagination, Error>(
     () => (page ? `${url}?page=${page}` : url),
-    async (url) => {
-      const response = await api.get(url);
-
-      return response.data;
-    },
+    fetcher,
     { revalidateOnMount: true },
   );
 
@@ -24,8 +22,6 @@ export function useFetchPagination<Error = any>(
     if (!data) {
       return;
     }
-
-    setPage((page) => (!page ? data.page + 1 : page));
 
     setAllData((all) => {
       const items = [...(all?.items || []), ...(data?.items || [])];
@@ -37,6 +33,7 @@ export function useFetchPagination<Error = any>(
   return {
     data: allData,
     error,
-    fetchMore: () => setPage((p) => p + 1),
+    fetchMore: () =>
+      setPage((page) => (!page ? (data?.page || 0) + 1 : page + 1)),
   };
 }

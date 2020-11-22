@@ -24,18 +24,23 @@ const Home: React.FC = () => {
 
   const { onOpenPlayer } = usePlayer();
 
+  const isLoading = useMemo(() => {
+    return !recommend.data || !popular.data || !location.data || !random.data;
+  }, [location.data, popular.data, random.data, recommend.data]);
+
   return (
     <View style={styles.container}>
       <Header translateY={translateY} showBack={false} />
 
-      {/* <Loader /> */}
+      {isLoading && <Loader />}
 
-      <Animated.ScrollView
-        contentContainerStyle={styles.contentContainer}
-        onScroll={scrollHandler}
-        scrollEventThrottle={16}
-        showsVerticalScrollIndicator={false}>
-        {/* <Radios
+      {!isLoading && (
+        <Animated.ScrollView
+          contentContainerStyle={styles.contentContainer}
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
+          showsVerticalScrollIndicator={false}>
+          {/* <Radios
           title="Ouvidas recentemente"
           radios={[
             stations[0],
@@ -46,36 +51,37 @@ const Home: React.FC = () => {
           ]}
           onOpenPlayer={onOpenPlayer}
         /> */}
-        {/* <Radios
+          {/* <Radios
           title="Suas rádios favoritas"
           radios={[stations[5], stations[6], stations[7]]}
           onOpenPlayer={onOpenPlayer}
         /> */}
-        <Radios
-          title="Rádios recomendadas"
-          radios={recommend.data?.items}
-          onOpenPlayer={onOpenPlayer}
-          onEndReached={recommend.fetchMore}
-        />
-        <Radios
-          title="Rádios populares"
-          radios={popular.data?.items}
-          onOpenPlayer={onOpenPlayer}
-          onEndReached={popular.fetchMore}
-        />
-        <Radios
-          title="Rádios da sua região"
-          radios={location.data?.items}
-          onOpenPlayer={onOpenPlayer}
-          onEndReached={location.fetchMore}
-        />
-        <Radios
-          title="Descubra uma nova rádio"
-          radios={random.data?.items}
-          onOpenPlayer={onOpenPlayer}
-          onEndReached={random.fetchMore}
-        />
-      </Animated.ScrollView>
+          <Radios
+            title="Rádios recomendadas"
+            radios={recommend.data?.items}
+            onOpenPlayer={onOpenPlayer}
+            onEndReached={recommend.fetchMore}
+          />
+          <Radios
+            title="Rádios populares"
+            radios={popular.data?.items}
+            onOpenPlayer={onOpenPlayer}
+            onEndReached={popular.fetchMore}
+          />
+          <Radios
+            title="Rádios da sua região"
+            radios={location.data?.items}
+            onOpenPlayer={onOpenPlayer}
+            onEndReached={location.fetchMore}
+          />
+          <Radios
+            title="Descubra novas rádios"
+            radios={random.data?.items}
+            onOpenPlayer={onOpenPlayer}
+            onEndReached={random.fetchMore}
+          />
+        </Animated.ScrollView>
+      )}
     </View>
   );
 };

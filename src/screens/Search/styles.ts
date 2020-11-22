@@ -20,6 +20,21 @@ export default StyleSheet.create({
     paddingLeft: StyleGuide.spacing * 2,
     color: StyleGuide.palette.primary,
   },
+  notFound: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  notFoundTitle: {
+    ...StyleGuide.typography.title2,
+    color: StyleGuide.palette.primary,
+    textAlign: 'center',
+  },
+  notFoundDescription: {
+    ...StyleGuide.typography.subhead,
+    color: StyleGuide.palette.light,
+    marginTop: 5,
+  },
   contentContainer: {},
   itemContainer: {
     height: 55,

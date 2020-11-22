@@ -22,7 +22,7 @@ const Radio: React.FC<RadioProps> = ({ item, index, onOpenPlayer }) => {
         activeOpacity={0.4}>
         <FastImage
           style={styles.image}
-          resizeMode={FastImage.resizeMode.center}
+          resizeMode={FastImage.resizeMode.cover}
           source={{
             uri: image(item.img),
           }}

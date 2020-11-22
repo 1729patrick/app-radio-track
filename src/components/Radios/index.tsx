@@ -73,7 +73,7 @@ const Radios: React.FC<RadiosProps> = ({
         keyExtractor={({ id }) => id}
         renderItem={renderItem}
         onEndReached={onEndReached}
-        onEndReachedThreshold={0.9}
+        onEndReachedThreshold={2}
       />
     </View>
   );

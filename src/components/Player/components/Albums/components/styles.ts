@@ -7,7 +7,7 @@ export default StyleSheet.create({
   card: {
     width: width,
     height: width,
-    padding: 20,
+    padding: 35,
   },
   image: {
     height: '100%',

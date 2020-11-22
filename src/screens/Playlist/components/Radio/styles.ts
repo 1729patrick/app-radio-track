@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-const CARD_SIZE = 37;
+const CARD_SIZE = 50;
 
 export default StyleSheet.create({
   container: {
-    height: 55,
+    height: 65,
     paddingHorizontal: StyleGuide.spacing * 2,
     flexDirection: 'row',
     alignItems: 'center',
