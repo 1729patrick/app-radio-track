@@ -23,7 +23,6 @@ import TrackPlayer, {
 
 import Animated, {
   useAnimatedStyle,
-  useSharedValue,
   withTiming,
   useAnimatedGestureHandler,
   interpolate,
@@ -44,13 +43,14 @@ import { SNAP_POINTS, TIMING_DURATION } from './constants';
 import styles from './styles';
 import CompactPlayer from './components/CompactPlayer';
 
-import { Radios } from '../Radios';
 import usePrevious from '~/hooks/usePrevious';
 
 import AnimatedBackground, {
   AnimatedBackgroundHandler,
 } from '~/components/AnimatedBackground';
 import { usePlayer } from '~/contexts/PlayerContext';
+import { RadioType } from '~/types/Station';
+import { image } from '~/services/api';
 import StyleGuide from '~/utils/StyleGuide';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
@@ -65,7 +65,7 @@ const events = [
 
 export type PlayerState = {
   title: string;
-  radios: Radios;
+  radios: RadioType[];
 };
 
 type GestureHandlerContext = {
@@ -102,7 +102,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const animatedBackgroundRef = useRef<AnimatedBackgroundHandler>(null);
 
   const radioIndexRef = useRef<number>(0);
-  const radiosRef = useRef<Radios>([]);
+  const radiosRef = useRef<RadioType[]>([]);
   const albumsMountedRef = useRef<boolean>(false);
   const isCorrectRadioRef = useRef<boolean>(false);
 
@@ -258,21 +258,21 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   };
 
   const addRadiosToTrackPlayer = useCallback(
-    async (radios: Radios, radioIndex: number) => {
+    async (radios: RadioType[], radioIndex: number) => {
       const radio = radios[radioIndex];
 
       const previousRadio = radiosRef.current[radioIndexRef.current];
-      if (previousRadio?.stationuuid === radio.stationuuid) {
+      if (previousRadio?.id === radio.id) {
         return;
       }
 
       const currentTrack = {
-        id: radio.stationuuid,
-        url: radio.url,
+        id: radio.id,
+        url: radio.streams[0].url,
         title: radio.name,
-        artist: radio.tags,
-        artwork: radio.favicon,
-        type: radio.url.endsWith('.m3u8') ? 'hls' : undefined,
+        artist: radio.slogan,
+        artwork: image(radio.img),
+        type: radio.streams[0].url.endsWith('.m3u8') ? 'hls' : undefined,
       };
 
       await TrackPlayer.reset();
@@ -287,12 +287,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       const playlists = radios.reduce(
         (acc: { before: any; after: any }, radio, index) => {
           const track = {
-            id: radio.stationuuid,
-            url: radio.url,
+            id: radio.id,
+            url: radio.streams[0].url,
             title: radio.name,
-            artist: radio.tags,
-            artwork: radio.favicon,
-            type: radio.url.endsWith('.m3u8') ? 'hls' : undefined,
+            artist: radio.slogan,
+            artwork: image(radio.img),
+            type: radio.streams[0].url.endsWith('.m3u8') ? 'hls' : undefined,
           };
 
           return {
@@ -310,11 +310,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   );
 
   const setBackgroundColor = (
-    radios: Radios,
+    radios: RadioType[],
     radioIndex: number,
     firstColor = false,
   ) => {
-    const { color } = radios[radioIndex];
+    const { color = StyleGuide.palette.backgroundPrimary } = radios[radioIndex];
 
     animatedBackgroundRef.current?.setColor({ color, firstColor });
   };
@@ -528,10 +528,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             />
 
             <View
-            // onLayout={({ nativeEvent }) =>
-            //   console.log(nativeEvent.layout.height)
-            // }
-            >
+              onLayout={({ nativeEvent }) =>
+                console.log(nativeEvent.layout.height)
+              }>
               <Artist y={y} radioIndex={radioIndex} radios={state.radios} />
               <BottomControls
                 y={y}
@@ -552,17 +551,17 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
 export default forwardRef(Player);
 
-function getStateName(state) {
-  switch (state) {
-    case TrackPlayer.STATE_NONE:
-      return 'None';
-    case TrackPlayer.STATE_PLAYING:
-      return 'Playing';
-    case TrackPlayer.STATE_PAUSED:
-      return 'Paused';
-    case TrackPlayer.STATE_STOPPED:
-      return 'Stopped';
-    case TrackPlayer.STATE_BUFFERING:
-      return 'Buffering';
-  }
-}
+// function getStateName(state) {
+//   switch (state) {
+//     case TrackPlayer.STATE_NONE:
+//       return 'None';
+//     case TrackPlayer.STATE_PLAYING:
+//       return 'Playing';
+//     case TrackPlayer.STATE_PAUSED:
+//       return 'Paused';
+//     case TrackPlayer.STATE_STOPPED:
+//       return 'Stopped';
+//     case TrackPlayer.STATE_BUFFERING:
+//       return 'Buffering';
+//   }
+// }

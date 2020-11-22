@@ -15,12 +15,11 @@ export default StyleSheet.create({
     borderRadius: 4,
     backgroundColor: StyleGuide.palette.backgroundPrimary,
   },
+  info: { flex: 1, paddingHorizontal: StyleGuide.spacing * 2 },
   title: {
     ...StyleGuide.typography.headline,
     color: StyleGuide.palette.primary,
     fontSize: 16,
-    flex: 1,
-    paddingHorizontal: StyleGuide.spacing * 2,
   },
   description: {
     ...StyleGuide.typography.subhead,

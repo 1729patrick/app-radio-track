@@ -13,14 +13,14 @@ import { SNAP_POINTS } from '../../constants';
 import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 
 import { PlayerState } from '../../';
-import { Radios } from '~/components/Radios';
 import StyleGuide from '~/utils/StyleGuide';
 import RoundButton from '~/components/Button/Round';
+import { RadioType } from '~/types/Station';
 
 type CompactPlayerType = {
   y: Animated.SharedValue<number>;
   radioIndex?: number;
-  radios?: Radios;
+  radios?: RadioType[];
   onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
   playing: boolean;
   stopped: boolean;
@@ -70,6 +70,14 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
     return radios[radioIndex]?.name;
   }, [radios, radioIndex]);
 
+  const description = useMemo(() => {
+    if (!radios || radioIndex === undefined) {
+      return '';
+    }
+
+    return radios[radioIndex]?.slogan;
+  }, [radios, radioIndex]);
+
   return (
     <>
       <Animated.View style={[styles.container, style]}>
@@ -81,9 +89,11 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
             <Text style={[styles.title]} numberOfLines={1}>
               {title}
             </Text>
-            {/* <Text style={[styles.description]} numberOfLines={1}>
-              {description}
-            </Text> */}
+            {description && (
+              <Text style={[styles.description]} numberOfLines={1}>
+                {description}
+              </Text>
+            )}
           </View>
 
           <View style={styles.controls}>

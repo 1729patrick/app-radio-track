@@ -2,12 +2,13 @@ import React, { memo } from 'react';
 import { View } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
-import { Radio } from '~/components/Radios';
+import { image } from '~/services/api';
+import { RadioType } from '~/types/Station';
 
 import styles from './styles';
 
 type AlbumsProps = {
-  item: Radio;
+  item: RadioType;
 };
 
 const Album: React.FC<AlbumsProps> = ({ item }) => {
@@ -17,7 +18,7 @@ const Album: React.FC<AlbumsProps> = ({ item }) => {
         style={styles.image}
         resizeMode={FastImage.resizeMode.cover}
         source={{
-          uri: item.favicon,
+          uri: image(item.img),
         }}
       />
     </View>

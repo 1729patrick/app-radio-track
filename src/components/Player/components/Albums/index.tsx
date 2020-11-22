@@ -24,8 +24,8 @@ import {
   ARTIST_AND_CONTROL_HEIGHT,
   PADDING_HORIZONTAL,
 } from '../../constants';
-import { Radios } from '~/components/Radios';
 import Album from './components';
+import { RadioType } from '~/types/Station';
 
 type ScrollToAlbumArgs = {
   radioIndex: number;
@@ -34,7 +34,7 @@ type ScrollToAlbumArgs = {
 
 type AlbumsProps = {
   y: Animated.SharedValue<number>;
-  radios: Radios;
+  radios: RadioType[];
   setRadioIndex: (nextIndex: number) => void;
   radioIndex: number;
   loading?: boolean;
@@ -121,14 +121,6 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     }
   }, [hiddenFlatList]);
 
-  // useEffect(() => {
-  //   if (!hiddenFlatList) {
-  //     const timeout = setTimeout(onAlbumsMounted, 1000);
-
-  //     return () => clearTimeout(timeout);
-  //   }
-  // }, [hiddenFlatList, onAlbumsMounted]);
-
   useEffect(() => {
     setHiddenFlatList(true);
   }, [radios]);
@@ -165,7 +157,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           snapToInterval={width}
           disableIntervalMomentum
           data={radios}
-          keyExtractor={({ stationuuid }) => `${stationuuid}`}
+          keyExtractor={({ id }) => `${id}`}
           renderItem={renderItem}
         />
       )}

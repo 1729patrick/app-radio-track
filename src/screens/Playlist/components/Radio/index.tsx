@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import styles from './styles';
 
 import FastImage from 'react-native-fast-image';
@@ -8,9 +8,11 @@ import { RectButton } from 'react-native-gesture-handler';
 import RoundButton from '~/components/Button/Round';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import { RadioType } from '~/types/Station';
+import { image } from '~/services/api';
 
 type RadioProps = {
-  item: any;
+  item: RadioType;
   index: number;
   onOpenPlayer: (args: { radioIndex: number }) => void;
 };
@@ -29,13 +31,19 @@ const Radio: React.FC<RadioProps> = ({ item, index, onOpenPlayer }) => {
         style={styles.image}
         resizeMode={FastImage.resizeMode.center}
         source={{
-          uri: item.favicon,
+          uri: image(item.img),
         }}
       />
 
-      <Text style={styles.title} numberOfLines={1}>
-        {item.name}
-      </Text>
+      <View style={styles.info}>
+        <Text style={styles.title} numberOfLines={1}>
+          {item.name}
+        </Text>
+
+        <Text style={styles.description} numberOfLines={1}>
+          {item.slogan}
+        </Text>
+      </View>
 
       <RoundButton
         Icon={Icon}

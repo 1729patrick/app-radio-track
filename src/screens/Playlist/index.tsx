@@ -2,7 +2,6 @@ import React, { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
-import { Radios as RadiosTpe } from '~/components/Radios';
 
 import Header from '~/components/Header';
 import { colors } from '~/utils/Colors';
@@ -27,12 +26,6 @@ const Explore: React.FC = () => {
 
   const { onOpenPlayer } = usePlayer();
 
-  const radios_ = useMemo<RadiosTpe>(() => {
-    return radios.map((radio) => {
-      return { ...radio, color: colors[0] };
-    });
-  }, []);
-
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
@@ -40,12 +33,12 @@ const Explore: React.FC = () => {
           item={item}
           index={index}
           onOpenPlayer={({ radioIndex }) =>
-            onOpenPlayer({ title: params?.title, radios: radios_, radioIndex })
+            onOpenPlayer({ title: params?.title, radios: [], radioIndex })
           }
         />
       );
     },
-    [onOpenPlayer, params?.title, radios_],
+    [onOpenPlayer, params?.title],
   );
 
   return (
@@ -62,8 +55,8 @@ const Explore: React.FC = () => {
         initialNumToRender={25}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
-        data={radios_}
-        keyExtractor={({ stationuuid }) => `${stationuuid}`}
+        data={[]}
+        keyExtractor={({ id }) => `${id}`}
         renderItem={renderItem}
       />
     </View>

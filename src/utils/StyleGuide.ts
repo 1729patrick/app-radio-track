@@ -10,7 +10,7 @@ const StyleGuide = {
   spacing: 8,
   palette: {
     primary: '#fff',
-    secondary: '#bbb',
+    secondary: '#6d6e7c',
     backgroundPrimary: '#1d1e21',
     background: '#000',
     border: '#46464646',
@@ -32,13 +32,13 @@ const StyleGuide = {
     },
     headline: {
       fontSize: 17,
-      lineHeight: 22,
+      // lineHeight: 22,
       fontFamily: 'AirbnbCerealApp-Medium',
       letterSpacing: 0.21,
     },
     subhead: {
       fontSize: 15,
-      lineHeight: 20,
+      // lineHeight: 20,
       fontFamily: 'AirbnbCerealApp-Book',
       letterSpacing: -0.11,
     },

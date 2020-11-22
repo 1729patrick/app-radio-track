@@ -6,13 +6,14 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import { Radios } from '~/components/Radios';
+import { RadioType } from '~/types/Station';
 import { SNAP_POINTS } from '../../constants';
 import styles from './styles';
 
 type ArtistType = {
   y: Animated.SharedValue<number>;
   radioIndex?: number;
-  radios?: Radios;
+  radios?: RadioType[];
 };
 
 const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
@@ -22,6 +23,14 @@ const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
     }
 
     return radios[radioIndex]?.name;
+  }, [radios, radioIndex]);
+
+  const description = useMemo(() => {
+    if (!radios?.length || radioIndex === undefined) {
+      return '';
+    }
+
+    return radios[radioIndex]?.slogan;
   }, [radios, radioIndex]);
 
   const style = useAnimatedStyle(() => {
@@ -40,6 +49,9 @@ const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
       <Animated.View style={[styles.container, style]}>
         <Text style={[styles.title]} numberOfLines={1}>
           {title}
+        </Text>
+        <Text style={[styles.description]} numberOfLines={1}>
+          {description}
         </Text>
       </Animated.View>
     </View>

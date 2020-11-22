@@ -1,13 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { FlatList, RectButton, ScrollView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MdIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RoundButton from '~/components/Button/Round';
 import { usePlayer } from '~/contexts/PlayerContext';
+import { useFetch } from '~/hooks/useFetch';
 import radios from '~/services/radios';
+import { FetchWithPagination } from '~/types/Fetch';
 import StyleGuide from '~/utils/StyleGuide';
 import Radio from '../Playlist/components/Radio';
 
@@ -18,10 +20,13 @@ type SearchProps = {
 };
 
 const Search: React.FC<SearchProps> = () => {
-  const [showResults, setShowResults] = useState(false);
-  const [searchs, setSearchs] = useState([]);
-  const [search, setSearch] = useState('');
-  const inputRef = useRef<TextInput>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const { data } = useFetch<FetchWithPagination>(
+    searchTerm.trimLeft().trimRight().length >= 3
+      ? `/search?q=${searchTerm.trimLeft().trimRight()}`
+      : null,
+  );
+
   const { pop } = useNavigation();
 
   const { onOpenPlayer } = usePlayer();
@@ -31,23 +36,30 @@ const Search: React.FC<SearchProps> = () => {
   };
 
   const onClearSearch = () => {
-    setSearch('');
+    setSearchTerm('');
   };
 
-  const radios_ = useMemo(() => {
-    return radios.map((radio) => {
-      return { ...radio, color: StyleGuide.palette.backgroundPrimary };
-    });
-  }, []);
+  const onOpenPlayerPress = useCallback(
+    ({ radioIndex }: { radioIndex: number }) => {
+      const radio = data?.items[radioIndex];
 
-  const onResultPress = () => {
-    inputRef.current?.blur();
-    setShowResults(true);
-  };
+      onOpenPlayer({
+        title: radio?.name || '',
+        radios: radio ? [radio] : [],
+        radioIndex: 0,
+      });
+    },
+    [data?.items, onOpenPlayer],
+  );
 
-  const onFocusInput = () => {
-    setShowResults(false);
-  };
+  const renderItem = useCallback(
+    ({ item, index }) => {
+      return (
+        <Radio item={item} index={index} onOpenPlayer={onOpenPlayerPress} />
+      );
+    },
+    [onOpenPlayerPress],
+  );
 
   return (
     <Animated.View style={[styles.container]}>
@@ -61,16 +73,14 @@ const Search: React.FC<SearchProps> = () => {
 
         <TextInput
           placeholder="Pesquise a rádio"
-          ref={inputRef}
           placeholderTextColor={StyleGuide.palette.secondary}
           style={styles.input}
-          value={search}
-          onChangeText={setSearch}
-          onFocus={onFocusInput}
+          value={searchTerm}
+          onChangeText={setSearchTerm}
           autoFocus
         />
 
-        {!!search && (
+        {!!searchTerm && (
           <RoundButton
             onPress={onClearSearch}
             name={'close'}
@@ -79,51 +89,17 @@ const Search: React.FC<SearchProps> = () => {
           />
         )}
       </View>
-      <ScrollView
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}>
-        {!showResults &&
-          [search, ...searchs].map(
-            (result) =>
-              !!search && (
-                <RectButton
-                  style={styles.itemContainer}
-                  key={result}
-                  rippleColor={StyleGuide.palette.secondary}
-                  onPress={onResultPress}>
-                  <MdIcon
-                    name="history"
-                    color={StyleGuide.palette.secondary}
-                    size={22}
-                  />
-                  <Text style={styles.itemTitle} numberOfLines={1}>
-                    {result}
-                  </Text>
-                  <Icon
-                    name="link-sharp"
-                    color={StyleGuide.palette.secondary}
-                    size={22}
-                  />
-                </RectButton>
-              ),
-          )}
 
-        {showResults &&
-          radios_.map((radio, index) => (
-            <Radio
-              key={index}
-              item={radio}
-              index={index}
-              onOpenPlayer={({ radioIndex }) =>
-                onOpenPlayer({
-                  title: radios_[radioIndex].name,
-                  radios: [radios_[radioIndex]],
-                  radioIndex: 0,
-                })
-              }
-            />
-          ))}
-      </ScrollView>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        removeClippedSubviews
+        initialNumToRender={25}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+        data={data?.items}
+        keyExtractor={({ id }) => `${id}`}
+        renderItem={renderItem}
+      />
     </Animated.View>
   );
 };

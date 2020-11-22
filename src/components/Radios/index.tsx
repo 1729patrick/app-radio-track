@@ -8,32 +8,24 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Radio from './components/Radio';
 import RoundButton from '../Button/Round';
 
-export type Radio = {
-  stationuuid: string;
-  url: string;
-  name: string;
-  title: string;
-  tags: string;
-  favicon: string;
-  color: string;
-};
-
-export type Radios = Radio[];
+import { RadioType } from '~/types/Station';
 
 type RadiosProps = {
   title: string;
   onOpenPlayer: (args: PlayerState & { radioIndex: number }) => void;
-  radios: Radios;
+  radios?: RadioType[];
   showAll?: boolean;
   onShowAll?: (title: string) => void;
+  onEndReached: () => void;
 };
 
 const Radios: React.FC<RadiosProps> = ({
   title,
-  radios,
+  radios = [],
   onOpenPlayer,
   showAll,
   onShowAll,
+  onEndReached,
 }) => {
   const renderItem = useCallback(
     ({ item, index }) => {
@@ -78,8 +70,10 @@ const Radios: React.FC<RadiosProps> = ({
         horizontal
         showsVerticalScrollIndicator={false}
         data={radios}
-        keyExtractor={({ stationuuid }) => `${stationuuid}`}
+        keyExtractor={({ id }) => id}
         renderItem={renderItem}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.9}
       />
     </View>
   );

@@ -34,7 +34,8 @@
     "react-native-swift": "^1.2.3",
     "react-native-track-player": "^1.2.3",
     "react-native-vector-icons": "^7.1.0",
-    "recyclerlistview": "^3.0.0"
+    "recyclerlistview": "^3.0.0",
+    "swr": "^0.3.9"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
