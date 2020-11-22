@@ -346,19 +346,15 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         setRadioIndex(radioIndex);
         setState(restArgs);
 
-        if (restArgs.title === state.title) {
-          albumsRef.current?.scrollToAlbum({ radioIndex, animated: false });
-        } else {
-          setLoading(true);
-          albumsMountedRef.current = false;
-        }
+        setLoading(true);
+        albumsMountedRef.current = false;
       }
 
       translateY.value = withTiming(SNAP_POINTS[0], {
         duration: TIMING_DURATION,
       });
     },
-    [addRadiosToTrackPlayer, state.title, translateY],
+    [addRadiosToTrackPlayer, translateY],
   );
 
   const onCompactPlayer = useCallback(() => {
@@ -399,7 +395,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     if (!albumsMountedRef.current) {
       return;
     } else if (!isCorrectRadioRef.current) {
-      isCorrectRadioRef.current = true;
+      isCorrectRadioRef.current = radioIndex === radioIndexRef.current;
 
       return;
     }
@@ -446,10 +442,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       paused: boolean;
     }) => {
       if (type === TrackPlayerEvents.PLAYBACK_ERROR) {
-        console.warn(
-          'An error occurred while playing the current track.',
-          args,
-        );
+        // console.warn(
+        //   'An error occurred while playing the current track.',
+        //   args,
+        // );
       }
 
       if (type === TrackPlayerEvents.REMOTE_NEXT) {
@@ -528,9 +524,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             />
 
             <View
-              onLayout={({ nativeEvent }) =>
-                console.log(nativeEvent.layout.height)
-              }>
+            // onLayout={({ nativeEvent }) =>
+            //   console.log(nativeEvent.layout.height)
+            // }
+            >
               <Artist y={y} radioIndex={radioIndex} radios={state.radios} />
               <BottomControls
                 y={y}

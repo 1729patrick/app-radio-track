@@ -129,19 +129,23 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     return <Album item={item} />;
   }, []);
 
+  const onLayout = () => {
+    scrollToAlbum({
+      radioIndex,
+      animated: false,
+    });
+
+    setTimeout(() => {
+      onAlbumsMounted();
+    }, 1000);
+  };
+
   return (
     <Animated.View style={[styles.container, style]}>
       {!hiddenFlatList && (
         <FlatList
           ref={flatListRef}
-          onLayout={() => {
-            scrollToAlbum({
-              radioIndex,
-              animated: false,
-            });
-
-            onAlbumsMounted();
-          }}
+          onLayout={onLayout}
           removeClippedSubviews
           viewabilityConfigCallbackPairs={
             viewabilityConfigCallbackPairs.current

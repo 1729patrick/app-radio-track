@@ -43,7 +43,6 @@ const AnimatedBackground: React.ForwardRefRenderFunction<
       return;
     }
 
-    // console.log([...colors, color]);
     setColors([...colors, color]);
   };
 

@@ -41,8 +41,6 @@ const Explore: React.FC = () => {
     [data?.items, onOpenPlayer, params.title],
   );
 
-  console.log(params.title, data?.totalItems, data?.items.length, data?.page);
-
   const renderItem = useCallback(
     ({ item, index }) => {
       return (

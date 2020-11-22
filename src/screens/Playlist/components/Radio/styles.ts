@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-const CARD_SIZE = 50;
+const CARD_SIZE = 47;
 
 export default StyleSheet.create({
   container: {

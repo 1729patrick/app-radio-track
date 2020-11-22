@@ -5,7 +5,8 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { Radios } from '~/components/Radios';
+import RoundButton from '~/components/Button/Round';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { RadioType } from '~/types/Station';
 import { SNAP_POINTS } from '../../constants';
 import styles from './styles';
@@ -44,12 +45,30 @@ const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
     };
   });
 
+  const onVoteDownPress = () => {};
+  const onVoteUpPress = () => {};
+
   return (
     <View>
       <Animated.View style={[styles.container, style]}>
-        <Text style={[styles.title]} numberOfLines={1}>
-          {title}
-        </Text>
+        <View style={styles.info}>
+          <RoundButton
+            Icon={Icon}
+            name="thumbs-o-down"
+            size={27}
+            onPress={onVoteDownPress}
+          />
+          <Text style={[styles.title]} numberOfLines={1}>
+            {title}
+          </Text>
+          <RoundButton
+            Icon={Icon}
+            name="thumbs-o-up"
+            size={27}
+            onPress={onVoteUpPress}
+          />
+        </View>
+
         <Text style={[styles.description]} numberOfLines={1}>
           {description}
         </Text>

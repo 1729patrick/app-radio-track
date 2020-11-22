@@ -5,7 +5,7 @@ const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     width,
-    height: width,
+    height: width - 35,
     zIndex: 1,
   },
 });
