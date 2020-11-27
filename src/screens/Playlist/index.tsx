@@ -28,26 +28,26 @@ const Explore: React.FC = () => {
     `genres/${JSON.stringify(params.id)}`,
   );
 
-  const { onOpenPlayer } = usePlayer();
+  const { onExpandPlayer } = usePlayer();
 
-  const onOpenPlayerPress = useCallback(
+  const onExpandPlayerPress = useCallback(
     ({ radioIndex }: { radioIndex: number }) => {
-      onOpenPlayer({
+      onExpandPlayer({
         title: params.title,
         radios: data?.items || [],
         radioIndex,
       });
     },
-    [data?.items, onOpenPlayer, params.title],
+    [data?.items, onExpandPlayer, params.title],
   );
 
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
-        <Radio item={item} index={index} onOpenPlayer={onOpenPlayerPress} />
+        <Radio item={item} index={index} onExpandPlayer={onExpandPlayerPress} />
       );
     },
-    [onOpenPlayerPress],
+    [onExpandPlayerPress],
   );
 
   return (
@@ -70,7 +70,7 @@ const Explore: React.FC = () => {
           data={data?.items}
           keyExtractor={({ id }) => `${id}`}
           renderItem={renderItem}
-          onEndReachedThreshold={2}
+          onEndReachedThreshold={4}
           onEndReached={fetchMore}
         />
       )}

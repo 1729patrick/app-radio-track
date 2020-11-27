@@ -9,14 +9,14 @@ import { image } from '~/services/api';
 type RadioProps = {
   item: RadioType;
   index: number;
-  onOpenPlayer: (args: { radioIndex: number }) => void;
+  onExpandPlayer: (args: { radioIndex: number }) => void;
 };
 
-const Radio: React.FC<RadioProps> = ({ item, index, onOpenPlayer }) => {
+const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
   return (
     <View style={[styles.card]}>
       <TouchableOpacity
-        onPress={() => onOpenPlayer({ radioIndex: index })}
+        onPress={() => onExpandPlayer({ radioIndex: index })}
         hitSlop={{ top: 0, bottom: 500, left: 0, right: 0 }}
         style={styles.button}
         activeOpacity={0.4}>

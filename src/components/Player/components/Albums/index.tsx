@@ -135,9 +135,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
       animated: false,
     });
 
-    setTimeout(() => {
-      onAlbumsMounted();
-    }, 1000);
+    onAlbumsMounted();
   };
 
   return (

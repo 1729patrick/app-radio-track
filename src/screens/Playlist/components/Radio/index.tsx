@@ -14,12 +14,12 @@ import { image } from '~/services/api';
 type RadioProps = {
   item: RadioType;
   index: number;
-  onOpenPlayer: (args: { radioIndex: number }) => void;
+  onExpandPlayer: (args: { radioIndex: number }) => void;
 };
 
-const Radio: React.FC<RadioProps> = ({ item, index, onOpenPlayer }) => {
+const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
   const onRadioPress = () => {
-    onOpenPlayer({ radioIndex: index });
+    onExpandPlayer({ radioIndex: index });
   };
 
   return (

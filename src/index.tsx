@@ -1,11 +1,14 @@
 import React from 'react';
 import App from './App';
 import { PlayerProvider } from './contexts/PlayerContext';
+import { FavoriteProvider } from './contexts/FavoriteContext';
 
 export default () => {
   return (
-    <PlayerProvider>
-      <App />
-    </PlayerProvider>
+    <FavoriteProvider>
+      <PlayerProvider>
+        <App />
+      </PlayerProvider>
+    </FavoriteProvider>
   );
 };

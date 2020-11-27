@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
-import Radios from '~/components/Radios';
 
 import Animated from 'react-native-reanimated';
 
@@ -12,21 +11,36 @@ import { usePlayer } from '~/contexts/PlayerContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 import Loader from '~/components/Loader';
 
-import { useFetchPagination } from '~/hooks/useFetchPagination';
+import {
+  FavoriteRadios,
+  FindOutRadios,
+  LocationRadios,
+  PopularRadios,
+  RecommendRadios,
+} from '~/components/Radios/types';
 
 const Home: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
+  const [loadings, setLoadings] = useState({});
 
-  const recommend = useFetchPagination('playlists/recommend', true);
-  const popular = useFetchPagination('playlists/popular');
-  const location = useFetchPagination('playlists/location', true);
-  const random = useFetchPagination('playlists/random', true);
-
-  const { onOpenPlayer } = usePlayer();
+  const { onExpandPlayer } = usePlayer();
 
   const isLoading = useMemo(() => {
-    return !recommend.data || !popular.data || !location.data || !random.data;
-  }, [location.data, popular.data, random.data, recommend.data]);
+    return Object.values(loadings).some((loading) => !loading);
+  }, [loadings]);
+
+  const toggleLoading = useCallback(
+    ({ key, value }: { key: string; value: boolean }) => {
+      setLoadings((l) => {
+        if (l[key]) {
+          return l;
+        }
+
+        return { ...l, [key]: value };
+      });
+    },
+    [],
+  );
 
   return (
     <View style={styles.container}>
@@ -34,13 +48,12 @@ const Home: React.FC = () => {
 
       {isLoading && <Loader />}
 
-      {!isLoading && (
-        <Animated.ScrollView
-          contentContainerStyle={styles.contentContainer}
-          onScroll={scrollHandler}
-          scrollEventThrottle={16}
-          showsVerticalScrollIndicator={false}>
-          {/* <Radios
+      <Animated.ScrollView
+        contentContainerStyle={styles.contentContainer}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        showsVerticalScrollIndicator={false}>
+        {/* <Radios
           title="Ouvidas recentemente"
           radios={[
             stations[0],
@@ -49,39 +62,29 @@ const Home: React.FC = () => {
             stations[3],
             stations[4],
           ]}
-          onOpenPlayer={onOpenPlayer}
+          onExpandPlayer={onExpandPlayer}
         /> */}
-          {/* <Radios
-          title="Suas rádios favoritas"
-          radios={[stations[5], stations[6], stations[7]]}
-          onOpenPlayer={onOpenPlayer}
-        /> */}
-          <Radios
-            title="Rádios recomendadas"
-            radios={recommend.data?.items}
-            onOpenPlayer={onOpenPlayer}
-            onEndReached={recommend.fetchMore}
-          />
-          <Radios
-            title="Rádios populares"
-            radios={popular.data?.items}
-            onOpenPlayer={onOpenPlayer}
-            onEndReached={popular.fetchMore}
-          />
-          <Radios
-            title="Rádios da sua região"
-            radios={location.data?.items}
-            onOpenPlayer={onOpenPlayer}
-            onEndReached={location.fetchMore}
-          />
-          <Radios
-            title="Descubra novas rádios"
-            radios={random.data?.items}
-            onOpenPlayer={onOpenPlayer}
-            onEndReached={random.fetchMore}
-          />
-        </Animated.ScrollView>
-      )}
+        <FavoriteRadios
+          onExpandPlayer={onExpandPlayer}
+          toggleLoading={toggleLoading}
+        />
+        <RecommendRadios
+          onExpandPlayer={onExpandPlayer}
+          toggleLoading={toggleLoading}
+        />
+        <PopularRadios
+          onExpandPlayer={onExpandPlayer}
+          toggleLoading={toggleLoading}
+        />
+        <LocationRadios
+          onExpandPlayer={onExpandPlayer}
+          toggleLoading={toggleLoading}
+        />
+        <FindOutRadios
+          onExpandPlayer={onExpandPlayer}
+          toggleLoading={toggleLoading}
+        />
+      </Animated.ScrollView>
     </View>
   );
 };

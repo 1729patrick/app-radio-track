@@ -10,21 +10,26 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 import { SNAP_POINTS } from '../../../constants';
-import { BorderlessButton } from 'react-native-gesture-handler';
-import StyleGuide from '~/utils/StyleGuide';
+
 import RoundButton from '~/components/Button/Round';
+import { useFavorites } from '~/contexts/FavoriteContext';
+import { RadioType } from '~/types/Station';
 
 type TopControlsProps = {
   y: Animated.SharedValue<number>;
   onCompactPlayer: () => void;
   title?: string;
+  radio: RadioType;
 };
 
 const TopControls: React.FC<TopControlsProps> = ({
   y,
   onCompactPlayer,
   title,
+  radio = {},
 }) => {
+  const { isFavorite, addFavorite, removeFavorite } = useFavorites();
+
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -44,17 +49,24 @@ const TopControls: React.FC<TopControlsProps> = ({
         onPress={onCompactPlayer}
         Icon={Icon}
       />
-
       <Text style={styles.title} numberOfLines={1}>
         {title}
       </Text>
-
-      <RoundButton
-        name="heart-outline"
-        size={25}
-        onPress={() => {}}
-        Icon={Icon}
-      />
+      {isFavorite(radio) ? (
+        <RoundButton
+          name="heart-sharp"
+          size={25}
+          onPress={() => removeFavorite(radio)}
+          Icon={Icon}
+        />
+      ) : (
+        <RoundButton
+          name="heart-outline"
+          size={25}
+          onPress={() => addFavorite(radio)}
+          Icon={Icon}
+        />
+      )}
     </Animated.View>
   );
 };

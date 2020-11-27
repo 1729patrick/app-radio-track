@@ -5,35 +5,18 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import RoundButton from '~/components/Button/Round';
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import RoundButton from '~/components/Button/Round';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 import { RadioType } from '~/types/Station';
 import { SNAP_POINTS } from '../../constants';
 import styles from './styles';
 
 type ArtistType = {
   y: Animated.SharedValue<number>;
-  radioIndex?: number;
-  radios?: RadioType[];
+  radio: RadioType;
 };
 
-const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
-  const title = useMemo(() => {
-    if (!radios?.length || radioIndex === undefined) {
-      return '';
-    }
-
-    return radios[radioIndex]?.name;
-  }, [radios, radioIndex]);
-
-  const description = useMemo(() => {
-    if (!radios?.length || radioIndex === undefined) {
-      return '';
-    }
-
-    return radios[radioIndex]?.slogan;
-  }, [radios, radioIndex]);
-
+const Artist: React.FC<ArtistType> = ({ y, radio = {} }) => {
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -45,32 +28,32 @@ const Artist: React.FC<ArtistType> = ({ y, radioIndex, radios }) => {
     };
   });
 
-  const onVoteDownPress = () => {};
-  const onVoteUpPress = () => {};
+  // const onVoteDownPress = () => {};
+  // const onVoteUpPress = () => {};
 
   return (
     <View>
       <Animated.View style={[styles.container, style]}>
         <View style={styles.info}>
-          <RoundButton
+          {/* <RoundButton
             Icon={Icon}
             name="thumbs-o-down"
             size={27}
             onPress={onVoteDownPress}
-          />
+          /> */}
           <Text style={[styles.title]} numberOfLines={1}>
-            {title}
+            {radio.name}
           </Text>
-          <RoundButton
+          {/* <RoundButton
             Icon={Icon}
             name="thumbs-o-up"
             size={27}
             onPress={onVoteUpPress}
-          />
+          /> */}
         </View>
 
         <Text style={[styles.description]} numberOfLines={1}>
-          {description}
+          {radio.slogan}
         </Text>
       </Animated.View>
     </View>

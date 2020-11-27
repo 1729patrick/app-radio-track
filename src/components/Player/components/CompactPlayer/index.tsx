@@ -16,30 +16,31 @@ import { PlayerState } from '../../';
 import StyleGuide from '~/utils/StyleGuide';
 import RoundButton from '~/components/Button/Round';
 import { RadioType } from '~/types/Station';
+import { useFavorites } from '~/contexts/FavoriteContext';
 
 type CompactPlayerType = {
   y: Animated.SharedValue<number>;
-  radioIndex?: number;
-  radios?: RadioType[];
   onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
   playing: boolean;
   stopped: boolean;
   buffering: boolean;
   seeking: boolean;
   onTogglePlayback: () => void;
+  radio: RadioType;
 };
 
 const CompactPlayer: React.FC<CompactPlayerType> = ({
   y,
   onExpandPlayer,
-  radioIndex,
-  radios,
   playing,
   stopped,
   buffering,
   seeking,
   onTogglePlayback,
+  radio = {},
 }) => {
+  const { isFavorite, addFavorite, removeFavorite } = useFavorites();
+
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -62,22 +63,6 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
     };
   });
 
-  const title = useMemo(() => {
-    if (!radios || radioIndex === undefined) {
-      return '';
-    }
-
-    return radios[radioIndex]?.name;
-  }, [radios, radioIndex]);
-
-  const description = useMemo(() => {
-    if (!radios || radioIndex === undefined) {
-      return '';
-    }
-
-    return radios[radioIndex]?.slogan;
-  }, [radios, radioIndex]);
-
   return (
     <>
       <Animated.View style={[styles.container, style]}>
@@ -87,22 +72,31 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
           rippleColor={StyleGuide.palette.secondary}>
           <View style={styles.info}>
             <Text style={[styles.title]} numberOfLines={1}>
-              {title}
+              {radio.name}
             </Text>
-            {description && (
+            {radio.description && (
               <Text style={[styles.description]} numberOfLines={1}>
-                {description}
+                {radio.description}
               </Text>
             )}
           </View>
 
           <View style={styles.controls}>
-            <RoundButton
-              name="heart-outline"
-              size={23}
-              onPress={() => {}}
-              Icon={Icon}
-            />
+            {isFavorite(radio) ? (
+              <RoundButton
+                name="heart-sharp"
+                size={25}
+                onPress={() => removeFavorite(radio)}
+                Icon={Icon}
+              />
+            ) : (
+              <RoundButton
+                name="heart-outline"
+                size={25}
+                onPress={() => addFavorite(radio)}
+                Icon={Icon}
+              />
+            )}
 
             <View style={styles.buttonContainer}>
               <BorderlessButton

@@ -11,7 +11,7 @@ export default StyleSheet.create({
     top: 0,
     right: 0,
     left: 0,
-    zIndex: 1,
+    zIndex: 2,
     paddingTop: STATUS_BAR_HEIGHT,
   },
   content: {

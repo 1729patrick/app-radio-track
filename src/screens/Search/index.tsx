@@ -29,7 +29,7 @@ const Search: React.FC<SearchProps> = () => {
 
   const { pop } = useNavigation();
 
-  const { onOpenPlayer } = usePlayer();
+  const { onExpandPlayer } = usePlayer();
 
   const onBackPress = () => {
     pop();
@@ -39,17 +39,17 @@ const Search: React.FC<SearchProps> = () => {
     setSearchTerm('');
   };
 
-  const onOpenPlayerPress = useCallback(
+  const onExpandPlayerPress = useCallback(
     ({ radioIndex }: { radioIndex: number }) => {
       const radio = data?.items[radioIndex];
 
-      onOpenPlayer({
+      onExpandPlayer({
         title: radio?.name || '',
         radios: radio ? [radio] : [],
         radioIndex: 0,
       });
     },
-    [data?.items, onOpenPlayer],
+    [data?.items, onExpandPlayer],
   );
 
   const notFound = useMemo(() => data && !data?.items?.length, [data]);
@@ -57,10 +57,10 @@ const Search: React.FC<SearchProps> = () => {
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
-        <Radio item={item} index={index} onOpenPlayer={onOpenPlayerPress} />
+        <Radio item={item} index={index} onExpandPlayer={onExpandPlayerPress} />
       );
     },
-    [onOpenPlayerPress],
+    [onExpandPlayerPress],
   );
 
   return (

@@ -30,6 +30,7 @@ import Animated, {
   useDerivedValue,
   //@ts-ignore
   runOnJS,
+  Easing,
 } from 'react-native-reanimated';
 
 import Albums, { AlbumsHandler } from './components/Albums';
@@ -72,8 +73,12 @@ type GestureHandlerContext = {
   startY: number;
 };
 
+export type onExpandPlayer = (
+  args: PlayerState & { radioIndex: number },
+) => void;
+
 export type PlayerHandler = {
-  onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
+  onExpandPlayer: onExpandPlayer;
   onCompactPlayer: () => void;
 };
 
@@ -151,10 +156,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         if (translateY.value < height * 0.3) {
           translateY.value = withTiming(SNAP_POINTS[0], {
             duration: TIMING_DURATION,
+            easing: Easing.out(Easing.cubic),
           });
         } else {
           translateY.value = withTiming(SNAP_POINTS[1], {
             duration: TIMING_DURATION,
+            easing: Easing.out(Easing.cubic),
           });
         }
 
@@ -182,7 +189,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         0,
       );
 
-      translateY.value = withTiming(val, { duration: TIMING_DURATION });
+      translateY.value = withTiming(val, {
+        duration: TIMING_DURATION,
+        easing: Easing.out(Easing.cubic),
+      });
     },
   });
 
@@ -339,6 +349,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
           addRadiosToTrackPlayer(restArgs.radios, radioIndex);
         }
 
+        albumsMountedRef.current = false;
         isCorrectRadioRef.current = false;
         radioIndexRef.current = radioIndex;
         radiosRef.current = restArgs.radios;
@@ -347,11 +358,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         setState(restArgs);
 
         setLoading(true);
-        albumsMountedRef.current = false;
       }
 
       translateY.value = withTiming(SNAP_POINTS[0], {
         duration: TIMING_DURATION,
+        easing: Easing.out(Easing.cubic),
       });
     },
     [addRadiosToTrackPlayer, translateY],
@@ -361,6 +372,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     if (SNAP_POINTS[0] === translateY.value) {
       translateY.value = withTiming(SNAP_POINTS[1], {
         duration: TIMING_DURATION,
+        easing: Easing.out(Easing.cubic),
       });
     }
   }, [translateY]);
@@ -397,6 +409,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     } else if (!isCorrectRadioRef.current) {
       isCorrectRadioRef.current = radioIndex === radioIndexRef.current;
 
+      if (isCorrectRadioRef.current) {
+        console.log('loading false');
+        setLoading(false);
+      }
+
       return;
     }
 
@@ -416,7 +433,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const onAlbumsMounted = useCallback(() => {
     albumsMountedRef.current = true;
-    setLoading(false);
   }, []);
 
   const onRemoteDuck = useCallback(
@@ -499,18 +515,18 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             <CompactPlayer
               y={y}
               onExpandPlayer={onExpandPlayer}
-              radioIndex={radioIndex}
-              radios={state.radios}
               playing={playing}
               stopped={stopped}
               buffering={buffering}
               seeking={seeking}
               onTogglePlayback={onTogglePlayback}
+              radio={state.radios[radioIndex]}
             />
             <TopControls
               y={y}
               onCompactPlayer={onCompactPlayer}
               title={state.title}
+              radio={state.radios[radioIndex]}
             />
 
             <Albums
@@ -528,7 +544,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             //   console.log(nativeEvent.layout.height)
             // }
             >
-              <Artist y={y} radioIndex={radioIndex} radios={state.radios} />
+              <Artist y={y} radio={state.radios[radioIndex]} />
               <BottomControls
                 y={y}
                 onNextRadio={onNextRadio}

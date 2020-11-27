@@ -9,20 +9,21 @@ import Radio from './components/Radio';
 import RoundButton from '../Button/Round';
 
 import { RadioType } from '~/types/Station';
+import { useFavorites } from '~/contexts/FavoriteContext';
 
 type RadiosProps = {
   title: string;
-  onOpenPlayer: (args: PlayerState & { radioIndex: number }) => void;
+  onExpandPlayer: (args: PlayerState & { radioIndex: number }) => void;
   radios?: RadioType[];
   showAll?: boolean;
   onShowAll?: (title: string) => void;
-  onEndReached: () => void;
+  onEndReached?: () => void;
 };
 
 const Radios: React.FC<RadiosProps> = ({
   title,
   radios = [],
-  onOpenPlayer,
+  onExpandPlayer,
   showAll,
   onShowAll,
   onEndReached,
@@ -33,13 +34,13 @@ const Radios: React.FC<RadiosProps> = ({
         <Radio
           item={item}
           index={index}
-          onOpenPlayer={({ radioIndex }) =>
-            onOpenPlayer({ title, radios, radioIndex })
+          onExpandPlayer={({ radioIndex }) =>
+            onExpandPlayer({ title, radios, radioIndex })
           }
         />
       );
     },
-    [onOpenPlayer, radios, title],
+    [onExpandPlayer, radios, title],
   );
 
   const onShowAllPress = () => {
@@ -72,8 +73,8 @@ const Radios: React.FC<RadiosProps> = ({
         data={radios}
         keyExtractor={({ id }) => id}
         renderItem={renderItem}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={2}
+        onEndReached={onEndReached && onEndReached}
+        onEndReachedThreshold={4}
       />
     </View>
   );
