@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 
-import { TAB_BAR_HEIGHT } from '~/components/TabBar/constants';
+import { BOTTOM_TAB_BAR_HEIGHT } from '~/components/TabBar/bottom/constants';
 import { COMPACT_HEIGHT } from '~/components/Player/constants';
 
 const { width } = Dimensions.get('window');
@@ -20,7 +20,8 @@ export default StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
     paddingTop: 70,
-    paddingBottom: TAB_BAR_HEIGHT + COMPACT_HEIGHT + StyleGuide.spacing * 0.5,
+    paddingBottom:
+      BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT + StyleGuide.spacing * 0.5,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',

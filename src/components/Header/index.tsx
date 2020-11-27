@@ -45,11 +45,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const styleContainer = useAnimatedStyle(() => {
     return {
-      transform: [
-        {
-          translateY: y.value,
-        },
-      ],
+      marginTop: y.value,
     };
   }, [y.value]);
 

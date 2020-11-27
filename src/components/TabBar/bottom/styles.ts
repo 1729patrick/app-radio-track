@@ -1,16 +1,16 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-import { TAB_BAR_HEIGHT } from './constants';
+import { BOTTOM_TAB_BAR_HEIGHT } from './constants';
 
 const { height } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
-    height: TAB_BAR_HEIGHT,
+    height: BOTTOM_TAB_BAR_HEIGHT,
     backgroundColor: StyleGuide.palette.backgroundPrimary,
     right: 0,
     left: 0,
-    top: height - TAB_BAR_HEIGHT,
+    top: height - BOTTOM_TAB_BAR_HEIGHT,
     zIndex: 60,
     elevation: 60,
     position: 'absolute',

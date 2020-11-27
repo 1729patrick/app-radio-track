@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-import { TAB_BAR_HEIGHT } from '../TabBar/constants';
+import { BOTTOM_TAB_BAR_HEIGHT } from '../TabBar/bottom/constants';
 
 export default StyleSheet.create({
   container: {
@@ -8,7 +8,7 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: TAB_BAR_HEIGHT,
+    paddingBottom: BOTTOM_TAB_BAR_HEIGHT,
     backgroundColor: StyleGuide.palette.background,
     zIndex: 1,
   },

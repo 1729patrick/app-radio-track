@@ -18,7 +18,9 @@ type ScrollHandlerContext = {
   startY: number;
 };
 
-function useAnimatedHeader(): HeaderScroll {
+function useAnimatedHeader(
+  scrollY: Animated.SharedValue<number>,
+): HeaderScroll {
   const translateY = useSharedValue(0);
 
   const scrollHandler = useAnimatedScrollHandler<ScrollHandlerContext>(
@@ -39,6 +41,10 @@ function useAnimatedHeader(): HeaderScroll {
           context.upOffsetY = offsetY;
 
           translateY.value = -context.upTranslateY;
+
+          if (scrollY) {
+            scrollY.value = translateY.value;
+          }
         } else {
           const offsetY = Math.max(event.contentOffset.y, 0);
           const { upOffsetY, upTranslateY } = context;
@@ -49,6 +55,9 @@ function useAnimatedHeader(): HeaderScroll {
           context.downOffsetY = offsetY;
 
           translateY.value = context.downTranslateY;
+          if (scrollY) {
+            scrollY.value = translateY.value;
+          }
         }
 
         context.startY = event.contentOffset.y;

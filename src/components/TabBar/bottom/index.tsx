@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { usePlayer } from '~/contexts/PlayerContext';
-import Player from '../Player';
+import Player from '../../Player';
 
 import StyleGuide from '~/utils/StyleGuide';
 import styles from './styles';
@@ -15,8 +15,8 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { SNAP_POINTS } from '../Player/constants';
-import { TAB_BAR_HEIGHT } from './constants';
+import { SNAP_POINTS } from '../../Player/constants';
+import { BOTTOM_TAB_BAR_HEIGHT } from './constants';
 
 import { ActiveCompass, InactiveCompass } from './Icons/Compass';
 import { ActiveHome, InactiveHome } from './Icons/Home';
@@ -55,7 +55,7 @@ const TabBar: React.FC<TabBarProps> = ({ state, navigation }) => {
           translateY: interpolate(
             translateY.value,
             [SNAP_POINTS[0], SNAP_POINTS[1]],
-            [TAB_BAR_HEIGHT, 0],
+            [BOTTOM_TAB_BAR_HEIGHT, 0],
             Extrapolate.CLAMP,
           ),
         },

@@ -9,7 +9,7 @@ import {
 import Home from '~/screens/Home';
 import Explore from '~/screens/Explore';
 
-import TabBar from '~/components/TabBar';
+import TabBar from '~/components/TabBar/bottom';
 import Playlist from '~/screens/Playlist';
 import Search from '~/screens/Search';
 import Library from '~/screens/Library';
