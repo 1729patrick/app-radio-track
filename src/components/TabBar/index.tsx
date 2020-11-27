@@ -20,6 +20,7 @@ import { TAB_BAR_HEIGHT } from './constants';
 
 import { ActiveCompass, InactiveCompass } from './Icons/Compass';
 import { ActiveHome, InactiveHome } from './Icons/Home';
+import { ActiveLibrary, InactiveLibrary } from './Icons/Library';
 
 const TABS = [
   {
@@ -33,6 +34,12 @@ const TABS = [
     title: 'Explorar',
     InactiveIcon: InactiveCompass,
     ActiveIcon: ActiveCompass,
+  },
+  {
+    name: 'Library',
+    title: 'Biblioteca',
+    InactiveIcon: InactiveLibrary,
+    ActiveIcon: ActiveLibrary,
   },
 ];
 

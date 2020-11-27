@@ -5,16 +5,16 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
+
 import Home from '~/screens/Home';
 import Explore from '~/screens/Explore';
 
 import TabBar from '~/components/TabBar';
 import Playlist from '~/screens/Playlist';
 import Search from '~/screens/Search';
+import Library from '~/screens/Library';
 
 const Tab = createBottomTabNavigator();
-
-const HomeStack = createStackNavigator();
 
 const config = {
   animation: 'spring',
@@ -35,6 +35,8 @@ const options = {
     close: config,
   },
 };
+
+const HomeStack = createStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -61,6 +63,17 @@ function ExploreStackScreen() {
   );
 }
 
+const LibraryStack = createStackNavigator();
+
+function LibraryStackScreen() {
+  return (
+    <LibraryStack.Navigator headerMode="none">
+      <LibraryStack.Screen name="Library" component={Library} />
+      <LibraryStack.Screen name="Search" component={Search} options={options} />
+    </LibraryStack.Navigator>
+  );
+}
+
 const theme = {
   dark: true,
   colors: {
@@ -79,6 +92,7 @@ const Routes = () => {
       <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
         <Tab.Screen name="Home" component={HomeStackScreen} />
         <Tab.Screen name="Explore" component={ExploreStackScreen} />
+        <Tab.Screen name="Library" component={LibraryStackScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
