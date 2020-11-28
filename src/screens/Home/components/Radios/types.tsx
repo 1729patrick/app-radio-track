@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useFavorites } from '~/contexts/FavoriteContext';
 import { useFetchPagination } from '~/hooks/useFetchPagination';
 import Radios from '.';
-import { onExpandPlayer } from '../Player';
+import { onExpandPlayer } from '~/components/Player';
 
 type FavoritesRadiosProps = {
   onExpandPlayer: onExpandPlayer;

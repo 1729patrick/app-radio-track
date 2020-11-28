@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import Animated, {
   Extrapolate,
@@ -90,4 +90,4 @@ const Header: React.FC<HeaderProps> = ({
   );
 };
 
-export default Header;
+export default memo(Header);

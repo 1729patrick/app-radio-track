@@ -1,19 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-import { FlatList, RectButton, ScrollView } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
-import MdIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RoundButton from '~/components/Button/Round';
 import { usePlayer } from '~/contexts/PlayerContext';
 import { useFetch } from '~/hooks/useFetch';
-import radios from '~/services/radios';
 import { FetchWithPagination } from '~/types/Fetch';
 import StyleGuide from '~/utils/StyleGuide';
-import Radio from '../Playlist/components/Radio';
+import Radio from '~/components/Radio/Item';
 
 import styles from './styles';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type SearchProps = {
   onCloseSearch: () => void;
@@ -27,7 +26,7 @@ const Search: React.FC<SearchProps> = () => {
       : null,
   );
 
-  const { pop } = useNavigation();
+  const { pop } = useNavigation<StackNavigationProp<{}>>();
 
   const { onExpandPlayer } = usePlayer();
 

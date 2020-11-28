@@ -3,7 +3,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
@@ -23,20 +22,23 @@ export const HistoryProvider: React.FC = ({ children }) => {
   const [history, setHistory] = useState<RadioType[]>([]);
   const { getItem, setItem } = useAsyncStorage('@radios:history');
 
-  const addHistory = (radio: RadioType) => {
-    setTimeout(() => {
-      setHistory((history) => {
-        if (history.find((h) => h.id === radio.id)) {
-          return history;
-        }
+  const addHistory = useCallback(
+    (radio: RadioType) => {
+      setTimeout(() => {
+        setHistory((history) => {
+          if (history.find((h) => h.id === radio.id)) {
+            return history;
+          }
 
-        const newHistory = [radio, ...history];
-        setItem(JSON.stringify(newHistory));
+          const newHistory = [radio, ...history];
+          setItem(JSON.stringify(newHistory));
 
-        return newHistory;
-      });
-    }, 1000);
-  };
+          return newHistory;
+        });
+      }, 1000);
+    },
+    [setItem],
+  );
 
   const readHistoryFromStorage = useCallback(async () => {
     const historyFromStorage = await getItem();

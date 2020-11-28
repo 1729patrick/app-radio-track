@@ -10,7 +10,7 @@ import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import StyleGuide from '~/utils/StyleGuide';
 import { FlatList } from 'react-native-gesture-handler';
-import Radio from './components/Radio';
+import Radio from '~/components/Radio/Item';
 import { useFetchPagination } from '~/hooks/useFetchPagination';
 import Loader from '~/components/Loader';
 

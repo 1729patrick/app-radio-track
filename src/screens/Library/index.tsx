@@ -3,22 +3,16 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import StyleGuide from '~/utils/StyleGuide';
 import Header from '~/components/Header';
-import {
-  HEADER_HEIGHT,
-  STATUS_BAR_HEIGHT,
-} from '~/components/Header/constants';
 
 import Favorites from './components/Favorites';
 import {
-  useDerivedValue,
   useSharedValue,
   //@ts-ignore
-  runOnJS,
 } from 'react-native-reanimated';
-import TabBar from '~/components/TabBar/top';
+import TabBar from '~/components/TabBar/Top';
 import Loader from '~/components/Loader';
 import History from './components/History';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import { RadioType } from '~/types/Station';
 
 const LibraryTab = createMaterialTopTabNavigator();
@@ -28,31 +22,24 @@ const Library = () => {
   const historyRef = useRef<FlatList<RadioType>>(null);
   const favoritesRef = useRef<FlatList<RadioType>>(null);
 
-  const refreshTranslateY = useCallback(
-    (from) => {
-      const offset = Math.max(Math.abs(translateY.value), 0);
-
-      return;
-
-      if (!offset || isNaN(offset)) {
-        return;
-      }
-
-      if (from !== 'history') {
-        historyRef.current?.scrollToOffset({
-          offset,
-          animated: false,
-        });
-      }
-      if (from !== 'favorites') {
-        favoritesRef.current?.scrollToOffset({
-          offset,
-          animated: false,
-        });
-      }
-    },
-    [translateY.value],
-  );
+  const refreshTranslateY = useCallback((from) => {
+    // const offset = Math.max(Math.abs(translateY.value), 0);
+    // if (!offset || isNaN(offset)) {
+    //   return;
+    // }
+    // if (from !== 'history') {
+    //   historyRef.current?.scrollToOffset({
+    //     offset,
+    //     animated: false,
+    //   });
+    // }
+    // if (from !== 'favorites') {
+    //   favoritesRef.current?.scrollToOffset({
+    //     offset,
+    //     animated: false,
+    //   });
+    // }
+  }, []);
 
   const FavoritesWithScrollHandler = useMemo(() => {
     return () => (

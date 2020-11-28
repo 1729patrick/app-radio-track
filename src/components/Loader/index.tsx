@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { ActivityIndicator, Platform, View } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 import styles from './styles';
 
+//@ts-ignore
 const size = Platform.select({ ios: 'large', android: 50 });
 
 const Loader = () => {
@@ -13,4 +14,4 @@ const Loader = () => {
   );
 };
 
-export default Loader;
+export default memo(Loader);

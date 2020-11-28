@@ -26,23 +26,34 @@ export const FavoriteProvider: React.FC = ({ children }) => {
   const [favorites, setFavorites] = useState<RadioType[]>([]);
   const { getItem, setItem } = useAsyncStorage('@playlists:favorites');
 
-  const addFavorite = (favorite: RadioType) => {
-    const newFavorites = [...favorites, favorite];
-    setFavorites(newFavorites);
+  const addFavorite = useCallback(
+    (favorite: RadioType) => {
+      const newFavorites = [favorite, ...favorites];
+      setFavorites(newFavorites);
 
-    setItem(JSON.stringify(newFavorites));
-  };
+      setItem(JSON.stringify(newFavorites));
+    },
+    [favorites, setItem],
+  );
 
-  const removeFavorite = (favorite: RadioType) => {
-    const newFavorites = favorites.filter((radio) => radio.id !== favorite.id);
-    setFavorites(newFavorites);
+  const removeFavorite = useCallback(
+    (favorite: RadioType) => {
+      const newFavorites = favorites.filter(
+        (radio) => radio.id !== favorite.id,
+      );
+      setFavorites(newFavorites);
 
-    setItem(JSON.stringify(newFavorites));
-  };
+      setItem(JSON.stringify(newFavorites));
+    },
+    [favorites, setItem],
+  );
 
-  const isFavorite = (favorite: RadioType): boolean => {
-    return !!favorites.find((radio) => radio.id === favorite.id);
-  };
+  const isFavorite = useCallback(
+    (favorite: RadioType): boolean => {
+      return !!favorites.find((radio) => radio.id === favorite.id);
+    },
+    [favorites],
+  );
 
   const readFavoritesFromStorage = useCallback(async () => {
     const favoritesFromStorage = await getItem();

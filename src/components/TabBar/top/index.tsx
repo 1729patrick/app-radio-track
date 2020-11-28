@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useRef, useState } from 'react';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -147,4 +147,4 @@ const TabBar: React.FC<TabBarProps & MaterialTopTabBarProps> = ({
   );
 };
 
-export default TabBar;
+export default memo(TabBar);

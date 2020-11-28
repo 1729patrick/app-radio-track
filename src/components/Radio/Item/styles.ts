@@ -1,17 +1,17 @@
 import { StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-const CARD_SIZE = 47;
+import { IMAGE_SIZE, ITEM_HEIGHT } from './constants';
 
 export default StyleSheet.create({
   container: {
-    height: 65,
+    height: ITEM_HEIGHT,
     paddingHorizontal: StyleGuide.spacing * 2,
     flexDirection: 'row',
     alignItems: 'center',
   },
   image: {
-    height: CARD_SIZE,
-    width: CARD_SIZE,
+    height: IMAGE_SIZE,
+    width: IMAGE_SIZE,
     borderRadius: 4,
     backgroundColor: StyleGuide.palette.backgroundPrimary,
   },
@@ -24,5 +24,10 @@ export default StyleSheet.create({
   description: {
     ...StyleGuide.typography.subhead,
     color: StyleGuide.palette.secondary,
+  },
+  playing: {
+    marginLeft: 'auto',
+    width: 30,
+    height: 30,
   },
 });

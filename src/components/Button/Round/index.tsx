@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import StyleGuide from '~/utils/StyleGuide';
 
@@ -38,4 +38,4 @@ const RoundButton: React.FC<RoundButtonProp> = ({
   );
 };
 
-export default RoundButton;
+export default memo(RoundButton);

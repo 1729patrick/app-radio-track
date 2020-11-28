@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-import { CARD_SIZE } from '../../constants';
+import { CARD_SIZE } from '~/components/Radio/Card/constants';
 
 export default StyleSheet.create({
   card: {
@@ -22,5 +22,16 @@ export default StyleSheet.create({
   description: {
     ...StyleGuide.typography.subhead,
     color: StyleGuide.palette.secondary,
+  },
+  playingContainer: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 2,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  playing: {
+    width: 50,
+    height: 50,
   },
 });

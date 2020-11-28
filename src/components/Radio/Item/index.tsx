@@ -6,10 +6,12 @@ import FastImage from 'react-native-fast-image';
 import StyleGuide from '~/utils/StyleGuide';
 import { RectButton } from 'react-native-gesture-handler';
 import RoundButton from '~/components/Button/Round';
+import LottieView from 'lottie-react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { RadioType } from '~/types/Station';
 import { image } from '~/services/api';
+import { usePlaying } from '~/contexts/PlayingContext';
 
 type RadioProps = {
   item: RadioType;
@@ -18,6 +20,7 @@ type RadioProps = {
 };
 
 const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
+  const { radioId } = usePlaying();
   const onRadioPress = () => {
     onExpandPlayer({ radioIndex: index });
   };
@@ -45,12 +48,22 @@ const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
         </Text>
       </View>
 
-      <RoundButton
-        Icon={Icon}
-        name="ios-play-circle-outline"
-        size={27}
-        onPress={onRadioPress}
-      />
+      {radioId === item.id ? (
+        <LottieView
+          source={require('~/assets/playing.json')}
+          autoPlay
+          loop
+          style={styles.playing}
+          speed={1}
+        />
+      ) : (
+        <RoundButton
+          Icon={Icon}
+          name="ios-play-circle-outline"
+          size={27}
+          onPress={onRadioPress}
+        />
+      )}
     </RectButton>
   );
 };

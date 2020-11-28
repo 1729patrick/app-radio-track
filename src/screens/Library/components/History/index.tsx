@@ -1,32 +1,24 @@
-import React, { useCallback, useRef, forwardRef, useEffect } from 'react';
+import React, { useCallback, forwardRef } from 'react';
 import { FlatList } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useDerivedValue,
-  //@ts-ignore
-  runOnJS,
-} from 'react-native-reanimated';
-import { useFavorites } from '~/contexts/FavoriteContext';
+import Animated from 'react-native-reanimated';
 import { usePlayer } from '~/contexts/PlayerContext';
-import Radio from '~/screens/Playlist/components/Radio';
+import Radio from '~/components/Radio/Item';
 
 import styles from './styles';
 
-import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 import { useHistory } from '~/contexts/HistoryContext';
+import { RadioType } from '~/types/Station';
 
 type HistoryProps = {
-  translateY: Animated.SharedValue<number>;
   refreshTranslateY: (from: string) => void;
 };
 
 Animated.FlatList = Animated.createAnimatedComponent(FlatList);
 
-const History: React.FC<HistoryProps> = (
-  { translateY, refreshTranslateY },
-  ref,
-) => {
-  const { scrollHandler } = useAnimatedHeader(translateY);
+const History: React.ForwardRefRenderFunction<
+  FlatList<RadioType>,
+  HistoryProps
+> = ({ refreshTranslateY }, ref) => {
   const { onExpandPlayer } = usePlayer();
   const { history } = useHistory();
 
@@ -62,7 +54,6 @@ const History: React.FC<HistoryProps> = (
       data={history}
       keyExtractor={({ id }) => `${id}`}
       renderItem={renderItem}
-      // onScroll={scrollHandler}
       onEndReachedThreshold={4}
       onScrollEndDrag={() => refreshTranslateY('history')}
     />

@@ -1,15 +1,14 @@
 import React, { useCallback } from 'react';
 import { Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { PlayerState } from '../Player';
+import { PlayerState } from '~/components/Player';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import Radio from './components/Radio';
-import RoundButton from '../Button/Round';
+import Radio from '~/components/Radio/Card';
+import RoundButton from '~/components/Button/Round';
 
 import { RadioType } from '~/types/Station';
-import { useFavorites } from '~/contexts/FavoriteContext';
 
 type RadiosProps = {
   title: string;

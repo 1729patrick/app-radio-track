@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef } from 'react';
+import React, { createContext, useCallback, useContext, useRef } from 'react';
 import Animated, { useSharedValue } from 'react-native-reanimated';
 import { PlayerHandler, PlayerState } from '~/components/Player';
 
@@ -19,9 +19,12 @@ export const PlayerProvider: React.FC = ({ children }) => {
   const translateY = useSharedValue(SNAP_POINTS[2]);
   const playerRef = useRef<PlayerHandler>(null);
 
-  const onExpandPlayer = (args: PlayerState & { radioIndex: number }) => {
-    playerRef.current?.onExpandPlayer(args);
-  };
+  const onExpandPlayer = useCallback(
+    (args: PlayerState & { radioIndex: number }) => {
+      playerRef.current?.onExpandPlayer(args);
+    },
+    [],
+  );
 
   return (
     <PlayerContext.Provider value={{ onExpandPlayer, playerRef, translateY }}>

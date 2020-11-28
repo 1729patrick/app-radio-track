@@ -9,8 +9,8 @@ import {
 import Home from '~/screens/Home';
 import Explore from '~/screens/Explore';
 
-import TabBar from '~/components/TabBar/bottom';
-import Playlist from '~/screens/Playlist';
+import TabBar from '~/components/TabBar/Bottom';
+import Playlist from '~/screens/Explore/pages/Playlist';
 import Search from '~/screens/Search';
 import Library from '~/screens/Library';
 

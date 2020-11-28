@@ -17,7 +17,7 @@ import {
   LocationRadios,
   PopularRadios,
   RecommendRadios,
-} from '~/components/Radios/types';
+} from './components/Radios/types';
 
 const Home: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();

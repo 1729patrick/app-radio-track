@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text } from 'react-native';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Player from '../../Player';
@@ -101,4 +101,4 @@ const TabBar: React.FC<TabBarProps> = ({ state, navigation }) => {
   );
 };
 
-export default TabBar;
+export default memo(TabBar);
