@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -61,6 +61,50 @@ const TabBar: React.FC<TabBarProps & MaterialTopTabBarProps> = ({
     extrapolate: Extrapolate.CLAMP,
   });
 
+  const onLayout = useCallback(
+    ({ nativeEvent }: LayoutChangeEvent, index: number) => {
+      const { width, x } = nativeEvent.layout;
+
+      const widthFormatted = width - StyleGuide.spacing * 2;
+      const xFormatted = x + StyleGuide.spacing;
+
+      tabPositionRef.current[index] = {
+        width: widthFormatted,
+        x: xFormatted,
+      };
+
+      if (tabPositionRef.current.length === state.routes.length) {
+        setTabsPosition(tabPositionRef.current);
+      }
+    },
+    [state.routes.length],
+  );
+
+  const onLongPress = useCallback(
+    (target) => {
+      navigation.emit({
+        target,
+        type: 'tabLongPress',
+      });
+    },
+    [navigation],
+  );
+
+  const onPress = useCallback(
+    (target, name, isFocused) => {
+      const event = navigation.emit({
+        target,
+        type: 'tabPress',
+        canPreventDefault: true,
+      });
+
+      if (!isFocused && !event.defaultPrevented) {
+        navigation.navigate(name);
+      }
+    },
+    [navigation],
+  );
+
   return (
     <Animated.View style={[styles.container, styleContainer]}>
       <Animated.View
@@ -69,49 +113,8 @@ const TabBar: React.FC<TabBarProps & MaterialTopTabBarProps> = ({
 
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
 
         const isFocused = state.index === index;
-
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
-
-        const onLayout = ({ nativeEvent }: LayoutChangeEvent) => {
-          const { width, x } = nativeEvent.layout;
-
-          const widthFormatted = width - StyleGuide.spacing * 2;
-          const xFormatted = x + StyleGuide.spacing;
-
-          tabPositionRef.current[index] = {
-            width: widthFormatted,
-            x: xFormatted,
-          };
-
-          if (tabPositionRef.current.length === state.routes.length) {
-            setTabsPosition(tabPositionRef.current);
-          }
-        };
 
         const color = Animated.interpolateColors(position, {
           inputRange,
@@ -124,17 +127,18 @@ const TabBar: React.FC<TabBarProps & MaterialTopTabBarProps> = ({
 
         return (
           <TouchableOpacity
+            activeOpacity={1}
             key={route.key}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
+            onPress={() => onPress(route.key, route.name, isFocused)}
+            onLongPress={() => onLongPress(route.key)}
             style={styles.tab}
-            onLayout={onLayout}>
+            onLayout={(props) => onLayout(props, index)}>
             <Animated.Text style={[styles.title, { color }]}>
-              {label}
+              {options.title}
             </Animated.Text>
           </TouchableOpacity>
         );

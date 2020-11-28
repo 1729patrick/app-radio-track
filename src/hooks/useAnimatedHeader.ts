@@ -19,7 +19,7 @@ type ScrollHandlerContext = {
 };
 
 function useAnimatedHeader(
-  scrollY: Animated.SharedValue<number>,
+  scrollY?: Animated.SharedValue<number>,
 ): HeaderScroll {
   const translateY = useSharedValue(0);
 

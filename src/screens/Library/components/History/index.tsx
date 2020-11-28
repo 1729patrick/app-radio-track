@@ -13,6 +13,7 @@ import Radio from '~/screens/Playlist/components/Radio';
 import styles from './styles';
 
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
+import { useHistory } from '~/contexts/HistoryContext';
 
 type HistoryProps = {
   translateY: Animated.SharedValue<number>;
@@ -21,23 +22,23 @@ type HistoryProps = {
 
 Animated.FlatList = Animated.createAnimatedComponent(FlatList);
 
-const Favorites: React.FC<HistoryProps> = (
+const History: React.FC<HistoryProps> = (
   { translateY, refreshTranslateY },
   ref,
 ) => {
   const { scrollHandler } = useAnimatedHeader(translateY);
   const { onExpandPlayer } = usePlayer();
-  const { favorites } = useFavorites();
+  const { history } = useHistory();
 
   const onExpandPlayerPress = useCallback(
     ({ radioIndex }: { radioIndex: number }) => {
       onExpandPlayer({
-        title: 'Favoritos',
-        radios: favorites,
+        title: 'Histórico',
+        radios: history,
         radioIndex,
       });
     },
-    [onExpandPlayer, favorites],
+    [onExpandPlayer, history],
   );
 
   const renderItem = useCallback(
@@ -58,14 +59,14 @@ const Favorites: React.FC<HistoryProps> = (
       initialNumToRender={12}
       contentContainerStyle={[styles.contentContainer]}
       showsVerticalScrollIndicator={false}
-      data={favorites}
+      data={history}
       keyExtractor={({ id }) => `${id}`}
       renderItem={renderItem}
       // onScroll={scrollHandler}
       onEndReachedThreshold={4}
-      onScrollEndDrag={() => refreshTranslateY('favorites')}
+      onScrollEndDrag={() => refreshTranslateY('history')}
     />
   );
 };
 
-export default forwardRef(Favorites);
+export default forwardRef(History);

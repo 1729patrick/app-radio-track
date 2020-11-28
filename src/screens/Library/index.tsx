@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import StyleGuide from '~/utils/StyleGuide';
@@ -9,17 +9,70 @@ import {
 } from '~/components/Header/constants';
 
 import Favorites from './components/Favorites';
-import { useSharedValue } from 'react-native-reanimated';
+import {
+  useDerivedValue,
+  useSharedValue,
+  //@ts-ignore
+  runOnJS,
+} from 'react-native-reanimated';
 import TabBar from '~/components/TabBar/top';
+import Loader from '~/components/Loader';
+import History from './components/History';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { RadioType } from '~/types/Station';
 
 const LibraryTab = createMaterialTopTabNavigator();
 
 const Library = () => {
   const translateY = useSharedValue(0);
+  const historyRef = useRef<FlatList<RadioType>>(null);
+  const favoritesRef = useRef<FlatList<RadioType>>(null);
+
+  const refreshTranslateY = useCallback(
+    (from) => {
+      const offset = Math.max(Math.abs(translateY.value), 0);
+
+      return;
+
+      if (!offset || isNaN(offset)) {
+        return;
+      }
+
+      if (from !== 'history') {
+        historyRef.current?.scrollToOffset({
+          offset,
+          animated: false,
+        });
+      }
+      if (from !== 'favorites') {
+        favoritesRef.current?.scrollToOffset({
+          offset,
+          animated: false,
+        });
+      }
+    },
+    [translateY.value],
+  );
 
   const FavoritesWithScrollHandler = useMemo(() => {
-    return () => <Favorites translateY={translateY} />;
-  }, []);
+    return () => (
+      <Favorites
+        translateY={translateY}
+        ref={favoritesRef}
+        refreshTranslateY={refreshTranslateY}
+      />
+    );
+  }, [refreshTranslateY, translateY]);
+
+  const HistoryWithScrollHandler = useMemo(() => {
+    return () => (
+      <History
+        translateY={translateY}
+        ref={historyRef}
+        refreshTranslateY={refreshTranslateY}
+      />
+    );
+  }, [refreshTranslateY, translateY]);
 
   return (
     <>
@@ -29,21 +82,10 @@ const Library = () => {
         backgroundColor={StyleGuide.palette.backgroundPrimary}
       />
       <LibraryTab.Navigator
-        tabBar={(props) => <TabBar {...props} translateY={translateY} />}
-        // tabBarOptions={{
-        //   activeTintColor: StyleGuide.palette.primary,
-        //   inactiveTintColor: StyleGuide.palette.secondary,
-        //   labelStyle: {
-        //     ...StyleGuide.typography.tabBarLabel,
-        //   },
-        //   indicatorStyle: { backgroundColor: StyleGuide.palette.primary },
-        //   tabStyle: { alignItems: 'flex-start' },
-        //   style: {
-        //     marginTop: HEADER_HEIGHT + STATUS_BAR_HEIGHT,
-        //     backgroundColor: StyleGuide.palette.backgroundPrimary,
-        //   },
-        // }}
-      >
+        lazy
+        lazyPlaceholder={Loader}
+        springVelocityScale={1}
+        tabBar={(props) => <TabBar {...props} translateY={translateY} />}>
         <LibraryTab.Screen
           name="Favorites"
           component={FavoritesWithScrollHandler}
@@ -51,7 +93,7 @@ const Library = () => {
         />
         <LibraryTab.Screen
           name="History"
-          component={FavoritesWithScrollHandler}
+          component={HistoryWithScrollHandler}
           options={{ title: 'Histórico' }}
         />
       </LibraryTab.Navigator>

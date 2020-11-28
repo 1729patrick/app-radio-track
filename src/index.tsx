@@ -2,13 +2,16 @@ import React from 'react';
 import App from './App';
 import { PlayerProvider } from './contexts/PlayerContext';
 import { FavoriteProvider } from './contexts/FavoriteContext';
+import { HistoryProvider } from './contexts/HistoryContext';
 
 export default () => {
   return (
     <FavoriteProvider>
-      <PlayerProvider>
-        <App />
-      </PlayerProvider>
+      <HistoryProvider>
+        <PlayerProvider>
+          <App />
+        </PlayerProvider>
+      </HistoryProvider>
     </FavoriteProvider>
   );
 };

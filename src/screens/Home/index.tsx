@@ -53,17 +53,6 @@ const Home: React.FC = () => {
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
-        {/* <Radios
-          title="Ouvidas recentemente"
-          radios={[
-            stations[0],
-            stations[1],
-            stations[2],
-            stations[3],
-            stations[4],
-          ]}
-          onExpandPlayer={onExpandPlayer}
-        /> */}
         <FavoriteRadios
           onExpandPlayer={onExpandPlayer}
           toggleLoading={toggleLoading}

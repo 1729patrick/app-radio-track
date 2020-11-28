@@ -53,6 +53,7 @@ import { usePlayer } from '~/contexts/PlayerContext';
 import { RadioType } from '~/types/Station';
 import { image } from '~/services/api';
 import StyleGuide from '~/utils/StyleGuide';
+import { useHistory } from '~/contexts/HistoryContext';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -91,6 +92,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const { translateY } = usePlayer();
   const playbackState = usePlaybackState();
   const playbackStatePrevious = usePrevious(playbackState);
+
+  const { addHistory } = useHistory();
 
   const [state, setState] = useState<PlayerState>({
     title: '',
@@ -244,10 +247,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     return playbackState === TrackPlayer.STATE_BUFFERING;
   }, [playbackState]);
 
-  const playTrackPlayer = async () => {
+  const playTrackPlayer = useCallback(async () => {
     await TrackPlayer.seekTo(24 * 60 * 60);
     TrackPlayer.play();
-  };
+
+    addHistory(radiosRef.current[radioIndexRef.current]);
+  }, [addHistory]);
 
   const stopTrackPlayer = () => {
     TrackPlayer.stop();
@@ -256,11 +261,15 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const nextTrackPlayer = async () => {
     await TrackPlayer.skipToNext();
     TrackPlayer.play();
+
+    addHistory(radiosRef.current[radioIndexRef.current]);
   };
 
   const previousTrackPlayer = async () => {
     await TrackPlayer.skipToPrevious();
     TrackPlayer.play();
+
+    addHistory(radiosRef.current[radioIndexRef.current]);
   };
 
   const pauseTrackPlayer = () => {
@@ -337,7 +346,13 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     } else {
       pauseTrackPlayer();
     }
-  }, [addRadiosToTrackPlayer, playbackState, radioIndex, state.radios]);
+  }, [
+    addRadiosToTrackPlayer,
+    playTrackPlayer,
+    playbackState,
+    radioIndex,
+    state.radios,
+  ]);
 
   const onExpandPlayer = useCallback(
     (args?: PlayerState & { radioIndex: number }) => {
@@ -358,6 +373,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         setState(restArgs);
 
         setLoading(true);
+
+        addHistory(restArgs.radios[radioIndex]);
       }
 
       translateY.value = withTiming(SNAP_POINTS[0], {
@@ -365,7 +382,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         easing: Easing.out(Easing.cubic),
       });
     },
-    [addRadiosToTrackPlayer, translateY],
+    [addHistory, addRadiosToTrackPlayer, translateY],
   );
 
   const onCompactPlayer = useCallback(() => {
@@ -410,7 +427,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       isCorrectRadioRef.current = radioIndex === radioIndexRef.current;
 
       if (isCorrectRadioRef.current) {
-        console.log('loading false');
         setLoading(false);
       }
 
@@ -444,7 +460,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       pauseTrackPlayer();
     },
-    [],
+    [playTrackPlayer],
   );
 
   useTrackPlayerEvents(
