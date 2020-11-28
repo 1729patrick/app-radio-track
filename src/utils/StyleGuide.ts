@@ -1,9 +1,28 @@
 // AirbnbCerealApp-Light
-// AirbnbCerealApp-Book
-// AirbnbCerealApp-Medium
+// Montserrat-Medium
+// Montserrat-SemiBold
 // AirbnbCerealApp-Bold
-// AirbnbCerealApp-ExtraBold
+// Montserrat-Bold
 // AirbnbCerealApp-Black
+
+// <string>Montserrat-Black.ttf</string>
+// <string>Montserrat-BlackItalic.ttf</string>
+// <string>Montserrat-Bold.ttf</string>
+// <string>Montserrat-BoldItalic.ttf</string>
+// <string>Montserrat-ExtraBold.ttf</string>
+// <string>Montserrat-ExtraBoldItalic.ttf</string>
+// <string>Montserrat-ExtraLight.ttf</string>
+// <string>Montserrat-ExtraLightItalic.ttf</string>
+// <string>Montserrat-Italic.ttf</string>
+// <string>Montserrat-Light.ttf</string>
+// <string>Montserrat-LightItalic.ttf</string>
+// <string>Montserrat-Medium.ttf</string>
+// <string>Montserrat-MediumItalic.ttf</string>
+// <string>Montserrat-Regu1lar.ttf</string>
+// <string>Montserrat-SemiBold.ttf</string>
+// <string>Montserrat-SemiBoldItalic.ttf</string>
+// <string>Montserrat-Thin.ttf</string>
+// <string>Montserrat-ThinItalic.ttf</string>
 
 // #6d6e7c
 const StyleGuide = {
@@ -24,46 +43,44 @@ const StyleGuide = {
     callout: {
       fontSize: 15,
       // lineHeight: 20,
-      fontFamily: 'AirbnbCerealApp-Book',
+      fontFamily: 'Montserrat-Medium',
     },
     caption: {
-      fontFamily: 'AirbnbCerealApp-Book',
+      fontFamily: 'Montserrat-Medium',
       fontSize: 17,
-      lineHeight: 22,
     },
     headline: {
       fontSize: 17,
       // lineHeight: 22,
-      fontFamily: 'AirbnbCerealApp-Medium',
-      letterSpacing: 0.21,
+      fontFamily: 'Montserrat-SemiBold',
     },
     subhead: {
       fontSize: 15,
       // lineHeight: 20,
-      fontFamily: 'AirbnbCerealApp-Book',
+      fontFamily: 'Montserrat-Medium',
       letterSpacing: -0.11,
     },
     title1: {
-      fontFamily: 'AirbnbCerealApp-ExtraBold',
+      fontFamily: 'Montserrat-Bold',
       fontSize: 24,
       // lineHeight: 41,
       letterSpacing: 0.21,
     },
     title2: {
-      fontFamily: 'AirbnbCerealApp-ExtraBold',
+      fontFamily: 'Montserrat-Bold',
       fontSize: 20,
       // lineHeight: 22,
       letterSpacing: 0.21,
     },
     title3: {
-      fontFamily: 'AirbnbCerealApp-Book',
+      fontFamily: 'Montserrat-Medium',
       fontSize: 16,
       // lineHeight: 22,
       letterSpacing: 0.21,
     },
     tabBarLabel: {
       fontSize: 13,
-      fontFamily: 'AirbnbCerealApp-Medium',
+      fontFamily: 'Montserrat-SemiBold',
     },
   },
 };

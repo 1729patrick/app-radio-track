@@ -15,7 +15,7 @@ export default StyleSheet.create({
     paddingHorizontal: StyleGuide.spacing * 2,
   },
   input: {
-    ...StyleGuide.typography.headline,
+    ...StyleGuide.typography.caption,
     flex: 1,
     paddingLeft: StyleGuide.spacing * 2,
     color: StyleGuide.palette.primary,

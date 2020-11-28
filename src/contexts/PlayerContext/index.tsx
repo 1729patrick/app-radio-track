@@ -1,10 +1,14 @@
 import React, { createContext, useCallback, useContext, useRef } from 'react';
 import Animated, { useSharedValue } from 'react-native-reanimated';
-import { PlayerHandler, PlayerState } from '~/components/Player';
+import {
+  onExpandPlayer,
+  PlayerHandler,
+  PlayerState,
+} from '~/components/Player';
 
 import { SNAP_POINTS } from '~/components/Player/constants';
 type ContextProps = {
-  onExpandPlayer: (args: PlayerState & { radioIndex: number }) => void;
+  onExpandPlayer: onExpandPlayer;
   playerRef: any;
   translateY: Animated.SharedValue<number> | { value: 0 };
 };
@@ -20,7 +24,9 @@ export const PlayerProvider: React.FC = ({ children }) => {
   const playerRef = useRef<PlayerHandler>(null);
 
   const onExpandPlayer = useCallback(
-    (args: PlayerState & { radioIndex: number }) => {
+    (
+      args: PlayerState & { radioIndex: number; size: 'expand' | 'compact' },
+    ) => {
       playerRef.current?.onExpandPlayer(args);
     },
     [],

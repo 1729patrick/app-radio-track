@@ -76,12 +76,12 @@ type GestureHandlerContext = {
 };
 
 export type onExpandPlayer = (
-  args: PlayerState & { radioIndex: number },
+  args: PlayerState & { radioIndex: number; size: 'expand' | 'compact' },
 ) => void;
 
 export type PlayerHandler = {
   onExpandPlayer: onExpandPlayer;
-  onCompactPlayer: () => void;
+  onCompactPlayer: (radio: any) => void;
 };
 
 type PlayerProps = {};
@@ -258,12 +258,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     await TrackPlayer.stop();
   };
 
-  const nextTrackPlayer = async () => {
+  const nextTrackPlayer = useCallback(async () => {
     await TrackPlayer.skipToNext();
     await TrackPlayer.play();
 
     addHistory(radiosRef.current[radioIndexRef.current]);
-  };
+  }, [addHistory]);
 
   const previousTrackPlayer = async () => {
     await TrackPlayer.skipToPrevious();
@@ -358,7 +358,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   ]);
 
   const onExpandPlayer = useCallback(
-    (args?: PlayerState & { radioIndex: number }) => {
+    (
+      args?: PlayerState & {
+        radioIndex: number;
+        size?: 'expand' | 'compact';
+      },
+    ) => {
       if (args) {
         const { radioIndex, ...restArgs } = args;
         setBackgroundColor(restArgs.radios, radioIndex, true);
@@ -378,15 +383,23 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         setLoading(true);
       }
 
-      translateY.value = withTiming(SNAP_POINTS[0], {
-        duration: TIMING_DURATION,
-        easing: Easing.out(Easing.circle),
-      });
+      const size = args?.size || 'expand';
+      if (size === 'expand') {
+        translateY.value = withTiming(SNAP_POINTS[0], {
+          duration: TIMING_DURATION,
+          easing: Easing.out(Easing.circle),
+        });
+      } else {
+        translateY.value = withTiming(SNAP_POINTS[1], {
+          duration: TIMING_DURATION,
+          easing: Easing.out(Easing.circle),
+        });
+      }
     },
     [addRadiosToTrackPlayer, translateY],
   );
 
-  const onCompactPlayer = useCallback(() => {
+  const onCompactPlayer = useCallback(async () => {
     if (SNAP_POINTS[0] === translateY.value) {
       translateY.value = withTiming(SNAP_POINTS[1], {
         duration: TIMING_DURATION,
@@ -461,7 +474,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       pauseTrackPlayer();
     },
-    [playTrackPlayer],
+    [pauseTrackPlayer, playTrackPlayer],
   );
 
   useTrackPlayerEvents(
