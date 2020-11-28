@@ -113,6 +113,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const radiosRef = useRef<RadioType[]>([]);
   const albumsMountedRef = useRef<boolean>(false);
   const isCorrectRadioRef = useRef<boolean>(false);
+  const didPauseTemporarilyTime = useRef<number>(0);
 
   const y = useDerivedValue(() => {
     const validY = interpolate(
@@ -467,11 +468,15 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const onRemoteDuck = useCallback(
     ({ permanent, paused }: { permanent: boolean; paused: boolean }) => {
-      if (!permanent && !paused) {
+      let secondsSincePause =
+        (Date.now() - didPauseTemporarilyTime.current) / 1000;
+
+      if (!permanent && !paused && secondsSincePause < 30) {
         playTrackPlayer();
         return;
       }
 
+      didPauseTemporarilyTime.current = Date.now();
       pauseTrackPlayer();
     },
     [pauseTrackPlayer, playTrackPlayer],
