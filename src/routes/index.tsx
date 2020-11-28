@@ -10,7 +10,7 @@ import Home from '~/screens/Home';
 import Explore from '~/screens/Explore';
 
 import TabBar from '~/components/TabBar/Bottom';
-import Playlist from '~/screens/Explore/pages/Playlist';
+import Playlist from '~/screens/Playlist';
 import Search from '~/screens/Search';
 import Library from '~/screens/Library';
 
@@ -43,6 +43,11 @@ function HomeStackScreen() {
     <HomeStack.Navigator headerMode="none">
       <HomeStack.Screen name="Home" component={Home} />
       <HomeStack.Screen name="Search" component={Search} options={options} />
+      <ExploreStack.Screen
+        name="Playlist"
+        component={Playlist}
+        options={options}
+      />
     </HomeStack.Navigator>
   );
 }
@@ -91,8 +96,16 @@ const Routes = () => {
     <NavigationContainer theme={theme}>
       <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
         <Tab.Screen name="Home" component={HomeStackScreen} />
-        <Tab.Screen name="Explore" component={ExploreStackScreen} />
-        <Tab.Screen name="Library" component={LibraryStackScreen} />
+        <Tab.Screen
+          name="Explore"
+          component={ExploreStackScreen}
+          // options={{ unmountOnBlur: true }}
+        />
+        <Tab.Screen
+          name="Library"
+          component={LibraryStackScreen}
+          // options={{ unmountOnBlur: true }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -1,18 +1,15 @@
 import React, { useCallback, forwardRef } from 'react';
-import { FlatList } from 'react-native';
-import Animated from 'react-native-reanimated';
 import { useFavorites } from '~/contexts/FavoriteContext';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Radio from '~/components/Radio/Item';
 
 import styles from './styles';
 import { RadioType } from '~/types/Station';
+import { FlatList } from 'react-native-gesture-handler';
 
 type FavoritesProps = {
   refreshTranslateY: (from: string) => void;
 };
-
-Animated.FlatList = Animated.createAnimatedComponent(FlatList);
 
 const Favorites: React.ForwardRefRenderFunction<
   FlatList<RadioType>,
@@ -42,7 +39,7 @@ const Favorites: React.ForwardRefRenderFunction<
   );
 
   return (
-    <Animated.FlatList
+    <FlatList
       ref={ref}
       scrollEventThrottle={16}
       showsHorizontalScrollIndicator={false}

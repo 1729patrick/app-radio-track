@@ -37,7 +37,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
   buffering,
   seeking,
   onTogglePlayback,
-  radio = {},
+  radio,
 }) => {
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 
@@ -74,9 +74,9 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
             <Text style={[styles.title]} numberOfLines={1}>
               {radio.name}
             </Text>
-            {radio.description && (
+            {(radio.slogan || radio.city?.name) && (
               <Text style={[styles.description]} numberOfLines={1}>
-                {radio.description}
+                {radio.slogan || radio.city?.name}
               </Text>
             )}
           </View>

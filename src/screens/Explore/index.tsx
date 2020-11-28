@@ -27,7 +27,8 @@ const Explore: React.FC = () => {
     title: string;
     id: (string | never[])[];
   }) => {
-    navigate('Playlist', { title, id });
+    const url = `genres/${JSON.stringify(id)}`;
+    navigate('Playlist', { title, url });
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import LottieView from 'lottie-react-native';
@@ -21,7 +21,7 @@ const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
     <View style={[styles.card]}>
       <TouchableOpacity
         onPress={() => onExpandPlayer({ radioIndex: index })}
-        hitSlop={{ top: 0, bottom: 500, left: 0, right: 0 }}
+        hitSlop={{ top: 0, bottom: 50, left: 0, right: 0 }}
         style={styles.button}
         activeOpacity={0.4}>
         <FastImage
@@ -48,10 +48,10 @@ const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
         {item.name}
       </Text>
       <Text style={styles.description} numberOfLines={1}>
-        {item.slogan}
+        {item.slogan || item.city?.name}
       </Text>
     </View>
   );
 };
 
-export default memo(Radio);
+export default Radio;

@@ -3,14 +3,12 @@ import { Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { PlayerState } from '~/components/Player';
 import styles from './styles';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import Radio from '~/components/Radio/Card';
-import RoundButton from '~/components/Button/Round';
 
 import { RadioType } from '~/types/Station';
 
-type RadiosProps = {
+export type RadiosProps = {
   title: string;
   onExpandPlayer: (args: PlayerState & { radioIndex: number }) => void;
   radios?: RadioType[];
@@ -52,14 +50,10 @@ const Radios: React.FC<RadiosProps> = ({
         <TouchableOpacity activeOpacity={0.4} onPress={onShowAllPress}>
           <Text style={styles.title}>{title}</Text>
         </TouchableOpacity>
-        {showAll && (
-          <RoundButton
-            onPress={onShowAllPress}
-            name={'md-arrow-forward'}
-            size={24}
-            Icon={Icon}
-          />
-        )}
+
+        <TouchableOpacity activeOpacity={0.4} onPress={onShowAllPress}>
+          {showAll && <Text style={styles.showAll}>Ver Tudo</Text>}
+        </TouchableOpacity>
       </View>
 
       <FlatList

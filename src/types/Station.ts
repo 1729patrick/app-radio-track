@@ -20,7 +20,7 @@ export type RadioType = {
   address?: string;
   description?: string;
   mail: string;
-  slogan: string;
+  slogan?: string;
   tel: string;
   twitter: string;
   web: string;
@@ -28,4 +28,7 @@ export type RadioType = {
   cityId: string;
   regionId: string;
   whatsapp: string;
+  city?: {
+    name: string;
+  };
 };

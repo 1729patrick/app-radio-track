@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -18,10 +18,17 @@ import {
   PopularRadios,
   RecommendRadios,
 } from './components/Radios/types';
+import {
+  StackActions,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const Home: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
   const [loadings, setLoadings] = useState({});
+  const { navigate } = useNavigation<StackNavigationProp<{}>>();
 
   const { onExpandPlayer } = usePlayer();
 
@@ -42,6 +49,10 @@ const Home: React.FC = () => {
     [],
   );
 
+  const onShowPlaylist = ({ title, url }: { title: string; url: string }) => {
+    navigate('Playlist', { title, url });
+  };
+
   return (
     <View style={styles.container}>
       <Header translateY={translateY} showBack={false} />
@@ -60,18 +71,29 @@ const Home: React.FC = () => {
         <RecommendRadios
           onExpandPlayer={onExpandPlayer}
           toggleLoading={toggleLoading}
+          showAll
+          onShowAll={onShowPlaylist}
         />
         <PopularRadios
           onExpandPlayer={onExpandPlayer}
           toggleLoading={toggleLoading}
+          onShowAll={onShowPlaylist}
+          showAll
+          onShowAll={onShowPlaylist}
         />
         <LocationRadios
           onExpandPlayer={onExpandPlayer}
           toggleLoading={toggleLoading}
+          onShowAll={onShowPlaylist}
+          showAll
+          onShowAll={onShowPlaylist}
         />
         <FindOutRadios
           onExpandPlayer={onExpandPlayer}
           toggleLoading={toggleLoading}
+          onShowAll={onShowPlaylist}
+          showAll
+          onShowAll={onShowPlaylist}
         />
       </Animated.ScrollView>
     </View>

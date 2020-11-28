@@ -289,7 +289,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         id: radio.id,
         url: radio.streams[0].url,
         title: radio.name,
-        artist: radio.slogan,
+        artist: radio.slogan || radio.city?.name,
         artwork: image(radio.img),
         type: radio.streams[0].url.endsWith('.m3u8') ? 'hls' : undefined,
       };
@@ -309,7 +309,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             id: radio.id,
             url: radio.streams[0].url,
             title: radio.name,
-            artist: radio.slogan,
+            artist: radio.slogan || radio.city?.name,
             artwork: image(radio.img),
             type: radio.streams[0].url.endsWith('.m3u8') ? 'hls' : undefined,
           };
@@ -524,26 +524,33 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     setup();
   }, [setup]);
 
+  const radio = useMemo(() => {
+    return state.radios[radioIndex];
+  }, [radioIndex, state.radios]);
+
   return (
     <View style={styles.container} pointerEvents="box-none">
       <PanGestureHandler onGestureEvent={panHandler}>
         <Animated.View style={style}>
           <AnimatedBackground style={styles.player} ref={animatedBackgroundRef}>
-            <CompactPlayer
-              y={y}
-              onExpandPlayer={onExpandPlayer}
-              playing={playing}
-              stopped={stopped}
-              buffering={buffering}
-              seeking={seeking}
-              onTogglePlayback={onTogglePlayback}
-              radio={state.radios[radioIndex]}
-            />
+            {radio && (
+              <CompactPlayer
+                y={y}
+                onExpandPlayer={onExpandPlayer}
+                playing={playing}
+                stopped={stopped}
+                buffering={buffering}
+                seeking={seeking}
+                onTogglePlayback={onTogglePlayback}
+                radio={radio}
+              />
+            )}
+
             <TopControls
               y={y}
               onCompactPlayer={onCompactPlayer}
               title={state.title}
-              radio={state.radios[radioIndex]}
+              radio={radio}
             />
 
             <Albums

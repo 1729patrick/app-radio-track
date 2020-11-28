@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 
-import { BOTTOM_TAB_BAR_HEIGHT } from '~/components/TabBar/bottom/constants';
+import { BOTTOM_TAB_BAR_HEIGHT } from '~/components/TabBar/Bottom/constants';
 import { COMPACT_HEIGHT } from '~/components/Player/constants';
 
 const { width } = Dimensions.get('window');

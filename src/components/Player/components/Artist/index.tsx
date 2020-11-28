@@ -53,7 +53,7 @@ const Artist: React.FC<ArtistType> = ({ y, radio = {} }) => {
         </View>
 
         <Text style={[styles.description]} numberOfLines={1}>
-          {radio.slogan}
+          {radio.slogan || radio.city?.name}
         </Text>
       </Animated.View>
     </View>

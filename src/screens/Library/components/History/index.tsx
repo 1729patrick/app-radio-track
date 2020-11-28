@@ -1,6 +1,4 @@
 import React, { useCallback, forwardRef } from 'react';
-import { FlatList } from 'react-native';
-import Animated from 'react-native-reanimated';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Radio from '~/components/Radio/Item';
 
@@ -8,12 +6,11 @@ import styles from './styles';
 
 import { useHistory } from '~/contexts/HistoryContext';
 import { RadioType } from '~/types/Station';
+import { FlatList } from 'react-native-gesture-handler';
 
 type HistoryProps = {
   refreshTranslateY: (from: string) => void;
 };
-
-Animated.FlatList = Animated.createAnimatedComponent(FlatList);
 
 const History: React.ForwardRefRenderFunction<
   FlatList<RadioType>,
@@ -43,7 +40,7 @@ const History: React.ForwardRefRenderFunction<
   );
 
   return (
-    <Animated.FlatList
+    <FlatList
       ref={ref}
       scrollEventThrottle={16}
       showsHorizontalScrollIndicator={false}

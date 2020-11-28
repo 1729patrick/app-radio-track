@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 import styles from './styles';
 
@@ -44,7 +44,7 @@ const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
         </Text>
 
         <Text style={styles.description} numberOfLines={1}>
-          {item.slogan}
+          {item.slogan || item.city?.name}
         </Text>
       </View>
 
@@ -68,4 +68,4 @@ const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
   );
 };
 
-export default memo(Radio);
+export default Radio;

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { ActivityIndicator, Platform, View } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 import styles from './styles';
@@ -14,4 +14,4 @@ const Loader = () => {
   );
 };
 
-export default memo(Loader);
+export default Loader;

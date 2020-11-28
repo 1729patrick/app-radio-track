@@ -19,4 +19,8 @@ export default StyleSheet.create({
     paddingHorizontal: StyleGuide.spacing,
     marginTop: 15,
   },
+  showAll: {
+    color: StyleGuide.palette.light,
+    textTransform: 'uppercase',
+  },
 });

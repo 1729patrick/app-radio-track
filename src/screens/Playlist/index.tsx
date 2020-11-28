@@ -15,7 +15,7 @@ import { useFetchPagination } from '~/hooks/useFetchPagination';
 import Loader from '~/components/Loader';
 
 type RootStackParamList = {
-  Playlist: { title: string; id: string[] };
+  Playlist: { title: string; url: string };
 };
 
 type RouteProps = RouteProp<RootStackParamList, 'Playlist'>;
@@ -24,9 +24,7 @@ const Explore: React.FC = () => {
   const { translateY } = useAnimatedHeader();
   const { params } = useRoute<RouteProps>();
 
-  const { data, fetchMore } = useFetchPagination(
-    `genres/${JSON.stringify(params.id)}`,
-  );
+  const { data, fetchMore } = useFetchPagination(params.url);
 
   const { onExpandPlayer } = usePlayer();
 
