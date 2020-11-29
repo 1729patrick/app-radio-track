@@ -8,7 +8,7 @@ import React, {
   useMemo,
   memo,
 } from 'react';
-import { BackHandler, Dimensions, Platform, View } from 'react-native';
+import { BackHandler, Dimensions, Platform, View, Image } from 'react-native';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
@@ -52,10 +52,10 @@ import AnimatedBackground, {
 } from '~/components/AnimatedBackground';
 import { usePlayer } from '~/contexts/PlayerContext';
 import { RadioType } from '~/types/Station';
-import { image } from '~/services/api';
 import StyleGuide from '~/utils/StyleGuide';
 import { useHistory } from '~/contexts/HistoryContext';
 import { usePlaying } from '~/contexts/PlayingContext';
+import { image } from '~/services/api';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -217,6 +217,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     await TrackPlayer.setupPlayer({});
     await TrackPlayer.updateOptions({
       stopWithApp: true,
+      //@ts-ignore
+      alwaysPauseOnInterruption: true,
+      icon: require('../../assets/notification/logo.png'),
       capabilities: [
         TrackPlayer.CAPABILITY_PLAY,
         TrackPlayer.CAPABILITY_PAUSE,

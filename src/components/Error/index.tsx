@@ -12,14 +12,14 @@ const MESSAGES = {
     title: 'Você não ouviu nenhuma rádio',
     description: 'Acompanhe por aqui as rádios que você ouviu',
   },
-  offline: {
+  'Network Error': {
     title: 'Você está sem internet',
     description: 'Verifique a sua conexão e tente novamente',
   },
 };
 
 type ErrorType = {
-  type: string;
+  type?: string;
 };
 
 const Error = ({ type = 'offline' }: ErrorType) => {

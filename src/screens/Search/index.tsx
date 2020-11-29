@@ -104,7 +104,7 @@ const Search: React.FC<SearchProps> = () => {
         </View>
       )}
 
-      {!!error && <Error />}
+      {!!error && <Error type={error?.message} />}
 
       {!notFound && (
         <FlatList

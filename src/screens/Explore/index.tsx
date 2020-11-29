@@ -55,10 +55,7 @@ const Explore: React.FC = () => {
 
               <FastImage
                 style={styles.image}
-                source={{
-                  uri:
-                    'https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png',
-                }}
+                source={require('~/assets/vinyl.png')}
               />
             </RectButton>
           </LinearGradient>

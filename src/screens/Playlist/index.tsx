@@ -61,7 +61,7 @@ const Explore: React.FC = () => {
       />
 
       {!data && !error && <Loader />}
-      {error && <Error />}
+      {error && <Error type={error?.message} />}
 
       {data && (
         <FlatList

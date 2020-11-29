@@ -40,7 +40,7 @@ const History: React.ForwardRefRenderFunction<
     [onExpandPlayerPress],
   );
 
-  if (history.length < 3) {
+  if (!history.length) {
     return <Error type="historyEmpty" />;
   }
 

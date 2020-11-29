@@ -49,10 +49,10 @@ const PLAYLISTS = [
 ];
 
 type StateType = {
-  recommend?: { success: boolean; error: boolean };
-  popular?: { success: boolean; error: boolean };
-  location?: { success: boolean; error: boolean };
-  random?: { success: boolean; error: boolean };
+  recommend?: { success: boolean; error: string };
+  popular?: { success: boolean; error: string };
+  location?: { success: boolean; error: string };
+  random?: { success: boolean; error: string };
 };
 
 const Home: React.FC = () => {
@@ -83,7 +83,7 @@ const Home: React.FC = () => {
   }, [state]);
 
   const toggleState = useCallback(
-    (args: { key: string; success: boolean; error: boolean }) => {
+    (args: { key: string; success: boolean; error: string }) => {
       const { key, success, error } = args;
 
       setState((l) => {
@@ -106,7 +106,7 @@ const Home: React.FC = () => {
       <Header translateY={translateY} showBack={false} />
 
       {isLoading && <Loader />}
-      {isError && <Error />}
+      {isError && <Error type={state.popular?.error} />}
 
       <Animated.ScrollView
         contentContainerStyle={styles.contentContainer}
