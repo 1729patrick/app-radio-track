@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -11,13 +11,7 @@ import { usePlayer } from '~/contexts/PlayerContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 import Loader from '~/components/Loader';
 
-import {
-  FavoriteRadios,
-  FindOutRadios,
-  LocationRadios,
-  PlaylistRadios,
-  PopularRadios,
-} from './components/Radios/types';
+import { FavoriteRadios, PlaylistRadios } from './components/Radios/types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
@@ -113,7 +107,7 @@ const Home: React.FC = () => {
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
-        <FavoriteRadios onExpandPlayer={onExpandPlayer} />
+        {!isError && <FavoriteRadios onExpandPlayer={onExpandPlayer} />}
 
         {PLAYLISTS.map((playlist) => (
           <PlaylistRadios

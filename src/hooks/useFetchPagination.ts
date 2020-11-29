@@ -15,7 +15,7 @@ export function useFetchPagination<Error = any>(
   const { data, error } = useSWR<FetchWithPagination, Error>(
     () => (page ? `${url}?page=${page}` : url),
     fetcher,
-    { revalidateOnMount: true },
+    { revalidateOnMount: true, suspense: true },
   );
 
   useEffect(() => {

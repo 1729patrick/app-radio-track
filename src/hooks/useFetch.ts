@@ -1,15 +1,13 @@
 import useSWR from 'swr';
 import api from '~/services/api';
 
+const fetcher = (url: string) => api.get(url).then((res) => res.data);
+
 export function useFetch<Data = any, Error = any>(url: string | null) {
-  const { data, error, mutate } = useSWR<Data, Error>(
-    () => url,
-    async (url) => {
-      const response = await api.get(url);
+  const { data, error } = useSWR<Data, Error>(url, fetcher, {
+    revalidateOnMount: true,
+    suspense: true,
+  });
 
-      return response.data;
-    },
-  );
-
-  return { data, error, mutate };
+  return { data, error };
 }
