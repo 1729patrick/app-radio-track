@@ -5,9 +5,9 @@ import { FetchWithPagination } from '~/types/Fetch';
 
 export function useFetchPagination<Error = any>(
   url: string | null,
-  random = false,
+  initialPage?: number,
 ) {
-  const [page, setPage] = useState(random ? undefined : 1);
+  const [page, setPage] = useState(initialPage || 1);
   const [allData, setAllData] = useState<FetchWithPagination>();
 
   const fetcher = (url: string) => api.get(url).then((res) => res.data);
@@ -33,7 +33,6 @@ export function useFetchPagination<Error = any>(
   return {
     data: allData,
     error,
-    fetchMore: () =>
-      setPage((page) => (!page ? (data?.page || 0) + 1 : page + 1)),
+    fetchMore: () => setPage(allData?.hasNextPage ? allData.nextPage : page),
   };
 }

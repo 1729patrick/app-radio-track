@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { PlayerState } from '~/components/Player';
+import { onExpandPlayer } from '~/components/Player';
 import styles from './styles';
 
 import Radio from '~/components/Radio/Card';
@@ -10,7 +10,7 @@ import { RadioType } from '~/types/Station';
 
 export type RadiosProps = {
   title: string;
-  onExpandPlayer: (args: PlayerState & { radioIndex: number }) => void;
+  onExpandPlayer: onExpandPlayer;
   radios?: RadioType[];
   showAll?: boolean;
   onShowAll?: (title: string) => void;
@@ -47,11 +47,16 @@ const Radios: React.FC<RadiosProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity activeOpacity={0.4} onPress={onShowAllPress}>
-          <Text style={styles.title}>{title}</Text>
-        </TouchableOpacity>
+        <View style={styles.titleContainer}>
+          <TouchableOpacity activeOpacity={0.4} onPress={onShowAllPress}>
+            <Text style={styles.title}>{title}</Text>
+          </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity activeOpacity={0.4} onPress={onShowAllPress}>
+        <TouchableOpacity
+          activeOpacity={0.4}
+          onPress={onShowAllPress}
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
           {showAll && <Text style={styles.showAll}>Ver Tudo</Text>}
         </TouchableOpacity>
       </View>
@@ -67,7 +72,7 @@ const Radios: React.FC<RadiosProps> = ({
         keyExtractor={({ id }) => id}
         renderItem={renderItem}
         onEndReached={onEndReached && onEndReached}
-        onEndReachedThreshold={4}
+        onEndReachedThreshold={3}
       />
     </View>
   );

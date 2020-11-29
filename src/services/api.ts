@@ -6,7 +6,7 @@ const api = axios.create({
 });
 
 export const image = (img: string) => {
-  if (img.startsWith(baseURL)) {
+  if (img?.startsWith(baseURL)) {
     return img;
   }
 

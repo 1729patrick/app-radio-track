@@ -18,27 +18,28 @@ import {
   PopularRadios,
   RecommendRadios,
 } from './components/Radios/types';
-import {
-  StackActions,
-  useIsFocused,
-  useNavigation,
-} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 const Home: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
   const [loadings, setLoadings] = useState({});
-  const { navigate } = useNavigation<StackNavigationProp<{}>>();
+  const { navigate } = useNavigation<StackNavigationProp<any>>();
 
   const { onExpandPlayer } = usePlayer();
 
   const isLoading = useMemo(() => {
+    if (!Object.values(loadings).length) {
+      return true;
+    }
+
     return Object.values(loadings).some((loading) => !loading);
   }, [loadings]);
 
   const toggleLoading = useCallback(
     ({ key, value }: { key: string; value: boolean }) => {
       setLoadings((l) => {
+        //@ts-ignore
         if (l[key]) {
           return l;
         }
@@ -49,8 +50,12 @@ const Home: React.FC = () => {
     [],
   );
 
-  const onShowPlaylist = ({ title, url }: { title: string; url: string }) => {
-    navigate('Playlist', { title, url });
+  const onShowPlaylist = (args: {
+    title: string;
+    url: string;
+    initialPage: number;
+  }) => {
+    navigate('Playlist', args);
   };
 
   return (

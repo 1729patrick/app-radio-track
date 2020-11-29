@@ -51,7 +51,7 @@ const History: React.ForwardRefRenderFunction<
       data={history}
       keyExtractor={({ id }) => `${id}`}
       renderItem={renderItem}
-      onEndReachedThreshold={4}
+      onEndReachedThreshold={3}
       onScrollEndDrag={() => refreshTranslateY('history')}
     />
   );

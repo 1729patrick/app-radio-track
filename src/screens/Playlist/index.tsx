@@ -15,7 +15,7 @@ import { useFetchPagination } from '~/hooks/useFetchPagination';
 import Loader from '~/components/Loader';
 
 type RootStackParamList = {
-  Playlist: { title: string; url: string };
+  Playlist: { title: string; url: string; initialPage?: number };
 };
 
 type RouteProps = RouteProp<RootStackParamList, 'Playlist'>;
@@ -24,7 +24,10 @@ const Explore: React.FC = () => {
   const { translateY } = useAnimatedHeader();
   const { params } = useRoute<RouteProps>();
 
-  const { data, fetchMore } = useFetchPagination(params.url);
+  const { data, fetchMore } = useFetchPagination(
+    params.url,
+    params.initialPage,
+  );
 
   const { onExpandPlayer } = usePlayer();
 
@@ -68,7 +71,7 @@ const Explore: React.FC = () => {
           data={data?.items}
           keyExtractor={({ id }) => `${id}`}
           renderItem={renderItem}
-          onEndReachedThreshold={4}
+          onEndReachedThreshold={3}
           onEndReached={fetchMore}
         />
       )}

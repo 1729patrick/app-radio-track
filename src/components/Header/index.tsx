@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({
   backgroundColor = StyleGuide.palette.background,
   showBack = true,
 }) => {
-  const { navigate, pop } = useNavigation<StackNavigationProp<{}>>();
+  const { navigate, pop } = useNavigation<StackNavigationProp<any>>();
 
   const y = useDerivedValue(() => {
     const validY = interpolate(

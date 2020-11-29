@@ -26,7 +26,7 @@ const Search: React.FC<SearchProps> = () => {
       : null,
   );
 
-  const { pop } = useNavigation<StackNavigationProp<{}>>();
+  const { pop } = useNavigation<StackNavigationProp<any>>();
 
   const { onExpandPlayer } = usePlayer();
 

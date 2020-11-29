@@ -13,29 +13,30 @@ import TrackPlayer, {
   //@ts-ignore
   TrackPlayerEvents,
 } from 'react-native-track-player';
+import { RadioType } from '~/types/Station';
 import { usePlayer } from '../PlayerContext';
 
 type ContextProps = {
   radioId?: string;
+  removePlayingRadio: () => void;
 };
 
 const PlayingContext = createContext<ContextProps>({
   radioId: undefined,
+  removePlayingRadio: () => {},
 });
 
 const events = [TrackPlayerEvents.PLAYBACK_STATE];
 
 export const PlayingProvider: React.FC = ({ children }) => {
   const { onExpandPlayer } = usePlayer();
-  const [radioId, setRadioId] = useState<string>();
+  const [radioId, setRadioId] = useState<string | undefined>(undefined);
   const { getItem, setItem, removeItem } = useAsyncStorage('@radio:playing');
 
   const setPlayingRadio = useCallback(
     async ({ playing }: { playing: boolean }) => {
-      if (!playing && radioId) {
+      if (!playing) {
         setRadioId(undefined);
-        removeItem();
-        return;
       } else if (playing) {
         const id = await TrackPlayer.getCurrentTrack();
         const track = await TrackPlayer.getTrack(id);
@@ -53,8 +54,12 @@ export const PlayingProvider: React.FC = ({ children }) => {
         setRadioId(id);
       }
     },
-    [radioId, removeItem, setItem],
+    [setItem],
   );
+
+  const removePlayingRadio = useCallback(() => {
+    removeItem();
+  }, [removeItem]);
 
   useTrackPlayerEvents(
     events,
@@ -69,12 +74,13 @@ export const PlayingProvider: React.FC = ({ children }) => {
 
   const readRadioFromStorage = useCallback(async () => {
     const radioPlayingFromStorage = await getItem();
+
     if (radioPlayingFromStorage) {
-      const radio = JSON.parse(radioPlayingFromStorage);
+      const radio = JSON.parse(radioPlayingFromStorage) as RadioType;
       onExpandPlayer({
         radios: [radio],
         radioIndex: 0,
-        title: '',
+        title: radio.name,
         size: 'compact',
       });
     }
@@ -86,7 +92,7 @@ export const PlayingProvider: React.FC = ({ children }) => {
   }, [readRadioFromStorage]);
 
   return (
-    <PlayingContext.Provider value={{ radioId }}>
+    <PlayingContext.Provider value={{ radioId, removePlayingRadio }}>
       {children}
     </PlayingContext.Provider>
   );
