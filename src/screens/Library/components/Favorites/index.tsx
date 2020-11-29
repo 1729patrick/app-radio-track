@@ -6,6 +6,7 @@ import Radio from '~/components/Radio/Item';
 import styles from './styles';
 import { RadioType } from '~/types/Station';
 import { FlatList } from 'react-native-gesture-handler';
+import Error from '~/components/Error';
 
 type FavoritesProps = {
   refreshTranslateY: (from: string) => void;
@@ -37,6 +38,10 @@ const Favorites: React.ForwardRefRenderFunction<
     },
     [onExpandPlayerPress],
   );
+
+  if (!favorites.length) {
+    return <Error type="favoritesEmpty" />;
+  }
 
   return (
     <FlatList

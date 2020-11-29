@@ -34,6 +34,7 @@ export default StyleSheet.create({
     ...StyleGuide.typography.subhead,
     color: StyleGuide.palette.light,
     marginTop: 5,
+    textAlign: 'center',
   },
   contentContainer: {},
   itemContainer: {

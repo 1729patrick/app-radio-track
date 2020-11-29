@@ -13,6 +13,7 @@ import Radio from '~/components/Radio/Item';
 
 import styles from './styles';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Error from '~/components/Error';
 
 type SearchProps = {
   onCloseSearch: () => void;
@@ -20,7 +21,7 @@ type SearchProps = {
 
 const Search: React.FC<SearchProps> = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { data } = useFetch<FetchWithPagination>(
+  const { data, error } = useFetch<FetchWithPagination>(
     searchTerm.trimLeft().trimRight().length >= 3
       ? `/search?q=${searchTerm.trimLeft().trimRight()}`
       : null,
@@ -102,6 +103,8 @@ const Search: React.FC<SearchProps> = () => {
           </Text>
         </View>
       )}
+
+      {!!error && <Error />}
 
       {!notFound && (
         <FlatList

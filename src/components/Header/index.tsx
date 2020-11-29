@@ -17,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import StyleGuide from '~/utils/StyleGuide';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import Logo from '~/components/Logo';
 type HeaderProps = {
   translateY: Animated.SharedValue<number>;
   title?: string;
@@ -76,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({
             />
           )}
 
-          <Text style={styles.title}>{title || 'Radio Track'}</Text>
+          <Text style={styles.title}>{title || 'Rádio Sintonia'}</Text>
         </View>
 
         <RoundButton

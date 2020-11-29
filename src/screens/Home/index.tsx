@@ -15,36 +15,79 @@ import {
   FavoriteRadios,
   FindOutRadios,
   LocationRadios,
+  PlaylistRadios,
   PopularRadios,
-  RecommendRadios,
 } from './components/Radios/types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Error from '~/components/Error';
+
+const PLAYLISTS = [
+  {
+    key: 'recommend',
+    url: 'playlists/recommend',
+    title: 'Rádios recomendadas',
+    initialPage: new Date().getDate() + 5,
+  },
+  {
+    key: 'popular',
+    url: 'playlists/popular',
+    title: 'Rádios populares',
+  },
+  {
+    key: 'location',
+    url: 'playlists/location',
+    title: 'Rádios da sua região',
+    initialPage: new Date().getDate() + 10,
+  },
+  {
+    key: 'random',
+    url: 'playlists/random',
+    title: 'Descubra novas rádios',
+    initialPage: new Date().getDate() + 15,
+  },
+];
+
+type StateType = {
+  recommend?: { success: boolean; error: boolean };
+  popular?: { success: boolean; error: boolean };
+  location?: { success: boolean; error: boolean };
+  random?: { success: boolean; error: boolean };
+};
 
 const Home: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
-  const [loadings, setLoadings] = useState({});
+  const [state, setState] = useState<StateType>({});
   const { navigate } = useNavigation<StackNavigationProp<any>>();
 
   const { onExpandPlayer } = usePlayer();
 
   const isLoading = useMemo(() => {
-    if (!Object.values(loadings).length) {
+    if (!Object.values(state).length) {
       return true;
     }
 
-    return Object.values(loadings).some((loading) => !loading);
-  }, [loadings]);
+    return Object.values(state).some(({ success, error }) => {
+      return !success && !error;
+    });
+  }, [state]);
 
-  const toggleLoading = useCallback(
-    ({ key, value }: { key: string; value: boolean }) => {
-      setLoadings((l) => {
-        //@ts-ignore
-        if (l[key]) {
-          return l;
-        }
+  const isError = useMemo(() => {
+    if (!Object.values(state).length) {
+      return false;
+    }
 
-        return { ...l, [key]: value };
+    return Object.values(state).every(({ success, error }) => {
+      return !success && error;
+    });
+  }, [state]);
+
+  const toggleState = useCallback(
+    (args: { key: string; success: boolean; error: boolean }) => {
+      const { key, success, error } = args;
+
+      setState((l) => {
+        return { ...l, [key]: { success, error } };
       });
     },
     [],
@@ -63,43 +106,25 @@ const Home: React.FC = () => {
       <Header translateY={translateY} showBack={false} />
 
       {isLoading && <Loader />}
+      {isError && <Error />}
 
       <Animated.ScrollView
         contentContainerStyle={styles.contentContainer}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
-        <FavoriteRadios
-          onExpandPlayer={onExpandPlayer}
-          toggleLoading={toggleLoading}
-        />
-        <RecommendRadios
-          onExpandPlayer={onExpandPlayer}
-          toggleLoading={toggleLoading}
-          showAll
-          onShowAll={onShowPlaylist}
-        />
-        <PopularRadios
-          onExpandPlayer={onExpandPlayer}
-          toggleLoading={toggleLoading}
-          onShowAll={onShowPlaylist}
-          showAll
-          onShowAll={onShowPlaylist}
-        />
-        <LocationRadios
-          onExpandPlayer={onExpandPlayer}
-          toggleLoading={toggleLoading}
-          onShowAll={onShowPlaylist}
-          showAll
-          onShowAll={onShowPlaylist}
-        />
-        <FindOutRadios
-          onExpandPlayer={onExpandPlayer}
-          toggleLoading={toggleLoading}
-          onShowAll={onShowPlaylist}
-          showAll
-          onShowAll={onShowPlaylist}
-        />
+        <FavoriteRadios onExpandPlayer={onExpandPlayer} />
+
+        {PLAYLISTS.map((playlist) => (
+          <PlaylistRadios
+            key={playlist.key}
+            playlist={playlist}
+            onExpandPlayer={onExpandPlayer}
+            toggleState={toggleState}
+            showAll
+            onShowAll={onShowPlaylist}
+          />
+        ))}
       </Animated.ScrollView>
     </View>
   );

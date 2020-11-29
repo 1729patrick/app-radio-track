@@ -13,6 +13,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import Radio from '~/components/Radio/Item';
 import { useFetchPagination } from '~/hooks/useFetchPagination';
 import Loader from '~/components/Loader';
+import Error from '~/components/Error';
 
 type RootStackParamList = {
   Playlist: { title: string; url: string; initialPage?: number };
@@ -24,7 +25,7 @@ const Explore: React.FC = () => {
   const { translateY } = useAnimatedHeader();
   const { params } = useRoute<RouteProps>();
 
-  const { data, fetchMore } = useFetchPagination(
+  const { data, error, fetchMore } = useFetchPagination(
     params.url,
     params.initialPage,
   );
@@ -59,7 +60,8 @@ const Explore: React.FC = () => {
         backgroundColor={StyleGuide.palette.backgroundPrimary}
       />
 
-      {!data && <Loader />}
+      {!data && !error && <Loader />}
+      {error && <Error />}
 
       {data && (
         <FlatList

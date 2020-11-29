@@ -7,6 +7,7 @@ import styles from './styles';
 import { useHistory } from '~/contexts/HistoryContext';
 import { RadioType } from '~/types/Station';
 import { FlatList } from 'react-native-gesture-handler';
+import Error from '~/components/Error';
 
 type HistoryProps = {
   refreshTranslateY: (from: string) => void;
@@ -38,6 +39,10 @@ const History: React.ForwardRefRenderFunction<
     },
     [onExpandPlayerPress],
   );
+
+  if (history.length < 3) {
+    return <Error type="historyEmpty" />;
+  }
 
   return (
     <FlatList
