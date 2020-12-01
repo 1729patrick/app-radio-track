@@ -8,7 +8,7 @@ import React, {
   useMemo,
   memo,
 } from 'react';
-import { BackHandler, Dimensions, Platform, View, Image } from 'react-native';
+import { BackHandler, Dimensions, Platform, View, Text } from 'react-native';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
@@ -56,6 +56,8 @@ import StyleGuide from '~/utils/StyleGuide';
 import { useHistory } from '~/contexts/HistoryContext';
 import { usePlaying } from '~/contexts/PlayingContext';
 import { image } from '~/services/api';
+import useIsReconnected from '~/hooks/useIsReconnected';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -94,8 +96,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const { translateY } = usePlayer();
   const playbackState = usePlaybackState();
   const playbackStatePrevious = usePrevious(playbackState);
+  const playbackStateOnDisconnectMoment = useRef<number>(0);
   const { addHistory } = useHistory();
   const { removePlayingRadio } = usePlaying();
+  const isReconnected = useIsReconnected();
+  const { isConnected } = useNetInfo();
 
   const [state, setState] = useState<PlayerState>({
     title: '',
@@ -284,21 +289,26 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, []);
 
   const addRadiosToTrackPlayer = useCallback(
-    async (radios: RadioType[], radioIndex: number, autoPlay?: boolean) => {
+    async (
+      radios: RadioType[],
+      radioIndex: number,
+      autoPlay?: boolean,
+      error?: boolean,
+    ) => {
       const radio = radios[radioIndex];
 
       const previousRadio = radiosRef.current[radioIndexRef.current];
-      if (previousRadio?.id === radio.id) {
+      if (previousRadio?.id === radio.id && !error) {
         return;
       }
 
       const currentTrack = {
         id: radio.id,
-        url: radio.streams[0].url,
+        url: radio.streams[0]?.url,
         title: radio.name,
         artist: radio.slogan || radio.city?.name,
         artwork: image(radio.img),
-        type: radio.streams[0].url.endsWith('.m3u8') ? 'hls' : undefined,
+        type: radio.streams[0]?.url?.endsWith('.m3u8') ? 'hls' : undefined,
       };
 
       await TrackPlayer.reset();
@@ -316,11 +326,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         (acc: { before: any; after: any }, radio, index) => {
           const track = {
             id: radio.id,
-            url: radio.streams[0].url,
+            url: radio.streams[0]?.url,
             title: radio.name,
             artist: radio.slogan || radio.city?.name,
             artwork: image(radio.img),
-            type: radio.streams[0].url.endsWith('.m3u8') ? 'hls' : undefined,
+            type: radio.streams[0]?.url?.endsWith('.m3u8') ? 'hls' : undefined,
           };
 
           return {
@@ -509,6 +519,13 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         //   'An error occurred while playing the current track.',
         //   args,
         // );
+
+        addRadiosToTrackPlayer(
+          radiosRef.current,
+          radioIndexRef.current,
+          false,
+          true,
+        );
       }
 
       if (type === TrackPlayerEvents.REMOTE_NEXT) {
@@ -557,6 +574,26 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       removePlayingRadio();
     }
   }, [playerState, playerStatePrevious, removePlayingRadio]);
+
+  useEffect(() => {
+    if (
+      isReconnected &&
+      playbackStateOnDisconnectMoment.current === TrackPlayer.STATE_PLAYING
+    ) {
+      addRadiosToTrackPlayer(
+        radiosRef.current,
+        radioIndexRef.current,
+        true,
+        true,
+      );
+    }
+  }, [addRadiosToTrackPlayer, isReconnected]);
+
+  useEffect(() => {
+    if (!isConnected) {
+      playbackStateOnDisconnectMoment.current = playbackState;
+    }
+  }, [isConnected, playbackState]);
 
   useEffect(() => {
     setup();
