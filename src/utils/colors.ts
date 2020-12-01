@@ -1,4 +1,4 @@
-export const colors = [
+const colors_ = [
   '#424242',
   '#372d1e',
   '#284125',
@@ -7,10 +7,16 @@ export const colors = [
   '#371c3d',
   '#171c1d',
   '#474973',
-  // '#523f3d',
+  '#523f3d',
   '#1b0902',
   '#3f0f0f',
 ];
+
+export const shuffleColors = () => {
+  const shuffled = colors_.sort(() => 0.5 - Math.random());
+
+  return shuffled;
+};
 
 export const getSimilar = (color1: string, color2: string): number => {
   // get red/green/blue int values of color1

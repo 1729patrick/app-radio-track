@@ -8,7 +8,7 @@ import React, {
   useMemo,
   memo,
 } from 'react';
-import { BackHandler, Dimensions, Platform, View, Text } from 'react-native';
+import { BackHandler, Dimensions, Platform, View } from 'react-native';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
@@ -34,6 +34,8 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 
+import { getColor } from '~/utils/Colors';
+
 import Albums, { AlbumsHandler } from './components/Albums';
 import Artist from './components/Artist';
 import BottomControls from './components/Controls/Bottom';
@@ -52,7 +54,6 @@ import AnimatedBackground, {
 } from '~/components/AnimatedBackground';
 import { usePlayer } from '~/contexts/PlayerContext';
 import { RadioType } from '~/types/Station';
-import StyleGuide from '~/utils/StyleGuide';
 import { useHistory } from '~/contexts/HistoryContext';
 import { usePlaying } from '~/contexts/PlayingContext';
 import { image } from '~/services/api';
@@ -349,16 +350,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     [addHistory],
   );
 
-  const setBackgroundColor = (
-    radios: RadioType[],
-    radioIndex: number,
-    firstColor = false,
-  ) => {
-    const { color = StyleGuide.palette.backgroundPrimary } = radios[radioIndex];
-
-    animatedBackgroundRef.current?.setColor({ color, firstColor });
-  };
-
   const onTogglePlayback = useCallback(async () => {
     if (playbackState === TrackPlayer.STATE_STOPPED) {
       addRadiosToTrackPlayer(state.radios, radioIndex);
@@ -387,7 +378,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       const autoPlay = size !== 'compact';
       if (args) {
         const { radioIndex, ...restArgs } = args;
-        setBackgroundColor(restArgs.radios, radioIndex, true);
+        animatedBackgroundRef.current?.setup({
+          radioIndex,
+          radiosSize: restArgs.radios.length,
+        });
 
         if (Platform.OS === 'android') {
           addRadiosToTrackPlayer(restArgs.radios, radioIndex, autoPlay);
@@ -468,10 +462,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         return;
       }
 
-      if (radioIndex !== radioIndexRef.current) {
-        setBackgroundColor(radiosRef.current, radioIndex);
-      }
-
       if (radioIndex < radioIndexRef.current) {
         previousTrackPlayer();
       } else if (radioIndex > radioIndexRef.current) {
@@ -531,6 +521,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       if (type === TrackPlayerEvents.REMOTE_NEXT) {
         onNextRadio();
       }
+
       if (type === TrackPlayerEvents.REMOTE_PREVIOUS) {
         onPreviousRadio();
       }
@@ -637,6 +628,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
                 radioIndex={radioIndexRef.current}
                 loading={loading}
                 onAlbumsMounted={onAlbumsMounted}
+                scrollHandler={animatedBackgroundRef.current?.scrollHandler}
               />
             )}
 

@@ -25,7 +25,7 @@ export const PlayerProvider: React.FC = ({ children }) => {
 
   const onExpandPlayer = useCallback(
     (
-      args: PlayerState & { radioIndex: number; size: 'expand' | 'compact' },
+      args: PlayerState & { radioIndex: number; size?: 'expand' | 'compact' },
     ) => {
       playerRef.current?.onExpandPlayer(args);
     },

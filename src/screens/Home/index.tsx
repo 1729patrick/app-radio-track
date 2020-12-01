@@ -16,12 +16,26 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
 
+function daysIntoYear() {
+  const date = new Date();
+  return (
+    (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
+      Date.UTC(date.getFullYear(), 0, 0)) /
+    24 /
+    60 /
+    60 /
+    1000
+  );
+}
+
+const dateOfYear = daysIntoYear() % 300;
+
 const PLAYLISTS = [
   {
     key: 'recommend',
     url: 'playlists/recommend',
     title: 'Rádios recomendadas',
-    initialPage: new Date().getDate() + 5,
+    initialPage: dateOfYear + 5,
   },
   {
     key: 'popular',
@@ -32,13 +46,13 @@ const PLAYLISTS = [
     key: 'location',
     url: 'playlists/location',
     title: 'Rádios da sua região',
-    initialPage: new Date().getDate() + 10,
+    initialPage: dateOfYear + 10,
   },
   {
     key: 'random',
     url: 'playlists/random',
     title: 'Descubra novas rádios',
-    initialPage: new Date().getDate() + 15,
+    initialPage: dateOfYear + 15,
   },
 ];
 

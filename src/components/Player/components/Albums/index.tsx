@@ -15,6 +15,8 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 
+Animated.FlatList = Animated.createAnimatedComponent(FlatList);
+
 import styles from './styles';
 const { width, height } = Dimensions.get('window');
 
@@ -46,7 +48,15 @@ export type AlbumsHandler = {
 };
 
 const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
-  { y, radios, setRadioIndex, radioIndex, loading, onAlbumsMounted },
+  {
+    y,
+    radios,
+    setRadioIndex,
+    radioIndex,
+    loading,
+    onAlbumsMounted,
+    scrollHandler,
+  },
   ref,
 ) => {
   const flatListRef = useRef<FlatList<any>>(null);
@@ -141,7 +151,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   return (
     <Animated.View style={[styles.container, style]}>
       {!hiddenFlatList && (
-        <FlatList
+        <Animated.FlatList
           ref={flatListRef}
           onLayout={onLayout}
           removeClippedSubviews
@@ -158,6 +168,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           horizontal
           snapToInterval={width}
           disableIntervalMomentum
+          onScroll={scrollHandler}
           data={radios}
           keyExtractor={({ id }) => `${id}`}
           renderItem={renderItem}
