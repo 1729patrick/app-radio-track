@@ -43,7 +43,7 @@ export const GENRES = [
     id: ['707mqo3n', 'hvmbagp8', 'sho81hh8'],
   },
   {
-    title: 'Antigas',
+    title: 'Antiga',
     colors: ['#94716B', '#B79891'],
     id: ['gltm4pvk', 'nr2st8g6', 'rhmq5d5e', 'o27bh8mu', 'ul4o51hd'],
   },
@@ -55,7 +55,7 @@ export const GENRES = [
   { title: 'Top 100', colors: ['#EB3349', '#F45C43'], id: ['qm4gl2vd'] },
   { title: 'Contemporânea', colors: ['#0f0c29', '#302b63'], id: ['t6dm6ej6'] },
   {
-    title: 'Clássico',
+    title: 'Clássica',
     colors: ['#0F2027', '#2C5364'],
     id: ['b4hmn4l4', 'pppndfm8'],
   },
@@ -65,7 +65,7 @@ export const GENRES = [
     id: ['1q43aoup', 'tukeat3f'],
   },
   {
-    title: 'Eletrônico',
+    title: 'Eletrônica',
     colors: ['#512DA8', '#673AB7'],
     id: ['5tdskeqj', 'airjhfnm', 'l4fe852i'],
   },
@@ -74,7 +74,7 @@ export const GENRES = [
     colors: ['#4e4376', '#2b5876'],
     id: ['l53c2hpo', 'mteqeu1s', 'tmov06nr'],
   },
-  { title: 'Romântico', colors: ['#61045F', '#AA076B'], id: ['0lccpdo3'] },
+  { title: 'Romântica', colors: ['#61045F', '#AA076B'], id: ['0lccpdo3'] },
   {
     title: 'Internacional',
     colors: ['#DD2476', '#FF512F'],
@@ -94,7 +94,7 @@ export const GENRES = [
 
   { title: 'Bossa Nova', colors: ['#363795', '#005C97'], id: ['3n7a9l8u'] },
   {
-    title: 'Outros',
+    title: 'Outras',
     colors: ['#ff5e62', '#ff9966'],
     id: [
       '0h1domh4',

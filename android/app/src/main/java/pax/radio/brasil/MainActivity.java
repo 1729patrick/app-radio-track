@@ -1,4 +1,4 @@
-package com.radiotrack;
+package pax.radio.brasil;
 
 import android.os.Bundle; 
 import com.facebook.react.ReactActivity;

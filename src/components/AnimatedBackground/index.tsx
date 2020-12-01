@@ -54,10 +54,15 @@ const AnimatedBackground: React.ForwardRefRenderFunction<
 
     const colors = shuffleColors();
 
-    inputRange.current = [...new Array(radiosSize)].map((_, i) => i);
-    outputRange.current = inputRange.current.map(
-      (i) => colors[i % colors.length],
-    );
+    if (radiosSize === 1) {
+      inputRange.current = [0, 1];
+      outputRange.current = [colors[0], colors[0]];
+    } else {
+      inputRange.current = [...new Array(radiosSize)].map((_, i) => i);
+      outputRange.current = inputRange.current.map(
+        (i) => colors[i % colors.length],
+      );
+    }
   };
 
   useImperativeHandle(ref, () => ({

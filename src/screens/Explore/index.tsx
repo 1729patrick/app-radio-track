@@ -51,7 +51,9 @@ const Explore: React.FC = () => {
               rippleColor={StyleGuide.palette.background}
               style={styles.button}
               onPress={() => onShowGenre(genre)}>
-              <Text style={styles.title}>{genre.title}</Text>
+              <Text style={styles.title} numberOfLines={1}>
+                {genre.title}
+              </Text>
 
               <FastImage
                 style={styles.image}

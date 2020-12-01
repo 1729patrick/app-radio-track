@@ -122,7 +122,6 @@ const Home: React.FC = () => {
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
         {!isError && <FavoriteRadios onExpandPlayer={onExpandPlayer} />}
-
         {PLAYLISTS.map((playlist) => (
           <PlaylistRadios
             key={playlist.key}

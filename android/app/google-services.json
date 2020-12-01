@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "55996490474",
+    "firebase_url": "https://radio-track.firebaseio.com",
+    "project_id": "radio-track",
+    "storage_bucket": "radio-track.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55996490474:android:067e6e578c9dfa8a152d93",
+        "android_client_info": {
+          "package_name": "pax.radio.brasil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55996490474-el0u3nkfa0pui28p096v6u076je2181l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2SVBo5KGas34Nkc2afNCcCiT9lCQ4wmU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55996490474-el0u3nkfa0pui28p096v6u076je2181l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

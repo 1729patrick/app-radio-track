@@ -46,8 +46,10 @@ export default StyleSheet.create({
   },
   title: {
     ...StyleGuide.typography.headline,
+    fontSize: 16,
     marginTop: 'auto',
     padding: 10,
     color: '#fff',
+    paddingRight: 20,
   },
 });
