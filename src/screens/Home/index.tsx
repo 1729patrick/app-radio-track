@@ -15,6 +15,7 @@ import { FavoriteRadios, PlaylistRadios } from './components/Radios/types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
+import { BLOCKS } from '~/ads/constants';
 
 function daysIntoYear() {
   const date = new Date();
@@ -36,23 +37,27 @@ const PLAYLISTS = [
     url: 'playlists/recommend',
     title: 'Rádios recomendadas',
     initialPage: dateOfYear + 5,
+    adType: BLOCKS.PLAYLIST_RECOMMEND,
   },
   {
     key: 'popular',
     url: 'playlists/popular',
     title: 'Rádios populares',
+    adType: BLOCKS.PLAYLIST_POPULAR,
   },
   {
     key: 'location',
     url: 'playlists/location',
     title: 'Rádios da sua região',
     initialPage: dateOfYear + 10,
+    adType: BLOCKS.PLAYLIST_LOCATION,
   },
   {
     key: 'random',
     url: 'playlists/random',
     title: 'Descubra novas rádios',
     initialPage: dateOfYear + 15,
+    adType: BLOCKS.PLAYLIST_RANDOM,
   },
 ];
 
@@ -104,7 +109,8 @@ const Home: React.FC = () => {
   const onShowPlaylist = (args: {
     title: string;
     url: string;
-    initialPage: number;
+    initialPage?: number;
+    adType: string;
   }) => {
     navigate('Playlist', args);
   };

@@ -10,7 +10,8 @@ type TypesProps = {
   onShowAll?: (args: {
     title: string;
     url: string;
-    initialPage: number;
+    initialPage?: number;
+    adType: string;
   }) => void;
   onEndReached?: () => void;
 };
@@ -77,6 +78,7 @@ export const PlaylistRadios: React.FC<TypesProps & PlaylistType> = ({
           title: playlist.title,
           url: playlist.url,
           initialPage: playlist.initialPage,
+          adType: playlist.adType,
         })
       }
     />

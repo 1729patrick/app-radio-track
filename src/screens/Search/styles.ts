@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+import { COMPACT_HEIGHT } from '~/components/Player/constants';
+import { BOTTOM_TAB_BAR_HEIGHT } from '~/components/TabBar/Bottom/constants';
 import StyleGuide from '~/utils/StyleGuide';
 
 export default StyleSheet.create({
@@ -36,7 +38,9 @@ export default StyleSheet.create({
     marginTop: 5,
     textAlign: 'center',
   },
-  contentContainer: {},
+  contentContainer: {
+    paddingBottom: BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT,
+  },
   itemContainer: {
     height: 55,
     flexDirection: 'row',

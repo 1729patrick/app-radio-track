@@ -13,6 +13,11 @@ const Banner = ({ id }: { id: string }) => {
 
   return (
     <BannerAd
+      // onAdLoaded={(args) => console.log('onAdLoaded', args)}
+      // onAdFailedToLoad={(args) => console.log('onAdFailedToLoad', args)}
+      // onAdOpened={(args) => console.log('onAdOpened', args)}
+      // onAdClosed={(args) => console.log('onAdClosed', args)}
+
       unitId={unitId}
       size={BannerAdSize.FULL_BANNER}
       requestOptions={{

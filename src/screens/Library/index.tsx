@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import StyleGuide from '~/utils/StyleGuide';
@@ -14,6 +14,8 @@ import Loader from '~/components/Loader';
 import History from './components/History';
 import { FlatList } from 'react-native-gesture-handler';
 import { RadioType } from '~/types/Station';
+import { useIsFocused } from '@react-navigation/native';
+import { useAd } from '~/ads/contexts/AdContext';
 
 const LibraryTab = createMaterialTopTabNavigator();
 
@@ -21,6 +23,14 @@ const Library = () => {
   const translateY = useSharedValue(0);
   const historyRef = useRef<FlatList<RadioType>>(null);
   const favoritesRef = useRef<FlatList<RadioType>>(null);
+  const isFocused = useIsFocused();
+  const { showLibraryAd } = useAd();
+
+  useEffect(() => {
+    if (isFocused) {
+      showLibraryAd();
+    }
+  }, [isFocused, showLibraryAd]);
 
   const refreshTranslateY = useCallback((from) => {
     // const offset = Math.max(Math.abs(translateY.value), 0);

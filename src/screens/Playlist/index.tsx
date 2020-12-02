@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -14,9 +14,18 @@ import Radio from '~/components/Radio/Item';
 import { useFetchPagination } from '~/hooks/useFetchPagination';
 import Loader from '~/components/Loader';
 import Error from '~/components/Error';
+import useReward from '~/ads/hooks/useReward';
+import { useAd } from '~/ads/contexts/AdContext';
+import Banner from '~/ads/components/Banner';
+import { BLOCKS } from '~/ads/constants';
 
 type RootStackParamList = {
-  Playlist: { title: string; url: string; initialPage?: number };
+  Playlist: {
+    title: string;
+    url: string;
+    initialPage?: number;
+    adType: string;
+  };
 };
 
 type RouteProps = RouteProp<RootStackParamList, 'Playlist'>;
@@ -24,6 +33,12 @@ type RouteProps = RouteProp<RootStackParamList, 'Playlist'>;
 const Explore: React.FC = () => {
   const { translateY } = useAnimatedHeader();
   const { params } = useRoute<RouteProps>();
+  const { showPlaylistAd } = useAd();
+  const randomAdIndex = useMemo(() => {
+    const randomIndex = (Math.random() * 12).toFixed(0);
+
+    return +randomIndex;
+  }, []);
 
   const { data, error, fetchMore } = useFetchPagination(
     params.url,
@@ -46,11 +61,24 @@ const Explore: React.FC = () => {
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
-        <Radio item={item} index={index} onExpandPlayer={onExpandPlayerPress} />
+        <>
+          <Radio
+            item={item}
+            index={index}
+            onExpandPlayer={onExpandPlayerPress}
+          />
+
+          {index === randomAdIndex && <Banner id={BLOCKS.MUSIC} />}
+        </>
       );
     },
-    [onExpandPlayerPress],
+    [onExpandPlayerPress, randomAdIndex],
   );
+
+  useEffect(() => {
+    showPlaylistAd();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -14,6 +14,8 @@ import Radio from '~/components/Radio/Item';
 import styles from './styles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
+import Banner from '~/ads/components/Banner';
+import { BLOCKS } from '~/ads/constants';
 
 type SearchProps = {
   onCloseSearch: () => void;
@@ -26,6 +28,11 @@ const Search: React.FC<SearchProps> = () => {
       ? `/search?q=${searchTerm.trimLeft().trimRight()}`
       : null,
   );
+  const randomAdIndex = useMemo(() => {
+    const randomIndex = (Math.random() * 12).toFixed(0);
+
+    return +randomIndex;
+  }, []);
 
   const { pop } = useNavigation<StackNavigationProp<any>>();
 
@@ -45,8 +52,8 @@ const Search: React.FC<SearchProps> = () => {
 
       onExpandPlayer({
         title: radio?.name || '',
-        radios: radio ? [radio] : [],
-        radioIndex: 0,
+        radios: data?.items?.length ? data?.items : [],
+        radioIndex,
       });
     },
     [data?.items, onExpandPlayer],
@@ -57,7 +64,14 @@ const Search: React.FC<SearchProps> = () => {
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
-        <Radio item={item} index={index} onExpandPlayer={onExpandPlayerPress} />
+        <>
+          <Radio
+            item={item}
+            index={index}
+            onExpandPlayer={onExpandPlayerPress}
+          />
+          {index === randomAdIndex && <Banner id={BLOCKS.MUSIC} />}
+        </>
       );
     },
     [onExpandPlayerPress],

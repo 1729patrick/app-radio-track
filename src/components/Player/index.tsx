@@ -59,6 +59,7 @@ import { usePlaying } from '~/contexts/PlayingContext';
 import { image } from '~/services/api';
 import useIsReconnected from '~/hooks/useIsReconnected';
 import { useNetInfo } from '@react-native-community/netinfo';
+import { useAd } from '~/ads/contexts/AdContext';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -102,6 +103,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const { removePlayingRadio } = usePlaying();
   const isReconnected = useIsReconnected();
   const { isConnected } = useNetInfo();
+  const { showPlayerAd } = useAd();
 
   const [state, setState] = useState<PlayerState>({
     title: '',
@@ -467,6 +469,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       } else if (radioIndex > radioIndexRef.current) {
         nextTrackPlayer();
       }
+      if (radioIndex !== radioIndexRef.current) {
+        showPlayerAd();
+      }
 
       setRadioIndex(radioIndex);
       radioIndexRef.current = radioIndex;
@@ -513,7 +518,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         addRadiosToTrackPlayer(
           radiosRef.current,
           radioIndexRef.current,
-          false,
+          true,
           true,
         );
       }
