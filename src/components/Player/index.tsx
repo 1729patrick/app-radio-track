@@ -168,12 +168,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         if (translateY.value < height * 0.3) {
           translateY.value = withTiming(SNAP_POINTS[0], {
             duration: TIMING_DURATION,
-            easing: Easing.out(Easing.circle),
           });
         } else {
           translateY.value = withTiming(SNAP_POINTS[1], {
             duration: TIMING_DURATION,
-            easing: Easing.out(Easing.circle),
           });
         }
 
@@ -203,7 +201,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       translateY.value = withTiming(val, {
         duration: TIMING_DURATION,
-        easing: Easing.out(Easing.circle),
       });
     },
   });
@@ -400,12 +397,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       if (size === 'expand') {
         translateY.value = withTiming(SNAP_POINTS[0], {
           duration: TIMING_DURATION,
-          easing: Easing.out(Easing.circle),
         });
       } else {
         translateY.value = withTiming(SNAP_POINTS[1], {
           duration: TIMING_DURATION,
-          easing: Easing.out(Easing.circle),
         });
       }
     },
@@ -416,7 +411,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     if (SNAP_POINTS[0] === translateY.value) {
       translateY.value = withTiming(SNAP_POINTS[1], {
         duration: TIMING_DURATION,
-        easing: Easing.out(Easing.circle),
       });
     }
   }, [translateY]);

@@ -17,7 +17,6 @@ import { useNavigation } from '@react-navigation/native';
 import StyleGuide from '~/utils/StyleGuide';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import Logo from '~/components/Logo';
 type HeaderProps = {
   translateY: Animated.SharedValue<number>;
   title?: string;

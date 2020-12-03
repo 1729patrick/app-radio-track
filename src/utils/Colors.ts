@@ -1,11 +1,11 @@
 const colors_ = [
   '#424242',
+  '#523f3d',
   '#372d1e',
+  '#3f0f0f',
   '#001c43',
   '#381619',
   '#371c3d',
-  '#523f3d',
-  '#3f0f0f',
 ];
 
 export const shuffleColors = () => {

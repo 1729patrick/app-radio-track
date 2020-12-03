@@ -1,8 +1,6 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 import { BOTTOM_TAB_BAR_HEIGHT } from './constants';
-
-const { height } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
@@ -10,7 +8,7 @@ export default StyleSheet.create({
     backgroundColor: StyleGuide.palette.backgroundPrimary,
     right: 0,
     left: 0,
-    top: height - BOTTOM_TAB_BAR_HEIGHT,
+    bottom: 0,
     zIndex: 60,
     elevation: 60,
     position: 'absolute',

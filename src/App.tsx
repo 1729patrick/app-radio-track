@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { StatusBar } from 'react-native';
 import Routes from './routes';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -7,7 +8,17 @@ const App = () => {
     SplashScreen.hide();
   }, []);
 
-  return <Routes />;
+  return (
+    <>
+      <StatusBar
+        barStyle="light-content"
+        translucent
+        backgroundColor="transparent"
+      />
+
+      <Routes />
+    </>
+  );
 };
 
 export default App;

@@ -5,7 +5,6 @@ import { FavoriteProvider } from './contexts/FavoriteContext';
 import { HistoryProvider } from './contexts/HistoryContext';
 import { PlayingProvider } from './contexts/PlayingContext';
 import { AdProvider } from './ads/contexts/AdContext';
-import { StatusBar } from 'react-native';
 
 export default () => {
   return (
@@ -14,11 +13,6 @@ export default () => {
         <PlayerProvider>
           <PlayingProvider>
             <AdProvider>
-              <StatusBar
-                barStyle="light-content"
-                translucent
-                backgroundColor="transparent"
-              />
               <App />
             </AdProvider>
           </PlayingProvider>
