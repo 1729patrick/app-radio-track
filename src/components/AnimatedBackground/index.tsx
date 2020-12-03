@@ -76,7 +76,6 @@ const AnimatedBackground: React.ForwardRefRenderFunction<
         translateX.value,
         inputRange.current,
         outputRange.current,
-        Extrapolate.CLAMP,
       ),
     };
   }, [translateX.value, inputRange.current, outputRange.current]);
