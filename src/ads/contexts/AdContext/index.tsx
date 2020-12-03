@@ -39,7 +39,7 @@ export const AdProvider: React.FC = ({ children }) => {
       fns.showAd();
       resetTimeout();
 
-      setTimeout(fns.loadAd, TIME_TO_SHOW / 2);
+      BackgroundTimer.setTimeout(fns.loadAd, TIME_TO_SHOW / 2);
     }
   };
 
