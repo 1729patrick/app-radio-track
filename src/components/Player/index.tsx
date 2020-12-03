@@ -34,8 +34,6 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 
-import { getColor } from '~/utils/Colors';
-
 import Albums, { AlbumsHandler } from './components/Albums';
 import Artist from './components/Artist';
 import BottomControls from './components/Controls/Bottom';
@@ -124,7 +122,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const radiosRef = useRef<RadioType[]>([]);
   const albumsMountedRef = useRef<boolean>(false);
   const isCorrectRadioRef = useRef<boolean>(false);
-  const didPauseTemporarilyTime = useRef<number>(0);
 
   const y = useDerivedValue(() => {
     const validY = interpolate(
@@ -226,7 +223,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     await TrackPlayer.updateOptions({
       stopWithApp: true,
       //@ts-ignore
-      alwaysPauseOnInterruption: true,
+      // alwaysPauseOnInterruption: true,
       icon: require('../../assets/notification/logo.png'),
       capabilities: [
         TrackPlayer.CAPABILITY_PLAY,
@@ -485,18 +482,20 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const onRemoteDuck = useCallback(
     ({ permanent, paused }: { permanent: boolean; paused: boolean }) => {
-      let secondsSincePause =
-        (Date.now() - didPauseTemporarilyTime.current) / 1000;
-
-      if (!permanent && !paused && secondsSincePause < 30) {
+      if (
+        !permanent &&
+        !paused &&
+        playbackStateOnDisconnectMoment.current === TrackPlayer.STATE_PLAYING
+      ) {
         playTrackPlayer();
         return;
       }
 
-      didPauseTemporarilyTime.current = Date.now();
+      playbackStateOnDisconnectMoment.current = playbackState;
+
       pauseTrackPlayer();
     },
-    [pauseTrackPlayer, playTrackPlayer],
+    [pauseTrackPlayer, playTrackPlayer, playbackState],
   );
 
   useTrackPlayerEvents(

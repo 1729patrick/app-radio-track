@@ -39,18 +39,25 @@ export const PlayingProvider: React.FC = ({ children }) => {
         setRadioId(undefined);
       } else if (playing) {
         const id = await TrackPlayer.getCurrentTrack();
-        const track = await TrackPlayer.getTrack(id);
 
-        const trackFormatted = {
-          id: track.id,
-          streams: [{ url: track.url }],
-          name: track.title,
-          slogan: track.artist,
-          img: track.artwork,
-          type: undefined,
-        };
+        const radios = await TrackPlayer.getQueue();
 
-        setItem(JSON.stringify(trackFormatted));
+        const radiosFormatted = radios.map((track) => {
+          return {
+            id: track.id,
+            streams: [{ url: track.url }],
+            name: track.title,
+            slogan: track.artist,
+            img: track.artwork,
+            type: undefined,
+          };
+        });
+
+        const radioIndex = radiosFormatted.findIndex(
+          (radio) => radio.id === id,
+        );
+
+        setItem(JSON.stringify({ radios: radiosFormatted, radioIndex }));
         setRadioId(id);
       }
     },
@@ -76,11 +83,17 @@ export const PlayingProvider: React.FC = ({ children }) => {
     const radioPlayingFromStorage = await getItem();
 
     if (radioPlayingFromStorage) {
-      const radio = JSON.parse(radioPlayingFromStorage) as RadioType;
+      const { radios, radioIndex } = JSON.parse(radioPlayingFromStorage);
+
+      if (!radios || !radios[radioIndex]) {
+        console.warn('Invalid playing stored on device');
+        return;
+      }
+
       onExpandPlayer({
-        radios: [radio],
-        radioIndex: 0,
-        title: radio.name,
+        radios,
+        radioIndex,
+        title: '',
         size: 'compact',
       });
     }
