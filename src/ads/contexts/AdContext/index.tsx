@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef } from 'react';
 import { BLOCKS } from '~/ads/constants';
 import useReward from '~/ads/hooks/useReward';
+import BackgroundTimer from 'react-native-background-timer';
 
 type ContextProps = {
   showPlaylistAd: () => void;
@@ -18,7 +19,7 @@ const TIME_OUT_MINUTOS = 5;
 const TIME_TO_SHOW = 1000 * 60 * TIME_OUT_MINUTOS;
 
 export const AdProvider: React.FC = ({ children }) => {
-  const timeoutRef = useRef(null);
+  const timeoutRef = useRef<number>(0);
   const availableRef = useRef(true);
 
   const playlistReward = useReward(BLOCKS.PLAYLIST);
@@ -28,7 +29,7 @@ export const AdProvider: React.FC = ({ children }) => {
   const resetTimeout = () => {
     availableRef.current = false;
 
-    timeoutRef.current = setTimeout(() => {
+    timeoutRef.current = BackgroundTimer.setTimeout(() => {
       availableRef.current = true;
     }, TIME_TO_SHOW);
   };
@@ -55,7 +56,7 @@ export const AdProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    return () => clearTimeout(timeoutRef.current);
+    return () => BackgroundTimer.clearTimeout(timeoutRef.current);
   }, []);
 
   return (
