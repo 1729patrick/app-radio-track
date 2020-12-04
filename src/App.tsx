@@ -10,12 +10,7 @@ const App = () => {
 
   return (
     <>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
-
+      <StatusBar barStyle="light-content" backgroundColor="transparent" />
       <Routes />
     </>
   );

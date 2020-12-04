@@ -31,9 +31,10 @@ const Radios: React.FC<RadiosProps> = ({
         <Radio
           item={item}
           index={index}
-          onExpandPlayer={({ radioIndex }) =>
-            onExpandPlayer({ title, radios, radioIndex })
-          }
+          onExpandPlayer={({ radioIndex }) => {
+            console.log('onExpandPlayer');
+            onExpandPlayer({ title, radios, radioIndex });
+          }}
         />
       );
     },
@@ -41,6 +42,7 @@ const Radios: React.FC<RadiosProps> = ({
   );
 
   const onShowAllPress = () => {
+    console.log('onShowAllPress');
     onShowAll && onShowAll(title);
   };
 

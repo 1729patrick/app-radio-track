@@ -8,7 +8,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import { shuffleColors } from '~/utils/Colors';
+import { shuffleColors, colors_ } from '~/utils/Colors';
 import StyleGuide from '~/utils/StyleGuide';
 
 export type AnimatedBackgroundHandler = {
@@ -27,21 +27,21 @@ const AnimatedBackground: React.ForwardRefRenderFunction<
   AnimatedBackgroundHandler,
   AnimatedBackgroundProps
 > = ({ children, style }, ref) => {
-  const translateX = useSharedValue(0);
-  const inputRange = useRef([0, 1]);
-  const outputRange = useRef([
-    StyleGuide.palette.backgroundPrimary,
-    StyleGuide.palette.backgroundPrimary,
-  ]);
+  // const translateX = useSharedValue(0);
+  // const inputRange = useRef([0, 1]);
+  // const outputRange = useRef([
+  //   StyleGuide.palette.backgroundPrimary,
+  //   StyleGuide.palette.backgroundPrimary,
+  // ]);
 
-  const scrollHandler = useAnimatedScrollHandler<{}>(
-    {
-      onScroll: (event) => {
-        translateX.value = event.contentOffset.x / width;
-      },
-    },
-    [],
-  );
+  // const scrollHandler = useAnimatedScrollHandler<{}>(
+  //   {
+  //     onScroll: (event) => {
+  //       translateX.value = event.contentOffset.x / width;
+  //     },
+  //   },
+  //   [],
+  // );
 
   const setup = ({
     radioIndex,
@@ -50,38 +50,38 @@ const AnimatedBackground: React.ForwardRefRenderFunction<
     radioIndex: number;
     radiosSize: number;
   }) => {
-    translateX.value = radioIndex;
-
-    const colors = shuffleColors();
-
-    if (radiosSize === 1) {
-      inputRange.current = [0, 1];
-      outputRange.current = [colors[0], colors[0]];
-    } else {
-      inputRange.current = [...new Array(radiosSize)].map((_, i) => i);
-      outputRange.current = inputRange.current.map(
-        (i) => colors[i % colors.length],
-      );
-    }
+    // translateX.value = radioIndex;
+    // const colors = shuffleColors();
+    // if (radiosSize === 1) {
+    //   inputRange.current = [0, 1];
+    //   outputRange.current = [colors[0], colors[0]];
+    // } else {
+    //   inputRange.current = [...new Array(radiosSize)].map((_, i) => i);
+    //   outputRange.current = inputRange.current.map(
+    //     (i) => colors[i % colors.length],
+    //   );
+    // }
   };
 
   useImperativeHandle(ref, () => ({
-    scrollHandler,
+    scrollHandler: () => {},
     setup,
   }));
 
-  const styleContainer = useAnimatedStyle(() => {
-    return {
-      backgroundColor: interpolateColor(
-        translateX.value,
-        inputRange.current,
-        outputRange.current,
-      ),
-    };
-  }, [translateX.value, inputRange.current, outputRange.current]);
+  // const styleContainer = useAnimatedStyle(() => {
+  //   return {
+  //     backgroundColor: interpolateColor(
+  //       translateX.value,
+  //       inputRange.current,
+  //       outputRange.current,
+  //     ),
+  //   };
+  // }, [translateX.value, inputRange.current, outputRange.current]);
 
   return (
-    <Animated.View style={[style, styleContainer]}>{children}</Animated.View>
+    <Animated.View style={[style, { backgroundColor: colors_[0] }]}>
+      {children}
+    </Animated.View>
   );
 };
 

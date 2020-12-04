@@ -5,17 +5,15 @@
         <!-- Customize your theme here. -->
         <item name="android:textColor">#ffffff</item>
 
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/primary_dark</item>
-        <item name="android:windowTranslucentStatus">false</item>
-
     </style>
 
    <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimaryDark">@color/primary_dark</item>
+
         <item name="android:background">@color/primary_dark</item>
 
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/primary_dark</item>
+        
     </style>
 </resources>

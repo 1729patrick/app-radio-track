@@ -1,4 +1,4 @@
-const colors_ = [
+export const colors_ = [
   '#424242',
   '#523f3d',
   '#372d1e',
