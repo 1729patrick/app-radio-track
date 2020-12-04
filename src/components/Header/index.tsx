@@ -27,7 +27,7 @@ type HeaderProps = {
 const Header: React.FC<HeaderProps> = ({
   translateY,
   title,
-  backgroundColor = StyleGuide.palette.backgroundPrimary,
+  backgroundColor = StyleGuide.palette.background,
   showBack = true,
 }) => {
   const { navigate, pop } = useNavigation<StackNavigationProp<any>>();

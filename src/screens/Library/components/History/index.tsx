@@ -1,4 +1,10 @@
-import React, { useCallback, forwardRef, useMemo } from 'react';
+import React, {
+  useCallback,
+  forwardRef,
+  useMemo,
+  useState,
+  useEffect,
+} from 'react';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Radio from '~/components/Radio/Item';
 
@@ -10,6 +16,9 @@ import { FlatList } from 'react-native-gesture-handler';
 import Error from '~/components/Error';
 import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';
+import { useIsFocused } from '@react-navigation/native';
+import Loader from '~/components/Loader';
+import { usePlaying } from '~/contexts/PlayingContext';
 
 type HistoryProps = {
   refreshTranslateY: (from: string) => void;
@@ -19,13 +28,23 @@ const History: React.ForwardRefRenderFunction<
   FlatList<RadioType>,
   HistoryProps
 > = ({ refreshTranslateY }, ref) => {
+  const isFocused = useIsFocused();
   const { onExpandPlayer } = usePlayer();
-  const { history } = useHistory();
+  const { playingRadioId } = usePlaying();
+  const [history, setHistory] = useState<RadioType[]>();
+  const { getHistory } = useHistory();
+
   const randomAdIndex = useMemo(() => {
     const randomIndex = (Math.random() * 12).toFixed(0);
 
     return +randomIndex;
   }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      setHistory(getHistory());
+    }
+  }, [getHistory, isFocused]);
 
   const onExpandPlayerPress = useCallback(
     ({ radioIndex }: { radioIndex: number }) => {
@@ -43,6 +62,7 @@ const History: React.ForwardRefRenderFunction<
       return (
         <>
           <Radio
+            playing={playingRadioId === item.id}
             item={item}
             index={index}
             onExpandPlayer={onExpandPlayerPress}
@@ -51,10 +71,14 @@ const History: React.ForwardRefRenderFunction<
         </>
       );
     },
-    [onExpandPlayerPress, randomAdIndex],
+    [onExpandPlayerPress, playingRadioId, randomAdIndex],
   );
 
-  if (!history.length) {
+  if (!history) {
+    return <Loader />;
+  }
+
+  if (!history?.length) {
     return <Error type="historyEmpty" />;
   }
 

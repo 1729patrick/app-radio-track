@@ -11,16 +11,20 @@ import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { RadioType } from '~/types/Station';
 import { image } from '~/services/api';
-import { usePlaying } from '~/contexts/PlayingContext';
 
 type RadioProps = {
+  playing: boolean;
   item: RadioType;
   index: number;
   onExpandPlayer: (args: { radioIndex: number }) => void;
 };
 
-const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
-  const { radioId } = usePlaying();
+const Radio: React.FC<RadioProps> = ({
+  playing,
+  item,
+  index,
+  onExpandPlayer,
+}) => {
   const onRadioPress = () => {
     onExpandPlayer({ radioIndex: index });
   };
@@ -48,7 +52,7 @@ const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
         </Text>
       </View>
 
-      {radioId === item.id ? (
+      {playing ? (
         <LottieView
           source={require('~/assets/playing.json')}
           autoPlay

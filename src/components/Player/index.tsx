@@ -98,7 +98,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const playbackStatePrevious = usePrevious(playbackState);
   const playbackStateOnDisconnectMoment = useRef<number>(0);
   const { addHistory } = useHistory();
-  const { removePlayingRadio } = usePlaying();
+  const { removePlayingRadio, setPlayingRadio } = usePlaying();
   const isReconnected = useIsReconnected();
   const { isConnected } = useNetInfo();
   const { showPlayerAd } = useAd();
@@ -120,6 +120,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const radioIndexRef = useRef<number>(0);
   const radiosRef = useRef<RadioType[]>([]);
+  const titleRef = useRef<string>('');
   const albumsMountedRef = useRef<boolean>(false);
   const isCorrectRadioRef = useRef<boolean>(false);
 
@@ -130,6 +131,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       SNAP_POINTS,
       Extrapolate.CLAMP,
     );
+
+    console.log(translateY.value);
 
     if (validY === SNAP_POINTS[0]) {
       runOnJS(setPlayerState)('expanded');
@@ -259,6 +262,18 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     return playbackState === TrackPlayer.STATE_BUFFERING;
   }, [playbackState]);
 
+  useEffect(() => {
+    if (playing && !seeking) {
+      setPlayingRadio({
+        radioIndex: radioIndexRef.current,
+        radios: radiosRef.current,
+        title: titleRef.current,
+      });
+    } else {
+      setPlayingRadio();
+    }
+  }, [playing, seeking, setPlayingRadio]);
+
   const playTrackPlayer = useCallback(async () => {
     await TrackPlayer.seekTo(24 * 60 * 60);
     await TrackPlayer.play();
@@ -298,7 +313,13 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       const radio = radios[radioIndex];
 
       const previousRadio = radiosRef.current[radioIndexRef.current];
-      if (previousRadio?.id === radio.id && !error) {
+      //todo
+
+      if (
+        previousRadio?.id === radio.id &&
+        !error &&
+        playerState !== 'closed'
+      ) {
         return;
       }
 
@@ -346,7 +367,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       addHistory(radiosRef.current[radioIndexRef.current]);
     },
-    [addHistory],
+    [addHistory, playerState],
   );
 
   const onTogglePlayback = useCallback(async () => {
@@ -377,19 +398,22 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       const autoPlay = size !== 'compact';
       if (args) {
         const { radioIndex, ...restArgs } = args;
+        const radios = restArgs.radios.slice(0, 15);
+
         animatedBackgroundRef.current?.setup({
           radioIndex,
-          radiosSize: restArgs.radios.length,
+          radiosSize: radios.length,
         });
 
         if (Platform.OS === 'android') {
-          addRadiosToTrackPlayer(restArgs.radios, radioIndex, autoPlay);
+          addRadiosToTrackPlayer(radios, radioIndex, autoPlay);
         }
 
         albumsMountedRef.current = false;
         isCorrectRadioRef.current = false;
         radioIndexRef.current = radioIndex;
-        radiosRef.current = restArgs.radios;
+        radiosRef.current = radios;
+        titleRef.current = restArgs.title;
 
         setRadioIndex(radioIndex);
         setState(restArgs);
@@ -473,7 +497,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       setRadioIndex(radioIndex);
       radioIndexRef.current = radioIndex;
     },
-    [nextTrackPlayer, previousTrackPlayer],
+    [nextTrackPlayer, previousTrackPlayer, showPlayerAd],
   );
 
   const onAlbumsMounted = useCallback(() => {
@@ -517,7 +541,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         addRadiosToTrackPlayer(
           radiosRef.current,
           radioIndexRef.current,
-          true,
+          false,
           true,
         );
       }
@@ -578,7 +602,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       addRadiosToTrackPlayer(
         radiosRef.current,
         radioIndexRef.current,
-        true,
+        false,
         true,
       );
     }

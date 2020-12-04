@@ -7,59 +7,43 @@ import React, {
   useState,
 } from 'react';
 
-import TrackPlayer, {
-  //@ts-ignore
-  useTrackPlayerEvents,
-  //@ts-ignore
-  TrackPlayerEvents,
-} from 'react-native-track-player';
 import { RadioType } from '~/types/Station';
 import { usePlayer } from '../PlayerContext';
 
+type SetPlayingRadioArgs = {
+  radioIndex: number;
+  title: string;
+  radios: RadioType[];
+};
+
 type ContextProps = {
-  radioId?: string;
+  playingRadioId?: string;
   removePlayingRadio: () => void;
+  setPlayingRadio: (args?: SetPlayingRadioArgs) => void;
 };
 
 const PlayingContext = createContext<ContextProps>({
-  radioId: undefined,
+  playingRadioId: undefined,
   removePlayingRadio: () => {},
+  setPlayingRadio: () => {},
 });
-
-const events = [TrackPlayerEvents.PLAYBACK_STATE];
 
 export const PlayingProvider: React.FC = ({ children }) => {
   const { onExpandPlayer } = usePlayer();
-  const [radioId, setRadioId] = useState<string | undefined>(undefined);
+  const [playingRadioId, setPlayingRadioId] = useState<string | undefined>(
+    undefined,
+  );
   const { getItem, setItem, removeItem } = useAsyncStorage('@radio:playing');
 
   const setPlayingRadio = useCallback(
-    async ({ playing }: { playing: boolean }) => {
-      if (!playing) {
-        setRadioId(undefined);
-      } else if (playing) {
-        const id = await TrackPlayer.getCurrentTrack();
-
-        const radios = await TrackPlayer.getQueue();
-
-        const radiosFormatted = radios.map((track) => {
-          return {
-            id: track.id,
-            streams: [{ url: track.url }],
-            name: track.title,
-            slogan: track.artist,
-            img: track.artwork,
-            type: undefined,
-          };
-        });
-
-        const radioIndex = radiosFormatted.findIndex(
-          (radio) => radio.id === id,
-        );
-
-        setItem(JSON.stringify({ radios: radiosFormatted, radioIndex }));
-        setRadioId(id);
+    async (args?: SetPlayingRadioArgs) => {
+      if (!args) {
+        setPlayingRadioId(undefined);
+        return;
       }
+
+      setItem(JSON.stringify(args));
+      setPlayingRadioId(args.radios[args.radioIndex].id);
     },
     [setItem],
   );
@@ -68,22 +52,11 @@ export const PlayingProvider: React.FC = ({ children }) => {
     removeItem();
   }, [removeItem]);
 
-  useTrackPlayerEvents(
-    events,
-    ({ type, state }: { type: string; state: string }) => {
-      if (type === TrackPlayerEvents.PLAYBACK_STATE) {
-        const playing = state === TrackPlayer.STATE_PLAYING;
-
-        setPlayingRadio({ playing });
-      }
-    },
-  );
-
   const readRadioFromStorage = useCallback(async () => {
     const radioPlayingFromStorage = await getItem();
 
     if (radioPlayingFromStorage) {
-      const { radios, radioIndex } = JSON.parse(radioPlayingFromStorage);
+      const { radios, radioIndex, title } = JSON.parse(radioPlayingFromStorage);
 
       if (!radios || !radios[radioIndex]) {
         console.warn('Invalid playing stored on device');
@@ -93,7 +66,7 @@ export const PlayingProvider: React.FC = ({ children }) => {
       onExpandPlayer({
         radios,
         radioIndex,
-        title: '',
+        title,
         size: 'compact',
       });
     }
@@ -105,7 +78,8 @@ export const PlayingProvider: React.FC = ({ children }) => {
   }, [readRadioFromStorage]);
 
   return (
-    <PlayingContext.Provider value={{ radioId, removePlayingRadio }}>
+    <PlayingContext.Provider
+      value={{ playingRadioId, removePlayingRadio, setPlayingRadio }}>
       {children}
     </PlayingContext.Provider>
   );

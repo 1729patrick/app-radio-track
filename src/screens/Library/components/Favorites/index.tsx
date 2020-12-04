@@ -9,6 +9,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import Error from '~/components/Error';
 import { BLOCKS } from '~/ads/constants';
 import Banner from '~/ads/components/Banner';
+import { usePlaying } from '~/contexts/PlayingContext';
 
 type FavoritesProps = {
   refreshTranslateY: (from: string) => void;
@@ -20,6 +21,7 @@ const Favorites: React.ForwardRefRenderFunction<
 > = ({ refreshTranslateY }, ref) => {
   const { onExpandPlayer } = usePlayer();
   const { favorites } = useFavorites();
+  const { playingRadioId } = usePlaying();
   const randomAdIndex = useMemo(() => {
     const randomIndex = (Math.random() * 12).toFixed(0);
 
@@ -42,6 +44,7 @@ const Favorites: React.ForwardRefRenderFunction<
       return (
         <>
           <Radio
+            playing={playingRadioId === item.id}
             item={item}
             index={index}
             onExpandPlayer={onExpandPlayerPress}
@@ -50,7 +53,7 @@ const Favorites: React.ForwardRefRenderFunction<
         </>
       );
     },
-    [onExpandPlayerPress, randomAdIndex],
+    [onExpandPlayerPress, playingRadioId, randomAdIndex],
   );
 
   if (!favorites.length) {

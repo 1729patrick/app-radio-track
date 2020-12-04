@@ -18,6 +18,7 @@ import useReward from '~/ads/hooks/useReward';
 import { useAd } from '~/ads/contexts/AdContext';
 import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';
+import { usePlaying } from '~/contexts/PlayingContext';
 
 type RootStackParamList = {
   Playlist: {
@@ -34,6 +35,7 @@ const Explore: React.FC = () => {
   const { translateY } = useAnimatedHeader();
   const { params } = useRoute<RouteProps>();
   const { showPlaylistAd } = useAd();
+  const { playingRadioId } = usePlaying();
   const randomAdIndex = useMemo(() => {
     const randomIndex = (Math.random() * 12).toFixed(0);
 
@@ -66,13 +68,14 @@ const Explore: React.FC = () => {
             item={item}
             index={index}
             onExpandPlayer={onExpandPlayerPress}
+            playing={playingRadioId === item.id}
           />
 
           {index === randomAdIndex && <Banner id={BLOCKS.MUSIC} />}
         </>
       );
     },
-    [onExpandPlayerPress, randomAdIndex],
+    [onExpandPlayerPress, playingRadioId, randomAdIndex],
   );
 
   useEffect(() => {

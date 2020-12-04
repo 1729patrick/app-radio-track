@@ -6,17 +6,20 @@ import LottieView from 'lottie-react-native';
 import FastImage from 'react-native-fast-image';
 import { RadioType } from '~/types/Station';
 import { image } from '~/services/api';
-import { usePlaying } from '~/contexts/PlayingContext';
 
 type RadioProps = {
+  playing: boolean;
   item: RadioType;
   index: number;
   onExpandPlayer: (args: { radioIndex: number }) => void;
 };
 
-const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
-  const { radioId } = usePlaying();
-
+const Radio: React.FC<RadioProps> = ({
+  playing,
+  item,
+  index,
+  onExpandPlayer,
+}) => {
   return (
     <View style={[styles.card]}>
       <TouchableOpacity
@@ -31,7 +34,7 @@ const Radio: React.FC<RadioProps> = ({ item, index, onExpandPlayer }) => {
             uri: image(item.img),
           }}
         />
-        {radioId === item.id && (
+        {playing && (
           <View style={styles.playingContainer}>
             <LottieView
               source={require('~/assets/playing.json')}

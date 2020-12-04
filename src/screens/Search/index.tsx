@@ -16,12 +16,14 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
 import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';
+import { usePlaying } from '~/contexts/PlayingContext';
 
 type SearchProps = {
   onCloseSearch: () => void;
 };
 
 const Search: React.FC<SearchProps> = () => {
+  const { playingRadioId } = usePlaying();
   const [searchTerm, setSearchTerm] = useState('');
   const { data, error } = useFetch<FetchWithPagination>(
     searchTerm.trimLeft().trimRight().length >= 3
@@ -66,6 +68,7 @@ const Search: React.FC<SearchProps> = () => {
       return (
         <>
           <Radio
+            playing={playingRadioId === item.id}
             item={item}
             index={index}
             onExpandPlayer={onExpandPlayerPress}
@@ -74,7 +77,7 @@ const Search: React.FC<SearchProps> = () => {
         </>
       );
     },
-    [onExpandPlayerPress],
+    [onExpandPlayerPress, playingRadioId, randomAdIndex],
   );
 
   return (

@@ -19,6 +19,7 @@ const Album: React.FC<AlbumsProps> = ({ item }) => {
         resizeMode={FastImage.resizeMode.cover}
         source={{
           uri: image(item.img),
+          priority: FastImage.priority.high,
         }}
       />
     </View>

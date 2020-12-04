@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { onExpandPlayer } from '~/components/Player';
 import styles from './styles';
+import { usePlaying } from '~/contexts/PlayingContext';
 
 import Radio from '~/components/Radio/Card';
 
@@ -25,24 +26,25 @@ const Radios: React.FC<RadiosProps> = ({
   onShowAll,
   onEndReached,
 }) => {
+  const { playingRadioId } = usePlaying();
+
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
         <Radio
           item={item}
           index={index}
+          playing={playingRadioId === item.id}
           onExpandPlayer={({ radioIndex }) => {
-            console.log('onExpandPlayer');
             onExpandPlayer({ title, radios, radioIndex });
           }}
         />
       );
     },
-    [onExpandPlayer, radios, title],
+    [playingRadioId, onExpandPlayer, radios, title],
   );
 
   const onShowAllPress = () => {
-    console.log('onShowAllPress');
     onShowAll && onShowAll(title);
   };
 

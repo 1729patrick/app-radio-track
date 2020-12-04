@@ -3,39 +3,34 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useRef,
 } from 'react';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { RadioType } from '~/types/Station';
 
 type ContextProps = {
   addHistory: (arg: RadioType) => void;
-  history: RadioType[];
+  getHistory: () => RadioType[];
 };
 
 const HistoryContext = createContext<ContextProps>({
   addHistory: () => {},
-  history: [],
+  getHistory: () => [],
 });
 
 export const HistoryProvider: React.FC = ({ children }) => {
-  const [history, setHistory] = useState<RadioType[]>([]);
+  const history = useRef<RadioType[]>([]);
   const { getItem, setItem } = useAsyncStorage('@radios:history');
 
   const addHistory = useCallback(
     (radio: RadioType) => {
-      setTimeout(() => {
-        setHistory((history) => {
-          if (history.find((h) => h.id === radio.id)) {
-            return history;
-          }
+      const historyWithoutRadio = history.current.filter(
+        (h) => h.id !== radio.id,
+      );
 
-          const newHistory = [radio, ...history];
-          setItem(JSON.stringify(newHistory));
+      history.current = [radio, ...historyWithoutRadio];
 
-          return newHistory;
-        });
-      }, 1000);
+      setItem(JSON.stringify(history.current));
     },
     [setItem],
   );
@@ -43,9 +38,13 @@ export const HistoryProvider: React.FC = ({ children }) => {
   const readHistoryFromStorage = useCallback(async () => {
     const historyFromStorage = await getItem();
     if (historyFromStorage) {
-      setHistory(JSON.parse(historyFromStorage));
+      history.current = JSON.parse(historyFromStorage);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getHistory = useCallback((): RadioType[] => {
+    return history.current;
   }, []);
 
   useEffect(() => {
@@ -53,7 +52,7 @@ export const HistoryProvider: React.FC = ({ children }) => {
   }, [readHistoryFromStorage]);
 
   return (
-    <HistoryContext.Provider value={{ history, addHistory }}>
+    <HistoryContext.Provider value={{ getHistory, addHistory }}>
       {children}
     </HistoryContext.Provider>
   );

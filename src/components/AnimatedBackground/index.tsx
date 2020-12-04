@@ -79,7 +79,11 @@ const AnimatedBackground: React.ForwardRefRenderFunction<
   // }, [translateX.value, inputRange.current, outputRange.current]);
 
   return (
-    <Animated.View style={[style, { backgroundColor: colors_[0] }]}>
+    <Animated.View
+      style={[
+        style,
+        { backgroundColor: StyleGuide.palette.backgroundPrimary },
+      ]}>
       {children}
     </Animated.View>
   );
