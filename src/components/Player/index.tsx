@@ -482,10 +482,13 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         return;
       }
 
+      const changedPlaying = radioIndexRef.current !== radioIndex;
       setRadioIndex(radioIndex);
       radioIndexRef.current = radioIndex;
 
-      onSkipPlayer();
+      if (changedPlaying) {
+        onSkipPlayer();
+      }
     },
     [onSkipPlayer],
   );
