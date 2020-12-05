@@ -27,6 +27,7 @@ type CompactPlayerType = {
   seeking: boolean;
   onTogglePlayback: () => void;
   radio: RadioType;
+  error: boolean;
 };
 
 const CompactPlayer: React.FC<CompactPlayerType> = ({
@@ -38,6 +39,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
   seeking,
   onTogglePlayback,
   radio,
+  error,
 }) => {
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 
@@ -103,8 +105,8 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 rippleColor={StyleGuide.palette.primary}
                 style={styles.button}
                 onPress={onTogglePlayback}
-                enabled={!buffering}>
-                {(stopped || seeking) && (
+                enabled={!buffering && !error}>
+                {(stopped || seeking) && !error && (
                   <Icon
                     name="play"
                     size={buffering ? 18 : 25}
@@ -118,6 +120,13 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                     size={25}
                     color={StyleGuide.palette.primary}
                     style={styles.stopButton}
+                  />
+                )}
+                {error && (
+                  <Icon
+                    name="alert"
+                    size={25}
+                    color={StyleGuide.palette.primary}
                   />
                 )}
               </BorderlessButton>

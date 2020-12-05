@@ -22,6 +22,7 @@ type BottomControlsProps = {
   stopped: boolean;
   buffering: boolean;
   onTogglePlayback: () => void;
+  error: boolean;
 };
 
 const BottomControls: React.FC<BottomControlsProps> = ({
@@ -32,6 +33,7 @@ const BottomControls: React.FC<BottomControlsProps> = ({
   playing,
   stopped,
   buffering,
+  error,
 }) => {
   const style = useAnimatedStyle(() => {
     return {
@@ -60,8 +62,8 @@ const BottomControls: React.FC<BottomControlsProps> = ({
           rippleColor={StyleGuide.palette.primary}
           style={styles.playButton}
           onPress={onTogglePlayback}
-          enabled={!buffering}>
-          {stopped && (
+          enabled={!buffering && !error}>
+          {stopped && !error && (
             <Icon name="play" size={30} color={StyleGuide.palette.primary} />
           )}
           {playing && (
@@ -70,6 +72,10 @@ const BottomControls: React.FC<BottomControlsProps> = ({
               size={30}
               color={StyleGuide.palette.primary}
             />
+          )}
+
+          {error && (
+            <Icon name="alert" size={32} color={StyleGuide.palette.primary} />
           )}
 
           {buffering && (

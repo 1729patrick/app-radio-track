@@ -123,6 +123,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const titleRef = useRef<string>('');
   const albumsMountedRef = useRef<boolean>(false);
   const isCorrectRadioRef = useRef<boolean>(false);
+  const [errorRadioId, setErrorRadioId] = useState('');
 
   const y = useDerivedValue(() => {
     const validY = interpolate(
@@ -131,8 +132,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       SNAP_POINTS,
       Extrapolate.CLAMP,
     );
-
-    console.log(translateY.value);
 
     if (validY === SNAP_POINTS[0]) {
       runOnJS(setPlayerState)('expanded');
@@ -490,14 +489,15 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       } else if (radioIndex > radioIndexRef.current) {
         nextTrackPlayer();
       }
+
       if (radioIndex !== radioIndexRef.current) {
         showPlayerAd();
+        setErrorRadioId('');
+        setRadioIndex(radioIndex);
+        radioIndexRef.current = radioIndex;
       }
-
-      setRadioIndex(radioIndex);
-      radioIndexRef.current = radioIndex;
     },
-    [nextTrackPlayer, previousTrackPlayer, showPlayerAd],
+    [nextTrackPlayer, previousTrackPlayer, showPlayerAd, setErrorRadioId],
   );
 
   const onAlbumsMounted = useCallback(() => {
@@ -537,6 +537,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         //   'An error occurred while playing the current track.',
         //   args,
         // );
+
+        setErrorRadioId(radiosRef.current[radioIndexRef.current].id);
 
         addRadiosToTrackPlayer(
           radiosRef.current,
@@ -637,6 +639,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
                 seeking={seeking}
                 onTogglePlayback={onTogglePlayback}
                 radio={radio}
+                error={!!errorRadioId}
               />
             )}
 
@@ -657,6 +660,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
                 loading={loading}
                 onAlbumsMounted={onAlbumsMounted}
                 scrollHandler={animatedBackgroundRef.current?.scrollHandler}
+                errorRadioId={errorRadioId}
               />
             )}
 
@@ -674,6 +678,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
                 playing={playing}
                 stopped={stopped}
                 buffering={buffering}
+                error={!!errorRadioId}
               />
             </View>
           </AnimatedBackground>

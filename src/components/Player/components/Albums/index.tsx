@@ -41,6 +41,8 @@ type AlbumsProps = {
   radioIndex: number;
   loading?: boolean;
   onAlbumsMounted: () => void;
+  scrollHandler: any;
+  errorRadioId: string;
 };
 
 export type AlbumsHandler = {
@@ -56,6 +58,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     loading,
     onAlbumsMounted,
     scrollHandler,
+    errorRadioId,
   },
   ref,
 ) => {
@@ -135,9 +138,12 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     setHiddenFlatList(true);
   }, [radios]);
 
-  const renderItem = useCallback(({ item }) => {
-    return <Album item={item} />;
-  }, []);
+  const renderItem = useCallback(
+    ({ item }) => {
+      return <Album item={item} error={item.id === errorRadioId} />;
+    },
+    [errorRadioId],
+  );
 
   const onLayout = () => {
     scrollToAlbum({
