@@ -25,7 +25,6 @@ type CompactPlayerType = {
   y: Animated.SharedValue<number>;
   onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
   playing: boolean;
-  stopped: boolean;
   buffering: boolean;
   onTogglePlayback: () => void;
   radio: RadioType;
@@ -36,7 +35,6 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
   y,
   onExpandPlayer,
   playing,
-  stopped,
   buffering,
   onTogglePlayback,
   radio,
@@ -98,14 +96,14 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
             {isFavorite(radio) ? (
               <RoundButton
                 name="heart-sharp"
-                size={25}
+                size={23}
                 onPress={() => removeFavorite(radio)}
                 Icon={Icon}
               />
             ) : (
               <RoundButton
                 name="heart-outline"
-                size={25}
+                size={23}
                 onPress={() => addFavorite(radio)}
                 Icon={Icon}
               />
@@ -117,18 +115,18 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 style={styles.button}
                 onPress={onTogglePlayback}
                 enabled={!buffering && !error}>
-                {stopped && !error && (
+                {!playing && !error && (
                   <Icon
                     name="play"
-                    size={buffering ? 18 : 25}
+                    size={buffering ? 15 : 23}
                     color={StyleGuide.palette.primary}
                     style={styles.playButton}
                   />
                 )}
-                {(playing || buffering) && (
+                {playing && !error && (
                   <Icon
                     name="ios-pause-sharp"
-                    size={buffering ? 18 : 25}
+                    size={buffering ? 15 : 23}
                     color={StyleGuide.palette.primary}
                     style={styles.stopButton}
                   />
@@ -136,12 +134,12 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 {error && (
                   <Icon
                     name="alert"
-                    size={25}
+                    size={23}
                     color={StyleGuide.palette.primary}
                   />
                 )}
               </BorderlessButton>
-              {buffering && (
+              {buffering && !error && (
                 <LottieView
                   source={require('~/assets/loader.json')}
                   autoPlay

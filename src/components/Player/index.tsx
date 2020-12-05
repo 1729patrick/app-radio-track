@@ -94,8 +94,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   ref,
 ) => {
   const { translateY } = usePlayer();
+  const [playing, setPlaying] = useState(false);
   const playbackState = usePlaybackState();
-  const playbackStatePrevious = usePrevious(playbackState);
+  const playbackStatePreviousRef = useRef(playbackState);
+
   const playbackStateOnDisconnectMoment = useRef<number>(0);
   const { addHistory } = useHistory();
   const { removePlayingRadio, setPlayingRadio } = usePlaying();
@@ -118,6 +120,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const albumsRef = useRef<AlbumsHandler>(null);
   const animatedBackgroundRef = useRef<AnimatedBackgroundHandler>(null);
 
+  const waitForInteractionPlaybackState = useRef(true);
   const radioIndexRef = useRef<number>(0);
   const radiosRef = useRef<RadioType[]>([]);
   const titleRef = useRef<string>('');
@@ -242,15 +245,25 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     });
   }, []);
 
-  const playing = useMemo(() => {
-    return playbackState === TrackPlayer.STATE_PLAYING;
-  }, [playbackState]);
+  useEffect(() => {
+    if (
+      waitForInteractionPlaybackState.current ||
+      playbackStatePreviousRef.current === playbackState
+    ) {
+      return;
+    }
 
-  const stopped = useMemo(() => {
-    return (
-      playbackState !== TrackPlayer.STATE_PLAYING &&
-      playbackState !== TrackPlayer.STATE_BUFFERING
-    );
+    if (
+      (playbackState === TrackPlayer.STATE_PAUSED ||
+        playbackState === TrackPlayer.STATE_STOPPED) &&
+      playbackStatePreviousRef.current === TrackPlayer.STATE_PLAYING
+    ) {
+      setPlaying(false);
+    } else {
+      setPlaying(true);
+    }
+
+    playbackStatePreviousRef.current = playbackState;
   }, [playbackState]);
 
   const buffering = useMemo(() => {
@@ -258,6 +271,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [playbackState]);
 
   useEffect(() => {
+    if (buffering) {
+      return;
+    }
+
     if (playing) {
       setPlayingRadio({
         radioIndex: radioIndexRef.current,
@@ -267,7 +284,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     } else {
       setPlayingRadio();
     }
-  }, [playing, setPlayingRadio]);
+  }, [buffering, playing, setPlayingRadio]);
 
   const playTrackPlayer = useCallback(async () => {
     await TrackPlayer.seekTo(24 * 60 * 60);
@@ -366,6 +383,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   );
 
   const onTogglePlayback = useCallback(async () => {
+    waitForInteractionPlaybackState.current = false;
+
     if (playbackState === TrackPlayer.STATE_STOPPED) {
       addRadiosToTrackPlayer(state.radios, radioIndex);
     } else if (playbackState !== TrackPlayer.STATE_PLAYING) {
@@ -393,7 +412,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       const autoPlay = size !== 'compact';
       if (args) {
         const { radioIndex, ...restArgs } = args;
-        const radios = restArgs.radios.slice(0, 15);
+        const radios = restArgs.radios;
+        // .slice(
+        //   Math.max(radioIndex - 7, 0),
+        //   Math.max(radioIndex + 7, 14),
+        // );
 
         animatedBackgroundRef.current?.setup({
           radioIndex,
@@ -421,6 +444,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
           duration: TIMING_DURATION,
           easing: Easing.out(Easing.cubic),
         });
+
+        waitForInteractionPlaybackState.current = false;
       } else {
         translateY.value = withTiming(SNAP_POINTS[1], {
           duration: TIMING_DURATION,
@@ -630,7 +655,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
                 y={y}
                 onExpandPlayer={onExpandPlayer}
                 playing={playing}
-                stopped={stopped}
                 buffering={buffering}
                 onTogglePlayback={onTogglePlayback}
                 radio={radio}
@@ -671,7 +695,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
                 onPreviousRadio={onPreviousRadio}
                 onTogglePlayback={onTogglePlayback}
                 playing={playing}
-                stopped={stopped}
                 buffering={buffering}
                 error={!!errorRadioId}
               />

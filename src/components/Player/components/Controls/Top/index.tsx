@@ -3,6 +3,7 @@ import { Text } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
+  useAnimatedProps,
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -41,8 +42,16 @@ const TopControls: React.FC<TopControlsProps> = ({
     };
   });
 
+  const animatedProps = useAnimatedProps(() => {
+    const pointerEvents = y.value === 0 ? 'auto' : 'none';
+
+    return {
+      pointerEvents,
+    };
+  }, [y.value]);
+
   return (
-    <Animated.View style={[styles.container, style]}>
+    <Animated.View style={[styles.container, style]} {...{ animatedProps }}>
       <RoundButton
         name="ios-chevron-down-sharp"
         size={25}

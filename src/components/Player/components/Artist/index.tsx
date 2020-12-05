@@ -57,16 +57,16 @@ const Artist: React.FC<ArtistType> = ({ y, radio = {} }) => {
             size={27}
             onPress={onVoteUpPress}
           /> */}
-        </View>
 
-        <TextTicker
-          bounce={false}
-          loop
-          scrollSpeed={450}
-          easing={Easing.linear}
-          style={[styles.description]}>
-          {radio.slogan || radio.city?.name}
-        </TextTicker>
+          <TextTicker
+            bounce={false}
+            loop
+            scrollSpeed={450}
+            easing={Easing.linear}
+            style={[styles.description]}>
+            {radio.slogan || radio.city?.name}
+          </TextTicker>
+        </View>
       </Animated.View>
     </View>
   );

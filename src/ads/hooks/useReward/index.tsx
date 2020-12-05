@@ -45,7 +45,6 @@ const useReward = (id: string) => {
   };
 
   const continuePlaying = async () => {
-    console.log('continuePlaying');
     await TrackPlayer.seekTo(24 * 60 * 60);
     await TrackPlayer.play();
   };

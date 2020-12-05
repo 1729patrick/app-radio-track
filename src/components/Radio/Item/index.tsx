@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 import styles from './styles';
 
@@ -72,4 +72,4 @@ const Radio: React.FC<RadioProps> = ({
   );
 };
 
-export default Radio;
+export default memo(Radio);

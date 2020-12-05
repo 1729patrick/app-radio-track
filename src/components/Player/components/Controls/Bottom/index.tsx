@@ -19,7 +19,6 @@ type BottomControlsProps = {
   onNextRadio: () => void;
   onPreviousRadio: () => void;
   playing: boolean;
-  stopped: boolean;
   buffering: boolean;
   onTogglePlayback: () => void;
   error: boolean;
@@ -31,7 +30,6 @@ const BottomControls: React.FC<BottomControlsProps> = ({
   onPreviousRadio,
   onTogglePlayback,
   playing,
-  stopped,
   buffering,
   error,
 }) => {
@@ -63,10 +61,10 @@ const BottomControls: React.FC<BottomControlsProps> = ({
           style={styles.playButton}
           onPress={onTogglePlayback}
           enabled={!buffering && !error}>
-          {stopped && !error && (
+          {!playing && !error && (
             <Icon name="play" size={30} color={StyleGuide.palette.primary} />
           )}
-          {(buffering || playing) && !error && (
+          {playing && !error && (
             <Icon
               name="ios-pause-sharp"
               size={30}
@@ -78,7 +76,7 @@ const BottomControls: React.FC<BottomControlsProps> = ({
             <Icon name="alert" size={32} color={StyleGuide.palette.primary} />
           )}
 
-          {buffering && (
+          {buffering && !error && (
             <LottieView
               source={require('~/assets/loader.json')}
               autoPlay

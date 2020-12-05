@@ -1,19 +1,22 @@
 import { StyleSheet } from 'react-native';
+import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
 import StyleGuide from '~/utils/StyleGuide';
 import { COMPACT_HEIGHT } from '../../../constants';
 
 export default StyleSheet.create({
   container: {
-    top: 20,
+    top: 0,
+    paddingTop: STATUS_BAR_HEIGHT,
     left: 0,
     position: 'absolute',
-    height: COMPACT_HEIGHT,
+    height: COMPACT_HEIGHT + 20,
     width: '100%',
-    zIndex: 1,
+    zIndex: 2,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 15,
+    backgroundColor: StyleGuide.palette.backgroundPrimary,
   },
   button: {
     width: 32,

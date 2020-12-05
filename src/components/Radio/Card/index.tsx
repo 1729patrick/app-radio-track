@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import LottieView from 'lottie-react-native';
@@ -57,4 +57,4 @@ const Radio: React.FC<RadioProps> = ({
   );
 };
 
-export default Radio;
+export default memo(Radio);

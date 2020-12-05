@@ -19,7 +19,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingRight: 5,
+    paddingRight: StyleGuide.spacing,
   },
   info: {
     justifyContent: 'center',
@@ -39,7 +39,7 @@ export default StyleSheet.create({
     height: COMPACT_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 5,
+    marginLeft: StyleGuide.spacing,
   },
   button: {
     width: 32,
