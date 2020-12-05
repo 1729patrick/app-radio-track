@@ -14,4 +14,7 @@ const Loader = () => {
   );
 };
 
+// <View style={styles.animation}>
+//         <LottieView source={require('~/assets/robot.json')} autoPlay loop />
+//       </View>
 export default Loader;

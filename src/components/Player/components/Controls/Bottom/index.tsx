@@ -66,7 +66,7 @@ const BottomControls: React.FC<BottomControlsProps> = ({
           {stopped && !error && (
             <Icon name="play" size={30} color={StyleGuide.palette.primary} />
           )}
-          {playing && (
+          {(buffering || playing) && !error && (
             <Icon
               name="ios-pause-sharp"
               size={30}

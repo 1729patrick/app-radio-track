@@ -242,19 +242,15 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     });
   }, []);
 
-  const seeking = useMemo(() => {
-    return (
-      playbackStatePrevious === TrackPlayer.STATE_PAUSED &&
-      playbackState === TrackPlayer.STATE_PLAYING
-    );
-  }, [playbackState, playbackStatePrevious]);
-
   const playing = useMemo(() => {
     return playbackState === TrackPlayer.STATE_PLAYING;
   }, [playbackState]);
 
   const stopped = useMemo(() => {
-    return playbackState !== TrackPlayer.STATE_PLAYING;
+    return (
+      playbackState !== TrackPlayer.STATE_PLAYING &&
+      playbackState !== TrackPlayer.STATE_BUFFERING
+    );
   }, [playbackState]);
 
   const buffering = useMemo(() => {
@@ -262,7 +258,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [playbackState]);
 
   useEffect(() => {
-    if (playing && !seeking) {
+    if (playing) {
       setPlayingRadio({
         radioIndex: radioIndexRef.current,
         radios: radiosRef.current,
@@ -271,7 +267,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     } else {
       setPlayingRadio();
     }
-  }, [playing, seeking, setPlayingRadio]);
+  }, [playing, setPlayingRadio]);
 
   const playTrackPlayer = useCallback(async () => {
     await TrackPlayer.seekTo(24 * 60 * 60);
@@ -636,7 +632,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
                 playing={playing}
                 stopped={stopped}
                 buffering={buffering}
-                seeking={seeking}
                 onTogglePlayback={onTogglePlayback}
                 radio={radio}
                 error={!!errorRadioId}
@@ -690,17 +685,17 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
 export default memo(forwardRef(Player));
 
-// function getStateName(state) {
-//   switch (state) {
-//     case TrackPlayer.STATE_NONE:
-//       return 'None';
-//     case TrackPlayer.STATE_PLAYING:
-//       return 'Playing';
-//     case TrackPlayer.STATE_PAUSED:
-//       return 'Paused';
-//     case TrackPlayer.STATE_STOPPED:
-//       return 'Stopped';
-//     case TrackPlayer.STATE_BUFFERING:
-//       return 'Buffering';
-//   }
-// }
+function getStateName(state) {
+  switch (state) {
+    case TrackPlayer.STATE_NONE:
+      return 'None';
+    case TrackPlayer.STATE_PLAYING:
+      return 'Playing';
+    case TrackPlayer.STATE_PAUSED:
+      return 'Paused';
+    case TrackPlayer.STATE_STOPPED:
+      return 'Stopped';
+    case TrackPlayer.STATE_BUFFERING:
+      return 'Buffering';
+  }
+}

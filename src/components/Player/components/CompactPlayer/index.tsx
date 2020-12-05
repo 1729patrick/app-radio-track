@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Animated, {
+  Easing,
   Extrapolate,
   interpolate,
   useAnimatedStyle,
@@ -18,13 +19,14 @@ import RoundButton from '~/components/Button/Round';
 import { RadioType } from '~/types/Station';
 import { useFavorites } from '~/contexts/FavoriteContext';
 
+import TextTicker from 'react-native-text-ticker';
+
 type CompactPlayerType = {
   y: Animated.SharedValue<number>;
   onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
   playing: boolean;
   stopped: boolean;
   buffering: boolean;
-  seeking: boolean;
   onTogglePlayback: () => void;
   radio: RadioType;
   error: boolean;
@@ -36,7 +38,6 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
   playing,
   stopped,
   buffering,
-  seeking,
   onTogglePlayback,
   radio,
   error,
@@ -73,13 +74,23 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
           onPress={() => onExpandPlayer()}
           rippleColor={StyleGuide.palette.secondary}>
           <View style={styles.info}>
-            <Text style={[styles.title]} numberOfLines={1}>
+            <TextTicker
+              bounce={false}
+              style={[styles.title]}
+              loop
+              scrollSpeed={450}
+              easing={Easing.linear}>
               {radio.name}
-            </Text>
+            </TextTicker>
             {(radio.slogan || radio.city?.name) && (
-              <Text style={[styles.description]} numberOfLines={1}>
+              <TextTicker
+                bounce={false}
+                style={[styles.description]}
+                loop
+                scrollSpeed={450}
+                easing={Easing.linear}>
                 {radio.slogan || radio.city?.name}
-              </Text>
+              </TextTicker>
             )}
           </View>
 
@@ -106,7 +117,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 style={styles.button}
                 onPress={onTogglePlayback}
                 enabled={!buffering && !error}>
-                {(stopped || seeking) && !error && (
+                {stopped && !error && (
                   <Icon
                     name="play"
                     size={buffering ? 18 : 25}
@@ -114,10 +125,10 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                     style={styles.playButton}
                   />
                 )}
-                {playing && !seeking && (
+                {(playing || buffering) && (
                   <Icon
                     name="ios-pause-sharp"
-                    size={25}
+                    size={buffering ? 18 : 25}
                     color={StyleGuide.palette.primary}
                     style={styles.stopButton}
                   />

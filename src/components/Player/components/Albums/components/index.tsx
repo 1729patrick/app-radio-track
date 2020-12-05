@@ -10,7 +10,7 @@ import styles from './styles';
 
 type AlbumsProps = {
   item: RadioType;
-  error: boolean;
+  error?: boolean;
 };
 
 const Album: React.FC<AlbumsProps> = ({ item, error }) => {

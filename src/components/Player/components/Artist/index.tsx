@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Animated, {
+  Easing,
   Extrapolate,
   interpolate,
   useAnimatedStyle,
@@ -10,6 +11,7 @@ import Animated, {
 import { RadioType } from '~/types/Station';
 import { SNAP_POINTS } from '../../constants';
 import styles from './styles';
+import TextTicker from 'react-native-text-ticker';
 
 type ArtistType = {
   y: Animated.SharedValue<number>;
@@ -41,9 +43,14 @@ const Artist: React.FC<ArtistType> = ({ y, radio = {} }) => {
             size={27}
             onPress={onVoteDownPress}
           /> */}
-          <Text style={[styles.title]} numberOfLines={1}>
+          <TextTicker
+            bounce={false}
+            loop
+            scrollSpeed={450}
+            easing={Easing.linear}
+            style={[styles.title]}>
             {radio.name}
-          </Text>
+          </TextTicker>
           {/* <RoundButton
             Icon={Icon}
             name="thumbs-o-up"
@@ -52,9 +59,14 @@ const Artist: React.FC<ArtistType> = ({ y, radio = {} }) => {
           /> */}
         </View>
 
-        <Text style={[styles.description]} numberOfLines={1}>
+        <TextTicker
+          bounce={false}
+          loop
+          scrollSpeed={450}
+          easing={Easing.linear}
+          style={[styles.description]}>
           {radio.slogan || radio.city?.name}
-        </Text>
+        </TextTicker>
       </Animated.View>
     </View>
   );

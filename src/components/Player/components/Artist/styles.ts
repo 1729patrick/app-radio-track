@@ -8,8 +8,9 @@ export default StyleSheet.create({
   },
   info: {
     alignItems: 'center',
+    justifyContent: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     width: '100%',
     paddingHorizontal: 35,
     paddingTop: 17,
@@ -19,8 +20,8 @@ export default StyleSheet.create({
     ...StyleGuide.typography.title2,
     color: StyleGuide.palette.primary,
     textAlign: 'center',
-    flex: 1,
-    paddingHorizontal: StyleGuide.spacing * 1.5,
+    // flex: 1,
+    // paddingHorizontal: StyleGuide.spacing * 1.5,
   },
   description: {
     width: '80%',

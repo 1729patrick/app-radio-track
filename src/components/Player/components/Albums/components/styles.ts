@@ -16,7 +16,7 @@ export default StyleSheet.create({
   },
   notFoundContainer: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: StyleGuide.palette.background,
+    backgroundColor: StyleGuide.palette.border,
     width: width - 70,
     height: width - 70,
     top: 35,

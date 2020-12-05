@@ -33,7 +33,7 @@ const StyleGuide = {
     light: '#ccc',
     backgroundPrimary: '#1d1e21',
     background: '#000',
-    border: '#46464646',
+    border: '#303036',
   },
   typography: {
     body: {

@@ -21,11 +21,14 @@ export default StyleSheet.create({
     flexDirection: 'row',
     paddingRight: 5,
   },
-  info: { justifyContent: 'center', flex: 1 },
+  info: {
+    justifyContent: 'center',
+    flex: 1,
+    paddingRight: StyleGuide.spacing,
+  },
   title: {
     ...StyleGuide.typography.headline,
     color: StyleGuide.palette.primary,
-    paddingRight: StyleGuide.spacing * 2,
   },
   description: {
     ...StyleGuide.typography.subhead,
