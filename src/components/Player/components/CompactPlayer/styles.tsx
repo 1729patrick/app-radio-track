@@ -48,8 +48,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 7,
   },
-  playButton: { paddingLeft: 3 },
-  stopButton: { paddingLeft: 2 },
+  playButton: {},
+  stopButton: {},
   loader: {
     position: 'absolute',
     height: 90,

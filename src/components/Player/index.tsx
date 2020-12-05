@@ -100,10 +100,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const playbackStateOnDisconnectMoment = useRef<number>(0);
   const { addHistory } = useHistory();
-  const { removePlayingRadio, setPlayingRadio } = usePlaying();
+  const { removePlayingRadio } = usePlaying();
   const isReconnected = useIsReconnected();
   const { isConnected } = useNetInfo();
-  const { showPlayerAd } = useAd();
 
   const [state, setState] = useState<PlayerState>({
     title: '',
@@ -270,26 +269,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     return playbackState === TrackPlayer.STATE_BUFFERING;
   }, [playbackState]);
 
-  useEffect(() => {
-    if (buffering) {
-      return;
-    }
-
-    if (playing) {
-      setPlayingRadio({
-        radioIndex: radioIndexRef.current,
-        radios: radiosRef.current,
-        title: titleRef.current,
-      });
-    } else {
-      setPlayingRadio();
-    }
-  }, [buffering, playing, setPlayingRadio]);
-
   const playTrackPlayer = useCallback(async () => {
     await TrackPlayer.seekTo(24 * 60 * 60);
     await TrackPlayer.play();
 
+    setErrorRadioId('');
     addHistory(radiosRef.current[radioIndexRef.current]);
   }, [addHistory]);
 
@@ -297,19 +281,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     await TrackPlayer.reset();
   };
 
-  const nextTrackPlayer = useCallback(async () => {
-    await TrackPlayer.skipToNext();
-    await TrackPlayer.play();
+  const onSkipPlayer = useCallback(async () => {
+    await TrackPlayer.skip(radiosRef.current[radioIndexRef.current].id);
+    playTrackPlayer();
 
     addHistory(radiosRef.current[radioIndexRef.current]);
-  }, [addHistory]);
-
-  const previousTrackPlayer = useCallback(async () => {
-    await TrackPlayer.skipToPrevious();
-    await TrackPlayer.play();
-
-    addHistory(radiosRef.current[radioIndexRef.current]);
-  }, [addHistory]);
+  }, [addHistory, playTrackPlayer]);
 
   const pauseTrackPlayer = useCallback(async () => {
     await TrackPlayer.pause();
@@ -348,7 +325,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       await TrackPlayer.add(currentTrack);
       if (autoPlay) {
-        await TrackPlayer.play();
+        playTrackPlayer();
       }
 
       if (radios.length === 1) {
@@ -379,7 +356,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       addHistory(radiosRef.current[radioIndexRef.current]);
     },
-    [addHistory, playerState],
+    [addHistory, playTrackPlayer, playerState],
   );
 
   const onTogglePlayback = useCallback(async () => {
@@ -469,27 +446,27 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     if (radioIndexRef.current < radiosRef.current.length - 1) {
       radioIndexRef.current = radioIndexRef.current + 1;
 
-      nextTrackPlayer();
+      onSkipPlayer();
 
       albumsRef.current?.scrollToAlbum({
         radioIndex: radioIndexRef.current,
         animated: true,
       });
     }
-  }, [nextTrackPlayer]);
+  }, [onSkipPlayer]);
 
   const onPreviousRadio = useCallback(() => {
     if (radioIndexRef.current - 1 >= 0) {
       radioIndexRef.current = radioIndexRef.current - 1;
 
-      previousTrackPlayer();
+      onSkipPlayer();
 
       albumsRef.current?.scrollToAlbum({
         radioIndex: radioIndexRef.current,
         animated: true,
       });
     }
-  }, [previousTrackPlayer]);
+  }, [onSkipPlayer]);
 
   const onSetRadioIndex = useCallback(
     (radioIndex: number) => {
@@ -505,20 +482,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         return;
       }
 
-      if (radioIndex < radioIndexRef.current) {
-        previousTrackPlayer();
-      } else if (radioIndex > radioIndexRef.current) {
-        nextTrackPlayer();
-      }
+      setRadioIndex(radioIndex);
+      radioIndexRef.current = radioIndex;
 
-      if (radioIndex !== radioIndexRef.current) {
-        showPlayerAd();
-        setErrorRadioId('');
-        setRadioIndex(radioIndex);
-        radioIndexRef.current = radioIndex;
-      }
+      onSkipPlayer();
     },
-    [nextTrackPlayer, previousTrackPlayer, showPlayerAd, setErrorRadioId],
+    [onSkipPlayer],
   );
 
   const onAlbumsMounted = useCallback(() => {
@@ -559,14 +528,16 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         //   args,
         // );
 
-        setErrorRadioId(radiosRef.current[radioIndexRef.current].id);
+        if (!errorRadioId) {
+          setErrorRadioId(radiosRef.current[radioIndexRef.current].id);
 
-        addRadiosToTrackPlayer(
-          radiosRef.current,
-          radioIndexRef.current,
-          false,
-          true,
-        );
+          addRadiosToTrackPlayer(
+            radiosRef.current,
+            radioIndexRef.current,
+            false,
+            true,
+          );
+        }
       }
 
       if (type === TrackPlayerEvents.REMOTE_NEXT) {

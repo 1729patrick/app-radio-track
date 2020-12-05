@@ -31,7 +31,10 @@ const Radio: React.FC<RadioProps> = ({
 
   return (
     <RectButton
-      style={styles.container}
+      style={[
+        styles.container,
+        { backgroundColor: playing ? StyleGuide.palette.border : undefined },
+      ]}
       rippleColor={StyleGuide.palette.secondary}
       onPress={onRadioPress}>
       <FastImage

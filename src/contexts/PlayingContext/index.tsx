@@ -4,53 +4,90 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 
+import TrackPlayer, {
+  //@ts-ignore
+  useTrackPlayerEvents,
+  //@ts-ignore
+  TrackPlayerEvents,
+} from 'react-native-track-player';
 import { RadioType } from '~/types/Station';
 import { usePlayer } from '../PlayerContext';
 
-type SetPlayingRadioArgs = {
-  radioIndex: number;
-  title: string;
-  radios: RadioType[];
-};
+type MetadataArgs = { radios: RadioType[]; title: string };
 
 type ContextProps = {
   playingRadioId?: string;
   removePlayingRadio: () => void;
-  setPlayingRadio: (args?: SetPlayingRadioArgs) => void;
+  setMetaData: (args: MetadataArgs & { id?: string }) => void;
 };
 
 const PlayingContext = createContext<ContextProps>({
   playingRadioId: undefined,
   removePlayingRadio: () => {},
-  setPlayingRadio: () => {},
+  setMetaData: () => {},
 });
+
+const events = [TrackPlayerEvents.PLAYBACK_STATE];
 
 export const PlayingProvider: React.FC = ({ children }) => {
   const { onExpandPlayer } = usePlayer();
+  const metadataRef = useRef<MetadataArgs & { radioIndex?: number }>({
+    radios: [],
+    title: '',
+  });
   const [playingRadioId, setPlayingRadioId] = useState<string | undefined>(
     undefined,
   );
   const { getItem, setItem, removeItem } = useAsyncStorage('@radio:playing');
 
+  const setMetaData = useCallback(
+    (args: MetadataArgs & { id: string }) => {
+      const radioIndex = args.radios.findIndex(
+        (radio) => radio.id === (args.id || playingRadioId),
+      );
+
+      metadataRef.current = { ...args, radioIndex: Math.max(radioIndex, 0) };
+
+      setItem(JSON.stringify(metadataRef.current));
+    },
+    [playingRadioId, setItem],
+  );
+
   const setPlayingRadio = useCallback(
-    async (args?: SetPlayingRadioArgs) => {
-      if (!args) {
+    async (playing: boolean) => {
+      if (!playing) {
         setPlayingRadioId(undefined);
         return;
       }
 
-      setItem(JSON.stringify(args));
-      setPlayingRadioId(args.radios[args.radioIndex].id);
+      const id = await TrackPlayer.getCurrentTrack();
+
+      const { radios, title } = metadataRef.current;
+      setMetaData({ radios, title, id });
+
+      setPlayingRadioId(id);
     },
-    [setItem],
+    [setMetaData],
   );
 
   const removePlayingRadio = useCallback(() => {
     removeItem();
   }, [removeItem]);
+
+  useTrackPlayerEvents(
+    events,
+    ({ type, state }: { type: string; state: string }) => {
+      if (type === TrackPlayerEvents.PLAYBACK_STATE) {
+        const playing = state === TrackPlayer.STATE_PLAYING;
+
+        setPlayingRadio(playing);
+      }
+    },
+  );
 
   const readRadioFromStorage = useCallback(async () => {
     const radioPlayingFromStorage = await getItem();
@@ -79,7 +116,7 @@ export const PlayingProvider: React.FC = ({ children }) => {
 
   return (
     <PlayingContext.Provider
-      value={{ playingRadioId, removePlayingRadio, setPlayingRadio }}>
+      value={{ playingRadioId, removePlayingRadio, setMetaData }}>
       {children}
     </PlayingContext.Provider>
   );

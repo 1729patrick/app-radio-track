@@ -50,15 +50,13 @@ const Search: React.FC<SearchProps> = () => {
 
   const onExpandPlayerPress = useCallback(
     ({ radioIndex }: { radioIndex: number }) => {
-      const radio = data?.items[radioIndex];
-
       onExpandPlayer({
-        title: radio?.name || '',
+        title: searchTerm || '',
         radios: data?.items?.length ? data?.items : [],
         radioIndex,
       });
     },
-    [data?.items, onExpandPlayer],
+    [data?.items, onExpandPlayer, searchTerm],
   );
 
   const notFound = useMemo(() => data && !data?.items?.length, [data]);
