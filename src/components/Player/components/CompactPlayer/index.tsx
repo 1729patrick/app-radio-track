@@ -113,8 +113,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
               <BorderlessButton
                 rippleColor={StyleGuide.palette.primary}
                 style={styles.button}
-                onPress={onTogglePlayback}
-                enabled={!buffering && !error}>
+                onPress={onTogglePlayback}>
                 {!playing && !error && (
                   <Icon
                     name="play"
@@ -133,7 +132,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 )}
                 {error && (
                   <Icon
-                    name="alert"
+                    name="reload"
                     size={23}
                     color={StyleGuide.palette.primary}
                   />

@@ -59,8 +59,7 @@ const BottomControls: React.FC<BottomControlsProps> = ({
         <BorderlessButton
           rippleColor={StyleGuide.palette.primary}
           style={styles.playButton}
-          onPress={onTogglePlayback}
-          enabled={!buffering && !error}>
+          onPress={onTogglePlayback}>
           {!playing && !error && (
             <Icon name="play" size={30} color={StyleGuide.palette.primary} />
           )}
@@ -73,7 +72,7 @@ const BottomControls: React.FC<BottomControlsProps> = ({
           )}
 
           {error && (
-            <Icon name="alert" size={32} color={StyleGuide.palette.primary} />
+            <Icon name="reload" size={32} color={StyleGuide.palette.primary} />
           )}
 
           {buffering && !error && (

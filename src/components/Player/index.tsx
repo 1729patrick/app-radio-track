@@ -227,7 +227,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     await TrackPlayer.updateOptions({
       stopWithApp: true,
       //@ts-ignore
-      // alwaysPauseOnInterruption: true,
+      alwaysPauseOnInterruption: true,
       icon: require('../../assets/notification/logo.png'),
       capabilities: [
         TrackPlayer.CAPABILITY_PLAY,
@@ -362,8 +362,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const onTogglePlayback = useCallback(async () => {
     waitForInteractionPlaybackState.current = false;
 
-    if (playbackState === TrackPlayer.STATE_STOPPED) {
-      addRadiosToTrackPlayer(state.radios, radioIndex);
+    if (playbackState === TrackPlayer.STATE_STOPPED || errorRadioId) {
+      addRadiosToTrackPlayer(state.radios, radioIndex, true, true);
     } else if (playbackState !== TrackPlayer.STATE_PLAYING) {
       playTrackPlayer();
     } else {
@@ -371,6 +371,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     }
   }, [
     addRadiosToTrackPlayer,
+    errorRadioId,
     pauseTrackPlayer,
     playTrackPlayer,
     playbackState,
@@ -504,6 +505,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         !paused &&
         playbackStateOnDisconnectMoment.current === TrackPlayer.STATE_PLAYING
       ) {
+        playbackStateOnDisconnectMoment.current = 0;
         playTrackPlayer();
         return;
       }
@@ -581,6 +583,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     if (playerState === 'closed' && playerStatePrevious !== 'closed') {
       resetTrackPlayer();
 
+      setErrorRadioId('');
       setRadioIndex(0);
       setState({
         title: '',
@@ -599,14 +602,16 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       addRadiosToTrackPlayer(
         radiosRef.current,
         radioIndexRef.current,
-        false,
+        true,
         true,
       );
+
+      playbackStateOnDisconnectMoment.current = 0;
     }
   }, [addRadiosToTrackPlayer, isReconnected]);
 
   useEffect(() => {
-    if (!isConnected) {
+    if (!isConnected && !playbackStateOnDisconnectMoment.current) {
       playbackStateOnDisconnectMoment.current = playbackState;
     }
   }, [isConnected, playbackState]);
