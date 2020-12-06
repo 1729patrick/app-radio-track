@@ -21,6 +21,7 @@ import TrackPlayer, {
   //@ts-ignore
   TrackPlayerEvents,
 } from 'react-native-track-player';
+import BackgroundTimer from 'react-native-background-timer';
 
 import Animated, {
   useAnimatedStyle,
@@ -98,6 +99,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const playbackState = usePlaybackState();
   const playbackStatePreviousRef = useRef(playbackState);
 
+  const duckTimeoutRef = useRef(0);
   const playbackStateOnDisconnectMoment = useRef<number>(0);
   const { addHistory } = useHistory();
   const { removePlayingRadio } = usePlaying();
@@ -503,15 +505,19 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       if (
         !permanent &&
         !paused &&
-        playbackStateOnDisconnectMoment.current === TrackPlayer.STATE_PLAYING
+        (playbackStateOnDisconnectMoment.current ===
+          TrackPlayer.STATE_PLAYING ||
+          playbackStateOnDisconnectMoment.current ===
+            TrackPlayer.STATE_BUFFERING ||
+          playbackStateOnDisconnectMoment.current === TrackPlayer.STATE_NONE)
       ) {
         playbackStateOnDisconnectMoment.current = 0;
+
         playTrackPlayer();
         return;
       }
 
       playbackStateOnDisconnectMoment.current = playbackState;
-
       pauseTrackPlayer();
     },
     [pauseTrackPlayer, playTrackPlayer, playbackState],
