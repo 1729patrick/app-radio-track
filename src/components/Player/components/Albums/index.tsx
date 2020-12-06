@@ -221,7 +221,6 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
         <Animated.FlatList
           ref={flatListRef}
           onLayout={onLayout}
-          removeClippedSubviews
           viewabilityConfigCallbackPairs={
             viewabilityConfigCallbackPairs.current
           }

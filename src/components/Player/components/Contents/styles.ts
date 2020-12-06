@@ -25,20 +25,4 @@ export default StyleSheet.create({
     borderRadius: 4,
     backgroundColor: StyleGuide.palette.secondary,
   },
-  header: { flexDirection: 'row', height: 47, paddingBottom: 5 },
-  tab: {
-    ...StyleGuide.typography.tabBarLabel,
-    flex: 1,
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    color: StyleGuide.palette.light,
-    textTransform: 'uppercase',
-  },
-  tabIndicator: {
-    backgroundColor: StyleGuide.palette.primary,
-    height: 2,
-    width: 100,
-    position: 'absolute',
-    bottom: 0,
-  },
 });

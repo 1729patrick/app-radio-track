@@ -87,7 +87,6 @@ const History: React.ForwardRefRenderFunction<
       ref={ref}
       scrollEventThrottle={16}
       showsHorizontalScrollIndicator={false}
-      removeClippedSubviews
       initialNumToRender={12}
       contentContainerStyle={[styles.contentContainer]}
       showsVerticalScrollIndicator={false}

@@ -126,7 +126,6 @@ const Search: React.FC<SearchProps> = () => {
       {!notFound && (
         <FlatList
           showsHorizontalScrollIndicator={false}
-          removeClippedSubviews
           initialNumToRender={24}
           contentContainerStyle={styles.contentContainer}
           showsVerticalScrollIndicator={false}

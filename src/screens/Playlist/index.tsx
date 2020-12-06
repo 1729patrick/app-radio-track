@@ -97,7 +97,7 @@ const Explore: React.FC = () => {
       {data && (
         <FlatList
           showsHorizontalScrollIndicator={false}
-          removeClippedSubviews
+          
           initialNumToRender={24}
           contentContainerStyle={styles.contentContainer}
           showsVerticalScrollIndicator={false}

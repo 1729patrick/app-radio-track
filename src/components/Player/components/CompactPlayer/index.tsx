@@ -25,19 +25,19 @@ import TextTicker from 'react-native-text-ticker';
 type CompactPlayerType = {
   y?: Animated.SharedValue<number>;
   contentY?: Animated.SharedValue<number>;
-  onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
+  onPress: () => void;
   playing: boolean;
   buffering: boolean;
   onTogglePlayback: () => void;
   radio: RadioType;
   error: boolean;
-  rippleColor: string;
+  rippleColor?: string;
 };
 
 const CompactPlayer: React.FC<CompactPlayerType> = ({
   y,
   contentY,
-  onExpandPlayer,
+  onPress,
   playing,
   buffering,
   onTogglePlayback,
@@ -103,7 +103,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
       <Animated.View style={[styles.container, styleContent, style]}>
         <RectButton
           style={styles.compactButton}
-          onPress={() => onExpandPlayer()}
+          onPress={onPress}
           rippleColor={rippleColor}>
           <View style={styles.info}>
             <TextTicker

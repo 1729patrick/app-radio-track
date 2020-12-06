@@ -67,7 +67,7 @@ const Radios: React.FC<RadiosProps> = ({
 
       <FlatList
         showsHorizontalScrollIndicator={false}
-        removeClippedSubviews
+        
         initialNumToRender={3}
         contentContainerStyle={styles.contentContainer}
         horizontal

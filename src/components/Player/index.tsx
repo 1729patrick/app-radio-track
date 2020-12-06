@@ -10,8 +10,8 @@ import React, {
 } from 'react';
 import isEqual from 'lodash.isequal';
 
-import { BackHandler, Dimensions, Platform, View } from 'react-native';
-import { PanGestureHandler, State } from 'react-native-gesture-handler';
+import { BackHandler, Platform, View } from 'react-native';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import TrackPlayer, {
   //@ts-ignore
   usePlaybackState,
@@ -20,16 +20,11 @@ import TrackPlayer, {
   //@ts-ignore
   TrackPlayerEvents,
 } from 'react-native-track-player';
-import BackgroundTimer from 'react-native-background-timer';
 
 import Animated, {
   useAnimatedStyle,
   withTiming,
-  useAnimatedGestureHandler,
-  interpolate,
-  Extrapolate,
   useDerivedValue,
-  //@ts-ignore
   runOnJS,
   Easing,
   useSharedValue,
@@ -39,8 +34,6 @@ import Albums, { AlbumsHandler } from './components/Albums';
 import Artist from './components/Artist';
 import BottomControls from './components/Controls/Bottom';
 import TopControls from './components/Controls/Top';
-
-const { height } = Dimensions.get('window');
 
 import { SNAP_POINTS, TIMING_DURATION } from './constants';
 import styles from './styles';
@@ -58,7 +51,6 @@ import { usePlaying } from '~/contexts/PlayingContext';
 import { image } from '~/services/api';
 import useIsReconnected from '~/hooks/useIsReconnected';
 import { useNetInfo } from '@react-native-community/netinfo';
-import { useAd } from '~/ads/contexts/AdContext';
 import Contents from './components/Contents';
 import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from './components/Contents/constants';
@@ -570,11 +562,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       y?: Animated.SharedValue<number>;
       contentY?: Animated.SharedValue<number>;
       rippleColor?: string;
+      onPress: () => void;
     }) => {
       return (
         <CompactPlayer
           {...props}
-          onExpandPlayer={onExpandPlayer}
           playing={playing}
           buffering={buffering}
           onTogglePlayback={onTogglePlayback}
@@ -583,7 +575,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         />
       );
     },
-    [buffering, errorRadioId, onExpandPlayer, onTogglePlayback, playing, radio],
+    [buffering, errorRadioId, onTogglePlayback, playing, radio],
   );
 
   return (
@@ -592,7 +584,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         <Animated.View style={style}>
           <AnimatedBackground style={styles.player} ref={animatedBackgroundRef}>
             <Contents translateY={contentTranslateY} compact={Compact} />
-            <Compact y={translateY} />
+            <Compact y={translateY} onPress={onExpandPlayer} />
 
             <TopControls
               y={translateY}
