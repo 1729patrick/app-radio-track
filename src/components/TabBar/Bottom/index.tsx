@@ -17,6 +17,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { SNAP_POINTS } from '../../Player/constants';
 import { BOTTOM_TAB_BAR_HEIGHT } from './constants';
+import isEqual from 'lodash.isequal';
 
 import { ActiveCompass, InactiveCompass } from './Icons/Compass';
 import { ActiveHome, InactiveHome } from './Icons/Home';
@@ -101,4 +102,4 @@ const TabBar: React.FC<TabBarProps> = ({ state, navigation }) => {
   );
 };
 
-export default memo(TabBar);
+export default memo(TabBar, isEqual);

@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import { image } from '~/services/api';
 import { RadioType } from '~/types/Station';
 import LottieView from 'lottie-react-native';
+import isEqual from 'lodash.isequal';
 
 import styles from './styles';
 
@@ -39,4 +40,4 @@ const Album: React.FC<AlbumsProps> = ({ item, error }) => {
   );
 };
 
-export default memo(Album);
+export default memo(Album, isEqual);

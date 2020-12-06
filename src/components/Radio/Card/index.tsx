@@ -6,6 +6,7 @@ import LottieView from 'lottie-react-native';
 import FastImage from 'react-native-fast-image';
 import { RadioType } from '~/types/Station';
 import { image } from '~/services/api';
+import isEqual from 'lodash.isequal';
 
 type RadioProps = {
   playing: boolean;
@@ -57,4 +58,4 @@ const Radio: React.FC<RadioProps> = ({
   );
 };
 
-export default memo(Radio);
+export default memo(Radio, isEqual);

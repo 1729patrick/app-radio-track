@@ -11,10 +11,7 @@ import React, {
 import isEqual from 'lodash.isequal';
 
 import { BackHandler, Dimensions, Platform, View } from 'react-native';
-import {
-  PanGestureHandler,
-  PanGestureHandlerGestureEvent,
-} from 'react-native-gesture-handler';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import TrackPlayer, {
   //@ts-ignore
   usePlaybackState,
