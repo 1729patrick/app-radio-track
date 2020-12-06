@@ -9,116 +9,77 @@ import {
 } from 'react-native-gesture-handler';
 import { clamp, snapPoint } from 'react-native-redash';
 import { useEffect, useRef } from 'react';
-
-const usePrevious = <T>(value: T): T | undefined => {
-  // The ref object is a generic container whose current property is mutable ...
-  // ... and can hold any value, similar to an instance property on a class
-  const ref = useRef<T>();
-
-  // Store current value in ref
-  useEffect(() => {
-    ref.current = value;
-  }, [value]); // Only re-run if value changes
-
-  // Return previous value (happens before update in useEffect above)
-  return ref.current;
-};
+import { Dimensions } from 'react-native';
 
 type InteractivePanGestureHandlerContextType = {
   lastAnimatedPosition: number;
 };
 
+type GestureHandlerContext = {
+  startY: number;
+};
+
+const { height } = Dimensions.get('window');
+
 export const useInteractivePanGestureHandler = (
-  animatedPosition: Animated.SharedValue<number>,
+  translateY: Animated.SharedValue<number>,
   snapPoints: number[],
   animateToPoint: (point: number) => void,
-  offset?: Animated.SharedValue<number>,
-): [
-  (event: PanGestureHandlerGestureEvent) => void,
-  Animated.SharedValue<State>,
-  Animated.SharedValue<number>,
-  Animated.SharedValue<number>,
-] => {
-  const gestureState = useSharedValue<State>(State.UNDETERMINED);
-  const gestureTranslationY = useSharedValue(0);
-  const gestureVelocityY = useSharedValue(0);
-
-  const oldSnapPoints = usePrevious(snapPoints);
-  console.log(`snapPoints === oldSnapPoints? ${snapPoints === oldSnapPoints}`);
-
-  console.log(
-    `[useInteractivePanGestureHandler] snapPoints: ${JSON.stringify(
-      snapPoints,
-    )}`,
-  );
-
-  const gestureHandler = useAnimatedGestureHandler<
+) => {
+  const panHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
-    InteractivePanGestureHandlerContextType
-  >(
-    {
-      onStart: ({ state, translationY, velocityY }, context) => {
-        // cancel current animation
-        cancelAnimation(animatedPosition);
-
-        // store current animated position
-        context.lastAnimatedPosition = animatedPosition.value;
-
-        // set variables
-        gestureState.value = state;
-        gestureTranslationY.value = translationY;
-        gestureVelocityY.value = velocityY;
-      },
-      onActive: ({ state, translationY, velocityY }, context) => {
-        gestureState.value = state;
-        gestureTranslationY.value = translationY;
-        gestureVelocityY.value = velocityY;
-
-        animatedPosition.value = clamp(
-          context.lastAnimatedPosition +
-            translationY +
-            (offset && context.lastAnimatedPosition === 0 ? offset.value : 0) *
-              -1,
-          snapPoints[snapPoints.length - 1],
-          snapPoints[0],
-        );
-        console.log(
-          `onActive: snapPoints: ${JSON.stringify(
-            snapPoints,
-          )}, context: ${JSON.stringify(
-            context,
-          )}, translationY: ${translationY}, animatedPosition: ${
-            animatedPosition.value
-          }`,
-        );
-      },
-      onEnd: ({ state }, context) => {
-        gestureState.value = state;
-        if (
-          (offset ? offset.value : 0) > 0 &&
-          context.lastAnimatedPosition === 0 &&
-          animatedPosition.value === 0
-        ) {
-          return;
-        }
-        animateToPoint(
-          snapPoint(
-            gestureTranslationY.value + context.lastAnimatedPosition,
-            gestureVelocityY.value,
-            snapPoints,
-          ),
-        );
-      },
+    GestureHandlerContext
+  >({
+    onStart: (_, context) => {
+      context.startY = translateY.value;
     },
-    [snapPoints, animateToPoint],
-  );
+    onActive: (event, context) => {
+      translateY.value = event.translationY + context.startY;
+    },
 
-  const oldGestureHandler = usePrevious(gestureHandler);
-  console.log(
-    `gestureHandler === oldGestureHandler? ${
-      gestureHandler === oldGestureHandler
-    }`,
-  );
+    onEnd: (event, context) => {
+      const value = context.startY;
+      const velocity = event.velocityY;
 
-  return [gestureHandler, gestureState, gestureTranslationY, gestureVelocityY];
+      if (
+        velocity < 1000 &&
+        ((context.startY === snapPoints[1] &&
+          translateY.value < height * 0.5) ||
+          context.startY === snapPoints[0])
+      ) {
+        if (translateY.value < height * 0.3) {
+          animateToPoint(snapPoints[0]);
+        } else {
+          animateToPoint(snapPoints[1]);
+        }
+
+        return;
+      }
+
+      const point = value + 0.8 * velocity;
+
+      const diffPoint = (p: number) => Math.abs(point - p);
+
+      const deltas = snapPoints.map((p) => diffPoint(p));
+
+      const getMinDelta = () => {
+        if (value === snapPoints[0]) {
+          return Math.min(deltas[0], deltas[1]);
+        }
+
+        return Math.min(deltas[0], deltas[1], deltas[2]);
+      };
+
+      const minDelta = getMinDelta();
+
+      const val = snapPoints.reduce(
+        (acc, p) => (diffPoint(p) === minDelta ? p : acc),
+        0,
+      );
+
+      animateToPoint(val);
+    },
+  });
+
+  return { panHandler };
 };

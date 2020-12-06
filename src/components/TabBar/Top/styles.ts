@@ -18,7 +18,7 @@ export default StyleSheet.create({
     zIndex: 1,
   },
   indicator: {
-    backgroundColor: '#fff',
+    backgroundColor: StyleGuide.palette.primary,
     height: 2,
     position: 'absolute',
     bottom: 0,

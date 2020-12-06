@@ -8,6 +8,8 @@ import React, {
   useMemo,
   memo,
 } from 'react';
+import isEqual from 'lodash.isequal';
+
 import { BackHandler, Dimensions, Platform, View } from 'react-native';
 import {
   PanGestureHandler,
@@ -59,6 +61,8 @@ import { image } from '~/services/api';
 import useIsReconnected from '~/hooks/useIsReconnected';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { useAd } from '~/ads/contexts/AdContext';
+import Contents from './components/Contents';
+import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -73,10 +77,6 @@ const events = [
 export type PlayerState = {
   title: string;
   radios: RadioType[];
-};
-
-type GestureHandlerContext = {
-  startY: number;
 };
 
 export type onExpandPlayer = (
@@ -149,69 +149,20 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     return validY;
   }, [translateY.value]);
 
-  const panHandler = useAnimatedGestureHandler<
-    PanGestureHandlerGestureEvent,
-    GestureHandlerContext
-  >({
-    onStart: (_, context) => {
-      context.startY = translateY.value;
-    },
-    onActive: (event, context) => {
-      translateY.value = event.translationY + context.startY;
-    },
+  const animateToPoint = (point: number) => {
+    'worklet';
 
-    onEnd: (event, context) => {
-      const value = context.startY;
-      const velocity = event.velocityY;
+    translateY.value = withTiming(point, {
+      duration: TIMING_DURATION,
+      easing: Easing.out(Easing.cubic),
+    });
+  };
 
-      if (
-        velocity < 1000 &&
-        ((context.startY === SNAP_POINTS[1] &&
-          translateY.value < height * 0.5) ||
-          context.startY === SNAP_POINTS[0])
-      ) {
-        if (translateY.value < height * 0.3) {
-          translateY.value = withTiming(SNAP_POINTS[0], {
-            duration: TIMING_DURATION,
-            easing: Easing.out(Easing.cubic),
-          });
-        } else {
-          translateY.value = withTiming(SNAP_POINTS[1], {
-            duration: TIMING_DURATION,
-            easing: Easing.out(Easing.cubic),
-          });
-        }
-
-        return;
-      }
-
-      const point = value + 0.8 * velocity;
-
-      const diffPoint = (p: number) => Math.abs(point - p);
-
-      const deltas = SNAP_POINTS.map((p) => diffPoint(p));
-
-      const getMinDelta = () => {
-        if (value === SNAP_POINTS[0]) {
-          return Math.min(deltas[0], deltas[1]);
-        }
-
-        return Math.min(deltas[0], deltas[1], deltas[2]);
-      };
-
-      const minDelta = getMinDelta();
-
-      const val = SNAP_POINTS.reduce(
-        (acc, p) => (diffPoint(p) === minDelta ? p : acc),
-        0,
-      );
-
-      translateY.value = withTiming(val, {
-        duration: TIMING_DURATION,
-        easing: Easing.out(Easing.cubic),
-      });
-    },
-  });
+  const { panHandler } = useInteractivePanGestureHandler(
+    translateY,
+    SNAP_POINTS,
+    animateToPoint,
+  );
 
   const style = useAnimatedStyle(() => {
     return {
@@ -685,13 +636,14 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               />
             </View>
           </AnimatedBackground>
+          <Contents />
         </Animated.View>
       </PanGestureHandler>
     </View>
   );
 };
 
-export default memo(forwardRef(Player));
+export default memo(forwardRef(Player), isEqual);
 
 function getStateName(state) {
   switch (state) {

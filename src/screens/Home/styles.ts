@@ -9,7 +9,6 @@ export default StyleSheet.create({
     flexGrow: 1,
     backgroundColor: StyleGuide.palette.background,
   },
-
   contentContainer: {
     flexGrow: 1,
     paddingTop: 70,
