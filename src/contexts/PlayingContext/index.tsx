@@ -45,34 +45,30 @@ export const PlayingProvider: React.FC = ({ children }) => {
   const { getItem, setItem, removeItem } = useAsyncStorage('@radio:playing');
 
   const setMetaData = useCallback(
-    (args: MetadataArgs & { id: string }) => {
-      const radioIndex = args.radios.findIndex(
-        (radio) => radio.id === (args.id || playingRadioId),
-      );
+    (args: MetadataArgs & { id?: string; radioIndex?: number }) => {
+      const radioIndex =
+        args.radioIndex ||
+        args.radios.findIndex((radio) => radio.id === args.id);
 
-      metadataRef.current = { ...args, radioIndex: Math.max(radioIndex, 0) };
-
-      setItem(JSON.stringify(metadataRef.current));
-    },
-    [playingRadioId, setItem],
-  );
-
-  const setPlayingRadio = useCallback(
-    async (playing: boolean) => {
-      if (!playing) {
-        setPlayingRadioId(undefined);
+      if (radioIndex < 0) {
         return;
       }
 
-      const id = await TrackPlayer.getCurrentTrack();
+      metadataRef.current = { ...args, radioIndex };
 
-      const { radios, title } = metadataRef.current;
-      setMetaData({ radios, title, id });
-
-      setPlayingRadioId(id);
+      setItem(JSON.stringify(metadataRef.current));
     },
-    [setMetaData],
+    [setItem],
   );
+
+  const setPlayingRadio = useCallback(async () => {
+    const id = await TrackPlayer.getCurrentTrack();
+
+    const { radios, title } = metadataRef.current;
+    setMetaData({ radios, title, id });
+
+    setPlayingRadioId(id);
+  }, [setMetaData]);
 
   const removePlayingRadio = useCallback(() => {
     removeItem();
@@ -84,7 +80,11 @@ export const PlayingProvider: React.FC = ({ children }) => {
       if (type === TrackPlayerEvents.PLAYBACK_STATE) {
         const playing = state === TrackPlayer.STATE_PLAYING;
 
-        setPlayingRadio(playing);
+        if (playing) {
+          setPlayingRadio();
+        } else {
+          setPlayingRadioId(undefined);
+        }
       }
     },
   );
@@ -99,6 +99,8 @@ export const PlayingProvider: React.FC = ({ children }) => {
         console.warn('Invalid playing stored on device');
         return;
       }
+
+      metadataRef.current = { radios, radioIndex, title };
 
       onExpandPlayer({
         radios,

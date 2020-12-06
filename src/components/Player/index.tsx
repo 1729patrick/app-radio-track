@@ -99,10 +99,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const playbackState = usePlaybackState();
   const playbackStatePreviousRef = useRef(playbackState);
 
-  const duckTimeoutRef = useRef(0);
   const playbackStateOnDisconnectMoment = useRef<number>(0);
   const { addHistory } = useHistory();
-  const { removePlayingRadio } = usePlaying();
+  const { removePlayingRadio, setMetaData } = usePlaying();
   const isReconnected = useIsReconnected();
   const { isConnected } = useNetInfo();
 
@@ -391,8 +390,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       const size = args?.size || 'expand';
       const autoPlay = size !== 'compact';
       if (args) {
-        const { radioIndex, ...restArgs } = args;
-        const radios = restArgs.radios;
+        const { radioIndex, radios, title } = args;
         // .slice(
         //   Math.max(radioIndex - 7, 0),
         //   Math.max(radioIndex + 7, 14),
@@ -411,12 +409,14 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         isCorrectRadioRef.current = false;
         radioIndexRef.current = radioIndex;
         radiosRef.current = radios;
-        titleRef.current = restArgs.title;
+        titleRef.current = title;
 
         setRadioIndex(radioIndex);
-        setState(restArgs);
+        setState({ radios, title });
 
         setLoading(true);
+
+        setMetaData({ radios, title });
       }
 
       if (size === 'expand') {
