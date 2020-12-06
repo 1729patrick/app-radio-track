@@ -13,9 +13,11 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
 import StyleGuide from '~/utils/StyleGuide';
 import RoundButton from '~/components/Button/Round';
+import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../../Contents/constants';
 
 type BottomControlsProps = {
   y: Animated.SharedValue<number>;
+  contentY: Animated.SharedValue<number>;
   onNextRadio: () => void;
   onPreviousRadio: () => void;
   playing: boolean;
@@ -26,6 +28,7 @@ type BottomControlsProps = {
 
 const BottomControls: React.FC<BottomControlsProps> = ({
   y,
+  contentY,
   onNextRadio,
   onPreviousRadio,
   onTogglePlayback,
@@ -42,10 +45,21 @@ const BottomControls: React.FC<BottomControlsProps> = ({
         Extrapolate.CLAMP,
       ),
     };
-  });
+  }, [y.value]);
+
+  const styleContent = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        contentY.value,
+        [CONTENT_SNAP_POINTS[1], CONTENT_SNAP_POINTS[1] * 0.75],
+        [1, 0],
+        Extrapolate.CLAMP,
+      ),
+    };
+  }, [contentY.value]);
 
   return (
-    <Animated.View style={[styles.container, style]}>
+    <Animated.View style={[styles.container, styleContent, style]}>
       <RoundButton
         name={'play-skip-back-sharp'}
         size={30}

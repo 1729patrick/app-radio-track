@@ -18,31 +18,40 @@ import StyleGuide from '~/utils/StyleGuide';
 import RoundButton from '~/components/Button/Round';
 import { RadioType } from '~/types/Station';
 import { useFavorites } from '~/contexts/FavoriteContext';
+import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
 
 import TextTicker from 'react-native-text-ticker';
 
 type CompactPlayerType = {
-  y: Animated.SharedValue<number>;
+  y?: Animated.SharedValue<number>;
+  contentY?: Animated.SharedValue<number>;
   onExpandPlayer: (args?: PlayerState & { radioIndex: number }) => void;
   playing: boolean;
   buffering: boolean;
   onTogglePlayback: () => void;
   radio: RadioType;
   error: boolean;
+  rippleColor: string;
 };
 
 const CompactPlayer: React.FC<CompactPlayerType> = ({
   y,
+  contentY,
   onExpandPlayer,
   playing,
   buffering,
   onTogglePlayback,
   radio,
   error,
+  rippleColor = StyleGuide.palette.secondary,
 }) => {
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 
   const style = useAnimatedStyle(() => {
+    if (!y) {
+      return {};
+    }
+
     return {
       opacity: interpolate(
         y.value,
@@ -51,9 +60,34 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
         Extrapolate.CLAMP,
       ),
     };
-  });
+  }, [y]);
+
+  const styleContent = useAnimatedStyle(() => {
+    if (!contentY) {
+      return {};
+    }
+
+    return {
+      top: interpolate(
+        contentY.value,
+        [CONTENT_SNAP_POINTS[1], CONTENT_SNAP_POINTS[1] * 0.5],
+        [0, 25],
+        Extrapolate.CLAMP,
+      ),
+      opacity: interpolate(
+        contentY.value,
+        [CONTENT_SNAP_POINTS[1] * 0.3, CONTENT_SNAP_POINTS[0]],
+        [0, 1],
+        Extrapolate.CLAMP,
+      ),
+    };
+  }, [contentY]);
 
   const styleBackground = useAnimatedStyle(() => {
+    if (!y) {
+      return { opacity: 0 };
+    }
+
     return {
       opacity: interpolate(
         y.value,
@@ -62,15 +96,15 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
         Extrapolate.CLAMP,
       ),
     };
-  });
+  }, [y]);
 
   return (
     <>
-      <Animated.View style={[styles.container, style]}>
+      <Animated.View style={[styles.container, styleContent, style]}>
         <RectButton
           style={styles.compactButton}
           onPress={() => onExpandPlayer()}
-          rippleColor={StyleGuide.palette.secondary}>
+          rippleColor={rippleColor}>
           <View style={styles.info}>
             <TextTicker
               bounce={false}

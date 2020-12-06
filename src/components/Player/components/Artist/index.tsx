@@ -12,13 +12,15 @@ import { RadioType } from '~/types/Station';
 import { SNAP_POINTS } from '../../constants';
 import styles from './styles';
 import TextTicker from 'react-native-text-ticker';
+import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
 
 type ArtistType = {
   y: Animated.SharedValue<number>;
+  contentY: Animated.SharedValue<number>;
   radio: RadioType;
 };
 
-const Artist: React.FC<ArtistType> = ({ y, radio = {} }) => {
+const Artist: React.FC<ArtistType> = ({ y, contentY, radio = {} }) => {
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -28,14 +30,25 @@ const Artist: React.FC<ArtistType> = ({ y, radio = {} }) => {
         Extrapolate.CLAMP,
       ),
     };
-  });
+  }, [y.value]);
+
+  const styleContent = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        contentY.value,
+        [CONTENT_SNAP_POINTS[1], CONTENT_SNAP_POINTS[1] * 0.75],
+        [1, 0],
+        Extrapolate.CLAMP,
+      ),
+    };
+  }, [contentY.value]);
 
   // const onVoteDownPress = () => {};
   // const onVoteUpPress = () => {};
 
   return (
     <View>
-      <Animated.View style={[styles.container, style]}>
+      <Animated.View style={[styles.container, styleContent, style]}>
         <View style={styles.info}>
           {/* <RoundButton
             Icon={Icon}

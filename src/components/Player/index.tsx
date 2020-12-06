@@ -11,7 +11,7 @@ import React, {
 import isEqual from 'lodash.isequal';
 
 import { BackHandler, Dimensions, Platform, View } from 'react-native';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import TrackPlayer, {
   //@ts-ignore
   usePlaybackState,
@@ -32,6 +32,7 @@ import Animated, {
   //@ts-ignore
   runOnJS,
   Easing,
+  useSharedValue,
 } from 'react-native-reanimated';
 
 import Albums, { AlbumsHandler } from './components/Albums';
@@ -60,6 +61,7 @@ import { useNetInfo } from '@react-native-community/netinfo';
 import { useAd } from '~/ads/contexts/AdContext';
 import Contents from './components/Contents';
 import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
+import { SNAP_POINTS as CONTENT_SNAP_POINTS } from './components/Contents/constants';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -92,6 +94,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   ref,
 ) => {
   const { translateY } = usePlayer();
+  const contentTranslateY = useSharedValue(CONTENT_SNAP_POINTS[1]);
   const [playing, setPlaying] = useState(false);
   const playbackState = usePlaybackState();
   const playbackStatePreviousRef = useRef(playbackState);
@@ -125,35 +128,29 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const isCorrectRadioRef = useRef<boolean>(false);
   const [errorRadioId, setErrorRadioId] = useState('');
 
-  const y = useDerivedValue(() => {
-    const validY = interpolate(
-      translateY.value,
-      SNAP_POINTS,
-      SNAP_POINTS,
-      Extrapolate.CLAMP,
-    );
-
-    if (validY === SNAP_POINTS[0]) {
+  useDerivedValue(() => {
+    if (translateY.value === SNAP_POINTS[0]) {
       runOnJS(setPlayerState)('expanded');
-    } else if (validY === SNAP_POINTS[1]) {
+    } else if (translateY.value === SNAP_POINTS[1]) {
       runOnJS(setPlayerState)('compact');
-    } else if (validY === SNAP_POINTS[2]) {
+    } else if (translateY.value === SNAP_POINTS[2]) {
       runOnJS(setPlayerState)('closed');
     } else {
       runOnJS(setPlayerState)('active');
     }
-
-    return validY;
   }, [translateY.value]);
 
-  const animateToPoint = (point: number) => {
-    'worklet';
+  const animateToPoint = useCallback(
+    (point: number) => {
+      'worklet';
 
-    translateY.value = withTiming(point, {
-      duration: TIMING_DURATION,
-      easing: Easing.out(Easing.cubic),
-    });
-  };
+      translateY.value = withTiming(point, {
+        duration: TIMING_DURATION,
+        easing: Easing.out(Easing.cubic),
+      });
+    },
+    [translateY],
+  );
 
   const { panHandler } = useInteractivePanGestureHandler(
     translateY,
@@ -165,11 +162,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     return {
       transform: [
         {
-          translateY: y.value,
+          translateY: translateY.value,
         },
       ],
     };
-  }, [y.value]);
+  }, [translateY.value]);
 
   const setup = useCallback(async () => {
     await TrackPlayer.setupPlayer({});
@@ -368,30 +365,20 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       }
 
       if (size === 'expand') {
-        translateY.value = withTiming(SNAP_POINTS[0], {
-          duration: TIMING_DURATION,
-          easing: Easing.out(Easing.cubic),
-        });
-
+        animateToPoint(SNAP_POINTS[0]);
         waitForInteractionPlaybackState.current = false;
       } else {
-        translateY.value = withTiming(SNAP_POINTS[1], {
-          duration: TIMING_DURATION,
-          easing: Easing.out(Easing.cubic),
-        });
+        animateToPoint(SNAP_POINTS[1]);
       }
     },
-    [addRadiosToTrackPlayer, translateY],
+    [addRadiosToTrackPlayer, animateToPoint, setMetaData],
   );
 
   const onCompactPlayer = useCallback(async () => {
     if (SNAP_POINTS[0] === translateY.value) {
-      translateY.value = withTiming(SNAP_POINTS[1], {
-        duration: TIMING_DURATION,
-        easing: Easing.out(Easing.cubic),
-      });
+      animateToPoint(SNAP_POINTS[1]);
     }
-  }, [translateY]);
+  }, [animateToPoint, translateY.value]);
 
   const onNextRadio = useCallback(() => {
     if (radioIndexRef.current < radiosRef.current.length - 1) {
@@ -578,25 +565,38 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     return state.radios[radioIndex];
   }, [radioIndex, state.radios]);
 
+  const Compact = useCallback(
+    (props: {
+      y?: Animated.SharedValue<number>;
+      contentY?: Animated.SharedValue<number>;
+      rippleColor?: string;
+    }) => {
+      return (
+        <CompactPlayer
+          {...props}
+          onExpandPlayer={onExpandPlayer}
+          playing={playing}
+          buffering={buffering}
+          onTogglePlayback={onTogglePlayback}
+          radio={radio || {}}
+          error={!!errorRadioId}
+        />
+      );
+    },
+    [buffering, errorRadioId, onExpandPlayer, onTogglePlayback, playing, radio],
+  );
+
   return (
     <View style={styles.container} pointerEvents="box-none">
       <PanGestureHandler onGestureEvent={panHandler}>
         <Animated.View style={style}>
           <AnimatedBackground style={styles.player} ref={animatedBackgroundRef}>
-            {radio && (
-              <CompactPlayer
-                y={y}
-                onExpandPlayer={onExpandPlayer}
-                playing={playing}
-                buffering={buffering}
-                onTogglePlayback={onTogglePlayback}
-                radio={radio}
-                error={!!errorRadioId}
-              />
-            )}
+            <Contents translateY={contentTranslateY} compact={Compact} />
+            <Compact y={translateY} />
 
             <TopControls
-              y={y}
+              y={translateY}
+              contentY={contentTranslateY}
               onCompactPlayer={onCompactPlayer}
               title={state.title}
               radio={radio}
@@ -605,7 +605,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             {radio && (
               <Albums
                 ref={albumsRef}
-                y={y}
+                y={translateY}
+                contentY={contentTranslateY}
                 radios={state.radios}
                 setRadioIndex={onSetRadioIndex}
                 radioIndex={radioIndexRef.current}
@@ -621,9 +622,15 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             //   console.log(nativeEvent.layout.height)
             // }
             >
-              <Artist y={y} radio={state.radios[radioIndex]} />
+              <Artist
+                y={translateY}
+                contentY={contentTranslateY}
+                radio={state.radios[radioIndex]}
+              />
+
               <BottomControls
-                y={y}
+                y={translateY}
+                contentY={contentTranslateY}
                 onNextRadio={onNextRadio}
                 onPreviousRadio={onPreviousRadio}
                 onTogglePlayback={onTogglePlayback}
@@ -633,7 +640,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               />
             </View>
           </AnimatedBackground>
-          <Contents />
         </Animated.View>
       </PanGestureHandler>
     </View>

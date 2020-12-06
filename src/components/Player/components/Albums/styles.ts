@@ -6,6 +6,6 @@ export default StyleSheet.create({
   container: {
     width,
     height: width - 35,
-    zIndex: 1,
+    zIndex: 3,
   },
 });

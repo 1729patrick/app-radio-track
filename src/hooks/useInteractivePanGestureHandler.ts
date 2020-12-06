@@ -1,14 +1,7 @@
-import Animated, {
-  useAnimatedGestureHandler,
-  useSharedValue,
-  cancelAnimation,
-} from 'react-native-reanimated';
-import {
-  State,
-  PanGestureHandlerGestureEvent,
-} from 'react-native-gesture-handler';
+import Animated, { useAnimatedGestureHandler } from 'react-native-reanimated';
+import { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import { clamp, snapPoint } from 'react-native-redash';
-import { useEffect, useRef } from 'react';
+
 import { Dimensions } from 'react-native';
 
 type InteractivePanGestureHandlerContextType = {
@@ -34,50 +27,23 @@ export const useInteractivePanGestureHandler = (
       context.startY = translateY.value;
     },
     onActive: (event, context) => {
-      translateY.value = event.translationY + context.startY;
+      translateY.value = clamp(
+        event.translationY + context.startY,
+        snapPoints[0],
+        snapPoints[snapPoints.length - 1],
+      );
     },
 
     onEnd: (event, context) => {
       const value = context.startY;
       const velocity = event.velocityY;
 
-      if (
-        velocity < 1000 &&
-        ((context.startY === snapPoints[1] &&
-          translateY.value < height * 0.5) ||
-          context.startY === snapPoints[0])
-      ) {
-        if (translateY.value < height * 0.3) {
-          animateToPoint(snapPoints[0]);
-        } else {
-          animateToPoint(snapPoints[1]);
-        }
+      const validSnapPoints =
+        value === snapPoints[0] ? [snapPoints[0], snapPoints[1]] : snapPoints;
 
-        return;
-      }
+      const point = snapPoint(translateY.value, velocity, validSnapPoints);
 
-      const point = value + 0.8 * velocity;
-
-      const diffPoint = (p: number) => Math.abs(point - p);
-
-      const deltas = snapPoints.map((p) => diffPoint(p));
-
-      const getMinDelta = () => {
-        if (value === snapPoints[0]) {
-          return Math.min(deltas[0], deltas[1]);
-        }
-
-        return Math.min(deltas[0], deltas[1], deltas[2]);
-      };
-
-      const minDelta = getMinDelta();
-
-      const val = snapPoints.reduce(
-        (acc, p) => (diffPoint(p) === minDelta ? p : acc),
-        0,
-      );
-
-      animateToPoint(val);
+      animateToPoint(point);
     },
   });
 

@@ -29,6 +29,9 @@ import {
 import Album from './components';
 import { RadioType } from '~/types/Station';
 
+import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
+import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
+
 type ScrollToAlbumArgs = {
   radioIndex: number;
   animated: boolean;
@@ -36,6 +39,7 @@ type ScrollToAlbumArgs = {
 
 type AlbumsProps = {
   y: Animated.SharedValue<number>;
+  contentY: Animated.SharedValue<number>;
   radios: RadioType[];
   setRadioIndex: (nextIndex: number) => void;
   radioIndex: number;
@@ -52,6 +56,7 @@ export type AlbumsHandler = {
 const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   {
     y,
+    contentY,
     radios,
     setRadioIndex,
     radioIndex,
@@ -93,6 +98,62 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
             y.value,
             [SNAP_POINTS[1] * 0.25, SNAP_POINTS[1]],
             [1, (COMPACT_HEIGHT - PADDING_HORIZONTAL) / width],
+            Extrapolate.CLAMP,
+          ),
+        },
+      ],
+    };
+  });
+
+  const styleContent = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(
+            contentY.value,
+            [
+              CONTENT_SNAP_POINTS[0],
+              CONTENT_SNAP_POINTS[1] * 0.6,
+              CONTENT_SNAP_POINTS[1],
+            ],
+            [
+              -(width - COMPACT_HEIGHT) / 2 -
+                (height - (width + ARTIST_AND_CONTROL_HEIGHT)) / 2 +
+                STATUS_BAR_HEIGHT,
+              (-(width - COMPACT_HEIGHT) / 2 -
+                (height - (width + ARTIST_AND_CONTROL_HEIGHT)) / 2 +
+                STATUS_BAR_HEIGHT) *
+                0.2,
+              0,
+            ],
+            Extrapolate.CLAMP,
+          ),
+        },
+        {
+          translateX: interpolate(
+            contentY.value,
+            [
+              CONTENT_SNAP_POINTS[0],
+              CONTENT_SNAP_POINTS[1] * 0.6,
+              CONTENT_SNAP_POINTS[1],
+            ],
+            [
+              -(width - COMPACT_HEIGHT) / 2,
+              (-(width - COMPACT_HEIGHT) / 2) * 0.2,
+              0,
+            ],
+            Extrapolate.CLAMP,
+          ),
+        },
+        {
+          scale: interpolate(
+            contentY.value,
+            [
+              CONTENT_SNAP_POINTS[0],
+              CONTENT_SNAP_POINTS[1] * 0.6,
+              CONTENT_SNAP_POINTS[1],
+            ],
+            [(COMPACT_HEIGHT - PADDING_HORIZONTAL) / width, 0.8, 1],
             Extrapolate.CLAMP,
           ),
         },
@@ -155,7 +216,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   };
 
   return (
-    <Animated.View style={[styles.container, style]}>
+    <Animated.View style={[styles.container, styleContent, style]}>
       {!hiddenFlatList && (
         <Animated.FlatList
           ref={flatListRef}

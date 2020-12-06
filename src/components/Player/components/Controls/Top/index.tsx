@@ -18,16 +18,19 @@ import { RadioType } from '~/types/Station';
 
 type TopControlsProps = {
   y: Animated.SharedValue<number>;
+  contentY: Animated.SharedValue<number>;
   onCompactPlayer: () => void;
   title?: string;
   radio: RadioType;
 };
+import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../../Contents/constants';
 
 const TopControls: React.FC<TopControlsProps> = ({
   y,
   onCompactPlayer,
   title,
   radio = {},
+  contentY,
 }) => {
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 
@@ -40,7 +43,18 @@ const TopControls: React.FC<TopControlsProps> = ({
         Extrapolate.CLAMP,
       ),
     };
-  });
+  }, [y.value]);
+
+  const styleContent = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        contentY.value,
+        [CONTENT_SNAP_POINTS[1], CONTENT_SNAP_POINTS[1] * 0.75],
+        [1, 0],
+        Extrapolate.CLAMP,
+      ),
+    };
+  }, [contentY.value]);
 
   const animatedProps = useAnimatedProps(() => {
     const pointerEvents = y.value === 0 ? 'auto' : 'none';
@@ -51,7 +65,9 @@ const TopControls: React.FC<TopControlsProps> = ({
   }, [y.value]);
 
   return (
-    <Animated.View style={[styles.container, style]} {...{ animatedProps }}>
+    <Animated.View
+      style={[styles.container, styleContent, style]}
+      {...{ animatedProps }}>
       <RoundButton
         name="ios-chevron-down-sharp"
         size={25}
