@@ -353,7 +353,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
         setLoading(true);
 
-        setMetaData({ radios, title });
+        setMetaData({ radios, title, radioIndex });
       }
 
       if (size === 'expand') {
