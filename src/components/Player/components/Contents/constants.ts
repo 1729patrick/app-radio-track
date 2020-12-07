@@ -8,3 +8,6 @@ export const SNAP_POINTS = [
   COMPACT_HEIGHT + STATUS_BAR_HEIGHT,
   height - COMPACT_HEIGHT,
 ];
+
+export const INDICATOR_HEIGHT = 5;
+export const INDICATOR_MARGIN_TOP = 10;

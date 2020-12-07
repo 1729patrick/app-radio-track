@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 import { View } from 'react-native';
 import {
   PanGestureHandler,
@@ -63,43 +63,29 @@ const Contents: React.FC<ContentsProps> = ({
     runOnJS(initializeTabActive)();
   };
 
-  const clearTabActive = () => {
-    tabNavigatorRef.current?.clearTabActive();
-  };
+  const animateToPoint = useCallback(
+    (point: number) => {
+      'worklet';
 
-  const onEnd = () => {
-    'worklet';
-
-    if (translateY.value === SNAP_POINTS[1]) {
-      runOnJS(clearTabActive)();
-    }
-  };
-
-  const animateToPoint = (point: number) => {
-    'worklet';
-
-    translateY.value = withTiming(
-      point,
-      {
+      translateY.value = withTiming(point, {
         duration: TIMING_DURATION,
-        easing: Easing.out(Easing.cubic),
-      },
-      onEnd,
-    );
-  };
+        // easing: Easing.out(Easing.cubic),
+      });
+    },
+    [translateY],
+  );
 
   const { panHandler } = useInteractivePanGestureHandler(
     translateY,
     SNAP_POINTS,
     animateToPoint,
     onStart,
-    onEnd,
   );
 
   const style = useAnimatedStyle(() => {
     const top = interpolate(
       translateY.value,
-      [SNAP_POINTS[1], SNAP_POINTS[1] * 0.3],
+      [SNAP_POINTS[1], SNAP_POINTS[1] - 1],
       [0, translateY.value],
       Extrapolate.CLAMP,
     );
@@ -134,7 +120,7 @@ const Contents: React.FC<ContentsProps> = ({
   const animation = useDerivedValue(() => {
     const progress = interpolate(
       translateY.value,
-      [SNAP_POINTS[1], SNAP_POINTS[1] * 0.6],
+      [SNAP_POINTS[1] * 0.95, SNAP_POINTS[0]],
       [0, 1],
     );
 
@@ -168,6 +154,7 @@ const Contents: React.FC<ContentsProps> = ({
               checkAnimated={checkAnimated}
               animation={animation}
               ref={tabNavigatorRef}
+              routeProps={{ radio }}
             />
           </Animated.View>
         </Animated.View>

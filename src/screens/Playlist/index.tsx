@@ -14,7 +14,6 @@ import Radio from '~/components/Radio/Item';
 import { useFetchPagination } from '~/hooks/useFetchPagination';
 import Loader from '~/components/Loader';
 import Error from '~/components/Error';
-import useReward from '~/ads/hooks/useReward';
 import { useAd } from '~/ads/contexts/AdContext';
 import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';

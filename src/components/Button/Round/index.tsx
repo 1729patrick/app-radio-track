@@ -23,8 +23,8 @@ const RoundButton: React.FC<RoundButtonProp> = ({
   return (
     <BorderlessButton
       rippleColor={StyleGuide.palette.secondary}
-      onPress={onPress}
       hitSlop={{ top: 42, bottom: 42, left: 42, right: 42 }}
+      onPress={onPress}
       style={[
         styles.container,
         {

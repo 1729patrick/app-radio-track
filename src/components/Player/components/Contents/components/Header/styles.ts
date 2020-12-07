@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { HEADER_HEIGHT } from './constants';
 import StyleGuide from '~/utils/StyleGuide';
 
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: 47,
+    height: HEADER_HEIGHT,
     paddingBottom: 5,
     justifyContent: 'space-between',
   },

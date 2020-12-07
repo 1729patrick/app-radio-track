@@ -1,4 +1,8 @@
-import Animated, { useAnimatedGestureHandler } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedGestureHandler,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import { clamp, snapPoint } from 'react-native-redash';
 
@@ -15,7 +19,6 @@ export const useInteractivePanGestureHandler = (
   snapPoints: number[],
   animateToPoint: (point: number) => void,
   onStart?: () => void,
-  onEnd?: () => void,
 ) => {
   const panHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
@@ -45,9 +48,7 @@ export const useInteractivePanGestureHandler = (
 
       const point = snapPoint(translateY.value, velocity, validSnapPoints);
 
-      if (onEnd) {
-        onEnd();
-      }
+      // translateY.value = withTiming(point, { mass: 10 });
       animateToPoint(point);
     },
   });

@@ -52,11 +52,11 @@ export const PlayingProvider: React.FC = ({ children }) => {
         args.radioIndex ||
         args.radios.findIndex((radio) => radio.id === args.id);
 
+      metadataRef.current = { ...args, radioIndex };
+
       if (radioIndex < 0) {
         return;
       }
-
-      metadataRef.current = { ...args, radioIndex };
 
       setItem(JSON.stringify(metadataRef.current));
     },

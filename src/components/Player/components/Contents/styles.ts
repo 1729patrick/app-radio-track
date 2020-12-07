@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-import { SNAP_POINTS } from './constants';
+import { INDICATOR_HEIGHT, INDICATOR_MARGIN_TOP } from './constants';
 
 const { height, width } = Dimensions.get('window');
 
@@ -18,11 +18,14 @@ export default StyleSheet.create({
   },
   indicator: {
     width: 40,
-    height: 5,
+    height: INDICATOR_HEIGHT,
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: 10,
+    marginTop: INDICATOR_MARGIN_TOP,
     borderRadius: 4,
     backgroundColor: StyleGuide.palette.secondary,
+  },
+  compactPlayer: {
+    ...StyleSheet.absoluteFillObject,
   },
 });

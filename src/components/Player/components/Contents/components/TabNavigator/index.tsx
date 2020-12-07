@@ -24,12 +24,14 @@ type TabNavigatorProps = {
   routes: RouteType[];
   checkAnimated: () => boolean;
   animation: Animated.SharedValue<number>;
+  routeProps?: any;
 };
 
 const TabNavigator: React.ForwardRefRenderFunction<
   TabNavigatorHandler,
   TabNavigatorProps
-> = ({ onPress, routes, checkAnimated, animation }, ref) => {
+> = ({ onPress, routes, checkAnimated, animation, routeProps }, ref) => {
+  const scrollViewRef = useRef();
   const translateX = useSharedValue(-1);
   const containerRef = useRef<ContainerHandler>(null);
 
@@ -65,6 +67,7 @@ const TabNavigator: React.ForwardRefRenderFunction<
   };
 
   useImperativeHandle(ref, () => ({
+    scrollViewRef,
     setTabActive,
     clearTabActive,
     initializeTabActive,
@@ -89,6 +92,7 @@ const TabNavigator: React.ForwardRefRenderFunction<
         scrollHandler={scrollHandler}
         ref={containerRef}
         animation={animation}
+        routeProps={routeProps}
       />
     </View>
   );

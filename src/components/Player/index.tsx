@@ -10,7 +10,13 @@ import React, {
 } from 'react';
 import isEqual from 'lodash.isequal';
 
-import { BackHandler, Platform, View } from 'react-native';
+import {
+  BackHandler,
+  Dimensions,
+  LayoutChangeEvent,
+  Platform,
+  View,
+} from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import TrackPlayer, {
   //@ts-ignore
@@ -65,6 +71,8 @@ const events = [
   TrackPlayerEvents.REMOTE_PLAY,
 ];
 
+const { height } = Dimensions.get('window');
+
 export type PlayerState = {
   title: string;
   radios: RadioType[];
@@ -90,6 +98,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const [playing, setPlaying] = useState(false);
   const playbackState = usePlaybackState();
   const playbackStatePreviousRef = useRef(playbackState);
+  const artistAndControlHeightRef = useRef(height);
+  const runWhenArtistAndControlMount = useRef(undefined);
 
   const playbackStateOnDisconnectMoment = useRef<number>(0);
   const { addHistory } = useHistory();
@@ -140,7 +150,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       translateY.value = withTiming(point, {
         duration: TIMING_DURATION,
-        easing: Easing.out(Easing.cubic),
       });
     },
     [translateY],
@@ -364,7 +373,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         animateToPoint(SNAP_POINTS[0]);
         waitForInteractionPlaybackState.current = false;
       } else {
-        animateToPoint(SNAP_POINTS[1]);
+        if (artistAndControlHeightRef.current !== height) {
+          animateToPoint(SNAP_POINTS[1]);
+        } else {
+          runWhenArtistAndControlMount.current = () =>
+            animateToPoint(SNAP_POINTS[1]);
+        }
       }
     },
     [addRadiosToTrackPlayer, animateToPoint, setMetaData],
@@ -470,16 +484,14 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         //   args,
         // );
 
-        if (!errorRadioId) {
-          setErrorRadioId(radiosRef.current[radioIndexRef.current].id);
+        setErrorRadioId(radiosRef.current[radioIndexRef.current].id);
 
-          addRadiosToTrackPlayer(
-            radiosRef.current,
-            radioIndexRef.current,
-            false,
-            true,
-          );
-        }
+        addRadiosToTrackPlayer(
+          radiosRef.current,
+          radioIndexRef.current,
+          false,
+          true,
+        );
       }
 
       if (type === TrackPlayerEvents.REMOTE_NEXT) {
@@ -561,26 +573,13 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     return state.radios[radioIndex];
   }, [radioIndex, state.radios]);
 
-  // const Compact = useCallback(
-  //   (props: {
-  //     y?: Animated.SharedValue<number>;
-  //     contentY?: Animated.SharedValue<number>;
-  //     rippleColor?: string;
-  //     onPress: () => void;
-  //   }) => {
-  //     return (
-  //       <CompactPlayer
-  //         {...props}
-  //         playing={playing}
-  //         buffering={buffering}
-  //         onTogglePlayback={onTogglePlayback}
-  //         radio={radio || {}}
-  //         error={!!errorRadioId}
-  //       />
-  //     );
-  //   },
-  //   [buffering, errorRadioId, onTogglePlayback, playing, radio],
-  // );
+  const onLayoutArtistAndControl = ({ nativeEvent }: LayoutChangeEvent) => {
+    artistAndControlHeightRef.current = nativeEvent.layout.height;
+
+    if (typeof runWhenArtistAndControlMount.current === 'function') {
+      runWhenArtistAndControlMount.current();
+    }
+  };
 
   return (
     <View style={styles.container} pointerEvents="box-none">
@@ -626,14 +625,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
                 onAlbumsMounted={onAlbumsMounted}
                 scrollHandler={animatedBackgroundRef.current?.scrollHandler}
                 errorRadioId={errorRadioId}
+                artistAndControlHeight={artistAndControlHeightRef.current}
               />
             )}
 
-            <View
-            // onLayout={({ nativeEvent }) =>
-            //   console.log(nativeEvent.layout.height)
-            // }
-            >
+            <View onLayout={onLayoutArtistAndControl}>
               <Artist
                 y={translateY}
                 contentY={contentTranslateY}

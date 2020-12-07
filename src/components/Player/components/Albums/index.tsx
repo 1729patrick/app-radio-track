@@ -13,6 +13,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
   interpolate,
+  useAnimatedProps,
   useAnimatedStyle,
 } from 'react-native-reanimated';
 
@@ -49,6 +50,7 @@ type AlbumsProps = {
   onAlbumsMounted: () => void;
   scrollHandler: any;
   errorRadioId: string;
+  artistAndControlHeight: number;
 };
 
 export type AlbumsHandler = {
@@ -66,6 +68,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     onAlbumsMounted,
     scrollHandler,
     errorRadioId,
+    artistAndControlHeight,
   },
   ref,
 ) => {
@@ -82,7 +85,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
             [
               0,
               -(width - COMPACT_HEIGHT) / 2 -
-                (height - (width + ARTIST_AND_CONTROL_HEIGHT)) / 2,
+                (height - (width + artistAndControlHeight)) / 2,
             ],
             Extrapolate.CLAMP,
           ),
@@ -91,7 +94,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           translateX: interpolate(
             y.value,
             [SNAP_POINTS[1] * 0.25, SNAP_POINTS[1]],
-            [0, -(width - COMPACT_HEIGHT) / 2],
+            [0, -(width - COMPACT_HEIGHT * 1.2 - 2) / 2],
             Extrapolate.CLAMP,
           ),
         },
@@ -99,7 +102,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           scale: interpolate(
             y.value,
             [SNAP_POINTS[1] * 0.25, SNAP_POINTS[1]],
-            [1, (COMPACT_HEIGHT - PADDING_HORIZONTAL) / width],
+            [1, (COMPACT_HEIGHT * 1.2 - PADDING_HORIZONTAL) / width],
             Extrapolate.CLAMP,
           ),
         },
@@ -113,19 +116,13 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
         {
           translateY: interpolate(
             contentY.value,
-            [
-              CONTENT_SNAP_POINTS[0],
-              CONTENT_SNAP_POINTS[1] * 0.6,
-              CONTENT_SNAP_POINTS[1],
-            ],
+            [CONTENT_SNAP_POINTS[0], CONTENT_SNAP_POINTS[1]],
             [
               -(width - COMPACT_HEIGHT) / 2 -
-                (height - (width + ARTIST_AND_CONTROL_HEIGHT)) / 2 +
+                (height - (width + artistAndControlHeight)) / 2 +
                 STATUS_BAR_HEIGHT,
-              (-(width - COMPACT_HEIGHT) / 2 -
-                (height - (width + ARTIST_AND_CONTROL_HEIGHT)) / 2 +
-                STATUS_BAR_HEIGHT) *
-                0.2,
+
+              0.2,
               0,
             ],
             Extrapolate.CLAMP,
@@ -134,28 +131,16 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
         {
           translateX: interpolate(
             contentY.value,
-            [
-              CONTENT_SNAP_POINTS[0],
-              CONTENT_SNAP_POINTS[1] * 0.6,
-              CONTENT_SNAP_POINTS[1],
-            ],
-            [
-              -(width - COMPACT_HEIGHT) / 2,
-              (-(width - COMPACT_HEIGHT) / 2) * 0.2,
-              0,
-            ],
+            [CONTENT_SNAP_POINTS[0], CONTENT_SNAP_POINTS[1]],
+            [-(width - COMPACT_HEIGHT * 1.2 - 2) / 2, 0],
             Extrapolate.CLAMP,
           ),
         },
         {
           scale: interpolate(
             contentY.value,
-            [
-              CONTENT_SNAP_POINTS[0],
-              CONTENT_SNAP_POINTS[1] * 0.6,
-              CONTENT_SNAP_POINTS[1],
-            ],
-            [(COMPACT_HEIGHT - PADDING_HORIZONTAL) / width, 0.8, 1],
+            [CONTENT_SNAP_POINTS[0], CONTENT_SNAP_POINTS[1]],
+            [(COMPACT_HEIGHT * 1.2 - PADDING_HORIZONTAL) / width, 1],
             Extrapolate.CLAMP,
           ),
         },
@@ -217,8 +202,21 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     onAlbumsMounted();
   };
 
+  const animatedProps = useAnimatedProps(() => {
+    const pointerEvents =
+      y?.value === SNAP_POINTS[1] || contentY?.value === CONTENT_SNAP_POINTS[0]
+        ? 'none'
+        : 'auto';
+
+    return {
+      pointerEvents,
+    };
+  }, [y, contentY]);
+
   return (
-    <Animated.View style={[styles.container, styleContent, style]}>
+    <Animated.View
+      style={[styles.container, styleContent, style]}
+      {...{ animatedProps }}>
       {!hiddenFlatList && (
         <AnimatedFlatList
           ref={flatListRef}

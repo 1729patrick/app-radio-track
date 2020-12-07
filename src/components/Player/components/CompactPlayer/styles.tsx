@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   compactButton: {
     flex: 1,
-    paddingLeft: COMPACT_HEIGHT,
+    paddingLeft: COMPACT_HEIGHT * 1.125,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
