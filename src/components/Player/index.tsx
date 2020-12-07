@@ -120,6 +120,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const isCorrectRadioRef = useRef<boolean>(false);
   const [errorRadioId, setErrorRadioId] = useState('');
 
+  //@ts-ignore
+  //todo: MUST BE REFECTORY
   useDerivedValue(() => {
     if (translateY.value === SNAP_POINTS[0]) {
       runOnJS(setPlayerState)('expanded');
@@ -254,9 +256,14 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         id: radio.id,
         url: radio.streams[0]?.url,
         title: radio.name,
-        artist: radio.slogan || radio.city?.name,
+        artist: radio.slogan || radio.city?.name || '',
         artwork: image(radio.img),
-        type: radio.streams[0]?.url?.endsWith('.m3u8') ? 'hls' : undefined,
+        type: (radio.streams[0]?.url?.endsWith('.m3u8') ? 'hls' : undefined) as
+          | 'hls'
+          | 'default'
+          | 'dash'
+          | 'smoothstreaming'
+          | undefined,
       };
 
       await TrackPlayer.reset();
@@ -328,10 +335,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       const autoPlay = size !== 'compact';
       if (args) {
         const { radioIndex, radios, title } = args;
-        // .slice(
-        //   Math.max(radioIndex - 7, 0),
-        //   Math.max(radioIndex + 7, 14),
-        // );
+        setErrorRadioId('');
 
         animatedBackgroundRef.current?.setup({
           radioIndex,
@@ -557,34 +561,50 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     return state.radios[radioIndex];
   }, [radioIndex, state.radios]);
 
-  const Compact = useCallback(
-    (props: {
-      y?: Animated.SharedValue<number>;
-      contentY?: Animated.SharedValue<number>;
-      rippleColor?: string;
-      onPress: () => void;
-    }) => {
-      return (
-        <CompactPlayer
-          {...props}
-          playing={playing}
-          buffering={buffering}
-          onTogglePlayback={onTogglePlayback}
-          radio={radio || {}}
-          error={!!errorRadioId}
-        />
-      );
-    },
-    [buffering, errorRadioId, onTogglePlayback, playing, radio],
-  );
+  // const Compact = useCallback(
+  //   (props: {
+  //     y?: Animated.SharedValue<number>;
+  //     contentY?: Animated.SharedValue<number>;
+  //     rippleColor?: string;
+  //     onPress: () => void;
+  //   }) => {
+  //     return (
+  //       <CompactPlayer
+  //         {...props}
+  //         playing={playing}
+  //         buffering={buffering}
+  //         onTogglePlayback={onTogglePlayback}
+  //         radio={radio || {}}
+  //         error={!!errorRadioId}
+  //       />
+  //     );
+  //   },
+  //   [buffering, errorRadioId, onTogglePlayback, playing, radio],
+  // );
 
   return (
     <View style={styles.container} pointerEvents="box-none">
       <PanGestureHandler onGestureEvent={panHandler}>
         <Animated.View style={style}>
           <AnimatedBackground style={styles.player} ref={animatedBackgroundRef}>
-            <Contents translateY={contentTranslateY} compact={Compact} />
-            <Compact y={translateY} onPress={onExpandPlayer} />
+            <Contents
+              translateY={contentTranslateY}
+              playing={playing}
+              buffering={buffering}
+              onTogglePlayback={onTogglePlayback}
+              radio={radio || {}}
+              error={!!errorRadioId}
+            />
+
+            <CompactPlayer
+              playing={playing}
+              buffering={buffering}
+              onTogglePlayback={onTogglePlayback}
+              radio={radio || {}}
+              error={!!errorRadioId}
+              y={translateY}
+              onPress={onExpandPlayer}
+            />
 
             <TopControls
               y={translateY}
@@ -640,17 +660,17 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
 export default memo(forwardRef(Player), isEqual);
 
-function getStateName(state) {
-  switch (state) {
-    case TrackPlayer.STATE_NONE:
-      return 'None';
-    case TrackPlayer.STATE_PLAYING:
-      return 'Playing';
-    case TrackPlayer.STATE_PAUSED:
-      return 'Paused';
-    case TrackPlayer.STATE_STOPPED:
-      return 'Stopped';
-    case TrackPlayer.STATE_BUFFERING:
-      return 'Buffering';
-  }
-}
+// function getStateName(state) {
+//   switch (state) {
+//     case TrackPlayer.STATE_NONE:
+//       return 'None';
+//     case TrackPlayer.STATE_PLAYING:
+//       return 'Playing';
+//     case TrackPlayer.STATE_PAUSED:
+//       return 'Paused';
+//     case TrackPlayer.STATE_STOPPED:
+//       return 'Stopped';
+//     case TrackPlayer.STATE_BUFFERING:
+//       return 'Buffering';
+//   }
+// }

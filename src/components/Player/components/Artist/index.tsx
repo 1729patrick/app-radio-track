@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text } from 'react-native';
 import Animated, {
   Easing,
@@ -13,6 +13,7 @@ import { SNAP_POINTS } from '../../constants';
 import styles from './styles';
 import TextTicker from 'react-native-text-ticker';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
+import isEqual from 'lodash.isequal';
 
 type ArtistType = {
   y: Animated.SharedValue<number>;
@@ -62,7 +63,7 @@ const Artist: React.FC<ArtistType> = ({ y, contentY, radio = {} }) => {
             scrollSpeed={450}
             easing={Easing.linear}
             style={[styles.title]}>
-            {radio.name}
+            {radio.name || ''}
           </TextTicker>
           {/* <RoundButton
             Icon={Icon}
@@ -77,7 +78,7 @@ const Artist: React.FC<ArtistType> = ({ y, contentY, radio = {} }) => {
             scrollSpeed={450}
             easing={Easing.linear}
             style={[styles.description]}>
-            {radio.slogan || radio.city?.name}
+            {radio.slogan || radio.city?.name || ''}
           </TextTicker>
         </View>
       </Animated.View>
@@ -85,4 +86,4 @@ const Artist: React.FC<ArtistType> = ({ y, contentY, radio = {} }) => {
   );
 };
 
-export default Artist;
+export default memo(Artist, isEqual);

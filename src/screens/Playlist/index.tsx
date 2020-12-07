@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { memo, useCallback, useEffect, useMemo } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -19,6 +19,7 @@ import { useAd } from '~/ads/contexts/AdContext';
 import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';
 import { usePlaying } from '~/contexts/PlayingContext';
+import isEqual from 'lodash.isequal';
 
 type RootStackParamList = {
   Playlist: {
@@ -97,7 +98,6 @@ const Explore: React.FC = () => {
       {data && (
         <FlatList
           showsHorizontalScrollIndicator={false}
-          
           initialNumToRender={24}
           contentContainerStyle={styles.contentContainer}
           showsVerticalScrollIndicator={false}
@@ -112,4 +112,4 @@ const Explore: React.FC = () => {
   );
 };
 
-export default Explore;
+export default memo(Explore, isEqual);

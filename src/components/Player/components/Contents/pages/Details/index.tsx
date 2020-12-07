@@ -1,4 +1,5 @@
-import React from 'react';
+import isEqual from 'lodash.isequal';
+import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 
 const Details = () => {
@@ -9,4 +10,4 @@ const Details = () => {
   );
 };
 
-export default Details;
+export default memo(Details, isEqual);

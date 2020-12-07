@@ -1,8 +1,9 @@
+import isEqual from 'lodash.isequal';
 import * as React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import StyleGuide from '~/utils/StyleGuide';
 
-export const ActiveLibrary = () => {
+export const ActiveLibrary = React.memo(() => {
   return (
     <Svg height="20pt" width="20pt" viewBox="0 0 512 512">
       <Path
@@ -11,9 +12,9 @@ export const ActiveLibrary = () => {
       />
     </Svg>
   );
-};
+}, isEqual);
 
-export const InactiveLibrary = () => {
+export const InactiveLibrary = React.memo(() => {
   return (
     <Svg height="20pt" width="20pt" viewBox="0 0 512 512">
       <Path
@@ -22,4 +23,4 @@ export const InactiveLibrary = () => {
       />
     </Svg>
   );
-};
+}, isEqual);

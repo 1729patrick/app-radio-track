@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
@@ -17,6 +17,8 @@ import Error from '~/components/Error';
 import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';
 import { usePlaying } from '~/contexts/PlayingContext';
+import isEqual from 'lodash.isequal';
+import { useKeyboard } from '~/hooks/useKeyboard';
 
 type SearchProps = {
   onCloseSearch: () => void;
@@ -25,6 +27,7 @@ type SearchProps = {
 const Search: React.FC<SearchProps> = () => {
   const { playingRadioId } = usePlaying();
   const [searchTerm, setSearchTerm] = useState('');
+  const { height } = useKeyboard();
   const { data, error } = useFetch<FetchWithPagination>(
     searchTerm.trimLeft().trimRight().length >= 3
       ? `/search?q=${searchTerm.trimLeft().trimRight()}`
@@ -108,7 +111,7 @@ const Search: React.FC<SearchProps> = () => {
       </View>
 
       {notFound && (
-        <View style={styles.notFound}>
+        <View style={[styles.notFound, { height }]}>
           <Text style={styles.notFoundTitle}>
             Rádio "{searchTerm}" não encontrada.
           </Text>
@@ -138,4 +141,4 @@ const Search: React.FC<SearchProps> = () => {
   );
 };
 
-export default Search;
+export default memo(Search, isEqual);

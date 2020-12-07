@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Text, View } from 'react-native';
+import React, { memo, useRef } from 'react';
+import { View } from 'react-native';
 import {
   PanGestureHandler,
   TouchableWithoutFeedback,
@@ -19,17 +19,39 @@ import { TIMING_DURATION } from '../../constants';
 import styles from './styles';
 
 import { SNAP_POINTS } from './constants';
-import TabNavigator from './components/TabNavigator';
+import TabNavigator, { TabNavigatorHandler } from './components/TabNavigator';
 import Details from './pages/Details';
 import Suggest from './pages/Suggest';
+import isEqual from 'lodash.isequal';
+import CompactPlayer from '../CompactPlayer';
+import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
+import { RadioType } from '~/types/Station';
 
-const PAGES = [
+export type RouteType = { title: string; Component: any };
+
+const ROUTES = [
   { title: 'Detalhes', Component: Details },
   { title: 'Sugeridas', Component: Suggest },
 ];
 
-const Contents = ({ translateY, compact: Compact }) => {
-  const tabNavigatorRef = useRef(null);
+type ContentsProps = {
+  translateY: Animated.SharedValue<number>;
+  playing: boolean;
+  buffering: boolean;
+  onTogglePlayback: () => void;
+  radio: RadioType;
+  error: boolean;
+};
+
+const Contents: React.FC<ContentsProps> = ({
+  translateY,
+  playing,
+  buffering,
+  onTogglePlayback,
+  radio,
+  error,
+}) => {
+  const tabNavigatorRef = useRef<TabNavigatorHandler>(null);
 
   const initializeTabActive = () => {
     tabNavigatorRef.current?.initializeTabActive();
@@ -123,7 +145,13 @@ const Contents = ({ translateY, compact: Compact }) => {
     <Animated.View style={styles.container}>
       <PanGestureHandler onGestureEvent={panHandler}>
         <Animated.View style={[style]}>
-          <Compact
+          <CompactPlayer
+            top={STATUS_BAR_HEIGHT}
+            playing={playing}
+            buffering={buffering}
+            onTogglePlayback={onTogglePlayback}
+            radio={radio || {}}
+            error={error}
             contentY={translateY}
             rippleColor="transparent"
             onPress={onCompactContent}
@@ -136,7 +164,7 @@ const Contents = ({ translateY, compact: Compact }) => {
 
             <TabNavigator
               onPress={onExpandContent}
-              pages={PAGES}
+              routes={ROUTES}
               checkAnimated={checkAnimated}
               animation={animation}
               ref={tabNavigatorRef}
@@ -148,4 +176,4 @@ const Contents = ({ translateY, compact: Compact }) => {
   );
 };
 
-export default Contents;
+export default memo(Contents, isEqual);

@@ -1,3 +1,4 @@
+import isEqual from 'lodash.isequal';
 import * as React from 'react';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,7 +10,7 @@ const style = {
   marginLeft: -1.75,
   marginRight: -2.75,
 };
-export const InactiveCompass = () => {
+export const InactiveCompass = React.memo(() => {
   return (
     <Icon
       name="ios-compass-outline"
@@ -18,9 +19,9 @@ export const InactiveCompass = () => {
       style={style}
     />
   );
-};
+}, isEqual);
 
-export const ActiveCompass = () => {
+export const ActiveCompass = React.memo(() => {
   return (
     <Icon
       name="ios-compass-sharp"
@@ -29,4 +30,4 @@ export const ActiveCompass = () => {
       style={style}
     />
   );
-};
+}, isEqual);

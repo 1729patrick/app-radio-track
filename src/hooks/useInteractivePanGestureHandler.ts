@@ -14,8 +14,8 @@ export const useInteractivePanGestureHandler = (
   translateY: Animated.SharedValue<number>,
   snapPoints: number[],
   animateToPoint: (point: number) => void,
-  onStart: () => void,
-  onEnd: () => void,
+  onStart?: () => void,
+  onEnd?: () => void,
 ) => {
   const panHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,

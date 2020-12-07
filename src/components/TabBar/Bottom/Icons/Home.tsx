@@ -1,8 +1,9 @@
+import isEqual from 'lodash.isequal';
 import * as React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import StyleGuide from '~/utils/StyleGuide';
 
-export const ActiveHome = () => {
+export const ActiveHome = React.memo(() => {
   return (
     <Svg height="20pt" width="20pt" viewBox="0 0 512 512">
       <Path
@@ -11,9 +12,9 @@ export const ActiveHome = () => {
       />
     </Svg>
   );
-};
+}, isEqual);
 
-export const InactiveHome = () => {
+export const InactiveHome = React.memo(() => {
   return (
     <Svg height="20" viewBox="0 0 512 512" width="20">
       <Path
@@ -22,4 +23,4 @@ export const InactiveHome = () => {
       />
     </Svg>
   );
-};
+}, isEqual);

@@ -22,7 +22,9 @@ type MetadataArgs = { radios: RadioType[]; title: string };
 type ContextProps = {
   playingRadioId?: string;
   removePlayingRadio: () => void;
-  setMetaData: (args: MetadataArgs & { id?: string }) => void;
+  setMetaData: (
+    args: MetadataArgs & { id?: string; radioIndex?: number },
+  ) => void;
 };
 
 const PlayingContext = createContext<ContextProps>({

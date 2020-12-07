@@ -1,21 +1,35 @@
-import React from 'react';
+import isEqual from 'lodash.isequal';
+import React, { memo } from 'react';
 import { Dimensions, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useDerivedValue,
 } from 'react-native-reanimated';
+import { RouteType } from '../..';
 
 import styles from './styles';
 import Tab from './Tab';
 
 const { width } = Dimensions.get('window');
 
-const Header = ({ onPress, pages, translateX, animation }) => {
-  const indicatorWidth = width / pages.length;
-  const inputRange = pages.map((_, i: number) => i);
+type HeaderProps = {
+  onPress: (index: number) => void;
+  routes: RouteType[];
+  translateX: Animated.SharedValue<number>;
+  animation: Animated.SharedValue<number>;
+};
+
+const Header: React.FC<HeaderProps> = ({
+  onPress,
+  routes,
+  translateX,
+  animation,
+}) => {
+  const indicatorWidth = width / routes.length;
+  const inputRange = routes.map((_, i: number) => i);
 
   const x = useDerivedValue(() => {
-    return (translateX.value * width) / pages.length;
+    return (translateX.value * width) / routes.length;
   }, [translateX.value]);
 
   const styleIndicator = useAnimatedStyle(() => {
@@ -27,7 +41,7 @@ const Header = ({ onPress, pages, translateX, animation }) => {
 
   return (
     <View style={styles.container}>
-      {pages.map(({ title }, index) => (
+      {routes.map(({ title }, index) => (
         <Tab
           key={title}
           title={title}
@@ -47,4 +61,4 @@ const Header = ({ onPress, pages, translateX, animation }) => {
   );
 };
 
-export default Header;
+export default memo(Header, isEqual);

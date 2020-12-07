@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import StyleGuide from '~/utils/StyleGuide';
@@ -16,6 +16,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { RadioType } from '~/types/Station';
 import { useIsFocused } from '@react-navigation/native';
 import { useAd } from '~/ads/contexts/AdContext';
+import isEqual from 'lodash.isequal';
 
 const LibraryTab = createMaterialTopTabNavigator();
 
@@ -98,4 +99,4 @@ const Library = () => {
   );
 };
 
-export default Library;
+export default memo(Library, isEqual);

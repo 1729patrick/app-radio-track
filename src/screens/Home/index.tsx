@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
 import { BLOCKS } from '~/ads/constants';
+import isEqual from 'lodash.isequal';
 
 function daysIntoYear() {
   const date = new Date();
@@ -143,4 +144,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default memo(Home, isEqual);

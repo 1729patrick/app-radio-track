@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text } from 'react-native';
 import Animated, {
   Extrapolate,
@@ -24,6 +24,7 @@ type TopControlsProps = {
   radio: RadioType;
 };
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../../Contents/constants';
+import isEqual from 'lodash.isequal';
 
 const TopControls: React.FC<TopControlsProps> = ({
   y,
@@ -96,4 +97,4 @@ const TopControls: React.FC<TopControlsProps> = ({
   );
 };
 
-export default TopControls;
+export default memo(TopControls, isEqual);

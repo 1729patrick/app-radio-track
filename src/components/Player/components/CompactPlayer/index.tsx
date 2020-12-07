@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text } from 'react-native';
 import Animated, {
   Easing,
@@ -21,8 +21,9 @@ import { useFavorites } from '~/contexts/FavoriteContext';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
 
 import TextTicker from 'react-native-text-ticker';
+import isEqual from 'lodash.isequal';
 
-type CompactPlayerType = {
+type CompactPlayerProps = {
   y?: Animated.SharedValue<number>;
   contentY?: Animated.SharedValue<number>;
   onPress: () => void;
@@ -32,9 +33,10 @@ type CompactPlayerType = {
   radio: RadioType;
   error: boolean;
   rippleColor?: string;
+  top?: number;
 };
 
-const CompactPlayer: React.FC<CompactPlayerType> = ({
+const CompactPlayer: React.FC<CompactPlayerProps> = ({
   y,
   contentY,
   onPress,
@@ -44,6 +46,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
   radio,
   error,
   rippleColor = StyleGuide.palette.secondary,
+  top,
 }) => {
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 
@@ -68,12 +71,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
     }
 
     return {
-      top: interpolate(
-        contentY.value,
-        [CONTENT_SNAP_POINTS[1], CONTENT_SNAP_POINTS[1] * 0.5],
-        [0, 25],
-        Extrapolate.CLAMP,
-      ),
+      top,
       opacity: interpolate(
         contentY.value,
         [CONTENT_SNAP_POINTS[1] * 0.3, CONTENT_SNAP_POINTS[0]],
@@ -82,21 +80,6 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
       ),
     };
   }, [contentY]);
-
-  const styleBackground = useAnimatedStyle(() => {
-    if (!y) {
-      return { opacity: 0 };
-    }
-
-    return {
-      opacity: interpolate(
-        y.value,
-        [SNAP_POINTS[1] * 0.99, SNAP_POINTS[1]],
-        [0, 1],
-        Extrapolate.CLAMP,
-      ),
-    };
-  }, [y]);
 
   return (
     <>
@@ -112,7 +95,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
               loop
               scrollSpeed={450}
               easing={Easing.linear}>
-              {radio.name}
+              {radio.name || ''}
             </TextTicker>
             {(radio.slogan || radio.city?.name) && (
               <TextTicker
@@ -121,7 +104,7 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
                 loop
                 scrollSpeed={450}
                 easing={Easing.linear}>
-                {radio.slogan || radio.city?.name}
+                {radio.slogan || radio.city?.name || ''}
               </TextTicker>
             )}
           </View>
@@ -185,9 +168,8 @@ const CompactPlayer: React.FC<CompactPlayerType> = ({
           </View>
         </RectButton>
       </Animated.View>
-      <Animated.View style={[styles.background, styleBackground]} />
     </>
   );
 };
 
-export default CompactPlayer;
+export default memo(CompactPlayer, isEqual);

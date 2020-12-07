@@ -1,4 +1,5 @@
-import React from 'react';
+import isEqual from 'lodash.isequal';
+import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 
 const Suggest = () => {
@@ -9,4 +10,4 @@ const Suggest = () => {
   );
 };
 
-export default Suggest;
+export default memo(Suggest, isEqual);

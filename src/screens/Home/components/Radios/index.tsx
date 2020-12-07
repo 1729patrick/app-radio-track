@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { onExpandPlayer } from '~/components/Player';
@@ -8,6 +8,7 @@ import { usePlaying } from '~/contexts/PlayingContext';
 import Radio from '~/components/Radio/Card';
 
 import { RadioType } from '~/types/Station';
+import isEqual from 'lodash.isequal';
 
 export type RadiosProps = {
   title: string;
@@ -67,7 +68,6 @@ const Radios: React.FC<RadiosProps> = ({
 
       <FlatList
         showsHorizontalScrollIndicator={false}
-        
         initialNumToRender={3}
         contentContainerStyle={styles.contentContainer}
         horizontal
@@ -82,4 +82,4 @@ const Radios: React.FC<RadiosProps> = ({
   );
 };
 
-export default Radios;
+export default memo(Radios, isEqual);

@@ -1,4 +1,5 @@
-import React from 'react';
+import isEqual from 'lodash.isequal';
+import React, { memo } from 'react';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated, {
   interpolateColor,
@@ -8,7 +9,17 @@ import StyleGuide from '~/utils/StyleGuide';
 
 import styles from './styles';
 
-const Tab = ({
+type TabProps = {
+  indicatorWidth: number;
+  translateX: Animated.SharedValue<number>;
+  inputRange: number[];
+  index: number;
+  title: string;
+  onPress: (index: number) => void;
+  animation: Animated.SharedValue<number>;
+};
+
+const Tab: React.FC<TabProps> = ({
   indicatorWidth,
   translateX,
   inputRange,
@@ -17,6 +28,7 @@ const Tab = ({
   onPress,
   animation,
 }) => {
+  //@ts-ignore
   const style = useAnimatedStyle(() => {
     if (translateX.value < 0) {
       return { color: StyleGuide.palette.secondary };
@@ -31,6 +43,7 @@ const Tab = ({
     const color = interpolateColor(
       translateX.value,
       inputRange,
+      //@ts-ignore
       inputRange.map((i: number) =>
         i === index ? colorActive : StyleGuide.palette.secondary,
       ),
@@ -49,4 +62,4 @@ const Tab = ({
   );
 };
 
-export default Tab;
+export default memo(Tab, isEqual);

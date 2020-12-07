@@ -31,8 +31,6 @@ const RoundButton: React.FC<RoundButtonProp> = ({
           height: size + 5,
           width: size + 5,
           borderRadius: (size + 5) / 2,
-          zIndex: 200,
-          elevation: 10,
         },
         style,
       ]}>

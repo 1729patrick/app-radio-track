@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -15,6 +15,7 @@ import StyleGuide from '~/utils/StyleGuide';
 import FastImage from 'react-native-fast-image';
 
 import { GENRES } from './data';
+import isEqual from 'lodash.isequal';
 
 const Explore: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
@@ -67,6 +68,6 @@ const Explore: React.FC = () => {
   );
 };
 
-export default Explore;
+export default memo(Explore, isEqual);
 
 // https://uigradients.com/#DeepPurple

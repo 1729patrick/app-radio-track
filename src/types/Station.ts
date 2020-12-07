@@ -14,7 +14,7 @@ export type RadioType = {
   streams: [
     {
       url: string;
-      type: string;
+      type: 'hls' | 'default' | 'dash' | 'smoothstreaming' | undefined;
     },
   ];
   address?: string;

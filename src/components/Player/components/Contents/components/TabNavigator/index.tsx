@@ -1,19 +1,37 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, memo, useImperativeHandle, useRef } from 'react';
 import { Dimensions, View } from 'react-native';
 import styles from './styles';
-import Container from '../Container';
+import Container, { ContainerHandler } from '../Container';
 import Header from '../Header';
 import Animated, {
   useAnimatedScrollHandler,
-  useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
 import { clamp } from 'react-native-redash';
+import isEqual from 'lodash.isequal';
+import { RouteType } from '../..';
 
 const { width } = Dimensions.get('window');
-const TabNavigator = ({ onPress, pages, checkAnimated, animation }, ref) => {
+
+export type TabNavigatorHandler = {
+  setTabActive: (tabIndex: number, animated: boolean) => void;
+  clearTabActive: () => void;
+  initializeTabActive: () => void;
+};
+
+type TabNavigatorProps = {
+  onPress: () => void;
+  routes: RouteType[];
+  checkAnimated: () => boolean;
+  animation: Animated.SharedValue<number>;
+};
+
+const TabNavigator: React.ForwardRefRenderFunction<
+  TabNavigatorHandler,
+  TabNavigatorProps
+> = ({ onPress, routes, checkAnimated, animation }, ref) => {
   const translateX = useSharedValue(-1);
-  const containerRef = useRef(null);
+  const containerRef = useRef<ContainerHandler>(null);
 
   const scrollHandler = useAnimatedScrollHandler<{}>(
     {
@@ -21,14 +39,14 @@ const TabNavigator = ({ onPress, pages, checkAnimated, animation }, ref) => {
         translateX.value = clamp(
           event.contentOffset.x / width,
           0,
-          pages.length,
+          routes.length,
         );
       },
     },
     [],
   );
 
-  const setTabActive = (tabIndex, animated) => {
+  const setTabActive = (tabIndex: number, animated: boolean) => {
     if (translateX.value === -1) {
       translateX.value = tabIndex;
     }
@@ -61,13 +79,13 @@ const TabNavigator = ({ onPress, pages, checkAnimated, animation }, ref) => {
     <View style={styles.container}>
       <Header
         onPress={onPressTab}
-        pages={pages}
+        routes={routes}
         translateX={translateX}
         animation={animation}
       />
 
       <Container
-        pages={pages}
+        routes={routes}
         scrollHandler={scrollHandler}
         ref={containerRef}
         animation={animation}
@@ -76,4 +94,4 @@ const TabNavigator = ({ onPress, pages, checkAnimated, animation }, ref) => {
   );
 };
 
-export default forwardRef(TabNavigator);
+export default memo(forwardRef(TabNavigator), isEqual);

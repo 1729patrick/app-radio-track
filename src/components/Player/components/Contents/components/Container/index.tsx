@@ -1,21 +1,42 @@
+import isEqual from 'lodash.isequal';
 import React, {
   forwardRef,
+  memo,
   useCallback,
   useImperativeHandle,
   useRef,
 } from 'react';
-import { Dimensions, View } from 'react-native';
+import {
+  Dimensions,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  View,
+} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import { RouteType } from '../..';
 
-Animated.FlatList = Animated.createAnimatedComponent(FlatList);
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const { width } = Dimensions.get('window');
 
-const Container = ({ pages, scrollHandler, animation }, ref) => {
-  const flatListRef = useRef(null);
+export type ContainerHandler = {
+  scrollToIndex: (tabIndex: number, animated: boolean) => void;
+};
+
+type ContainerProps = {
+  routes: RouteType[];
+  scrollHandler: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  animation: Animated.SharedValue<number>;
+};
+
+const Container: React.ForwardRefRenderFunction<
+  ContainerHandler,
+  ContainerProps
+> = ({ routes, scrollHandler, animation }, ref) => {
+  const flatListRef = useRef<FlatList<any>>(null);
   const renderItem = useCallback(
-    ({ item }) => (
+    ({ item }: { item: RouteType }) => (
       <View style={{ width }}>
         <item.Component />
       </View>
@@ -23,7 +44,7 @@ const Container = ({ pages, scrollHandler, animation }, ref) => {
     [],
   );
 
-  const scrollToIndex = (tabIndex, animated) => {
+  const scrollToIndex = (tabIndex: number, animated: boolean) => {
     flatListRef.current?.scrollToOffset({
       offset: tabIndex * width,
       animated,
@@ -41,10 +62,10 @@ const Container = ({ pages, scrollHandler, animation }, ref) => {
 
   return (
     <Animated.View style={[style]}>
-      <Animated.FlatList
+      <AnimatedFlatList
         ref={flatListRef}
-        data={pages}
-        keyExtractor={({ title }) => `${title}`}
+        data={routes}
+        keyExtractor={({ title }: RouteType) => title}
         renderItem={renderItem}
         horizontal
         decelerationRate={'fast'}
@@ -57,4 +78,4 @@ const Container = ({ pages, scrollHandler, animation }, ref) => {
   );
 };
 
-export default forwardRef(Container);
+export default memo(forwardRef(Container), isEqual);

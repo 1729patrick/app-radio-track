@@ -1,5 +1,6 @@
 import React, {
   forwardRef,
+  memo,
   useCallback,
   useEffect,
   useImperativeHandle,
@@ -15,7 +16,7 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 
-Animated.FlatList = Animated.createAnimatedComponent(FlatList);
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 import styles from './styles';
 const { width, height } = Dimensions.get('window');
@@ -31,6 +32,7 @@ import { RadioType } from '~/types/Station';
 
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
 import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
+import isEqual from 'lodash.isequal';
 
 type ScrollToAlbumArgs = {
   radioIndex: number;
@@ -218,7 +220,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   return (
     <Animated.View style={[styles.container, styleContent, style]}>
       {!hiddenFlatList && (
-        <Animated.FlatList
+        <AnimatedFlatList
           ref={flatListRef}
           onLayout={onLayout}
           viewabilityConfigCallbackPairs={
@@ -245,4 +247,4 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   );
 };
 
-export default forwardRef(Albums);
+export default memo(forwardRef(Albums), isEqual);

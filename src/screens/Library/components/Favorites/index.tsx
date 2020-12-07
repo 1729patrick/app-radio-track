@@ -1,4 +1,4 @@
-import React, { useCallback, forwardRef, useMemo } from 'react';
+import React, { useCallback, forwardRef, useMemo, memo } from 'react';
 import { useFavorites } from '~/contexts/FavoriteContext';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Radio from '~/components/Radio/Item';
@@ -10,6 +10,7 @@ import Error from '~/components/Error';
 import { BLOCKS } from '~/ads/constants';
 import Banner from '~/ads/components/Banner';
 import { usePlaying } from '~/contexts/PlayingContext';
+import isEqual from 'lodash.isequal';
 
 type FavoritesProps = {
   refreshTranslateY: (from: string) => void;

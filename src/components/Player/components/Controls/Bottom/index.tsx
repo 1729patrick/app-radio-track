@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 import Animated, {
   Extrapolate,
@@ -14,6 +14,7 @@ import LottieView from 'lottie-react-native';
 import StyleGuide from '~/utils/StyleGuide';
 import RoundButton from '~/components/Button/Round';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../../Contents/constants';
+import isEqual from 'lodash.isequal';
 
 type BottomControlsProps = {
   y: Animated.SharedValue<number>;
@@ -111,4 +112,4 @@ const BottomControls: React.FC<BottomControlsProps> = ({
   );
 };
 
-export default BottomControls;
+export default memo(BottomControls, isEqual);
