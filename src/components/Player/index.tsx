@@ -32,7 +32,6 @@ import Animated, {
   withTiming,
   useDerivedValue,
   runOnJS,
-  Easing,
   useSharedValue,
 } from 'react-native-reanimated';
 
@@ -94,11 +93,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   ref,
 ) => {
   const { translateY } = usePlayer();
+  const artistAndControlHeight = useSharedValue(height);
+
   const contentTranslateY = useSharedValue(CONTENT_SNAP_POINTS[1]);
   const [playing, setPlaying] = useState(false);
   const playbackState = usePlaybackState();
   const playbackStatePreviousRef = useRef(playbackState);
-  const artistAndControlHeightRef = useRef(height);
   const runWhenArtistAndControlMount = useRef(undefined);
 
   const playbackStateOnDisconnectMoment = useRef<number>(0);
@@ -369,11 +369,13 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         setMetaData({ radios, title, radioIndex });
       }
 
+      runWhenArtistAndControlMount.current = undefined;
+
       if (size === 'expand') {
         animateToPoint(SNAP_POINTS[0]);
         waitForInteractionPlaybackState.current = false;
       } else {
-        if (artistAndControlHeightRef.current !== height) {
+        if (artistAndControlHeight.value !== height) {
           animateToPoint(SNAP_POINTS[1]);
         } else {
           runWhenArtistAndControlMount.current = () =>
@@ -381,7 +383,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         }
       }
     },
-    [addRadiosToTrackPlayer, animateToPoint, setMetaData],
+    [
+      addRadiosToTrackPlayer,
+      animateToPoint,
+      artistAndControlHeight.value,
+      setMetaData,
+    ],
   );
 
   const onCompactPlayer = useCallback(async () => {
@@ -574,7 +581,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [radioIndex, state.radios]);
 
   const onLayoutArtistAndControl = ({ nativeEvent }: LayoutChangeEvent) => {
-    artistAndControlHeightRef.current = nativeEvent.layout.height;
+    if (artistAndControlHeight.value !== height) {
+      return;
+    }
+
+    artistAndControlHeight.value = nativeEvent.layout.height;
 
     if (typeof runWhenArtistAndControlMount.current === 'function') {
       runWhenArtistAndControlMount.current();
@@ -625,7 +636,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
                 onAlbumsMounted={onAlbumsMounted}
                 scrollHandler={animatedBackgroundRef.current?.scrollHandler}
                 errorRadioId={errorRadioId}
-                artistAndControlHeight={artistAndControlHeightRef.current}
+                artistAndControlHeight={artistAndControlHeight}
               />
             )}
 
