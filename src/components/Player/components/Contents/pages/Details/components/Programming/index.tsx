@@ -16,6 +16,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { ProgramType, ProgrammingType } from '~/types/Station';
 
 const DAYS = [
   'Segunda-Feira',
@@ -30,23 +31,6 @@ const DAYS = [
 const { width } = Dimensions.get('window');
 
 import styles, { CARD_PADDING } from './styles';
-
-type ProgramType = {
-  from: number;
-  to: number;
-  name: string;
-};
-type ProgrammingProps = {
-  programming: {
-    0: ProgramType[];
-    1: ProgramType[];
-    2: ProgramType[];
-    3: ProgramType[];
-    4: ProgramType[];
-    5: ProgramType[];
-    6: ProgramType[];
-  };
-};
 
 const TITLE_HEIGHT = 60.25;
 const PROGRAMING_HEIGHT = 37;
@@ -152,6 +136,10 @@ const Item: React.ForwardRefRenderFunction<ItemHandler, ItemProps> = forwardRef(
     );
   },
 );
+
+type ProgrammingProps = {
+  programming: ProgrammingType;
+};
 
 const Programming: React.FC<ProgrammingProps> = ({ programming }) => {
   const itemsRef = useRef<ItemHandler[]>([]);

@@ -57,7 +57,7 @@ import { usePlaying } from '~/contexts/PlayingContext';
 import { image } from '~/services/api';
 import useIsReconnected from '~/hooks/useIsReconnected';
 import { useNetInfo } from '@react-native-community/netinfo';
-import Contents from './components/Contents';
+import Contents, { ContentsHandler } from './components/Contents';
 import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from './components/Contents/constants';
 
@@ -101,6 +101,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const playbackState = usePlaybackState();
   const playbackStateRef = useRef(playbackState);
   const checkPlayingTimeout = useRef(0);
+  const contentsRef = useRef<ContentsHandler>();
 
   const playbackStatePreviousRef = useRef(playbackState);
   const runWhenArtistAndControlMount = useRef<() => void | undefined>();
@@ -546,14 +547,22 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => {
-      const open = translateY.value === SNAP_POINTS[0];
-      if (open) {
-        onCompactPlayer();
+      const contentsOpen = contentTranslateY.value === CONTENT_SNAP_POINTS[0];
+      if (contentsOpen) {
+        contentsRef.current?.onCompactContent();
+        return true;
       }
 
-      return open;
+      const playerOpen = translateY.value === SNAP_POINTS[0];
+      if (playerOpen) {
+        onCompactPlayer();
+
+        return true;
+      }
+
+      return false;
     });
-  }, [onCompactPlayer, translateY.value]);
+  }, [contentTranslateY, onCompactPlayer, translateY.value]);
 
   useEffect(() => {
     if (playerState === 'closed' && playerStatePrevious !== 'closed') {
@@ -606,7 +615,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     artistAndControlHeight.value = nativeEvent.layout.height;
 
     if (typeof runWhenArtistAndControlMount.current === 'function') {
-      setTimeout(runWhenArtistAndControlMount.current, 200);
+      animateToPoint(SNAP_POINTS[1]);
     }
   };
 
@@ -622,6 +631,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               onTogglePlayback={onTogglePlayback}
               radio={radio || {}}
               error={!!errorRadioId}
+              ref={contentsRef}
             />
 
             <CompactPlayer

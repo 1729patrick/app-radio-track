@@ -1,11 +1,16 @@
-import React, { memo, useCallback, useRef } from 'react';
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import { View } from 'react-native';
 import {
   PanGestureHandler,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import Animated, {
-  Easing,
   Extrapolate,
   interpolate,
   runOnJS,
@@ -14,7 +19,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
-import { TIMING_DURATION } from '../../constants';
+import { TIMING_DURATION } from './constants';
 
 import styles from './styles';
 
@@ -43,14 +48,17 @@ type ContentsProps = {
   error: boolean;
 };
 
-const Contents: React.FC<ContentsProps> = ({
-  translateY,
-  playing,
-  buffering,
-  onTogglePlayback,
-  radio,
-  error,
-}) => {
+export type ContentsHandler = {
+  onCompactContent: () => void;
+};
+
+const Contents: React.ForwardRefRenderFunction<
+  ContentsHandler,
+  ContentsProps
+> = (
+  { translateY, playing, buffering, onTogglePlayback, radio, error },
+  ref,
+) => {
   const tabNavigatorRef = useRef<TabNavigatorHandler>(null);
 
   const initializeTabActive = () => {
@@ -69,7 +77,6 @@ const Contents: React.FC<ContentsProps> = ({
 
       translateY.value = withTiming(point, {
         duration: TIMING_DURATION,
-        // easing: Easing.out(Easing.cubic),
       });
     },
     [translateY],
@@ -112,6 +119,8 @@ const Contents: React.FC<ContentsProps> = ({
       animateToPoint(SNAP_POINTS[1]);
     }
   };
+
+  useImperativeHandle(ref, () => ({ onCompactContent }));
 
   const checkAnimated = () => {
     return !(translateY.value === SNAP_POINTS[1]);
@@ -163,4 +172,4 @@ const Contents: React.FC<ContentsProps> = ({
   );
 };
 
-export default memo(Contents, isEqual);
+export default memo(forwardRef(Contents), isEqual);

@@ -1,3 +1,19 @@
+export type ProgramType = {
+  from: number;
+  to: number;
+  name: string;
+};
+
+export type ProgrammingType = {
+  0: ProgramType[];
+  1: ProgramType[];
+  2: ProgramType[];
+  3: ProgramType[];
+  4: ProgramType[];
+  5: ProgramType[];
+  6: ProgramType[];
+};
+
 export type RadioType = {
   genres: [string];
   id: string;
@@ -7,6 +23,7 @@ export type RadioType = {
   countryCode: string;
   langCode: string;
   img: string;
+  programming: ProgrammingType;
   votes: {
     up: number;
     down: number;

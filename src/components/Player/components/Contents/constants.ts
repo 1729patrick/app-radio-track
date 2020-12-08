@@ -11,3 +11,4 @@ export const SNAP_POINTS = [
 
 export const INDICATOR_HEIGHT = 5;
 export const INDICATOR_MARGIN_TOP = 10;
+export const TIMING_DURATION = 300;
