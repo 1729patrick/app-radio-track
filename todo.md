@@ -1,5 +1,3 @@
-# fix laggy
-
 # drag down to close radio details
 
 # show addres with cityid, regionid to show in details

@@ -1,5 +1,5 @@
 import isEqual from 'lodash.isequal';
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useEffect, useMemo } from 'react';
 import { Text, View } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import Banner from '~/ads/components/Banner';
@@ -59,8 +59,13 @@ const Suggest = () => {
   //   [],
   // );
 
-  return null;
-  return <Loader backgroundColor={StyleGuide.palette.border} />;
+  // return <Loader backgroundColor={StyleGuide.palette.border} />;
+
+  useEffect(() => {
+    // console.log('load suggest');
+    // return () => console.log('umnoum suggest');
+  }, []);
+
   return (
     <ScrollView
       contentContainerStyle={styles.contentContainer}

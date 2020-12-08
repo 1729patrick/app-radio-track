@@ -1,5 +1,5 @@
 import isEqual from 'lodash.isequal';
-import React, { memo, useMemo } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import { Linking, Text } from 'react-native';
 import {
   ScrollView,
@@ -92,8 +92,12 @@ const Details: React.FC<DetailsProps> = ({ routeProps }) => {
     }
   };
 
-  return null;
-  return <Loader backgroundColor={StyleGuide.palette.border} />;
+  useEffect(() => {
+    // console.log('load detials');
+    // return () => console.log('umnoum details');
+  }, []);
+
+  // return <Loader backgroundColor={StyleGuide.palette.border} />;
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}

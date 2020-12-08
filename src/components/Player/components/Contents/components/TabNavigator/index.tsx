@@ -1,4 +1,10 @@
-import React, { forwardRef, memo, useImperativeHandle, useRef } from 'react';
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import { Dimensions, View } from 'react-native';
 import styles from './styles';
 import Container, { ContainerHandler } from '../Container';
@@ -17,6 +23,8 @@ export type TabNavigatorHandler = {
   setTabActive: (tabIndex: number, animated: boolean) => void;
   clearTabActive: () => void;
   initializeTabActive: () => void;
+  unMountPages: () => void;
+  mountPages: () => void;
 };
 
 type TabNavigatorProps = {
@@ -66,11 +74,21 @@ const TabNavigator: React.ForwardRefRenderFunction<
     translateX.value = -1;
   };
 
+  const mountPages = useCallback(() => {
+    containerRef.current?.mountPages();
+  }, []);
+
+  const unMountPages = useCallback(() => {
+    containerRef.current?.unMountPages();
+  }, []);
+
   useImperativeHandle(ref, () => ({
     scrollViewRef,
     setTabActive,
     clearTabActive,
     initializeTabActive,
+    mountPages,
+    unMountPages,
   }));
 
   const onPressTab = (tabIndex: number) => {

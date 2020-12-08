@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useImperativeHandle,
   useRef,
+  useState,
 } from 'react';
 import {
   Dimensions,
@@ -26,6 +27,8 @@ const { width } = Dimensions.get('window');
 
 export type ContainerHandler = {
   scrollToIndex: (tabIndex: number, animated: boolean) => void;
+  unMountPages: () => void;
+  mountPages: () => void;
 };
 
 type ContainerProps = {
@@ -49,14 +52,22 @@ const Container: React.ForwardRefRenderFunction<
   ContainerHandler,
   ContainerProps
 > = ({ routes, scrollHandler, animation, routeProps }, ref) => {
+  const [show, setShow] = useState(false);
   const flatListRef = useRef<FlatList<any>>(null);
+
   const renderItem = useCallback(
-    ({ item }: { item: RouteType }) => (
-      <View style={{ width, height: PAGE_HEIGHT }}>
-        <item.Component routeProps={routeProps} />
-      </View>
-    ),
-    [routeProps],
+    ({ item }: { item: RouteType }) => {
+      if (!show) {
+        return null;
+      }
+
+      return (
+        <View style={{ width, height: PAGE_HEIGHT }}>
+          <item.Component routeProps={routeProps} />
+        </View>
+      );
+    },
+    [routeProps, show],
   );
 
   const scrollToIndex = (tabIndex: number, animated: boolean) => {
@@ -66,8 +77,18 @@ const Container: React.ForwardRefRenderFunction<
     });
   };
 
+  const mountPages = useCallback(() => {
+    setShow(true);
+  }, []);
+
+  const unMountPages = useCallback(() => {
+    setShow(false);
+  }, []);
+
   useImperativeHandle(ref, () => ({
     scrollToIndex,
+    mountPages,
+    unMountPages,
   }));
 
   const style = useAnimatedStyle(

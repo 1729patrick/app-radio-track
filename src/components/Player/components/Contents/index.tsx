@@ -65,44 +65,6 @@ const Contents: React.ForwardRefRenderFunction<
     tabNavigatorRef.current?.initializeTabActive();
   };
 
-  const onStart = () => {
-    'worklet';
-
-    runOnJS(initializeTabActive)();
-  };
-
-  const animateToPoint = useCallback(
-    (point: number) => {
-      'worklet';
-
-      translateY.value = withTiming(point, {
-        duration: TIMING_DURATION,
-      });
-    },
-    [translateY],
-  );
-
-  const { panHandler } = useInteractivePanGestureHandler(
-    translateY,
-    SNAP_POINTS,
-    animateToPoint,
-    onStart,
-  );
-
-  const onExpandContent = () => {
-    if (translateY.value === SNAP_POINTS[1]) {
-      animateToPoint(SNAP_POINTS[0]);
-    }
-  };
-
-  const onCompactContent = () => {
-    if (translateY.value === SNAP_POINTS[0]) {
-      animateToPoint(SNAP_POINTS[1]);
-    }
-  };
-
-  useImperativeHandle(ref, () => ({ onCompactContent }));
-
   const checkAnimated = () => {
     return !(translateY.value === SNAP_POINTS[1]);
   };
@@ -131,8 +93,7 @@ const Contents: React.ForwardRefRenderFunction<
   }, [translateY.value]);
 
   const styleCompact = useAnimatedStyle(() => {
-    console.log(translateY.value, SNAP_POINTS[1] * 0.3, SNAP_POINTS[0]);
-    const translateYX = interpolate(
+    const floatingY = interpolate(
       translateY.value,
       [SNAP_POINTS[1] * 0.3, SNAP_POINTS[0]],
       [-SNAP_POINTS[1] * 0.15, 0],
@@ -141,11 +102,70 @@ const Contents: React.ForwardRefRenderFunction<
     return {
       transform: [
         {
-          translateY: translateYX,
+          translateY: floatingY,
         },
       ],
     };
   }, [translateY.value]);
+
+  const mountRoutes = () => {
+    tabNavigatorRef.current?.mountPages();
+  };
+
+  const unMountRoutes = () => {
+    tabNavigatorRef.current?.unMountPages();
+  };
+
+  const onStart = useCallback(() => {
+    'worklet';
+
+    runOnJS(mountRoutes)();
+    runOnJS(initializeTabActive)();
+  }, []);
+
+  const onEnd = useCallback(() => {
+    'worklet';
+
+    if (translateY.value === SNAP_POINTS[1]) {
+      runOnJS(unMountRoutes)();
+    }
+  }, [translateY.value]);
+
+  const animateToPoint = useCallback(
+    (point: number) => {
+      'worklet';
+
+      translateY.value = withTiming(
+        point,
+        {
+          duration: TIMING_DURATION,
+        },
+        onEnd,
+      );
+    },
+    [onEnd, translateY],
+  );
+
+  const onExpandContent = () => {
+    if (translateY.value === SNAP_POINTS[1]) {
+      animateToPoint(SNAP_POINTS[0]);
+    }
+  };
+
+  const onCompactContent = () => {
+    if (translateY.value === SNAP_POINTS[0]) {
+      animateToPoint(SNAP_POINTS[1]);
+    }
+  };
+
+  useImperativeHandle(ref, () => ({ onCompactContent }));
+
+  const { panHandler } = useInteractivePanGestureHandler(
+    translateY,
+    SNAP_POINTS,
+    animateToPoint,
+    onStart,
+  );
 
   return (
     <Animated.View style={styles.container}>
