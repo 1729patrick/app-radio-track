@@ -9,6 +9,7 @@ import React, {
   memo,
 } from 'react';
 import isEqual from 'lodash.isequal';
+import BackgroundTimer from 'react-native-background-timer';
 
 import {
   BackHandler,
@@ -98,10 +99,13 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const contentTranslateY = useSharedValue(CONTENT_SNAP_POINTS[1]);
   const [playing, setPlaying] = useState(false);
   const playbackState = usePlaybackState();
-  const playbackStatePreviousRef = useRef(playbackState);
-  const runWhenArtistAndControlMount = useRef(undefined);
+  const playbackStateRef = useRef(playbackState);
+  const checkPlayingTimeout = useRef(0);
 
-  const playbackStateOnDisconnectMoment = useRef<number>(0);
+  const playbackStatePreviousRef = useRef(playbackState);
+  const runWhenArtistAndControlMount = useRef<() => void | undefined>();
+
+  const playbackStateOnDisconnectMoment = useRef<number>(-1);
   const { addHistory } = useHistory();
   const { removePlayingRadio, setMetaData } = usePlaying();
   const isReconnected = useIsReconnected();
@@ -340,8 +344,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         size?: 'expand' | 'compact';
       },
     ) => {
+      runWhenArtistAndControlMount.current = undefined;
+
       const size = args?.size || 'expand';
       const autoPlay = size !== 'compact';
+
       if (args) {
         const { radioIndex, radios, title } = args;
         setErrorRadioId('');
@@ -368,8 +375,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
         setMetaData({ radios, title, radioIndex });
       }
-
-      runWhenArtistAndControlMount.current = undefined;
 
       if (size === 'expand') {
         animateToPoint(SNAP_POINTS[0]);
@@ -463,17 +468,32 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
             TrackPlayer.STATE_BUFFERING ||
           playbackStateOnDisconnectMoment.current === TrackPlayer.STATE_NONE)
       ) {
-        playbackStateOnDisconnectMoment.current = 0;
-
         playTrackPlayer();
         return;
       }
 
-      playbackStateOnDisconnectMoment.current = playbackState;
+      if (playbackStateOnDisconnectMoment.current < 0) {
+        playbackStateOnDisconnectMoment.current = playbackState;
+      }
       pauseTrackPlayer();
     },
     [pauseTrackPlayer, playTrackPlayer, playbackState],
   );
+
+  useEffect(() => {
+    if (playbackState === TrackPlayer.STATE_PLAYING) {
+      BackgroundTimer.clearTimeout(checkPlayingTimeout.current);
+      checkPlayingTimeout.current = BackgroundTimer.setTimeout(() => {
+        if (playbackStateRef.current === TrackPlayer.STATE_PLAYING) {
+          playbackStateOnDisconnectMoment.current = -1;
+        }
+      }, 3000);
+    }
+  }, [playbackState]);
+
+  useEffect(() => {
+    playbackStateRef.current = playbackState;
+  }, [playbackState]);
 
   useTrackPlayerEvents(
     events,
@@ -561,13 +581,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         true,
         true,
       );
-
-      playbackStateOnDisconnectMoment.current = 0;
     }
   }, [addRadiosToTrackPlayer, isReconnected]);
 
   useEffect(() => {
-    if (!isConnected && !playbackStateOnDisconnectMoment.current) {
+    if (!isConnected && playbackStateOnDisconnectMoment.current < 0) {
       playbackStateOnDisconnectMoment.current = playbackState;
     }
   }, [isConnected, playbackState]);
@@ -588,7 +606,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     artistAndControlHeight.value = nativeEvent.layout.height;
 
     if (typeof runWhenArtistAndControlMount.current === 'function') {
-      runWhenArtistAndControlMount.current();
+      setTimeout(runWhenArtistAndControlMount.current, 200);
     }
   };
 
@@ -667,17 +685,17 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
 export default memo(forwardRef(Player), isEqual);
 
-// function getStateName(state) {
-//   switch (state) {
-//     case TrackPlayer.STATE_NONE:
-//       return 'None';
-//     case TrackPlayer.STATE_PLAYING:
-//       return 'Playing';
-//     case TrackPlayer.STATE_PAUSED:
-//       return 'Paused';
-//     case TrackPlayer.STATE_STOPPED:
-//       return 'Stopped';
-//     case TrackPlayer.STATE_BUFFERING:
-//       return 'Buffering';
-//   }
-// }
+function getStateName(state) {
+  switch (state) {
+    case TrackPlayer.STATE_NONE:
+      return 'None';
+    case TrackPlayer.STATE_PLAYING:
+      return 'Playing';
+    case TrackPlayer.STATE_PAUSED:
+      return 'Paused';
+    case TrackPlayer.STATE_STOPPED:
+      return 'Stopped';
+    case TrackPlayer.STATE_BUFFERING:
+      return 'Buffering';
+  }
+}
