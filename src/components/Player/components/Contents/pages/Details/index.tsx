@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
+import Loader from '~/components/Loader';
 import { RadioType } from '~/types/Station';
 import StyleGuide from '~/utils/StyleGuide';
 import Programming from './components/Programming';
@@ -91,6 +92,8 @@ const Details: React.FC<DetailsProps> = ({ routeProps }) => {
     }
   };
 
+  return null;
+  return <Loader backgroundColor={StyleGuide.palette.border} />;
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}

@@ -89,25 +89,6 @@ const Contents: React.ForwardRefRenderFunction<
     onStart,
   );
 
-  const style = useAnimatedStyle(() => {
-    const top = interpolate(
-      translateY.value,
-      [SNAP_POINTS[1], SNAP_POINTS[1] - 1],
-      [0, translateY.value],
-      Extrapolate.CLAMP,
-    );
-
-    return {
-      marginTop: -top,
-      paddingTop: top,
-      transform: [
-        {
-          translateY: translateY.value,
-        },
-      ],
-    };
-  }, [translateY.value]);
-
   const onExpandContent = () => {
     if (translateY.value === SNAP_POINTS[1]) {
       animateToPoint(SNAP_POINTS[0]);
@@ -136,21 +117,53 @@ const Contents: React.ForwardRefRenderFunction<
     return progress;
   }, [translateY.value]);
 
+  const style = useAnimatedStyle(() => {
+    const top = translateY.value !== SNAP_POINTS[1] ? SNAP_POINTS[0] : 0;
+    return {
+      marginTop: -top,
+      paddingTop: top,
+      transform: [
+        {
+          translateY: translateY.value,
+        },
+      ],
+    };
+  }, [translateY.value]);
+
+  const styleCompact = useAnimatedStyle(() => {
+    console.log(translateY.value, SNAP_POINTS[1] * 0.3, SNAP_POINTS[0]);
+    const translateYX = interpolate(
+      translateY.value,
+      [SNAP_POINTS[1] * 0.3, SNAP_POINTS[0]],
+      [-SNAP_POINTS[1] * 0.15, 0],
+    );
+
+    return {
+      transform: [
+        {
+          translateY: translateYX,
+        },
+      ],
+    };
+  }, [translateY.value]);
+
   return (
     <Animated.View style={styles.container}>
       <PanGestureHandler onGestureEvent={panHandler}>
         <Animated.View style={[style]}>
-          <CompactPlayer
-            top={STATUS_BAR_HEIGHT}
-            playing={playing}
-            buffering={buffering}
-            onTogglePlayback={onTogglePlayback}
-            radio={radio || {}}
-            error={error}
-            contentY={translateY}
-            rippleColor="transparent"
-            onPress={onCompactContent}
-          />
+          <Animated.View style={[styles.compactPlayer, styleCompact]}>
+            <CompactPlayer
+              top={STATUS_BAR_HEIGHT}
+              playing={playing}
+              buffering={buffering}
+              onTogglePlayback={onTogglePlayback}
+              radio={radio || {}}
+              error={error}
+              contentY={translateY}
+              rippleColor="transparent"
+              onPress={onCompactContent}
+            />
+          </Animated.View>
 
           <Animated.View style={[styles.content]}>
             <TouchableWithoutFeedback onPress={onExpandContent}>

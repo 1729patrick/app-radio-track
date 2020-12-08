@@ -10,6 +10,7 @@ import RadioCard from '~/components/Radio/Card';
 import styles from './styles';
 import { useFetchPagination } from '~/hooks/useFetchPagination';
 import StyleGuide from '~/utils/StyleGuide';
+import Loader from '~/components/Loader';
 
 const Suggest = () => {
   const randomAdIndex = useMemo(() => {
@@ -58,6 +59,8 @@ const Suggest = () => {
   //   [],
   // );
 
+  return null;
+  return <Loader backgroundColor={StyleGuide.palette.border} />;
   return (
     <ScrollView
       contentContainerStyle={styles.contentContainer}

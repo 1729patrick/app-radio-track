@@ -6,9 +6,13 @@ import styles from './styles';
 //@ts-ignore
 const size = Platform.select({ ios: 'large', android: 50 });
 
-const Loader = () => {
+type LoaderProps = { backgroundColor?: string };
+
+const Loader: React.FC<LoaderProps> = ({
+  backgroundColor = StyleGuide.palette.background,
+}) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor }]}>
       <ActivityIndicator color={StyleGuide.palette.primary} size={size} />
     </View>
   );
