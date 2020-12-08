@@ -94,7 +94,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   ref,
 ) => {
   const { translateY } = usePlayer();
-  const artistAndControlHeight = useSharedValue(height);
+  const artistAndControlHeight = useSharedValue(300);
 
   const contentTranslateY = useSharedValue(CONTENT_SNAP_POINTS[1]);
   const [playing, setPlaying] = useState(false);
@@ -381,7 +381,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         animateToPoint(SNAP_POINTS[0]);
         waitForInteractionPlaybackState.current = false;
       } else {
-        if (artistAndControlHeight.value !== height) {
+        if (artistAndControlHeight.value !== 300) {
           animateToPoint(SNAP_POINTS[1]);
         } else {
           runWhenArtistAndControlMount.current = () =>
@@ -608,7 +608,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [radioIndex, state.radios]);
 
   const onLayoutArtistAndControl = ({ nativeEvent }: LayoutChangeEvent) => {
-    if (artistAndControlHeight.value !== height) {
+    if (artistAndControlHeight.value !== 300) {
       return;
     }
 

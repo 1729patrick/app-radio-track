@@ -245,4 +245,4 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   );
 };
 
-export default memo(forwardRef(Albums));
+export default forwardRef(Albums);
