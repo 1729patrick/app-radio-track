@@ -1,4 +1,10 @@
-import React, { forwardRef, useImperativeHandle, memo, useRef } from 'react';
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  memo,
+  useRef,
+  useCallback,
+} from 'react';
 import { Dimensions } from 'react-native';
 import Animated, {
   Extrapolate,
@@ -44,25 +50,28 @@ const AnimatedBackground: React.ForwardRefRenderFunction<
   //   [],
   // );
 
-  const setup = ({
-    radioIndex,
-    radiosSize,
-  }: {
-    radioIndex: number;
-    radiosSize: number;
-  }) => {
-    // translateX.value = radioIndex;
-    // const colors = shuffleColors();
-    // if (radiosSize === 1) {
-    //   inputRange.current = [0, 1];
-    //   outputRange.current = [colors[0], colors[0]];
-    // } else {
-    //   inputRange.current = [...new Array(radiosSize)].map((_, i) => i);
-    //   outputRange.current = inputRange.current.map(
-    //     (i) => colors[i % colors.length],
-    //   );
-    // }
-  };
+  const setup = useCallback(
+    ({
+      radioIndex,
+      radiosSize,
+    }: {
+      radioIndex: number;
+      radiosSize: number;
+    }) => {
+      // translateX.value = radioIndex;
+      // const colors = shuffleColors();
+      // if (radiosSize === 1) {
+      //   inputRange.current = [0, 1];
+      //   outputRange.current = [colors[0], colors[0]];
+      // } else {
+      //   inputRange.current = [...new Array(radiosSize)].map((_, i) => i);
+      //   outputRange.current = inputRange.current.map(
+      //     (i) => colors[i % colors.length],
+      //   );
+      // }
+    },
+    [],
+  );
 
   useImperativeHandle(ref, () => ({
     scrollHandler: () => {},

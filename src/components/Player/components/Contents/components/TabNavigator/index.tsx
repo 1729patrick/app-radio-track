@@ -56,23 +56,26 @@ const TabNavigator: React.ForwardRefRenderFunction<
     [],
   );
 
-  const setTabActive = (tabIndex: number, animated: boolean) => {
-    if (translateX.value === -1) {
-      translateX.value = tabIndex;
-    }
+  const setTabActive = useCallback(
+    (tabIndex: number, animated: boolean) => {
+      if (translateX.value === -1) {
+        translateX.value = tabIndex;
+      }
 
-    containerRef.current?.scrollToIndex(tabIndex, animated);
-  };
+      containerRef.current?.scrollToIndex(tabIndex, animated);
+    },
+    [translateX],
+  );
 
-  const initializeTabActive = () => {
+  const initializeTabActive = useCallback(() => {
     if (translateX.value === -1) {
       setTabActive(0, false);
     }
-  };
+  }, [setTabActive, translateX.value]);
 
-  const clearTabActive = () => {
+  const clearTabActive = useCallback(() => {
     translateX.value = -1;
-  };
+  }, [translateX]);
 
   const mountPages = useCallback(() => {
     containerRef.current?.mountPages();
@@ -91,10 +94,13 @@ const TabNavigator: React.ForwardRefRenderFunction<
     unMountPages,
   }));
 
-  const onPressTab = (tabIndex: number) => {
-    setTabActive(tabIndex, checkAnimated());
-    onPress();
-  };
+  const onPressTab = useCallback(
+    (tabIndex: number) => {
+      setTabActive(tabIndex, checkAnimated());
+      onPress();
+    },
+    [checkAnimated, onPress, setTabActive],
+  );
 
   return (
     <View style={styles.container}>

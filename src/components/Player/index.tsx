@@ -11,13 +11,7 @@ import React, {
 import isEqual from 'lodash.isequal';
 import BackgroundTimer from 'react-native-background-timer';
 
-import {
-  BackHandler,
-  Dimensions,
-  LayoutChangeEvent,
-  Platform,
-  View,
-} from 'react-native';
+import { BackHandler, LayoutChangeEvent, Platform, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import TrackPlayer, {
   //@ts-ignore
@@ -70,8 +64,6 @@ const events = [
   TrackPlayerEvents.REMOTE_DUCK,
   TrackPlayerEvents.REMOTE_PLAY,
 ];
-
-const { height } = Dimensions.get('window');
 
 export type PlayerState = {
   title: string;

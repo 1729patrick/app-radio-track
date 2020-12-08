@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -148,29 +149,34 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     };
   }, [artistAndControlHeight.value, y.value]);
 
-  const scrollToAlbum = ({ radioIndex, animated }: ScrollToAlbumArgs) => {
-    flatListRef.current?.scrollToOffset({
-      offset: radioIndex * width,
-      animated,
-    });
-  };
+  const scrollToAlbum = useCallback(
+    ({ radioIndex, animated }: ScrollToAlbumArgs) => {
+      flatListRef.current?.scrollToOffset({
+        offset: radioIndex * width,
+        animated,
+      });
+    },
+    [],
+  );
 
   useImperativeHandle(ref, () => ({
     scrollToAlbum,
   }));
 
-  const onViewableItemsChanged = ({
-    changed,
-  }: {
-    changed: { index: number }[];
-  }) => {
-    setRadioIndex(changed[0].index);
-  };
+  const onViewableItemsChanged = useCallback(
+    ({ changed }: { changed: { index: number }[] }) => {
+      setRadioIndex(changed[0].index);
+    },
+    [setRadioIndex],
+  );
 
-  const viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 90,
-    waitForInteraction: false,
-  };
+  const viewabilityConfig = useMemo(
+    () => ({
+      viewAreaCoveragePercentThreshold: 90,
+      waitForInteraction: false,
+    }),
+    [],
+  );
 
   const viewabilityConfigCallbackPairs = useRef([
     { viewabilityConfig, onViewableItemsChanged },
@@ -193,14 +199,14 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     [errorRadioId],
   );
 
-  const onLayout = () => {
+  const onLayout = useCallback(() => {
     scrollToAlbum({
       radioIndex,
       animated: false,
     });
 
     onAlbumsMounted();
-  };
+  }, [onAlbumsMounted, radioIndex, scrollToAlbum]);
 
   const animatedProps = useAnimatedProps(() => {
     const pointerEvents =

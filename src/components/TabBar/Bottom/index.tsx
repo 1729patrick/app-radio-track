@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Text } from 'react-native';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Player from '../../Player';
@@ -64,14 +64,20 @@ const TabBar: React.FC<TabBarProps> = ({ state, navigation }) => {
     };
   }, [translateY.value]);
 
-  const jumpTo = ({ name }: { name: string }) => {
-    //@ts-ignore
-    navigation.jumpTo(name);
-  };
+  const jumpTo = useCallback(
+    ({ name }: { name: string }) => {
+      //@ts-ignore
+      navigation.jumpTo(name);
+    },
+    [navigation],
+  );
 
-  const isFocused = (index: number) => {
-    return state.index === index;
-  };
+  const isFocused = useCallback(
+    (index: number) => {
+      return state.index === index;
+    },
+    [state.index],
+  );
 
   return (
     <>

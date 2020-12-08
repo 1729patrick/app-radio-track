@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { View, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -21,16 +21,13 @@ const Explore: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
   const { navigate } = useNavigation();
 
-  const onShowGenre = ({
-    title,
-    id,
-  }: {
-    title: string;
-    id: (string | never[])[];
-  }) => {
-    const url = `genres/${JSON.stringify(id)}`;
-    navigate('Playlist', { title, url });
-  };
+  const onShowGenre = useCallback(
+    ({ title, id }: { title: string; id: (string | never[])[] }) => {
+      const url = `genres/${JSON.stringify(id)}`;
+      navigate('Playlist', { title, url });
+    },
+    [navigate],
+  );
 
   return (
     <View style={styles.container}>

@@ -43,13 +43,13 @@ const Search: React.FC<SearchProps> = () => {
 
   const { onExpandPlayer } = usePlayer();
 
-  const onBackPress = () => {
+  const onBackPress = useCallback(() => {
     pop();
-  };
+  }, [pop]);
 
-  const onClearSearch = () => {
+  const onClearSearch = useCallback(() => {
     setSearchTerm('');
-  };
+  }, []);
 
   const onExpandPlayerPress = useCallback(
     ({ radioIndex }: { radioIndex: number }) => {

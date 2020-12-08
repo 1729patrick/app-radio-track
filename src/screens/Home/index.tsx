@@ -107,14 +107,17 @@ const Home: React.FC = () => {
     [],
   );
 
-  const onShowPlaylist = (args: {
-    title: string;
-    url: string;
-    initialPage?: number;
-    adType: string;
-  }) => {
-    navigate('Playlist', args);
-  };
+  const onShowPlaylist = useCallback(
+    (args: {
+      title: string;
+      url: string;
+      initialPage?: number;
+      adType: string;
+    }) => {
+      navigate('Playlist', args);
+    },
+    [navigate],
+  );
 
   return (
     <View style={styles.container}>

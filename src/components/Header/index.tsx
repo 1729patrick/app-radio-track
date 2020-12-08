@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 
 import Animated, {
   Extrapolate,
@@ -54,13 +54,13 @@ const Header: React.FC<HeaderProps> = ({
     return { opacity: interpolate(y.value, [-HEADER_HEIGHT, 0], [0, 1]) };
   });
 
-  const onOpenSearch = () => {
+  const onOpenSearch = useCallback(() => {
     navigate('Search');
-  };
+  }, [navigate]);
 
-  const onBackPress = () => {
+  const onBackPress = useCallback(() => {
     pop();
-  };
+  }, [pop]);
 
   return (
     <Animated.View

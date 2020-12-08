@@ -45,9 +45,9 @@ const Radios: React.FC<RadiosProps> = ({
     [playingRadioId, onExpandPlayer, radios, title],
   );
 
-  const onShowAllPress = () => {
+  const onShowAllPress = useCallback(() => {
     onShowAll && onShowAll(title);
-  };
+  }, [onShowAll, title]);
 
   return (
     <View style={styles.container}>

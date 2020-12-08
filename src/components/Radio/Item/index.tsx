@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Text, View } from 'react-native';
 import styles from './styles';
 
@@ -26,9 +26,9 @@ const Radio: React.FC<RadioProps> = ({
   index,
   onExpandPlayer,
 }) => {
-  const onRadioPress = () => {
+  const onRadioPress = useCallback(() => {
     onExpandPlayer({ radioIndex: index });
-  };
+  }, [index, onExpandPlayer]);
 
   return (
     <RectButton

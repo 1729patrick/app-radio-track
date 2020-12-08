@@ -1,5 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Keyboard, Dimensions, Platform } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  Keyboard,
+  Dimensions,
+  Platform,
+  KeyboardEventName,
+} from 'react-native';
 
 const { height } = Dimensions.get('window');
 
@@ -22,11 +27,11 @@ export const useKeyboard = () => {
     const showListener = Platform.select({
       ios: 'keyboardWillShow',
       android: 'keyboardDidShow',
-    });
+    }) as KeyboardEventName;
     const hideListener = Platform.select({
       ios: 'keyboardWillHide',
       android: 'keyboardDidHide',
-    });
+    }) as KeyboardEventName;
 
     Keyboard.addListener(showListener, onKeyboardDidShow);
     Keyboard.addListener(hideListener, onKeyboardDidHide);
@@ -37,9 +42,9 @@ export const useKeyboard = () => {
     };
   }, []);
 
-  const hiddenKeyboard = () => {
+  const hiddenKeyboard = useCallback(() => {
     Keyboard.dismiss();
-  };
+  }, []);
 
   return {
     height: viewHeight,

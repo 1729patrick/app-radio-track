@@ -70,12 +70,12 @@ const Container: React.ForwardRefRenderFunction<
     [routeProps, show],
   );
 
-  const scrollToIndex = (tabIndex: number, animated: boolean) => {
+  const scrollToIndex = useCallback((tabIndex: number, animated: boolean) => {
     flatListRef.current?.scrollToOffset({
       offset: tabIndex * width,
       animated,
     });
-  };
+  }, []);
 
   const mountPages = useCallback(() => {
     setShow(true);

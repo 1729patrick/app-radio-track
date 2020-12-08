@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import TrackPlayer, {
   //@ts-ignore
@@ -29,7 +29,7 @@ const useReward = (id: string) => {
     });
   }, [id]);
 
-  const showAd = () => {
+  const showAd = useCallback(() => {
     if (loadedRef.current) {
       playbackStateOnShowMoment.current = playbackState;
       rewarded.show();
@@ -38,16 +38,16 @@ const useReward = (id: string) => {
     }
 
     loadedRef.current = false;
-  };
+  }, [playbackState, rewarded]);
 
-  const loadAd = () => {
+  const loadAd = useCallback(() => {
     rewarded.load();
-  };
+  }, [rewarded]);
 
-  const continuePlaying = async () => {
+  const continuePlaying = useCallback(async () => {
     await TrackPlayer.seekTo(24 * 60 * 60);
     await TrackPlayer.play();
-  };
+  }, []);
 
   useEffect(() => {
     const eventListener = rewarded.onAdEvent((type) => {

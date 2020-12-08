@@ -61,13 +61,13 @@ const Contents: React.ForwardRefRenderFunction<
 ) => {
   const tabNavigatorRef = useRef<TabNavigatorHandler>(null);
 
-  const initializeTabActive = () => {
+  const initializeTabActive = useCallback(() => {
     tabNavigatorRef.current?.initializeTabActive();
-  };
+  }, []);
 
-  const checkAnimated = () => {
+  const checkAnimated = useCallback(() => {
     return !(translateY.value === SNAP_POINTS[1]);
-  };
+  }, [translateY.value]);
 
   const animation = useDerivedValue(() => {
     const progress = interpolate(
@@ -108,20 +108,20 @@ const Contents: React.ForwardRefRenderFunction<
     };
   }, [translateY.value]);
 
-  const mountRoutes = () => {
+  const mountRoutes = useCallback(() => {
     tabNavigatorRef.current?.mountPages();
-  };
+  }, []);
 
-  const unMountRoutes = () => {
+  const unMountRoutes = useCallback(() => {
     tabNavigatorRef.current?.unMountPages();
-  };
+  }, []);
 
   const onStart = useCallback(() => {
     'worklet';
 
     runOnJS(mountRoutes)();
     runOnJS(initializeTabActive)();
-  }, []);
+  }, [initializeTabActive, mountRoutes]);
 
   const onEnd = useCallback(() => {
     'worklet';
@@ -129,7 +129,7 @@ const Contents: React.ForwardRefRenderFunction<
     if (translateY.value === SNAP_POINTS[1]) {
       runOnJS(unMountRoutes)();
     }
-  }, [translateY.value]);
+  }, [translateY.value, unMountRoutes]);
 
   const animateToPoint = useCallback(
     (point: number) => {
@@ -146,17 +146,17 @@ const Contents: React.ForwardRefRenderFunction<
     [onEnd, translateY],
   );
 
-  const onExpandContent = () => {
+  const onExpandContent = useCallback(() => {
     if (translateY.value === SNAP_POINTS[1]) {
       animateToPoint(SNAP_POINTS[0]);
     }
-  };
+  }, [animateToPoint, translateY.value]);
 
-  const onCompactContent = () => {
+  const onCompactContent = useCallback(() => {
     if (translateY.value === SNAP_POINTS[0]) {
       animateToPoint(SNAP_POINTS[1]);
     }
-  };
+  }, [animateToPoint, translateY.value]);
 
   useImperativeHandle(ref, () => ({ onCompactContent }));
 
