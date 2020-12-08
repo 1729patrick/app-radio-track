@@ -108,7 +108,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
         },
       ],
     };
-  });
+  }, [artistAndControlHeight.value, y.value]);
 
   const styleContent = useAnimatedStyle(() => {
     return {
@@ -146,7 +146,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
         },
       ],
     };
-  });
+  }, [artistAndControlHeight.value, y.value]);
 
   const scrollToAlbum = ({ radioIndex, animated }: ScrollToAlbumArgs) => {
     flatListRef.current?.scrollToOffset({
@@ -245,4 +245,4 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   );
 };
 
-export default memo(forwardRef(Albums), isEqual);
+export default memo(forwardRef(Albums));

@@ -615,7 +615,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     artistAndControlHeight.value = nativeEvent.layout.height;
 
     if (typeof runWhenArtistAndControlMount.current === 'function') {
-      animateToPoint(SNAP_POINTS[1]);
+      runWhenArtistAndControlMount.current();
     }
   };
 

@@ -9,12 +9,18 @@ export default StyleSheet.create({
   container: {
     width,
     paddingHorizontal: CARD_PADDING,
-    paddingBottom: 18,
+    paddingBottom: 30,
   },
   content: {
     backgroundColor: '#43434C',
     borderRadius: 4,
     padding: CARD_PADDING,
+    paddingBottom: 30,
+    height: 200,
+    overflow: 'hidden',
+  },
+  wrapper: {
+    height: '100%',
     overflow: 'hidden',
   },
   title: {

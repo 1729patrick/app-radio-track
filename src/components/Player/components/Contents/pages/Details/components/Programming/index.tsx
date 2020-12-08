@@ -6,17 +6,19 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Dimensions, Text, View } from 'react-native';
+import { Dimensions, LayoutChangeEvent, Text, View } from 'react-native';
 import {
   FlatList,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import Animated, {
+  interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 import { ProgramType, ProgrammingType } from '~/types/Station';
+import { TIMING_DURATION } from './constants';
 
 const DAYS = [
   'Segunda-Feira',
@@ -54,75 +56,112 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const Item: React.ForwardRefRenderFunction<ItemHandler, ItemProps> = forwardRef(
   ({ programmingDay, day, onExpandAll, onMinimizeAll }, ref) => {
-    const [title, setTitle] = useState('VER MAIS');
+    const titleHeightRef = useRef(0);
+    const programHeightRef = useRef(0);
+
+    const [expanded, setExpanded] = useState(false);
     const size = useMemo(() => {
       return programmingDay.length;
     }, [programmingDay]);
 
-    const fullHeight = useMemo(() => {
-      return FIXED_HEIGHT + CARD_PADDING + size * PROGRAMING_HEIGHT;
+    const fullHeight = useCallback(() => {
+      return (
+        titleHeightRef.current +
+        CARD_PADDING * 2 +
+        size * programHeightRef.current
+      );
     }, [size]);
 
     const minHeight = useMemo(() => {
-      return FIXED_HEIGHT + PROGRAMING_HEIGHT * Math.min(size, 5);
-    }, [size]);
+      return 250;
+    }, []);
 
-    const maxHeight = useSharedValue(minHeight);
+    const height = useSharedValue(minHeight);
 
     const onExpand = useCallback(() => {
-      maxHeight.value = withTiming(fullHeight, {
-        duration: 200,
+      height.value = withTiming(fullHeight(), {
+        duration: TIMING_DURATION,
       });
 
-      setTitle('VER MENOS');
-    }, [fullHeight, maxHeight]);
+      setExpanded(true);
+    }, [fullHeight, height]);
 
     const onMinimize = useCallback(() => {
       'worklet';
 
-      setTitle('VER MAIS');
-      maxHeight.value = withTiming(minHeight, {
-        duration: 200,
+      setExpanded(false);
+      height.value = withTiming(minHeight, {
+        duration: TIMING_DURATION,
       });
-    }, [maxHeight, minHeight]);
+    }, [height, minHeight]);
 
     useImperativeHandle(ref, () => ({
       onMinimize,
       onExpand,
     }));
 
-    const showMore = () => {
-      if (maxHeight.value !== fullHeight) {
+    const showMore = useCallback(() => {
+      if (height.value !== fullHeight()) {
         onExpandAll();
         return;
       }
 
       onMinimizeAll();
-    };
-
-    const style = useAnimatedStyle(() => {
-      return { maxHeight: maxHeight.value };
-    }, [maxHeight.value]);
+    }, [fullHeight, height.value, onExpandAll, onMinimizeAll]);
 
     const showMoreStyle = useAnimatedStyle(() => {
-      return { top: maxHeight.value - 17 };
-    }, [maxHeight.value]);
+      return { top: height.value - 17 };
+    }, [height.value]);
+
+    const onLayoutTitle = useCallback(({ nativeEvent }: LayoutChangeEvent) => {
+      const { height } = nativeEvent.layout;
+
+      titleHeightRef.current = height;
+    }, []);
+
+    const onLayoutProgram = useCallback(
+      ({ nativeEvent }: LayoutChangeEvent) => {
+        const { height } = nativeEvent.layout;
+
+        programHeightRef.current = height;
+      },
+      [],
+    );
+
+    const title = useMemo(() => {
+      if (expanded) {
+        return 'VER MENOS';
+      }
+
+      return 'VER MAIS';
+    }, [expanded]);
+
+    const style = useAnimatedStyle(() => {
+      return { height: height.value };
+    }, [height.value]);
 
     return (
       <View style={styles.container}>
         <Animated.View style={[styles.content, style]}>
-          <Text style={[styles.title]}>{day}</Text>
+          <View style={styles.wrapper}>
+            <Text style={[styles.title]} onLayout={onLayoutTitle}>
+              {day}
+            </Text>
 
-          {programmingDay.map((program: ProgramType, index: number) => (
-            <View style={styles.programming} key={index}>
-              <Text
-                style={[styles.dayTitle, styles.nameTitle]}
-                numberOfLines={1}>
-                {program.name}
-              </Text>
-              <Text style={styles.dayTitle}>{program.from} h</Text>
-            </View>
-          ))}
+            {programmingDay.map((program: ProgramType, index: number) => (
+              <Animated.View
+                style={[styles.programming]}
+                key={index}
+                onLayout={onLayoutProgram}>
+                <Text
+                  style={[styles.dayTitle, styles.nameTitle]}
+                  numberOfLines={1}>
+                  {program.name}
+                </Text>
+                <Text style={styles.dayTitle}>{program.from} h</Text>
+              </Animated.View>
+            ))}
+          </View>
         </Animated.View>
 
         <Animated.View style={[styles.showMoreContainer, showMoreStyle]}>
