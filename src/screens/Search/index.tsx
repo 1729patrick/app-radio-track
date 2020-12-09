@@ -55,14 +55,14 @@ const Search: React.FC<SearchProps> = () => {
     ({ radioIndex }: { radioIndex: number }) => {
       onExpandPlayer({
         title: searchTerm || '',
-        radios: data?.items?.length ? data?.items : [],
+        radios: data?.length ? data : [],
         radioIndex,
       });
     },
-    [data?.items, onExpandPlayer, searchTerm],
+    [data, onExpandPlayer, searchTerm],
   );
 
-  const notFound = useMemo(() => data && !data?.items?.length, [data]);
+  const notFound = useMemo(() => !data?.length, [data]);
 
   const renderItem = useCallback(
     ({ item, index }) => {
@@ -81,6 +81,7 @@ const Search: React.FC<SearchProps> = () => {
     [onExpandPlayerPress, playingRadioId, randomAdIndex],
   );
 
+  console.log(data);
   return (
     <Animated.View style={[styles.container]}>
       <View style={styles.header}>
@@ -122,9 +123,7 @@ const Search: React.FC<SearchProps> = () => {
         </View>
       )}
 
-      {!data?.items?.length && !notFound && !!error && (
-        <Error type={error?.message} />
-      )}
+      {!data?.length && !notFound && !!error && <Error type={error?.message} />}
 
       {!notFound && (
         <FlatList
@@ -132,7 +131,7 @@ const Search: React.FC<SearchProps> = () => {
           initialNumToRender={24}
           contentContainerStyle={styles.contentContainer}
           showsVerticalScrollIndicator={false}
-          data={data?.items}
+          data={data}
           keyExtractor={({ id }) => `${id}`}
           renderItem={renderItem}
         />
