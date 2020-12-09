@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/primary_dark"
-    android:gravity="center">
-    <ImageView 
-        android:layout_width="143.644067796dp"
-        android:layout_height="150dp"
-        android:src="@drawable/launch_logo"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:scaleType="centerCrop" />
-</LinearLayout>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/primary_dark"/>
+
+      <item
+        android:width="143.644067796dp"
+        android:height="150dp"
+        android:gravity="center">
+        <bitmap android:src="@drawable/launch_logo"/>
+     </item>
+</layer-list>
