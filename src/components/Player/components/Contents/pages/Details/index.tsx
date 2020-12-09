@@ -1,17 +1,17 @@
 import isEqual from 'lodash.isequal';
-import React, { memo, useEffect, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Linking, Text } from 'react-native';
 import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-import Loader from '~/components/Loader';
-import { RadioType } from '~/types/Station';
+
 import StyleGuide from '~/utils/StyleGuide';
+import { RouteProps } from '../../components/TabNavigator';
 import Programming from './components/Programming';
 import styles from './styles';
 
-type DetailsProps = { routeProps: { radio: RadioType } };
+type DetailsProps = { routeProps: RouteProps };
 
 const Description = memo(({ description, paddingTop }) => {
   return (
@@ -92,12 +92,6 @@ const Details: React.FC<DetailsProps> = ({ routeProps }) => {
     }
   };
 
-  useEffect(() => {
-    // console.log('load detials');
-    // return () => console.log('umnoum details');
-  }, []);
-
-  // return <Loader backgroundColor={StyleGuide.palette.border} />;
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}

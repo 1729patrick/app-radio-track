@@ -26,7 +26,6 @@ const { width, height } = Dimensions.get('window');
 import {
   COMPACT_HEIGHT,
   SNAP_POINTS,
-  ARTIST_AND_CONTROL_HEIGHT,
   PADDING_HORIZONTAL,
 } from '../../constants';
 import Album from './components';

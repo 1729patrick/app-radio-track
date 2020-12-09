@@ -16,6 +16,8 @@ import Animated, {
 import { clamp } from 'react-native-redash';
 import isEqual from 'lodash.isequal';
 import { RouteType } from '../..';
+import { RadioType } from '~/types/Station';
+import { PlayerState } from '~/components/Player';
 
 const { width } = Dimensions.get('window');
 
@@ -33,6 +35,12 @@ type TabNavigatorProps = {
   checkAnimated: () => boolean;
   animation: Animated.SharedValue<number>;
   routeProps?: any;
+};
+
+export type RouteType = { title: string; Component: any };
+export type RouteProps = {
+  radio: RadioType;
+  onSetRadio: (args: PlayerState & { radioIndex: number }) => void;
 };
 
 const TabNavigator: React.ForwardRefRenderFunction<

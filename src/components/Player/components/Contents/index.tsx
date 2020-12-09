@@ -11,7 +11,6 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import Animated, {
-  Extrapolate,
   interpolate,
   runOnJS,
   useAnimatedStyle,
@@ -32,8 +31,6 @@ import CompactPlayer from '../CompactPlayer';
 import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
 import { RadioType } from '~/types/Station';
 
-export type RouteType = { title: string; Component: any };
-
 const ROUTES = [
   { title: 'Detalhes', Component: Details },
   { title: 'Sugeridas', Component: Suggest },
@@ -44,6 +41,7 @@ type ContentsProps = {
   playing: boolean;
   buffering: boolean;
   onTogglePlayback: () => void;
+  onSetRadio: () => void;
   radio: RadioType;
   error: boolean;
 };
@@ -56,7 +54,15 @@ const Contents: React.ForwardRefRenderFunction<
   ContentsHandler,
   ContentsProps
 > = (
-  { translateY, playing, buffering, onTogglePlayback, radio, error },
+  {
+    translateY,
+    playing,
+    buffering,
+    onTogglePlayback,
+    radio,
+    error,
+    onSetRadio,
+  },
   ref,
 ) => {
   const tabNavigatorRef = useRef<TabNavigatorHandler>(null);
@@ -196,7 +202,7 @@ const Contents: React.ForwardRefRenderFunction<
               checkAnimated={checkAnimated}
               animation={animation}
               ref={tabNavigatorRef}
-              routeProps={{ radio }}
+              routeProps={{ radio, onSetRadio }}
             />
           </Animated.View>
         </Animated.View>

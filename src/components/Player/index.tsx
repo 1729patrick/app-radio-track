@@ -389,6 +389,40 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     ],
   );
 
+  const onSetRadio = useCallback(
+    (
+      args: PlayerState & {
+        radioIndex: number;
+      },
+    ) => {
+      const { radioIndex, radios, title } = args;
+      setErrorRadioId('');
+
+      animatedBackgroundRef.current?.setup({
+        radioIndex,
+        radiosSize: radios.length,
+      });
+
+      if (Platform.OS === 'android') {
+        addRadiosToTrackPlayer(radios, radioIndex, true);
+      }
+
+      albumsMountedRef.current = false;
+      isCorrectRadioRef.current = false;
+      radioIndexRef.current = radioIndex;
+      radiosRef.current = radios;
+      titleRef.current = title;
+
+      setRadioIndex(radioIndex);
+      setState({ radios, title });
+
+      setLoading(true);
+
+      setMetaData({ radios, title, radioIndex });
+    },
+    [addRadiosToTrackPlayer, setMetaData],
+  );
+
   const onCompactPlayer = useCallback(async () => {
     if (SNAP_POINTS[0] === translateY.value) {
       animateToPoint(SNAP_POINTS[1]);
@@ -624,6 +658,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               radio={radio || {}}
               error={!!errorRadioId}
               ref={contentsRef}
+              onSetRadio={onSetRadio}
             />
 
             <CompactPlayer
