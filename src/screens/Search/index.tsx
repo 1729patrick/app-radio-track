@@ -62,7 +62,7 @@ const Search: React.FC<SearchProps> = () => {
     [data, onExpandPlayer, searchTerm],
   );
 
-  const notFound = useMemo(() => !data?.length, [data]);
+  const notFound = useMemo(() => data && !data?.length, [data]);
 
   const renderItem = useCallback(
     ({ item, index }) => {
