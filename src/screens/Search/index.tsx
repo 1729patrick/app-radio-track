@@ -81,7 +81,6 @@ const Search: React.FC<SearchProps> = () => {
     [onExpandPlayerPress, playingRadioId, randomAdIndex],
   );
 
-  console.log(data);
   return (
     <Animated.View style={[styles.container]}>
       <View style={styles.header}>

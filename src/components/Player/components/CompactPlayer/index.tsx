@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import Animated, {
   Easing,
   Extrapolate,
@@ -13,7 +13,6 @@ import styles from './styles';
 import { SNAP_POINTS } from '../../constants';
 import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 
-import { PlayerState } from '../../';
 import StyleGuide from '~/utils/StyleGuide';
 import RoundButton from '~/components/Button/Round';
 import { RadioType } from '~/types/Station';
