@@ -17,9 +17,10 @@ import { FlatList } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
 import { COMPACT_HEIGHT } from '~/components/Player/constants';
-import { RouteType } from '../..';
+
 import { INDICATOR_HEIGHT, INDICATOR_MARGIN_TOP } from '../../constants';
 import { HEADER_HEIGHT } from '../Header/constants';
+import { RouteType } from '../TabNavigator';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -63,7 +64,7 @@ const Container: React.ForwardRefRenderFunction<
 
       return (
         <View style={{ width, height: PAGE_HEIGHT }}>
-          <item.Component routeProps={routeProps} />
+          <item.Component routeProps={routeProps} animation={item.animation} />
         </View>
       );
     },

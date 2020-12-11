@@ -1,6 +1,6 @@
 import isEqual from 'lodash.isequal';
 import React, { memo, useCallback, useMemo } from 'react';
-import { LayoutChangeEvent, Linking, Text } from 'react-native';
+import { LayoutChangeEvent, Linking, Text, View } from 'react-native';
 import {
   PanGestureHandler,
   ScrollView,
@@ -17,7 +17,10 @@ import useScrollPanGestureHandler from '../useScrollPanGestureHandler';
 import Programming from './components/Programming';
 import styles from './styles';
 
-type DetailsProps = { routeProps: RouteProps };
+type DetailsProps = {
+  routeProps: RouteProps;
+  animation: Animated.SharedValue<number>;
+};
 
 const Description = memo(({ description, paddingTop }) => {
   return (
@@ -76,16 +79,20 @@ const CONTENTS = [
   },
 ];
 
-const Details: React.FC<DetailsProps> = ({ routeProps }) => {
-  const translateY = useSharedValue(0);
+const Details: React.FC<DetailsProps> = ({ routeProps, animation }) => {
   const contentHeight = useSharedValue(0);
 
   const radio = useMemo(() => {
-    return routeProps?.radio || {};
+    let { address, city, region } = routeProps?.radio || {};
+    if (!address) {
+      address = [city?.name, region?.name].filter((v) => v).join(', ');
+    }
+
+    return { ...routeProps?.radio, address } || {};
   }, [routeProps?.radio]);
 
   const { panHandler } = useScrollPanGestureHandler({
-    translateY,
+    translateY: animation,
     contentHeight,
     contentY: routeProps.contentY,
     animateToPoint: routeProps.animateToPoint,
@@ -109,9 +116,9 @@ const Details: React.FC<DetailsProps> = ({ routeProps }) => {
 
   const style = useAnimatedStyle(() => {
     return {
-      transform: [{ translateY: translateY.value }],
+      transform: [{ translateY: animation.value }],
     };
-  }, [translateY.value]);
+  }, [animation.value]);
 
   const onLayout = useCallback(
     ({ nativeEvent }: LayoutChangeEvent) => {
@@ -121,7 +128,10 @@ const Details: React.FC<DetailsProps> = ({ routeProps }) => {
   );
 
   return (
-    <PanGestureHandler onGestureEvent={panHandler} activeOffsetY={[-10, 10]}>
+    <PanGestureHandler
+      onGestureEvent={panHandler}
+      activeOffsetY={[-10, 10]}
+      shouldCancelWhenOutside>
       <Animated.View style={[styles.container, style]} onLayout={onLayout}>
         {contents.map(({ key, component: Component, paddingTop }) => (
           <Component

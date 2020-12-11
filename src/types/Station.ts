@@ -48,4 +48,5 @@ export type RadioType = {
   city?: {
     name: string;
   };
+  region?: { name: string };
 };

@@ -10,6 +10,7 @@ import styles from './styles';
 import Container, { ContainerHandler } from '../Container';
 import Header from '../Header';
 import Animated, {
+  runOnJS,
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated';
@@ -35,9 +36,14 @@ type TabNavigatorProps = {
   checkAnimated: () => boolean;
   animation: Animated.SharedValue<number>;
   routeProps?: any;
+  setActiveTab: (activeTab: number) => void;
 };
 
-export type RouteType = { title: string; Component: any };
+export type RouteType = {
+  title: string;
+  Component: any;
+  animation: Animated.SharedValue<number>;
+};
 export type RouteProps = {
   radio: RadioType;
   onSetRadio: (args: PlayerState & { radioIndex: number }) => void;
@@ -48,7 +54,10 @@ export type RouteProps = {
 const TabNavigator: React.ForwardRefRenderFunction<
   TabNavigatorHandler,
   TabNavigatorProps
-> = ({ onPress, routes, checkAnimated, animation, routeProps }, ref) => {
+> = (
+  { onPress, routes, checkAnimated, animation, setActiveTab, routeProps },
+  ref,
+) => {
   const scrollViewRef = useRef();
   const translateX = useSharedValue(-1);
   const containerRef = useRef<ContainerHandler>(null);
@@ -61,6 +70,9 @@ const TabNavigator: React.ForwardRefRenderFunction<
           0,
           routes.length,
         );
+      },
+      onMomentumEnd: () => {
+        runOnJS(setActiveTab)(translateX.value);
       },
     },
     [],

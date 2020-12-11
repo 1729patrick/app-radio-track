@@ -21,10 +21,10 @@ import useScrollPanGestureHandler from '../useScrollPanGestureHandler';
 
 type SuggestProps = {
   routeProps: RouteProps;
+  animation: Animated.SharedValue<number>;
 };
 
-const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
-  const translateY = useSharedValue(0);
+const Suggest: React.FC<SuggestProps> = ({ routeProps, animation }) => {
   const contentHeight = useSharedValue(0);
 
   const radio = useMemo(() => {
@@ -32,7 +32,7 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
   }, [routeProps?.radio]);
 
   const { panHandler } = useScrollPanGestureHandler({
-    translateY,
+    translateY: animation,
     contentHeight,
     contentY: routeProps.contentY,
     animateToPoint: routeProps.animateToPoint,
@@ -44,12 +44,6 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
     }
     return +(Math.random() * 159).toFixed(0);
   }, [radio.genres.length]);
-
-  const randomAdIndex = useMemo(() => {
-    const randomIndex = (Math.random() * 12).toFixed(0);
-
-    return +randomIndex;
-  }, []);
 
   const close = useFetch<RadioType[]>(
     `radio/${radio.id}/closes/${JSON.stringify(
@@ -85,11 +79,11 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
             playing={false}
           />
 
-          {index === randomAdIndex && <Banner id={BLOCKS.MUSIC} />}
+          {!index && <Banner id={BLOCKS.MUSIC} />}
         </View>
       );
     },
-    [close.data, onSetRadio, randomAdIndex],
+    [close.data, onSetRadio],
   );
 
   const renderItemRegion = useCallback(
@@ -122,9 +116,9 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
 
   const style = useAnimatedStyle(() => {
     return {
-      transform: [{ translateY: translateY.value }],
+      transform: [{ translateY: animation.value }],
     };
-  }, [translateY.value]);
+  }, [animation.value]);
 
   const onLayout = useCallback(
     ({ nativeEvent }: LayoutChangeEvent) => {

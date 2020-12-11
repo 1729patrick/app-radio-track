@@ -36,11 +36,6 @@ const Explore: React.FC = () => {
   const { params } = useRoute<RouteProps>();
   const { showPlaylistAd } = useAd();
   const { playingRadioId } = usePlaying();
-  const randomAdIndex = useMemo(() => {
-    const randomIndex = (Math.random() * 12).toFixed(0);
-
-    return +randomIndex;
-  }, []);
 
   const { data, error, fetchMore } = useFetchPagination(
     params.url,
@@ -71,11 +66,11 @@ const Explore: React.FC = () => {
             playing={playingRadioId === item.id}
           />
 
-          {index === randomAdIndex && <Banner id={BLOCKS.MUSIC} />}
+          {!index && <Banner id={BLOCKS.MUSIC} />}
         </>
       );
     },
-    [onExpandPlayerPress, playingRadioId, randomAdIndex],
+    [onExpandPlayerPress, playingRadioId],
   );
 
   useEffect(() => {

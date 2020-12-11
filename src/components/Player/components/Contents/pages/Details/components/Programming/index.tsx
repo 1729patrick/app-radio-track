@@ -181,7 +181,7 @@ const Item: React.ForwardRefRenderFunction<ItemHandler, ItemProps> = forwardRef(
           </View>
         </Animated.View>
 
-        {fullHeight > minHeight && (
+        {(fullHeight > minHeight || expanded) && (
           <Animated.View style={[styles.showMoreContainer, showMoreStyle]}>
             <TouchableWithoutFeedback
               style={styles.showMoreTitle}

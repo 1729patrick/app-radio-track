@@ -23,11 +23,6 @@ const Favorites: React.ForwardRefRenderFunction<
   const { onExpandPlayer } = usePlayer();
   const { favorites } = useFavorites();
   const { playingRadioId } = usePlaying();
-  const randomAdIndex = useMemo(() => {
-    const randomIndex = (Math.random() * 12).toFixed(0);
-
-    return +randomIndex;
-  }, []);
 
   const onExpandPlayerPress = useCallback(
     ({ radioIndex }: { radioIndex: number }) => {
@@ -50,11 +45,11 @@ const Favorites: React.ForwardRefRenderFunction<
             index={index}
             onExpandPlayer={onExpandPlayerPress}
           />
-          {index === randomAdIndex && <Banner id={BLOCKS.MUSIC} />}
+          {!index && <Banner id={BLOCKS.MUSIC} />}
         </>
       );
     },
-    [onExpandPlayerPress, playingRadioId, randomAdIndex],
+    [onExpandPlayerPress, playingRadioId],
   );
 
   if (!favorites.length) {

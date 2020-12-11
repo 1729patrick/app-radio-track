@@ -3,6 +3,7 @@ import React, {
   memo,
   useCallback,
   useImperativeHandle,
+  useMemo,
   useRef,
 } from 'react';
 import { View } from 'react-native';
@@ -13,8 +14,10 @@ import {
 import Animated, {
   interpolate,
   runOnJS,
+  useAnimatedProps,
   useAnimatedStyle,
   useDerivedValue,
+  useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
@@ -30,11 +33,6 @@ import isEqual from 'lodash.isequal';
 import CompactPlayer from '../CompactPlayer';
 import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
 import { RadioType } from '~/types/Station';
-
-const ROUTES = [
-  { title: 'Detalhes', Component: Details },
-  { title: 'Sugeridas', Component: Suggest },
-];
 
 type ContentsProps = {
   translateY: Animated.SharedValue<number>;
@@ -66,6 +64,25 @@ const Contents: React.ForwardRefRenderFunction<
   ref,
 ) => {
   const tabNavigatorRef = useRef<TabNavigatorHandler>(null);
+  const activeTab = useSharedValue(0);
+  const detailsAnimation = useSharedValue(0);
+  const suggestAnimation = useSharedValue(0);
+
+  const routesTranslateY = useMemo(() => [detailsAnimation, suggestAnimation], [
+    detailsAnimation,
+    suggestAnimation,
+  ]);
+
+  const ROUTES = useMemo(() => {
+    return [
+      { title: 'Detalhes', Component: Details, animation: routesTranslateY[0] },
+      {
+        title: 'Sugeridas',
+        Component: Suggest,
+        animation: routesTranslateY[1],
+      },
+    ];
+  }, [routesTranslateY]);
 
   const initializeTabActive = useCallback(() => {
     tabNavigatorRef.current?.initializeTabActive();
@@ -171,11 +188,20 @@ const Contents: React.ForwardRefRenderFunction<
     SNAP_POINTS,
     animateToPoint,
     onStart,
+    activeTab,
+    routesTranslateY,
+  );
+
+  const setActiveTab = useCallback(
+    (tabIndex: number) => {
+      activeTab.value = tabIndex;
+    },
+    [activeTab],
   );
 
   return (
     <Animated.View style={styles.container}>
-      <PanGestureHandler onGestureEvent={panHandler}>
+      <PanGestureHandler onGestureEvent={panHandler} shouldCancelWhenOutside>
         <Animated.View style={[style]}>
           <Animated.View style={[styles.compactPlayer, styleCompact]}>
             <CompactPlayer
@@ -202,6 +228,7 @@ const Contents: React.ForwardRefRenderFunction<
               checkAnimated={checkAnimated}
               animation={animation}
               ref={tabNavigatorRef}
+              setActiveTab={setActiveTab}
               routeProps={{
                 radio,
                 onSetRadio,

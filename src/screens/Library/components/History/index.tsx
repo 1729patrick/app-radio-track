@@ -36,12 +36,6 @@ const History: React.ForwardRefRenderFunction<
   const [history, setHistory] = useState<RadioType[]>();
   const { getHistory } = useHistory();
 
-  const randomAdIndex = useMemo(() => {
-    const randomIndex = (Math.random() * 12).toFixed(0);
-
-    return +randomIndex;
-  }, []);
-
   useEffect(() => {
     if (isFocused) {
       setHistory(getHistory());
@@ -69,11 +63,11 @@ const History: React.ForwardRefRenderFunction<
             index={index}
             onExpandPlayer={onExpandPlayerPress}
           />
-          {index === randomAdIndex && <Banner id={BLOCKS.MUSIC} />}
+          {!index && <Banner id={BLOCKS.MUSIC} />}
         </>
       );
     },
-    [onExpandPlayerPress, playingRadioId, randomAdIndex],
+    [onExpandPlayerPress, playingRadioId],
   );
 
   if (!history) {

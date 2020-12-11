@@ -8,6 +8,8 @@ import { clamp, snapPoint } from 'react-native-redash';
 
 type GestureHandlerContext = {
   startY: number;
+  currentRouteStartY: number;
+  currentRouteAnimation: Animated.SharedValue<number>;
 };
 
 export const useInteractivePanGestureHandler = (
@@ -15,6 +17,8 @@ export const useInteractivePanGestureHandler = (
   snapPoints: number[],
   animateToPoint: (point: number) => void,
   onStart?: () => void,
+  activeTab?: Animated.SharedValue<number>,
+  routesTranslateY?: Animated.SharedValue<number>[],
 ) => {
   const panHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
@@ -22,14 +26,28 @@ export const useInteractivePanGestureHandler = (
   >({
     onStart: (_, context) => {
       context.startY = translateY.value;
+      context.currentRouteStartY = 0;
+      if (routesTranslateY && activeTab && activeTab.value >= 0) {
+        context.currentRouteAnimation = routesTranslateY[activeTab.value];
+        context.currentRouteStartY = context.currentRouteAnimation.value;
+      }
 
       if (onStart) {
         onStart();
       }
     },
     onActive: (event, context) => {
+      if (context.currentRouteAnimation) {
+        if (context.currentRouteAnimation.value < 0) {
+          context.currentRouteAnimation.value =
+            event.translationY + context.currentRouteStartY;
+
+          return;
+        }
+      }
+
       translateY.value = clamp(
-        event.translationY + context.startY,
+        event.translationY + context.startY + context.currentRouteStartY,
         snapPoints[0],
         snapPoints[snapPoints.length - 1],
       );

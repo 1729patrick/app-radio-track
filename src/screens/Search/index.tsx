@@ -33,11 +33,6 @@ const Search: React.FC<SearchProps> = () => {
       ? `/search?q=${searchTerm.trimLeft().trimRight()}`
       : null,
   );
-  const randomAdIndex = useMemo(() => {
-    const randomIndex = (Math.random() * 12).toFixed(0);
-
-    return +randomIndex;
-  }, []);
 
   const { pop } = useNavigation<StackNavigationProp<any>>();
 
@@ -74,11 +69,11 @@ const Search: React.FC<SearchProps> = () => {
             index={index}
             onExpandPlayer={onExpandPlayerPress}
           />
-          {index === randomAdIndex && <Banner id={BLOCKS.MUSIC} />}
+          {!index && <Banner id={BLOCKS.MUSIC} />}
         </>
       );
     },
-    [onExpandPlayerPress, playingRadioId, randomAdIndex],
+    [onExpandPlayerPress, playingRadioId],
   );
 
   return (

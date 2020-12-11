@@ -1,4 +1,4 @@
-# drag down to close radio details
+# vertical gestures must be ignore invalid translate y on radio details
 
 # show addres with cityid, regionid to show in details
 
