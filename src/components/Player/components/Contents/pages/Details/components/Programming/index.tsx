@@ -14,7 +14,6 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import Animated, {
-  interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -60,17 +59,18 @@ const Item: React.ForwardRefRenderFunction<ItemHandler, ItemProps> = forwardRef(
   ({ programmingDay, day, onExpandAll, onMinimizeAll }, ref) => {
     const titleHeightRef = useRef(0);
     const programHeightRef = useRef(0);
+    const [fullHeight, setFullHeight] = useState(0);
 
     const [expanded, setExpanded] = useState(false);
     const size = useMemo(() => {
       return programmingDay.length;
     }, [programmingDay]);
 
-    const fullHeight = useCallback(() => {
-      return (
+    const setHeight = useCallback(() => {
+      setFullHeight(
         titleHeightRef.current +
-        CARD_PADDING * 2 +
-        size * programHeightRef.current
+          CARD_PADDING * 2 +
+          size * programHeightRef.current,
       );
     }, [size]);
 
@@ -81,7 +81,7 @@ const Item: React.ForwardRefRenderFunction<ItemHandler, ItemProps> = forwardRef(
     const height = useSharedValue(minHeight);
 
     const onExpand = useCallback(() => {
-      height.value = withTiming(fullHeight(), {
+      height.value = withTiming(fullHeight, {
         duration: TIMING_DURATION,
       });
 
@@ -103,7 +103,7 @@ const Item: React.ForwardRefRenderFunction<ItemHandler, ItemProps> = forwardRef(
     }));
 
     const showMore = useCallback(() => {
-      if (height.value !== fullHeight()) {
+      if (height.value !== fullHeight) {
         onExpandAll();
         return;
       }
@@ -115,19 +115,34 @@ const Item: React.ForwardRefRenderFunction<ItemHandler, ItemProps> = forwardRef(
       return { top: height.value - 17 };
     }, [height.value]);
 
-    const onLayoutTitle = useCallback(({ nativeEvent }: LayoutChangeEvent) => {
-      const { height } = nativeEvent.layout;
-
-      titleHeightRef.current = height;
-    }, []);
-
-    const onLayoutProgram = useCallback(
+    const onLayoutTitle = useCallback(
       ({ nativeEvent }: LayoutChangeEvent) => {
         const { height } = nativeEvent.layout;
 
-        programHeightRef.current = height;
+        titleHeightRef.current = height;
+
+        if (programHeightRef.current) {
+          setHeight();
+        }
       },
-      [],
+      [setHeight],
+    );
+
+    const onLayoutProgram = useCallback(
+      ({ nativeEvent }: LayoutChangeEvent) => {
+        if (programHeightRef.current) {
+          return;
+        }
+
+        const { height } = nativeEvent.layout;
+
+        programHeightRef.current = height;
+
+        if (titleHeightRef.current) {
+          setHeight();
+        }
+      },
+      [setHeight],
     );
 
     const title = useMemo(() => {
@@ -166,13 +181,15 @@ const Item: React.ForwardRefRenderFunction<ItemHandler, ItemProps> = forwardRef(
           </View>
         </Animated.View>
 
-        <Animated.View style={[styles.showMoreContainer, showMoreStyle]}>
-          <TouchableWithoutFeedback
-            style={styles.showMoreTitle}
-            onPress={showMore}>
-            <Text>{title}</Text>
-          </TouchableWithoutFeedback>
-        </Animated.View>
+        {fullHeight > minHeight && (
+          <Animated.View style={[styles.showMoreContainer, showMoreStyle]}>
+            <TouchableWithoutFeedback
+              style={styles.showMoreTitle}
+              onPress={showMore}>
+              <Text>{title}</Text>
+            </TouchableWithoutFeedback>
+          </Animated.View>
+        )}
       </View>
     );
   },
@@ -216,6 +233,7 @@ const Programming: React.FC<ProgrammingProps> = ({ programming }) => {
       renderItem={renderItem}
       horizontal
       snapToInterval={width}
+      initialNumToRender={1}
       disableIntervalMomentum
       showsHorizontalScrollIndicator={false}
     />

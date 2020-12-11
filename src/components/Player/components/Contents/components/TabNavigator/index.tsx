@@ -41,6 +41,8 @@ export type RouteType = { title: string; Component: any };
 export type RouteProps = {
   radio: RadioType;
   onSetRadio: (args: PlayerState & { radioIndex: number }) => void;
+  contentY: Animated.SharedValue<number>;
+  animateToPoint: (point: number) => void;
 };
 
 const TabNavigator: React.ForwardRefRenderFunction<

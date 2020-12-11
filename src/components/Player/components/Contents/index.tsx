@@ -202,7 +202,12 @@ const Contents: React.ForwardRefRenderFunction<
               checkAnimated={checkAnimated}
               animation={animation}
               ref={tabNavigatorRef}
-              routeProps={{ radio, onSetRadio }}
+              routeProps={{
+                radio,
+                onSetRadio,
+                contentY: translateY,
+                animateToPoint,
+              }}
             />
           </Animated.View>
         </Animated.View>

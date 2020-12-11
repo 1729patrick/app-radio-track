@@ -1,7 +1,7 @@
 import isEqual from 'lodash.isequal';
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Text, View } from 'react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import React, { memo, useCallback, useMemo } from 'react';
+import { LayoutChangeEvent, Text, View } from 'react-native';
+import { FlatList, PanGestureHandler } from 'react-native-gesture-handler';
 import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';
 import RadioItem from '~/components/Radio/Item';
@@ -13,15 +13,30 @@ import Loader from '~/components/Loader';
 import { RouteProps } from '../../components/TabNavigator';
 import { RadioType } from '~/types/Station';
 import { useFetch } from '~/hooks/useFetch';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+import useScrollPanGestureHandler from '../useScrollPanGestureHandler';
 
 type SuggestProps = {
   routeProps: RouteProps;
 };
 
 const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
+  const translateY = useSharedValue(0);
+  const contentHeight = useSharedValue(0);
+
   const radio = useMemo(() => {
     return routeProps?.radio || {};
   }, [routeProps?.radio]);
+
+  const { panHandler } = useScrollPanGestureHandler({
+    translateY,
+    contentHeight,
+    contentY: routeProps.contentY,
+    animateToPoint: routeProps.animateToPoint,
+  });
 
   const initialPage = useMemo(() => {
     if (radio.genres.length) {
@@ -105,38 +120,51 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
     return close.data?.slice(0, 5) || [];
   }, [close.data]);
 
+  const style = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    };
+  }, [translateY.value]);
+
+  const onLayout = useCallback(
+    ({ nativeEvent }: LayoutChangeEvent) => {
+      contentHeight.value = nativeEvent.layout.height;
+    },
+    [contentHeight],
+  );
+
   if (locationEmpty || closeEmpty) {
     return <Loader backgroundColor={StyleGuide.palette.border} />;
   }
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.contentContainer}
-      showsVerticalScrollIndicator={false}>
-      {!closeEmpty && (
-        <Text style={[styles.title, { paddingTop: StyleGuide.spacing * 2 }]}>
-          Rádios parecidas
-        </Text>
-      )}
+    <PanGestureHandler onGestureEvent={panHandler} activeOffsetY={[-10, 10]}>
+      <Animated.View style={[styles.container, style]} onLayout={onLayout}>
+        {!closeEmpty && (
+          <Text style={[styles.title, { paddingTop: StyleGuide.spacing * 2 }]}>
+            Rádios parecidas
+          </Text>
+        )}
 
-      {closeData.map(renderItemSimilar)}
+        {closeData.map(renderItemSimilar)}
 
-      {!locationEmpty && (
-        <Text style={styles.title}>Rádios da mesma região</Text>
-      )}
+        {!locationEmpty && (
+          <Text style={styles.title}>Rádios da mesma região</Text>
+        )}
 
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        initialNumToRender={24}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.carouselContentContainer}
-        data={location.data}
-        keyExtractor={({ id }) => `${id}`}
-        renderItem={renderItemRegion}
-        onEndReachedThreshold={3}
-        horizontal
-      />
-    </ScrollView>
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          initialNumToRender={3}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.carouselContentContainer}
+          data={location.data}
+          keyExtractor={({ id }) => `${id}`}
+          renderItem={renderItemRegion}
+          onEndReachedThreshold={3}
+          horizontal
+        />
+      </Animated.View>
+    </PanGestureHandler>
   );
 };
 

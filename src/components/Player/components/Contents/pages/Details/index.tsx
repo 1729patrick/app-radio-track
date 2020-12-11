@@ -1,13 +1,19 @@
 import isEqual from 'lodash.isequal';
-import React, { memo, useMemo } from 'react';
-import { Linking, Text } from 'react-native';
+import React, { memo, useCallback, useMemo } from 'react';
+import { LayoutChangeEvent, Linking, Text } from 'react-native';
 import {
+  PanGestureHandler,
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 
 import StyleGuide from '~/utils/StyleGuide';
 import { RouteProps } from '../../components/TabNavigator';
+import useScrollPanGestureHandler from '../useScrollPanGestureHandler';
 import Programming from './components/Programming';
 import styles from './styles';
 
@@ -71,10 +77,19 @@ const CONTENTS = [
 ];
 
 const Details: React.FC<DetailsProps> = ({ routeProps }) => {
+  const translateY = useSharedValue(0);
+  const contentHeight = useSharedValue(0);
+
   const radio = useMemo(() => {
     return routeProps?.radio || {};
   }, [routeProps?.radio]);
 
+  const { panHandler } = useScrollPanGestureHandler({
+    translateY,
+    contentHeight,
+    contentY: routeProps.contentY,
+    animateToPoint: routeProps.animateToPoint,
+  });
   const contents = useMemo(() => {
     const contentsFiltered = CONTENTS.filter(({ key }) => !!radio[key]);
 
@@ -92,14 +107,30 @@ const Details: React.FC<DetailsProps> = ({ routeProps }) => {
     }
   };
 
+  const style = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    };
+  }, [translateY.value]);
+
+  const onLayout = useCallback(
+    ({ nativeEvent }: LayoutChangeEvent) => {
+      contentHeight.value = nativeEvent.layout.height;
+    },
+    [contentHeight],
+  );
+
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.contentContainer}>
-      {contents.map(({ key, component: Component, paddingTop }) => (
-        <Component key={key} {...{ [key]: radio[key], openSite, paddingTop }} />
-      ))}
-    </ScrollView>
+    <PanGestureHandler onGestureEvent={panHandler} activeOffsetY={[-10, 10]}>
+      <Animated.View style={[styles.container, style]} onLayout={onLayout}>
+        {contents.map(({ key, component: Component, paddingTop }) => (
+          <Component
+            key={key}
+            {...{ [key]: radio[key], openSite, paddingTop }}
+          />
+        ))}
+      </Animated.View>
+    </PanGestureHandler>
   );
 };
 

@@ -6,10 +6,6 @@ import Animated, {
 import { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import { clamp, snapPoint } from 'react-native-redash';
 
-type InteractivePanGestureHandlerContextType = {
-  lastAnimatedPosition: number;
-};
-
 type GestureHandlerContext = {
   startY: number;
 };
