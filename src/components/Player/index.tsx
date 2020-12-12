@@ -634,7 +634,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   return (
     <View style={styles.container} pointerEvents="box-none">
       <PanGestureHandler onGestureEvent={panHandler}>
-        <Animated.View style={style}>
+        <Animated.View style={[style]}>
           <AnimatedBackground style={styles.player} ref={animatedBackgroundRef}>
             <Contents
               translateY={contentTranslateY}
