@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { HEADER_HEIGHT } from './constants';
+import { COMPACT_HEIGHT } from '~/components/Player/constants';
 import StyleGuide from '~/utils/StyleGuide';
 
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: HEADER_HEIGHT,
-    paddingBottom: 5,
+    height: COMPACT_HEIGHT,
     justifyContent: 'space-between',
   },
 
@@ -16,5 +15,6 @@ export default StyleSheet.create({
     width: 100,
     position: 'absolute',
     bottom: 0,
+    top: COMPACT_HEIGHT - 2,
   },
 });

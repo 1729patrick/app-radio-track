@@ -85,7 +85,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
             [
               0,
               -(width - COMPACT_HEIGHT) / 2 -
-                (height - (width + artistAndControlHeight.value)) / 2,
+                (height - (width + artistAndControlHeight.value + 10)) / 2,
             ],
             Extrapolate.CLAMP,
           ),
@@ -119,11 +119,9 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
             [CONTENT_SNAP_POINTS[0], CONTENT_SNAP_POINTS[1]],
             [
               -(width - COMPACT_HEIGHT) / 2 -
-                (height - (width + artistAndControlHeight.value)) / 2 +
+                (height - (width + artistAndControlHeight.value + 10)) / 2 +
                 STATUS_BAR_HEIGHT,
-
               0.2,
-              0,
             ],
             Extrapolate.CLAMP,
           ),

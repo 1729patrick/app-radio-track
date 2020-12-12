@@ -16,6 +16,12 @@ export default StyleSheet.create({
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
   },
+  indicatorContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+  },
   indicator: {
     width: 40,
     height: INDICATOR_HEIGHT,

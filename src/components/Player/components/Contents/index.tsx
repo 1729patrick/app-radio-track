@@ -195,7 +195,10 @@ const Contents: React.ForwardRefRenderFunction<
 
   return (
     <Animated.View style={styles.container}>
-      <PanGestureHandler onGestureEvent={panHandler} shouldCancelWhenOutside>
+      <PanGestureHandler
+        onGestureEvent={panHandler}
+        shouldCancelWhenOutside
+        hitSlop={{ top: 20 }}>
         <Animated.View style={[style]}>
           <Animated.View style={[styles.compactPlayer, styleCompact]}>
             <CompactPlayer
@@ -212,9 +215,11 @@ const Contents: React.ForwardRefRenderFunction<
           </Animated.View>
 
           <Animated.View style={[styles.content]}>
-            <TouchableWithoutFeedback onPress={onExpandContent}>
-              <View style={styles.indicator} />
-            </TouchableWithoutFeedback>
+            <View style={styles.indicatorContainer} pointerEvents="none">
+              <TouchableWithoutFeedback onPress={onExpandContent}>
+                <View style={styles.indicator} />
+              </TouchableWithoutFeedback>
+            </View>
 
             <TabNavigator
               onPress={onExpandContent}
