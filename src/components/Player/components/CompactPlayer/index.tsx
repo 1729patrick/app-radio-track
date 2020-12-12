@@ -8,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LottieView from 'lottie-react-native';
+
 import styles from './styles';
 
 import { SNAP_POINTS } from '../../constants';

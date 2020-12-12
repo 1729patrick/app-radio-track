@@ -1,6 +1,6 @@
 import isEqual from 'lodash.isequal';
 import React, { memo, useCallback, useMemo } from 'react';
-import { LayoutChangeEvent, Text, View } from 'react-native';
+import { Dimensions, LayoutChangeEvent, Text, View } from 'react-native';
 import { FlatList, PanGestureHandler } from 'react-native-gesture-handler';
 import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';
@@ -13,27 +13,30 @@ import Loader from '~/components/Loader';
 import { RouteProps } from '../../components/TabNavigator';
 import { RadioType } from '~/types/Station';
 import { useFetch } from '~/hooks/useFetch';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import useScrollPanGestureHandler from '../useScrollPanGestureHandler';
+import { HEADER_HEIGHT } from '~/components/Header/constants';
+import { SNAP_POINTS } from '~/components/Player/constants';
 
 type SuggestProps = {
   routeProps: RouteProps;
   animation: Animated.SharedValue<number>;
+  contentHeight: Animated.SharedValue<number>;
 };
+const { height } = Dimensions.get('window');
 
-const Suggest: React.FC<SuggestProps> = ({ routeProps, animation }) => {
-  const contentHeight = useSharedValue(0);
-
+const Suggest: React.FC<SuggestProps> = ({
+  routeProps,
+  animation,
+  lowerBound,
+}) => {
   const radio = useMemo(() => {
     return routeProps?.radio || {};
   }, [routeProps?.radio]);
 
   const { panHandler } = useScrollPanGestureHandler({
     translateY: animation,
-    contentHeight,
+    lowerBound,
     contentY: routeProps.contentY,
     animateToPoint: routeProps.animateToPoint,
   });
@@ -122,9 +125,12 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, animation }) => {
 
   const onLayout = useCallback(
     ({ nativeEvent }: LayoutChangeEvent) => {
-      contentHeight.value = nativeEvent.layout.height;
+      lowerBound.value = -(
+        nativeEvent.layout.height -
+        (height - SNAP_POINTS[0] - HEADER_HEIGHT)
+      );
     },
-    [contentHeight],
+    [lowerBound],
   );
 
   if (locationEmpty || closeEmpty) {

@@ -1,4 +1,3 @@
-import { Dimensions } from 'react-native';
 import { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import {
   cancelAnimation,
@@ -6,19 +5,15 @@ import {
   withDecay,
 } from 'react-native-reanimated';
 import { clamp, snapPoint } from 'react-native-redash';
-import { HEADER_HEIGHT } from '../components/Header/constants';
 import { SNAP_POINTS } from '../constants';
 
 type GestureHandlerContext = {
   startY: number;
-  lowerBound: number;
 };
-
-const { height } = Dimensions.get('window');
 
 const useScrollPanGestureHandler = ({
   translateY,
-  contentHeight,
+  lowerBound,
   contentY,
   animateToPoint,
 }) => {
@@ -30,14 +25,10 @@ const useScrollPanGestureHandler = ({
       onStart: (_, context) => {
         cancelAnimation(translateY);
         context.startY = translateY.value;
-        context.lowerBound = -(
-          contentHeight.value -
-          (height - SNAP_POINTS[0] - HEADER_HEIGHT)
-        );
       },
       onActive: (event, context) => {
         const y = event.translationY + context.startY;
-        translateY.value = clamp(y, context.lowerBound, 0);
+        translateY.value = clamp(y, lowerBound.value, 0);
 
         if (y > 0) {
           contentY.value = y + SNAP_POINTS[0];
@@ -50,7 +41,7 @@ const useScrollPanGestureHandler = ({
         translateY.value = withDecay({
           velocity: velocityY,
           deceleration: 0.997,
-          clamp: [context.lowerBound, 0],
+          clamp: [lowerBound.value, 0],
         });
 
         const y = event.translationY + context.startY;

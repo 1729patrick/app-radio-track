@@ -43,6 +43,7 @@ export type RouteType = {
   title: string;
   Component: any;
   animation: Animated.SharedValue<number>;
+  contentHeight: Animated.SharedValue<number>;
 };
 export type RouteProps = {
   radio: RadioType;

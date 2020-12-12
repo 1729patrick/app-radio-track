@@ -1,25 +1,32 @@
 import isEqual from 'lodash.isequal';
 import React, { memo, useCallback, useMemo } from 'react';
-import { LayoutChangeEvent, Linking, Text, View } from 'react-native';
+import {
+  Dimensions,
+  LayoutChangeEvent,
+  Linking,
+  Text,
+  View,
+} from 'react-native';
 import {
   PanGestureHandler,
-  ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import StyleGuide from '~/utils/StyleGuide';
+import { HEADER_HEIGHT } from '../../components/Header/constants';
 import { RouteProps } from '../../components/TabNavigator';
+import { SNAP_POINTS } from '../../constants';
 import useScrollPanGestureHandler from '../useScrollPanGestureHandler';
 import Programming from './components/Programming';
 import styles from './styles';
 
+const { height } = Dimensions.get('window');
+
 type DetailsProps = {
   routeProps: RouteProps;
   animation: Animated.SharedValue<number>;
+  lowerBound: Animated.SharedValue<number>;
 };
 
 const Description = memo(({ description, paddingTop }) => {
@@ -79,9 +86,11 @@ const CONTENTS = [
   },
 ];
 
-const Details: React.FC<DetailsProps> = ({ routeProps, animation }) => {
-  const contentHeight = useSharedValue(0);
-
+const Details: React.FC<DetailsProps> = ({
+  routeProps,
+  animation,
+  lowerBound,
+}) => {
   const radio = useMemo(() => {
     let { address, city, region } = routeProps?.radio || {};
     if (!address) {
@@ -93,7 +102,7 @@ const Details: React.FC<DetailsProps> = ({ routeProps, animation }) => {
 
   const { panHandler } = useScrollPanGestureHandler({
     translateY: animation,
-    contentHeight,
+    lowerBound,
     contentY: routeProps.contentY,
     animateToPoint: routeProps.animateToPoint,
   });
@@ -122,9 +131,12 @@ const Details: React.FC<DetailsProps> = ({ routeProps, animation }) => {
 
   const onLayout = useCallback(
     ({ nativeEvent }: LayoutChangeEvent) => {
-      contentHeight.value = nativeEvent.layout.height;
+      lowerBound.value = -(
+        nativeEvent.layout.height -
+        (height - SNAP_POINTS[0] - HEADER_HEIGHT)
+      );
     },
-    [contentHeight],
+    [lowerBound],
   );
 
   return (

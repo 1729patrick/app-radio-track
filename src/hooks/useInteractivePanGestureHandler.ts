@@ -10,6 +10,7 @@ type GestureHandlerContext = {
   startY: number;
   currentRouteStartY: number;
   currentRouteAnimation: Animated.SharedValue<number>;
+  lowerBound: number;
 };
 
 export const useInteractivePanGestureHandler = (
@@ -19,6 +20,7 @@ export const useInteractivePanGestureHandler = (
   onStart?: () => void,
   activeTab?: Animated.SharedValue<number>,
   routesTranslateY?: Animated.SharedValue<number>[],
+  routesLowerBound?: Animated.SharedValue<number>[],
 ) => {
   const panHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
@@ -27,9 +29,16 @@ export const useInteractivePanGestureHandler = (
     onStart: (_, context) => {
       context.startY = translateY.value;
       context.currentRouteStartY = 0;
-      if (routesTranslateY && activeTab && activeTab.value >= 0) {
+
+      if (
+        routesTranslateY &&
+        routesLowerBound &&
+        activeTab &&
+        activeTab.value >= 0
+      ) {
         context.currentRouteAnimation = routesTranslateY[activeTab.value];
         context.currentRouteStartY = context.currentRouteAnimation.value;
+        context.lowerBound = routesLowerBound[activeTab.value].value;
       }
 
       if (onStart) {
@@ -39,8 +48,11 @@ export const useInteractivePanGestureHandler = (
     onActive: (event, context) => {
       if (context.currentRouteAnimation) {
         if (context.currentRouteAnimation.value < 0) {
-          context.currentRouteAnimation.value =
-            event.translationY + context.currentRouteStartY;
+          context.currentRouteAnimation.value = clamp(
+            event.translationY + context.currentRouteStartY,
+            context.lowerBound,
+            0,
+          );
 
           return;
         }
@@ -62,7 +74,6 @@ export const useInteractivePanGestureHandler = (
 
       const point = snapPoint(translateY.value, velocity, validSnapPoints);
 
-      // translateY.value = withTiming(point, { mass: 10 });
       animateToPoint(point);
     },
   });

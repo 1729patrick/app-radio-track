@@ -14,7 +14,6 @@ import {
 import Animated, {
   interpolate,
   runOnJS,
-  useAnimatedProps,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
@@ -65,24 +64,37 @@ const Contents: React.ForwardRefRenderFunction<
 ) => {
   const tabNavigatorRef = useRef<TabNavigatorHandler>(null);
   const activeTab = useSharedValue(0);
-  const detailsAnimation = useSharedValue(0);
-  const suggestAnimation = useSharedValue(0);
+  const detailsTranslateY = useSharedValue(0);
+  const suggestTranslateY = useSharedValue(0);
 
-  const routesTranslateY = useMemo(() => [detailsAnimation, suggestAnimation], [
-    detailsAnimation,
-    suggestAnimation,
-  ]);
+  const routesTranslateY = useMemo(
+    () => [detailsTranslateY, suggestTranslateY],
+    [detailsTranslateY, suggestTranslateY],
+  );
+
+  const detailsLowerBound = useSharedValue(0);
+  const suggestLowerBound = useSharedValue(0);
+  const routesLowerBound = useMemo(
+    () => [detailsLowerBound, suggestLowerBound],
+    [detailsLowerBound, suggestLowerBound],
+  );
 
   const ROUTES = useMemo(() => {
     return [
-      { title: 'Detalhes', Component: Details, animation: routesTranslateY[0] },
+      {
+        title: 'Detalhes',
+        Component: Details,
+        animation: routesTranslateY[0],
+        lowerBound: routesLowerBound[0],
+      },
       {
         title: 'Sugeridas',
         Component: Suggest,
         animation: routesTranslateY[1],
+        lowerBound: routesLowerBound[1],
       },
     ];
-  }, [routesTranslateY]);
+  }, [routesLowerBound, routesTranslateY]);
 
   const initializeTabActive = useCallback(() => {
     tabNavigatorRef.current?.initializeTabActive();
@@ -190,6 +202,7 @@ const Contents: React.ForwardRefRenderFunction<
     onStart,
     activeTab,
     routesTranslateY,
+    routesLowerBound,
   );
 
   const setActiveTab = useCallback(

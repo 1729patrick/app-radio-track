@@ -70,7 +70,7 @@ const StyleGuide = {
       fontFamily: 'Montserrat-Bold',
       fontSize: 20,
       // lineHeight: 22,
-      letterSpacing: 0.21,
+      // letterSpacing: 0.22,
     },
     title3: {
       fontFamily: 'Montserrat-Medium',
