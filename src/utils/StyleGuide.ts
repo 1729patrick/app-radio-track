@@ -34,6 +34,7 @@ const StyleGuide = {
     backgroundPrimary: '#1d1e21',
     background: '#000',
     border: '#303036',
+    app: '#16CA61',
   },
   typography: {
     body: {

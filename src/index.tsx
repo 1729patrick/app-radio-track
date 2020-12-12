@@ -5,22 +5,22 @@ import { FavoriteProvider } from './contexts/FavoriteContext';
 import { HistoryProvider } from './contexts/HistoryContext';
 import { PlayingProvider } from './contexts/PlayingContext';
 import { AdProvider } from './ads/contexts/AdContext';
-import { ModalProvider } from './contexts/ModalContext';
+import { ReviewProvider } from './contexts/ReviewContext';
 
 export default () => {
   return (
-    <ModalProvider>
-      <FavoriteProvider>
-        <HistoryProvider>
-          <PlayerProvider>
-            <PlayingProvider>
+    <FavoriteProvider>
+      <HistoryProvider>
+        <PlayerProvider>
+          <PlayingProvider>
+            <ReviewProvider>
               <AdProvider>
                 <App />
               </AdProvider>
-            </PlayingProvider>
-          </PlayerProvider>
-        </HistoryProvider>
-      </FavoriteProvider>
-    </ModalProvider>
+            </ReviewProvider>
+          </PlayingProvider>
+        </PlayerProvider>
+      </HistoryProvider>
+    </FavoriteProvider>
   );
 };

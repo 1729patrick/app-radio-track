@@ -17,7 +17,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
 import { BLOCKS } from '~/ads/constants';
 import isEqual from 'lodash.isequal';
-import Congratulation from '~/components/Congratulation';
+import Review from '~/components/Review';
 
 function daysIntoYear() {
   const date = new Date();

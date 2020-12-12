@@ -42,13 +42,14 @@ export const useKeyboard = () => {
     };
   }, []);
 
-  const hiddenKeyboard = useCallback(() => {
+  const dismissKeyboard = useCallback(() => {
     Keyboard.dismiss();
   }, []);
 
   return {
     height: viewHeight,
+    keyboardHeight: height - viewHeight,
     keyboardOpen: viewHeight !== height,
-    hiddenKeyboard,
+    dismissKeyboard,
   };
 };
