@@ -16,7 +16,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { clamp } from 'react-native-redash';
 import isEqual from 'lodash.isequal';
-import { RouteType } from '../..';
 import { RadioType } from '~/types/Station';
 import { PlayerState } from '~/components/Player';
 
@@ -42,8 +41,6 @@ type TabNavigatorProps = {
 export type RouteType = {
   title: string;
   Component: any;
-  animation: Animated.SharedValue<number>;
-  contentHeight: Animated.SharedValue<number>;
 };
 export type RouteProps = {
   radio: RadioType;

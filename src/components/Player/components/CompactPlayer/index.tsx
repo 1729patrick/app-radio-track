@@ -156,13 +156,14 @@ const CompactPlayer: React.FC<CompactPlayerProps> = ({
                 )}
               </BorderlessButton>
               {buffering && !error && (
-                <LottieView
-                  source={require('~/assets/loader.json')}
-                  autoPlay
-                  loop
-                  style={styles.loader}
-                  speed={1.3}
-                />
+                <View pointerEvents={'none'} style={styles.loader}>
+                  <LottieView
+                    source={require('~/assets/loader.json')}
+                    autoPlay
+                    loop
+                    speed={1.3}
+                  />
+                </View>
               )}
             </View>
           </View>

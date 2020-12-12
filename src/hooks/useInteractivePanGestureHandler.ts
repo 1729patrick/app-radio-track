@@ -1,8 +1,4 @@
-import Animated, {
-  useAnimatedGestureHandler,
-  withSpring,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedGestureHandler } from 'react-native-reanimated';
 import { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import { clamp, snapPoint } from 'react-native-redash';
 
@@ -18,9 +14,6 @@ export const useInteractivePanGestureHandler = (
   snapPoints: number[],
   animateToPoint: (point: number) => void,
   onStart?: () => void,
-  activeTab?: Animated.SharedValue<number>,
-  routesTranslateY?: Animated.SharedValue<number>[],
-  routesLowerBound?: Animated.SharedValue<number>[],
 ) => {
   const panHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
@@ -30,34 +23,11 @@ export const useInteractivePanGestureHandler = (
       context.startY = translateY.value;
       context.currentRouteStartY = 0;
 
-      if (
-        routesTranslateY &&
-        routesLowerBound &&
-        activeTab &&
-        activeTab.value >= 0
-      ) {
-        context.currentRouteAnimation = routesTranslateY[activeTab.value];
-        context.currentRouteStartY = context.currentRouteAnimation.value;
-        context.lowerBound = routesLowerBound[activeTab.value].value;
-      }
-
       if (onStart) {
         onStart();
       }
     },
     onActive: (event, context) => {
-      if (context.currentRouteAnimation) {
-        if (context.currentRouteAnimation.value < 0) {
-          context.currentRouteAnimation.value = clamp(
-            event.translationY + context.currentRouteStartY,
-            context.lowerBound,
-            0,
-          );
-
-          return;
-        }
-      }
-
       translateY.value = clamp(
         event.translationY + context.startY + context.currentRouteStartY,
         snapPoints[0],

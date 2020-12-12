@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import Review, { ReviewHandler } from '~/components/Review';
 import { useHistory } from '../HistoryContext';
+import InAppReview from 'react-native-in-app-review';
 
 import { usePlaying } from '../PlayingContext';
 type ContextProps = {};
@@ -52,7 +53,7 @@ export const ReviewProvider: React.FC = ({ children }) => {
     }
 
     const reviewFromStorage = await getItem();
-    if (!reviewFromStorage) {
+    if (!reviewFromStorage && InAppReview.isAvailable()) {
       reviewRef.current?.show(limitsToRequest[limitBreak]);
     }
   }, [getHistory, getItem]);

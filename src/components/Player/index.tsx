@@ -63,6 +63,7 @@ const events = [
   TrackPlayerEvents.REMOTE_PREVIOUS,
   TrackPlayerEvents.REMOTE_DUCK,
   TrackPlayerEvents.REMOTE_PLAY,
+  TrackPlayerEvents.REMOTE_PAUSE,
 ];
 
 export type PlayerState = {
@@ -119,7 +120,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const albumsRef = useRef<AlbumsHandler>(null);
   const animatedBackgroundRef = useRef<AnimatedBackgroundHandler>(null);
 
-  const waitForInteractionPlaybackState = useRef(true);
   const radioIndexRef = useRef<number>(0);
   const radiosRef = useRef<RadioType[]>([]);
   const titleRef = useRef<string>('');
@@ -190,32 +190,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     });
   }, []);
 
-  useEffect(() => {
-    if (
-      waitForInteractionPlaybackState.current ||
-      playbackStatePreviousRef.current === playbackState
-    ) {
-      return;
-    }
-
-    if (
-      (playbackState === TrackPlayer.STATE_PAUSED ||
-        playbackState === TrackPlayer.STATE_STOPPED) &&
-      playbackStatePreviousRef.current === TrackPlayer.STATE_PLAYING
-    ) {
-      setPlaying(false);
-    } else {
-      setPlaying(true);
-    }
-
-    playbackStatePreviousRef.current = playbackState;
-  }, [playbackState]);
-
   const buffering = useMemo(() => {
     return playbackState === TrackPlayer.STATE_BUFFERING;
   }, [playbackState]);
 
   const playTrackPlayer = useCallback(async () => {
+    setPlaying(true);
     await TrackPlayer.seekTo(24 * 60 * 60);
     await TrackPlayer.play();
 
@@ -224,6 +204,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [addHistory]);
 
   const resetTrackPlayer = async () => {
+    setPlaying(false);
     await TrackPlayer.reset();
   };
 
@@ -235,6 +216,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [addHistory, playTrackPlayer]);
 
   const pauseTrackPlayer = useCallback(async () => {
+    setPlaying(false);
     await TrackPlayer.pause();
   }, []);
 
@@ -311,11 +293,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   );
 
   const onTogglePlayback = useCallback(async () => {
-    waitForInteractionPlaybackState.current = false;
-
     if (playbackState === TrackPlayer.STATE_STOPPED || errorRadioId) {
       addRadiosToTrackPlayer(state.radios, radioIndex, true, true);
-    } else if (playbackState !== TrackPlayer.STATE_PLAYING) {
+    } else if (
+      playbackState !== TrackPlayer.STATE_PLAYING &&
+      playbackState !== TrackPlayer.STATE_BUFFERING
+    ) {
       playTrackPlayer();
     } else {
       pauseTrackPlayer();
@@ -371,7 +354,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       if (size === 'expand') {
         animateToPoint(SNAP_POINTS[0]);
-        waitForInteractionPlaybackState.current = false;
       } else {
         if (artistAndControlHeight.value !== 300) {
           animateToPoint(SNAP_POINTS[1]);
@@ -562,6 +544,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       if (type === TrackPlayerEvents.REMOTE_PLAY) {
         playTrackPlayer();
+      }
+
+      if (type === TrackPlayerEvents.REMOTE_PAUSE) {
+        pauseTrackPlayer();
       }
     },
   );

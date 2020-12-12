@@ -1,32 +1,18 @@
 import isEqual from 'lodash.isequal';
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
+import { Linking, Text } from 'react-native';
 import {
-  Dimensions,
-  LayoutChangeEvent,
-  Linking,
-  Text,
-  View,
-} from 'react-native';
-import {
-  PanGestureHandler,
+  ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import StyleGuide from '~/utils/StyleGuide';
-import { HEADER_HEIGHT } from '../../components/Header/constants';
 import { RouteProps } from '../../components/TabNavigator';
-import { SNAP_POINTS } from '../../constants';
-import useScrollPanGestureHandler from '../useScrollPanGestureHandler';
 import Programming from './components/Programming';
 import styles from './styles';
 
-const { height } = Dimensions.get('window');
-
 type DetailsProps = {
   routeProps: RouteProps;
-  animation: Animated.SharedValue<number>;
-  lowerBound: Animated.SharedValue<number>;
 };
 
 const Description = memo(({ description, paddingTop }) => {
@@ -86,11 +72,7 @@ const CONTENTS = [
   },
 ];
 
-const Details: React.FC<DetailsProps> = ({
-  routeProps,
-  animation,
-  lowerBound,
-}) => {
+const Details: React.FC<DetailsProps> = ({ routeProps }) => {
   const radio = useMemo(() => {
     let { address, city, region } = routeProps?.radio || {};
     if (!address) {
@@ -100,12 +82,6 @@ const Details: React.FC<DetailsProps> = ({
     return { ...routeProps?.radio, address } || {};
   }, [routeProps?.radio]);
 
-  const { panHandler } = useScrollPanGestureHandler({
-    translateY: animation,
-    lowerBound,
-    contentY: routeProps.contentY,
-    animateToPoint: routeProps.animateToPoint,
-  });
   const contents = useMemo(() => {
     const contentsFiltered = CONTENTS.filter(({ key }) => !!radio[key]);
 
@@ -123,36 +99,12 @@ const Details: React.FC<DetailsProps> = ({
     }
   };
 
-  const style = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateY: animation.value }],
-    };
-  }, [animation.value]);
-
-  const onLayout = useCallback(
-    ({ nativeEvent }: LayoutChangeEvent) => {
-      lowerBound.value = -(
-        nativeEvent.layout.height -
-        (height - SNAP_POINTS[0] - HEADER_HEIGHT)
-      );
-    },
-    [lowerBound],
-  );
-
   return (
-    <PanGestureHandler
-      onGestureEvent={panHandler}
-      activeOffsetY={[-10, 10]}
-      shouldCancelWhenOutside>
-      <Animated.View style={[styles.container, style]} onLayout={onLayout}>
-        {contents.map(({ key, component: Component, paddingTop }) => (
-          <Component
-            key={key}
-            {...{ [key]: radio[key], openSite, paddingTop }}
-          />
-        ))}
-      </Animated.View>
-    </PanGestureHandler>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      {contents.map(({ key, component: Component, paddingTop }) => (
+        <Component key={key} {...{ [key]: radio[key], openSite, paddingTop }} />
+      ))}
+    </ScrollView>
   );
 };
 

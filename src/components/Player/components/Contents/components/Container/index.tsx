@@ -35,7 +35,7 @@ export type ContainerHandler = {
 type ContainerProps = {
   routes: RouteType[];
   scrollHandler: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-  lowerBound: Animated.SharedValue<number>;
+  animation: Animated.SharedValue<number>;
   routeProps?: any;
 };
 
@@ -64,11 +64,7 @@ const Container: React.ForwardRefRenderFunction<
 
       return (
         <View style={{ width, height: PAGE_HEIGHT }}>
-          <item.Component
-            routeProps={routeProps}
-            animation={item.animation}
-            lowerBound={item.lowerBound}
-          />
+          <item.Component routeProps={routeProps} />
         </View>
       );
     },

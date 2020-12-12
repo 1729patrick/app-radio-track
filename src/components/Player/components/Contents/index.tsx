@@ -47,6 +47,17 @@ export type ContentsHandler = {
   onCompactContent: () => void;
 };
 
+const ROUTES = [
+  {
+    title: 'Detalhes',
+    Component: Details,
+  },
+  {
+    title: 'Sugeridas',
+    Component: Suggest,
+  },
+];
+
 const Contents: React.ForwardRefRenderFunction<
   ContentsHandler,
   ContentsProps
@@ -64,37 +75,6 @@ const Contents: React.ForwardRefRenderFunction<
 ) => {
   const tabNavigatorRef = useRef<TabNavigatorHandler>(null);
   const activeTab = useSharedValue(0);
-  const detailsTranslateY = useSharedValue(0);
-  const suggestTranslateY = useSharedValue(0);
-
-  const routesTranslateY = useMemo(
-    () => [detailsTranslateY, suggestTranslateY],
-    [detailsTranslateY, suggestTranslateY],
-  );
-
-  const detailsLowerBound = useSharedValue(0);
-  const suggestLowerBound = useSharedValue(0);
-  const routesLowerBound = useMemo(
-    () => [detailsLowerBound, suggestLowerBound],
-    [detailsLowerBound, suggestLowerBound],
-  );
-
-  const ROUTES = useMemo(() => {
-    return [
-      {
-        title: 'Detalhes',
-        Component: Details,
-        animation: routesTranslateY[0],
-        lowerBound: routesLowerBound[0],
-      },
-      {
-        title: 'Sugeridas',
-        Component: Suggest,
-        animation: routesTranslateY[1],
-        lowerBound: routesLowerBound[1],
-      },
-    ];
-  }, [routesLowerBound, routesTranslateY]);
 
   const initializeTabActive = useCallback(() => {
     tabNavigatorRef.current?.initializeTabActive();
@@ -200,9 +180,6 @@ const Contents: React.ForwardRefRenderFunction<
     SNAP_POINTS,
     animateToPoint,
     onStart,
-    activeTab,
-    routesTranslateY,
-    routesLowerBound,
   );
 
   const setActiveTab = useCallback(
