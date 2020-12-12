@@ -94,9 +94,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const playbackState = usePlaybackState();
   const playbackStateRef = useRef(playbackState);
   const checkPlayingTimeout = useRef(0);
-  const contentsRef = useRef<ContentsHandler>();
+  const contentsRef = useRef<ContentsHandler>(null);
 
-  const playbackStatePreviousRef = useRef(playbackState);
   const runWhenArtistAndControlMount = useRef<() => void | undefined>();
 
   const playbackStateOnDisconnectMoment = useRef<number>(-1);
@@ -230,7 +229,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       const radio = radios[radioIndex];
 
       const previousRadio = radiosRef.current[radioIndexRef.current];
-      //todo
 
       if (
         previousRadio?.id === radio.id &&
@@ -520,14 +518,16 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         //   args,
         // );
 
-        setErrorRadioId(radiosRef.current[radioIndexRef.current].id);
+        if (!errorRadioId) {
+          addRadiosToTrackPlayer(
+            radiosRef.current,
+            radioIndexRef.current,
+            false,
+            true,
+          );
+        }
 
-        addRadiosToTrackPlayer(
-          radiosRef.current,
-          radioIndexRef.current,
-          false,
-          true,
-        );
+        setErrorRadioId(radiosRef.current[radioIndexRef.current].id);
       }
 
       if (type === TrackPlayerEvents.REMOTE_NEXT) {

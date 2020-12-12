@@ -3,7 +3,6 @@ import React, {
   memo,
   useCallback,
   useImperativeHandle,
-  useMemo,
   useRef,
 } from 'react';
 import { View } from 'react-native';
@@ -32,13 +31,18 @@ import isEqual from 'lodash.isequal';
 import CompactPlayer from '../CompactPlayer';
 import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
 import { RadioType } from '~/types/Station';
+import { PlayerState } from '../..';
 
 type ContentsProps = {
   translateY: Animated.SharedValue<number>;
   playing: boolean;
   buffering: boolean;
   onTogglePlayback: () => void;
-  onSetRadio: () => void;
+  onSetRadio: (
+    args: PlayerState & {
+      radioIndex: number;
+    },
+  ) => void;
   radio: RadioType;
   error: boolean;
 };

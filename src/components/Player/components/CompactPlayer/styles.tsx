@@ -19,7 +19,6 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingRight: StyleGuide.spacing,
   },
   info: {
     justifyContent: 'center',
@@ -46,7 +45,7 @@ export default StyleSheet.create({
     height: 32,
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 7,
+    marginHorizontal: StyleGuide.spacing,
   },
   playButton: {},
   stopButton: {},

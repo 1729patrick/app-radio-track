@@ -11,7 +11,7 @@ export function useFetchPagination<Error = any>(
 ) {
   const [page, setPage] = useState(initialPage || 1);
   const [allData, setAllData] = useState<FetchWithPagination>();
-  const indexesMapRef = useRef({});
+  const indexesMapRef = useRef<any>({});
 
   const { data, error } = useSWR<FetchWithPagination, Error>(
     () => (page ? `${url}?page=${page}` : url),
