@@ -39,27 +39,23 @@ const PLAYLISTS = [
     url: 'playlists/recommend',
     title: 'Rádios recomendadas',
     initialPage: dateOfYear + 5,
-    adType: BLOCKS.PLAYLIST_RECOMMEND,
   },
   {
     key: 'popular',
     url: 'playlists/popular',
     title: 'Rádios populares',
-    adType: BLOCKS.PLAYLIST_POPULAR,
   },
   {
     key: 'location',
     url: 'playlists/location',
     title: 'Rádios da sua região',
     initialPage: dateOfYear + 10,
-    adType: BLOCKS.PLAYLIST_LOCATION,
   },
   {
     key: 'random',
     url: 'playlists/random',
     title: 'Descubra novas rádios',
     initialPage: dateOfYear + 15,
-    adType: BLOCKS.PLAYLIST_RANDOM,
   },
 ];
 

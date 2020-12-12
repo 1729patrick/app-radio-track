@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
 import api from '~/services/api';
 import { FetchWithPagination } from '~/types/Fetch';
@@ -11,6 +11,7 @@ export function useFetchPagination<Error = any>(
 ) {
   const [page, setPage] = useState(initialPage || 1);
   const [allData, setAllData] = useState<FetchWithPagination>();
+  const indexesMapRef = useRef({});
 
   const { data, error } = useSWR<FetchWithPagination, Error>(
     () => (page ? `${url}?page=${page}` : url),
@@ -24,7 +25,13 @@ export function useFetchPagination<Error = any>(
     }
 
     setAllData((all) => {
-      const items = [...(all?.items || []), ...(data?.items || [])];
+      const newItems = data?.items.filter(
+        ({ id }) => !indexesMapRef.current[id],
+      );
+
+      data?.items.forEach(({ id }) => (indexesMapRef.current[id] = true));
+
+      const items = [...(all?.items || []), ...(newItems || [])];
 
       return { ...data, items };
     });
