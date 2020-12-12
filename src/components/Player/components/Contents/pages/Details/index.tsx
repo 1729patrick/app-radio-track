@@ -100,7 +100,9 @@ const Details: React.FC<DetailsProps> = ({ routeProps }) => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.contentContainer}>
       {contents.map(({ key, component: Component, paddingTop }) => (
         <Component key={key} {...{ [key]: radio[key], openSite, paddingTop }} />
       ))}

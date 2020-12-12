@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 
 export default StyleSheet.create({
-  container: {
+  contentContainer: {
     paddingBottom: StyleGuide.spacing * 15,
   },
   title: {

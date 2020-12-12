@@ -104,7 +104,9 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
   }
 
   return (
-    <ScrollView style={[styles.container]} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      contentContainerStyle={[styles.contentContainer]}
+      showsVerticalScrollIndicator={false}>
       {!closeEmpty && (
         <Text style={[styles.title, { paddingTop: StyleGuide.spacing * 2 }]}>
           Rádios parecidas

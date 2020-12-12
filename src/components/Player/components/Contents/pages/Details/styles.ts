@@ -4,7 +4,7 @@ import StyleGuide from '~/utils/StyleGuide';
 const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
-  container: {
+  contentContainer: {
     paddingBottom: StyleGuide.spacing * 4,
   },
   title: {
