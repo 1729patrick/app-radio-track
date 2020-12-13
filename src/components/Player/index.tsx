@@ -54,6 +54,7 @@ import { useNetInfo } from '@react-native-community/netinfo';
 import Contents, { ContentsHandler } from './components/Contents';
 import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from './components/Contents/constants';
+import { useAd } from '~/ads/contexts/AdContext';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -88,6 +89,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 ) => {
   const { translateY } = usePlayer();
   const artistAndControlHeight = useSharedValue(300);
+  const { showPlayerAd } = useAd();
 
   const contentTranslateY = useSharedValue(CONTENT_SNAP_POINTS[1]);
   const [playing, setPlaying] = useState(false);
@@ -212,7 +214,9 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     playTrackPlayer();
 
     addHistory(radiosRef.current[radioIndexRef.current]);
-  }, [addHistory, playTrackPlayer]);
+
+    showPlayerAd();
+  }, [addHistory, playTrackPlayer, showPlayerAd]);
 
   const pauseTrackPlayer = useCallback(async () => {
     setPlaying(false);
