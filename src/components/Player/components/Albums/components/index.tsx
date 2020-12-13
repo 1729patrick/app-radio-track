@@ -25,7 +25,7 @@ const Album: React.FC<AlbumsProps> = ({ item, error }) => {
           priority: FastImage.priority.high,
         }}
       />
-      {error && (
+      {/* {error && (
         <View style={[styles.notFoundContainer]}>
           <LottieView
             source={require('~/assets/radio_not_found.json')}
@@ -35,7 +35,7 @@ const Album: React.FC<AlbumsProps> = ({ item, error }) => {
           />
           <Text style={styles.notFoundTitle}>🚨 Rádio fora do ar 🚨</Text>
         </View>
-      )}
+      )} */}
     </View>
   );
 };

@@ -127,6 +127,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const albumsMountedRef = useRef<boolean>(false);
   const isCorrectRadioRef = useRef<boolean>(false);
   const [errorRadioId, setErrorRadioId] = useState('');
+  const seekRef = useRef<{ id?: string; date?: number }>({});
 
   //@ts-ignore
   //todo: MUST BE REFECTORY
@@ -197,7 +198,15 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const playTrackPlayer = useCallback(async () => {
     setPlaying(true);
-    await TrackPlayer.seekTo(24 * 60 * 60);
+    const currentId = radiosRef.current[radioIndexRef.current]?.id;
+
+    if (seekRef.current?.id === currentId) {
+      const secondsSincePause =
+        (Date.now() - (seekRef.current.date || Date.now())) / 1000;
+      await TrackPlayer.seekTo(secondsSincePause);
+      seekRef.current = {};
+    }
+
     await TrackPlayer.play();
 
     setErrorRadioId('');
@@ -220,6 +229,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const pauseTrackPlayer = useCallback(async () => {
     setPlaying(false);
+
+    seekRef.current = {
+      id: radiosRef.current[radioIndexRef.current].id,
+      date: Date.now(),
+    };
+
     await TrackPlayer.pause();
   }, []);
 
@@ -242,13 +257,19 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         return;
       }
 
+      const types = ['hls', 'dash', 'smoothstreaming'];
+
+      const [{ type, url }] = radio.streams || [{}];
+
       const currentTrack = {
+        url,
         id: radio.id,
-        url: radio.streams[0]?.url,
         title: radio.name,
         artist: radio.slogan || radio.city?.name || '',
         artwork: image(radio.img),
-        type: (radio.streams[0]?.url?.endsWith('.m3u8') ? 'hls' : undefined) as
+        type: (types.find((typeTrack) => typeTrack === type)
+          ? type
+          : undefined) as
           | 'hls'
           | 'default'
           | 'dash'
@@ -269,13 +290,17 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       const playlists = radios.reduce(
         (acc: { before: any; after: any }, radio, index) => {
+          const [{ type, url }] = radio.streams || [{}];
+
           const track = {
+            url,
             id: radio.id,
-            url: radio.streams[0]?.url,
             title: radio.name,
             artist: radio.slogan || radio.city?.name,
             artwork: image(radio.img),
-            type: radio.streams[0]?.url?.endsWith('.m3u8') ? 'hls' : undefined,
+            type: types.find((typeTrack) => typeTrack === type)
+              ? type
+              : undefined,
           };
 
           return {
@@ -345,6 +370,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         radioIndexRef.current = radioIndex;
         radiosRef.current = radios;
         titleRef.current = title;
+        seekRef.current = {};
 
         setRadioIndex(radioIndex);
         setState({ radios, title });
