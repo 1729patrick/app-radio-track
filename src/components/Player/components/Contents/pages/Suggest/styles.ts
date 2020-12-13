@@ -3,7 +3,7 @@ import StyleGuide from '~/utils/StyleGuide';
 
 export default StyleSheet.create({
   contentContainer: {
-    paddingBottom: StyleGuide.spacing * 15,
+    paddingBottom: StyleGuide.spacing * 4,
   },
   title: {
     ...StyleGuide.typography.title1,
