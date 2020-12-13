@@ -17,6 +17,8 @@ const ReviewContext = createContext<ContextProps>({});
 
 const limitsToRequest = [10, 25, 50, 75, 100];
 
+import api from '~/services/api';
+
 export const ReviewProvider: React.FC = ({ children }) => {
   const { getItem, setItem } = useAsyncStorage('@radios:review');
 
@@ -25,18 +27,26 @@ export const ReviewProvider: React.FC = ({ children }) => {
 
   const reviewRef = useRef<ReviewHandler>(null);
 
-  const onConfirm = useCallback(
+  const onSaveReview = useCallback(
     (args: { starLevel: number; notes: string }) => {
       setItem(JSON.stringify(args));
+      api.post('app/reviews', args);
     },
     [setItem],
   );
 
+  const onConfirm = useCallback(
+    (args: { starLevel: number; notes: string }) => {
+      onSaveReview(args);
+    },
+    [onSaveReview],
+  );
+
   const onRateApp = useCallback(
     (args: { starLevel: number }) => {
-      setItem(JSON.stringify(args));
+      onSaveReview(args);
     },
-    [setItem],
+    [onSaveReview],
   );
 
   const onDismiss = useCallback(() => {}, []);
