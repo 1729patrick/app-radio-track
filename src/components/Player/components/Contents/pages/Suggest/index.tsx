@@ -90,7 +90,7 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
     return close.data?.slice(0, 5) || [];
   }, [close.data]);
 
-  if (locationEmpty || closeEmpty) {
+  if ((locationEmpty || closeEmpty) && !location.error && !location.error) {
     return <Loader backgroundColor={StyleGuide.palette.border} />;
   }
 
@@ -98,7 +98,7 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
     <ScrollView
       contentContainerStyle={[styles.contentContainer]}
       showsVerticalScrollIndicator={false}>
-      {!closeEmpty && (
+      {!closeEmpty && !close.error && (
         <Text style={[styles.title, { paddingTop: StyleGuide.spacing * 2 }]}>
           Rádios parecidas
         </Text>
@@ -106,7 +106,7 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
 
       {closeData.map(renderItemSimilar)}
 
-      {!locationEmpty && (
+      {!locationEmpty && !location.error && (
         <Text style={styles.title}>Rádios da mesma região</Text>
       )}
 
