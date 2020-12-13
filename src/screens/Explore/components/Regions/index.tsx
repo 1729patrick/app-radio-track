@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Dimensions, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { FlatList, RectButton } from 'react-native-gesture-handler';
@@ -6,6 +6,7 @@ import styles from './styles';
 import { REGIONS } from './data';
 import { useNavigation } from '@react-navigation/native';
 import StyleGuide from '~/utils/StyleGuide';
+import isEqual from 'lodash.isequal';
 
 const { width } = Dimensions.get('window');
 
@@ -37,7 +38,7 @@ const Regions = () => {
         </View>
       );
     },
-    [],
+    [onShowRegion],
   );
 
   return (
@@ -58,4 +59,4 @@ const Regions = () => {
   );
 };
 
-export default Regions;
+export default memo(Regions, isEqual);

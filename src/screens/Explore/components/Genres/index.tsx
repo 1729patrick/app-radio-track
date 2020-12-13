@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback } from 'react';
+import isEqual from 'lodash.isequal';
+import React, { memo, useCallback } from 'react';
 import { Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { RectButton } from 'react-native-gesture-handler';
@@ -50,4 +51,4 @@ const Genres = () => {
   );
 };
 
-export default Genres;
+export default memo(Genres, isEqual);
