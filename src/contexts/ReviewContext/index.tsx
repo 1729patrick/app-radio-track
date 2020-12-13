@@ -19,6 +19,8 @@ const limitsToRequest = [10, 25, 50, 75, 100];
 
 import api from '~/services/api';
 
+import DeviceInfo from 'react-native-device-info';
+
 export const ReviewProvider: React.FC = ({ children }) => {
   const { getItem, setItem } = useAsyncStorage('@radios:review');
 
@@ -28,9 +30,11 @@ export const ReviewProvider: React.FC = ({ children }) => {
   const reviewRef = useRef<ReviewHandler>(null);
 
   const onSaveReview = useCallback(
-    (args: { starLevel: number; notes: string }) => {
+    async (args: { starLevel: number; notes: string }) => {
       setItem(JSON.stringify(args));
-      api.post('app/reviews', args);
+
+      const deviceId = await DeviceInfo.getUniqueId();
+      api.post('app/reviews', { ...args, deviceId });
     },
     [setItem],
   );
