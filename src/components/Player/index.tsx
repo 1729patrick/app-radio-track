@@ -94,13 +94,13 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const contentTranslateY = useSharedValue(CONTENT_SNAP_POINTS[1]);
   const [playing, setPlaying] = useState(false);
   const playbackState = usePlaybackState();
-  const playbackStateRef = useRef(playbackState);
-  const checkPlayingTimeout = useRef(0);
   const contentsRef = useRef<ContentsHandler>(null);
+  const duckTimeoutRef = useRef(0);
 
+  const playingRef = useRef(playing);
   const runWhenArtistAndControlMount = useRef<() => void | undefined>();
 
-  const playbackStateOnDisconnectMoment = useRef<number>(-1);
+  const payingOnDisconnectMoment = useRef(false);
   const { addHistory } = useHistory();
   const { removePlayingRadio, setMetaData } = usePlaying();
   const isReconnected = useIsReconnected();
@@ -496,41 +496,23 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const onRemoteDuck = useCallback(
     ({ permanent, paused }: { permanent: boolean; paused: boolean }) => {
-      if (
-        !permanent &&
-        !paused &&
-        (playbackStateOnDisconnectMoment.current ===
-          TrackPlayer.STATE_PLAYING ||
-          playbackStateOnDisconnectMoment.current ===
-            TrackPlayer.STATE_BUFFERING ||
-          playbackStateOnDisconnectMoment.current === TrackPlayer.STATE_NONE)
-      ) {
-        playTrackPlayer();
+      if (!permanent && !paused && payingOnDisconnectMoment.current) {
+        duckTimeoutRef.current = BackgroundTimer.setTimeout(() => {
+          payingOnDisconnectMoment.current = false;
+          playTrackPlayer();
+        }, 1500);
         return;
       }
 
-      if (playbackStateOnDisconnectMoment.current < 0) {
-        playbackStateOnDisconnectMoment.current = playbackState;
+      BackgroundTimer.clearTimeout(duckTimeoutRef.current);
+
+      if (!payingOnDisconnectMoment.current) {
+        payingOnDisconnectMoment.current = playingRef.current;
       }
       pauseTrackPlayer();
     },
-    [pauseTrackPlayer, playTrackPlayer, playbackState],
+    [pauseTrackPlayer, playTrackPlayer],
   );
-
-  useEffect(() => {
-    if (playbackState === TrackPlayer.STATE_PLAYING) {
-      BackgroundTimer.clearTimeout(checkPlayingTimeout.current);
-      checkPlayingTimeout.current = BackgroundTimer.setTimeout(() => {
-        if (playbackStateRef.current === TrackPlayer.STATE_PLAYING) {
-          playbackStateOnDisconnectMoment.current = -1;
-        }
-      }, 3000);
-    }
-  }, [playbackState]);
-
-  useEffect(() => {
-    playbackStateRef.current = playbackState;
-  }, [playbackState]);
 
   useTrackPlayerEvents(
     events,
@@ -622,24 +604,27 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [playerState, playerStatePrevious, removePlayingRadio]);
 
   useEffect(() => {
-    if (
-      isReconnected &&
-      playbackStateOnDisconnectMoment.current === TrackPlayer.STATE_PLAYING
-    ) {
+    if (isReconnected && payingOnDisconnectMoment.current) {
       addRadiosToTrackPlayer(
         radiosRef.current,
         radioIndexRef.current,
         true,
         true,
       );
+
+      payingOnDisconnectMoment.current = false;
     }
   }, [addRadiosToTrackPlayer, isReconnected]);
 
   useEffect(() => {
-    if (!isConnected && playbackStateOnDisconnectMoment.current < 0) {
-      playbackStateOnDisconnectMoment.current = playbackState;
+    if (!isConnected && !payingOnDisconnectMoment.current) {
+      payingOnDisconnectMoment.current = playingRef.current;
     }
-  }, [isConnected, playbackState]);
+  }, [isConnected]);
+
+  useEffect(() => {
+    playingRef.current = playing;
+  }, [playing]);
 
   useEffect(() => {
     setup();
