@@ -27,6 +27,7 @@
 // #6d6e7c
 const StyleGuide = {
   spacing: 8,
+  borderRadius: 4,
   palette: {
     primary: '#fff',
     secondary: '#6d6e7c',

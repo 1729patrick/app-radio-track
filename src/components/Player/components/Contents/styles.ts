@@ -28,7 +28,7 @@ export default StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: INDICATOR_MARGIN_TOP,
-    borderRadius: 4,
+    borderRadius: StyleGuide.borderRadius,
     backgroundColor: StyleGuide.palette.secondary,
   },
   compactPlayer: {

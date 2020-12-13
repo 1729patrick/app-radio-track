@@ -26,7 +26,7 @@ export default StyleSheet.create({
   },
   programmingContent: {
     backgroundColor: '#43434C',
-    borderRadius: 4,
+    borderRadius: StyleGuide.borderRadius,
     padding: StyleGuide.spacing * 2,
   },
   programmingDayTitle: {

@@ -13,7 +13,7 @@ export default StyleSheet.create({
   },
   content: {
     backgroundColor: '#43434C',
-    borderRadius: 4,
+    borderRadius: StyleGuide.borderRadius,
     padding: CARD_PADDING,
     paddingBottom: 30,
     height: 200,
@@ -60,6 +60,6 @@ export default StyleSheet.create({
     borderColor: StyleGuide.palette.light,
     paddingHorizontal: StyleGuide.spacing * 2,
     paddingVertical: StyleGuide.spacing,
-    borderRadius: StyleGuide.spacing * 4,
+    borderRadius: 100,
   },
 });

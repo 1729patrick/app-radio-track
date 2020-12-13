@@ -11,7 +11,7 @@ export default StyleSheet.create({
   },
   image: {
     height: '100%',
-    borderRadius: 4,
+    borderRadius: StyleGuide.borderRadius,
     backgroundColor: StyleGuide.palette.background,
   },
   notFoundContainer: {
@@ -24,7 +24,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 35,
-    borderRadius: 4,
+    borderRadius: StyleGuide.borderRadius,
   },
   notFound: {
     width: width - 140,

@@ -11,7 +11,7 @@ export default StyleSheet.create({
   image: {
     height: CARD_SIZE - 16,
     width: CARD_SIZE - 16,
-    borderRadius: 4,
+    borderRadius: StyleGuide.borderRadius,
     backgroundColor: StyleGuide.palette.backgroundPrimary,
   },
   title: {

@@ -6,7 +6,7 @@ export default StyleSheet.create({
   container: {
     width: '100%',
     height: 50,
-    borderRadius: 4,
+    borderRadius: StyleGuide.borderRadius,
     marginTop: StyleGuide.spacing * 5,
     backgroundColor: lighten(0.1, StyleGuide.palette.backgroundPrimary),
   },
