@@ -25,7 +25,7 @@ const useReward = (id: string) => {
 
     return RewardedAd.createForAdRequest(unitId, {
       requestNonPersonalizedAdsOnly: true,
-      keywords: ['music', 'radio', 'player'],
+      keywords: ['music', 'radio', 'player', 'live music'],
     });
   }, [id]);
 

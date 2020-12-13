@@ -19,15 +19,16 @@ const Banner = ({ id }: { id: string }) => {
 
   return (
     <BannerAd
-      // onAdLoaded={(args) => console.log('onAdLoaded', args)}
+      onAdLoaded={() => {}}
       onAdFailedToLoad={() => setError(true)}
-      // onAdOpened={(args) => console.log('onAdOpened', args)}
-      // onAdClosed={(args) => console.log('onAdClosed', args)}
-
+      onAdOpened={() => setError(true)}
+      onAdClosed={() => setError(true)}
+      onAdLeftApplication={() => {}}
       unitId={unitId}
       size={BannerAdSize.FULL_BANNER}
       requestOptions={{
         requestNonPersonalizedAdsOnly: true,
+        keywords: ['music', 'radio', 'player', 'live music'],
       }}
     />
   );
