@@ -15,9 +15,7 @@ import { FavoriteRadios, PlaylistRadios } from './components/Radios/types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
-import { BLOCKS } from '~/ads/constants';
 import isEqual from 'lodash.isequal';
-import Review from '~/components/Review';
 
 function daysIntoYear() {
   const date = new Date();
@@ -31,7 +29,7 @@ function daysIntoYear() {
   );
 }
 
-const dateOfYear = daysIntoYear() % 300;
+const dateOfYear = daysIntoYear() % 200;
 
 const PLAYLISTS = [
   {

@@ -23,17 +23,8 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
     return routeProps?.radio || {};
   }, [routeProps?.radio]);
 
-  const initialPage = useMemo(() => {
-    if (radio.genres.length) {
-      return 1;
-    }
-    return +(Math.random() * 159).toFixed(0);
-  }, [radio.genres.length]);
-
   const close = useFetch<RadioType[]>(
-    `radio/${radio.id}/closes/${JSON.stringify(
-      radio.genres,
-    )}/?page=${initialPage}`,
+    `radio/${radio.id}/closes/${JSON.stringify(radio.genres)}`,
   );
 
   const location = useFetch<RadioType[]>(
