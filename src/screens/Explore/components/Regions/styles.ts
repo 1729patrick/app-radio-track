@@ -10,6 +10,7 @@ export default StyleSheet.create({
     paddingBottom: StyleGuide.spacing * 2,
     color: StyleGuide.palette.primary,
     paddingHorizontal: StyleGuide.spacing * 2,
+    width: '100%',
   },
   contentContainer: {
     paddingHorizontal: StyleGuide.spacing * 2,
@@ -18,11 +19,16 @@ export default StyleSheet.create({
     width: width * 0.75,
     paddingRight: StyleGuide.spacing * 2,
   },
-  button: {
+  region: {
     height: 50,
+    width: '100%',
     borderRadius: StyleGuide.borderRadius,
     marginBottom: StyleGuide.spacing * 1.5,
     backgroundColor: lighten(0.001, StyleGuide.palette.backgroundPrimary),
+  },
+  button: {
+    height: '100%',
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: StyleGuide.spacing,

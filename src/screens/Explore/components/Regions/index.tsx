@@ -26,14 +26,15 @@ const Regions = () => {
       return (
         <View style={styles.group}>
           {item.map((region) => (
-            <RectButton
-              rippleColor={StyleGuide.palette.background}
-              style={styles.button}
-              key={region.id}
-              onPress={() => onShowRegion(region)}>
-              <FastImage style={styles.image} source={region.image} />
-              <Text style={styles.regionTitle}>{region.title}</Text>
-            </RectButton>
+            <View style={styles.region} key={region.id}>
+              <RectButton
+                rippleColor={StyleGuide.palette.background}
+                style={styles.button}
+                onPress={() => onShowRegion(region)}>
+                <FastImage style={styles.image} source={region.image} />
+                <Text style={styles.regionTitle}>{region.title}</Text>
+              </RectButton>
+            </View>
           ))}
         </View>
       );

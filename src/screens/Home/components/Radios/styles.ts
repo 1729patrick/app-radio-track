@@ -20,7 +20,7 @@ export default StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: StyleGuide.spacing,
-    marginTop: 15,
+    marginTop: StyleGuide.spacing * 2,
   },
   showAll: {
     color: StyleGuide.palette.light,

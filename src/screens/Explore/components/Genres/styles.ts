@@ -12,6 +12,7 @@ export default StyleSheet.create({
     paddingBottom: StyleGuide.spacing * 2,
     color: StyleGuide.palette.primary,
     marginTop: StyleGuide.spacing * 3,
+    width: '100%',
   },
   regionTitle: { marginTop: 0, paddingHorizontal: StyleGuide.spacing * 2 },
   genres: {
