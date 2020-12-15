@@ -25,7 +25,7 @@ export default StyleSheet.create({
     height: 70,
     marginBottom: StyleGuide.spacing * 1.5,
     width: CARD_WIDTH,
-    borderRadius: StyleGuide.borderRadius,
+    borderRadius: StyleGuide.borderRadius * 2,
     overflow: 'hidden',
   },
   button: {

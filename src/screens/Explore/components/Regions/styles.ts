@@ -22,7 +22,7 @@ export default StyleSheet.create({
   region: {
     height: 50,
     width: '100%',
-    borderRadius: StyleGuide.borderRadius,
+    borderRadius: StyleGuide.borderRadius * 2,
     marginBottom: StyleGuide.spacing * 1.5,
     backgroundColor: lighten(0.001, StyleGuide.palette.backgroundPrimary),
   },
@@ -36,7 +36,7 @@ export default StyleSheet.create({
   image: {
     width: 50,
     height: 50 / 1.5,
-    borderRadius: StyleGuide.borderRadius,
+    borderRadius: StyleGuide.borderRadius * 2,
   },
   regionTitle: {
     ...StyleGuide.typography.headline,

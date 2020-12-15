@@ -10,6 +10,7 @@ export default StyleSheet.create({
   title: {
     ...StyleGuide.typography.tabBarLabel,
     color: StyleGuide.palette.light,
-    textTransform: 'uppercase',
+    fontSize: 14,
+    // textTransform: 'uppercase',
   },
 });

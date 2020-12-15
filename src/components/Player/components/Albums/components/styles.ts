@@ -11,7 +11,7 @@ export default StyleSheet.create({
   },
   image: {
     height: '100%',
-    borderRadius: StyleGuide.borderRadius,
+    borderRadius: StyleGuide.borderRadius * 5,
     backgroundColor: StyleGuide.palette.background,
   },
   notFoundContainer: {

@@ -1,4 +1,9 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+} from 'react';
 import RNIap, {
   InAppPurchase,
   PurchaseError,
@@ -16,71 +21,117 @@ type ContextProps = {};
 const IapContext = createContext<ContextProps>({});
 
 const itemSkus = ['unique_purchase'];
-const itemSubs = ['21221'];
+const itemSubs = ['mensal_sub'];
 
 export const IapProvider: React.FC = ({ children }) => {
-  const requestPurchase = async (sku): void => {
+  const requestPurchase = useCallback((sku): void => {
     try {
       RNIap.requestPurchase(sku);
     } catch (err) {
       console.warn(err.code, err.message);
     }
-  };
+  }, []);
 
-  const getAvailablePurchases = async () => {
+  const requestSubscription = useCallback((sku): void => {
     try {
-      console.info(
-        'Get available purchases (non-consumable or unconsumed consumable)',
-      );
-      const purchases = await RNIap.getAvailablePurchases();
-      console.info('Available purchases :: ', purchases);
+      RNIap.requestSubscription(sku);
     } catch (err) {
       console.warn(err.code, err.message);
     }
-  };
+  }, []);
 
-  const getItems = async () => {
+  const getAvailablePurchases = useCallback(async () => {
+    try {
+      const purchases = await RNIap.getAvailablePurchases();
+      console.log('Available purchases :: ', purchases.length, purchases);
+    } catch (err) {
+      console.warn(err.code, err.message);
+    }
+  }, []);
+
+  const getItems = useCallback(async () => {
     try {
       const products = await RNIap.getProducts(itemSkus);
-      // const products = await RNIap.getSubscriptions(itemSkus);
-      console.log('Products', products);
+      console.log('Products :: ', products);
     } catch (err) {
       console.warn(err.code, err.message);
     }
-  };
+  }, []);
 
-  const getSubscriptions = async () => {
+  const getSubscriptions = useCallback(async () => {
     try {
       const products = await RNIap.getSubscriptions(itemSubs);
-      console.log('Subs', products);
+      console.log('Subs :: ', products);
     } catch (err) {
       console.warn(err.code, err.message);
     }
-  };
+  }, []);
 
-  const prepare = async () => {
+  const prepare = useCallback(async () => {
     try {
-      const result = await RNIap.initConnection();
+      await RNIap.initConnection();
+      // await RNIap.consumeAllItemsAndroid();
 
       await RNIap.flushFailedPurchasesCachedAsPendingAndroid();
+
       getItems();
+
       getSubscriptions();
 
       getAvailablePurchases();
     } catch (err) {
       console.warn(err.code, err.message);
     }
-  };
+  }, [getAvailablePurchases, getItems, getSubscriptions]);
+
+  useEffect(() => {
+    const purchaseErrorSubscription = purchaseErrorListener(
+      (error: PurchaseError) => {
+        console.log('purchaseErrorListener', error);
+      },
+    );
+
+    return () => purchaseErrorSubscription.remove();
+  }, []);
 
   useEffect(() => {
     prepare();
   }, [prepare]);
 
+  useEffect(() => {
+    const purchaseUpdateSubscription = purchaseUpdatedListener(
+      async (purchase: InAppPurchase | SubscriptionPurchase) => {
+        console.log(JSON.stringify(purchase));
+        const receipt = purchase.transactionReceipt;
+        if (receipt) {
+          try {
+            // const ackResult = await finishTransaction(purchase);
+            // console.log({ ackResult });
+          } catch (ackErr) {
+            console.warn('ackErr', ackErr);
+          }
+        }
+      },
+    );
+
+    return () => purchaseUpdateSubscription.remove();
+  }, []);
+
   return (
-    <RectButton onPress={() => requestPurchase(itemSkus[0])} title="Purchase" />
+    <>
+      <RectButton
+        onPress={() => requestPurchase(itemSkus[0])}
+        title="Purchase PRODUCT"
+      />
+      <RectButton
+        onPress={() => requestSubscription(itemSubs[0])}
+        title="Purchase SUBS"
+      />
+    </>
   );
 
   return <IapContext.Provider value={{}}>{children}</IapContext.Provider>;
 };
 
 export const useIAP = () => useContext(IapContext);
+//https://github.com/dooboolab/react-native-iap/issues/1118

@@ -1,4 +1,5 @@
 import isEqual from 'lodash.isequal';
+import { lighten } from 'polished';
 import React, { memo } from 'react';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated, {
@@ -18,6 +19,7 @@ type TabProps = {
   onPress: (index: number) => void;
   animation: Animated.SharedValue<number>;
 };
+const colorInactive = lighten(0.1, StyleGuide.palette.secondary);
 
 const Tab: React.FC<TabProps> = ({
   indicatorWidth,
@@ -37,7 +39,7 @@ const Tab: React.FC<TabProps> = ({
     const colorActive = interpolateColor(
       animation.value,
       [0, 1],
-      [StyleGuide.palette.secondary, StyleGuide.palette.primary],
+      [colorInactive, StyleGuide.palette.primary],
     );
 
     const color = interpolateColor(
@@ -45,7 +47,7 @@ const Tab: React.FC<TabProps> = ({
       inputRange,
       //@ts-ignore
       inputRange.map((i: number) =>
-        i === index ? colorActive : StyleGuide.palette.secondary,
+        i === index ? colorActive : colorInactive,
       ),
     );
 

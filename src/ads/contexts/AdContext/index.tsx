@@ -6,7 +6,7 @@ import React, {
   useRef,
 } from 'react';
 import { BLOCKS } from '~/ads/constants';
-import useReward from '~/ads/hooks/useReward';
+import useInterstitial from '~/ads/hooks/useInterstitial';
 import BackgroundTimer from 'react-native-background-timer';
 
 type ContextProps = {
@@ -28,9 +28,9 @@ export const AdProvider: React.FC = ({ children }) => {
   const timeoutRef = useRef<number>(0);
   const availableRef = useRef(true);
 
-  const playlistReward = useReward(BLOCKS.PLAYLIST);
-  const libraryReward = useReward(BLOCKS.LIBRARY);
-  const playerReward = useReward(BLOCKS.PLAYER);
+  const playlistInterstitial = useInterstitial(BLOCKS.PLAYLIST);
+  const libraryInterstitial = useInterstitial(BLOCKS.LIBRARY);
+  const playerInterstitial = useInterstitial(BLOCKS.PLAYER);
 
   const resetTimeout = useCallback(() => {
     availableRef.current = false;
@@ -53,16 +53,16 @@ export const AdProvider: React.FC = ({ children }) => {
   );
 
   const showPlaylistAd = useCallback(() => {
-    showAd(playlistReward);
-  }, [playlistReward, showAd]);
+    showAd(playlistInterstitial);
+  }, [playlistInterstitial, showAd]);
 
   const showLibraryAd = useCallback(() => {
-    showAd(libraryReward);
-  }, [libraryReward, showAd]);
+    showAd(libraryInterstitial);
+  }, [libraryInterstitial, showAd]);
 
   const showPlayerAd = useCallback(() => {
-    showAd(playerReward);
-  }, [playerReward, showAd]);
+    showAd(playerInterstitial);
+  }, [playerInterstitial, showAd]);
 
   useEffect(() => {
     return () => BackgroundTimer.clearTimeout(timeoutRef.current);

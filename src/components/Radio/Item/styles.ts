@@ -12,7 +12,7 @@ export default StyleSheet.create({
   image: {
     height: IMAGE_SIZE,
     width: IMAGE_SIZE,
-    borderRadius: StyleGuide.borderRadius,
+    borderRadius: StyleGuide.borderRadius * 2,
     backgroundColor: StyleGuide.palette.backgroundPrimary,
   },
   info: { flex: 1, paddingHorizontal: StyleGuide.spacing * 2 },

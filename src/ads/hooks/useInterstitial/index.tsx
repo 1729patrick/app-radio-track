@@ -7,23 +7,23 @@ import TrackPlayer, {
 
 import {
   TestIds,
-  RewardedAd,
-  RewardedAdEventType,
+  InterstitialAd,
+  AdEventType,
 } from '@react-native-firebase/admob';
 
 import { BLOCKS } from '../../constants';
 
-const useReward = (id: string) => {
+const useInterstitial = (id: string) => {
   const loadedRef = useRef<boolean | undefined>();
   const showOnLoadRef = useRef<boolean | undefined>();
 
   const playbackStateOnShowMoment = useRef();
   const playbackState = usePlaybackState();
 
-  const rewarded = useMemo(() => {
-    const unitId = __DEV__ ? TestIds.REWARDED : id;
+  const interstitial = useMemo(() => {
+    const unitId = __DEV__ ? TestIds.INTERSTITIAL : id;
 
-    return RewardedAd.createForAdRequest(unitId, {
+    return InterstitialAd.createForAdRequest(unitId, {
       requestNonPersonalizedAdsOnly: true,
       keywords: ['music', 'radio', 'player', 'live music'],
     });
@@ -32,17 +32,17 @@ const useReward = (id: string) => {
   const showAd = useCallback(() => {
     if (loadedRef.current) {
       playbackStateOnShowMoment.current = playbackState;
-      rewarded.show();
+      interstitial.show();
     } else if (loadedRef.current === undefined) {
       showOnLoadRef.current = true;
     }
 
     loadedRef.current = false;
-  }, [playbackState, rewarded]);
+  }, [playbackState, interstitial]);
 
   const loadAd = useCallback(() => {
-    rewarded.load();
-  }, [rewarded]);
+    interstitial.load();
+  }, [interstitial]);
 
   const continuePlaying = useCallback(async () => {
     await TrackPlayer.seekTo(24 * 60 * 60);
@@ -50,8 +50,8 @@ const useReward = (id: string) => {
   }, []);
 
   useEffect(() => {
-    const eventListener = rewarded.onAdEvent((type) => {
-      if (type === RewardedAdEventType.LOADED) {
+    const eventListener = interstitial.onAdEvent((type) => {
+      if (type === AdEventType.LOADED) {
         loadedRef.current = true;
 
         if (showOnLoadRef.current) {
@@ -59,7 +59,7 @@ const useReward = (id: string) => {
           showOnLoadRef.current = false;
         }
       } else if (type === 'closed') {
-        const isPlayer = rewarded.adUnitId === BLOCKS.PLAYER;
+        const isPlayer = interstitial.adUnitId === BLOCKS.PLAYER;
 
         const wasPlaying =
           playbackStateOnShowMoment.current === TrackPlayer.STATE_PLAYING;
@@ -73,15 +73,15 @@ const useReward = (id: string) => {
       }
     });
 
-    rewarded.load();
+    interstitial.load();
 
     return () => {
       eventListener();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rewarded]);
+  }, [interstitial]);
 
   return { showAd, loadAd };
 };
 
-export default useReward;
+export default useInterstitial;

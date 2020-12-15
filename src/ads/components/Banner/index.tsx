@@ -25,7 +25,7 @@ const Banner = ({ id }: { id: string }) => {
       onAdClosed={() => setError(true)}
       onAdLeftApplication={() => {}}
       unitId={unitId}
-      size={BannerAdSize.FULL_BANNER}
+      size={BannerAdSize.SMART_BANNER}
       requestOptions={{
         requestNonPersonalizedAdsOnly: true,
         keywords: ['music', 'radio', 'player', 'live music'],
