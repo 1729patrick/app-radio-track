@@ -20,7 +20,7 @@ import RectButton from '~/components/Buttons/RectButton';
 type ContextProps = {};
 const IapContext = createContext<ContextProps>({});
 
-const itemSkus = ['unique_purchase'];
+const itemSkus = ['p1p2p3p4p5p6', 'id123321', 'p1p2p3p4p5p6p7'];
 const itemSubs = ['mensal_sub'];
 
 export const IapProvider: React.FC = ({ children }) => {
@@ -52,7 +52,7 @@ export const IapProvider: React.FC = ({ children }) => {
   const getItems = useCallback(async () => {
     try {
       const products = await RNIap.getProducts(itemSkus);
-      console.log('Products :: ', products);
+      console.log('Products :: ', products.length, products);
     } catch (err) {
       console.warn(err.code, err.message);
     }
