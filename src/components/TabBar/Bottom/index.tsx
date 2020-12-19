@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { Text } from 'react-native';
+import { Dimensions, Text, View } from 'react-native';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Player from '../../Player';
 
@@ -15,13 +15,14 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { SNAP_POINTS } from '../../Player/constants';
+import { COMPACT_HEIGHT, SNAP_POINTS } from '../../Player/constants';
 import { BOTTOM_TAB_BAR_HEIGHT } from './constants';
-
 
 import { ActiveCompass, InactiveCompass } from './Icons/Compass';
 import { ActiveHome, InactiveHome } from './Icons/Home';
 import { ActiveLibrary, InactiveLibrary } from './Icons/Library';
+
+const { width } = Dimensions.get('window');
 
 const TABS = [
   {
@@ -79,10 +80,26 @@ const TabBar: React.FC<TabBarProps> = ({ state, navigation }) => {
     [state.index],
   );
 
+  const borderStyle = useAnimatedStyle(() => {
+    return {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      width: interpolate(
+        translateY.value,
+        [SNAP_POINTS[1], SNAP_POINTS[1] + COMPACT_HEIGHT],
+        [width, 0],
+        Extrapolate.CLAMP,
+      ),
+    };
+  }, []);
+
   return (
     <>
       <Player ref={playerRef} />
       <Animated.View style={[styles.container, style]}>
+        <View style={[styles.borderContainer]}>
+          <Animated.View style={[styles.border, borderStyle]} />
+        </View>
         {TABS.map((tab, index) => (
           <BorderlessButton
             style={styles.tab}
@@ -96,7 +113,7 @@ const TabBar: React.FC<TabBarProps> = ({ state, navigation }) => {
                 {
                   color: isFocused(index)
                     ? StyleGuide.palette.primary
-                    : '#6d6e7c',
+                    : StyleGuide.palette.secondary,
                 },
               ]}>
               {tab.title}
