@@ -45,12 +45,14 @@ const Radio: React.FC<RadioProps> = ({
         )}
       </TouchableOpacity>
 
-      <Text style={styles.title} numberOfLines={2}>
-        {item.name}
-      </Text>
-      <Text style={styles.description} numberOfLines={1}>
-        {item.slogan || item.city?.name}
-      </Text>
+      <View onLayout={(e) => console.log(e.nativeEvent.layout.height)}>
+        <Text style={styles.title} numberOfLines={2}>
+          {item.name}
+        </Text>
+        <Text style={styles.description} numberOfLines={1}>
+          {item.slogan || item.city?.name}
+        </Text>
+      </View>
     </View>
   );
 };

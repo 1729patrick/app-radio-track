@@ -2,10 +2,12 @@ import { StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 import { CARD_SIZE } from '~/components/Radio/Card/constants';
 
+const NAME_AND_DESCRIPTION_HEIGHT = 62.5;
 export default StyleSheet.create({
   card: {
     width: CARD_SIZE,
     paddingHorizontal: StyleGuide.spacing,
+    minHeight: CARD_SIZE - StyleGuide.spacing * 2 + NAME_AND_DESCRIPTION_HEIGHT,
   },
   button: { zIndex: 1 },
 
