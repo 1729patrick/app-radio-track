@@ -76,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({
             />
           )}
 
-          <Text style={styles.title}>{title || 'Rádios Brasil'}</Text>
+          <Text style={styles.title}>{title || 'Rádios Online'}</Text>
         </View>
 
         <RoundButton

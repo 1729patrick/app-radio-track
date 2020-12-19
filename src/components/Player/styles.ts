@@ -13,8 +13,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     width,
     height,
-    paddingBottom: CONTENT_SNAP_POINTS[0] - 25,
-
-    paddingTop: CONTROLS_TOP_HEIGHT - 35,
+    paddingBottom: CONTENT_SNAP_POINTS[0],
+    paddingTop: CONTROLS_TOP_HEIGHT,
   },
 });

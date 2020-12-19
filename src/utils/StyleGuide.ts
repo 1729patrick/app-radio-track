@@ -36,18 +36,17 @@ const StyleGuide = {
     secondary: '#A0A2A7',
     light: '#BFC1C4',
     background,
-    backgroundPrimary: lighten(0.07, background),
-    border: lighten(0.13, background),
+    backgroundPrimary: '#2e2f34',
+    border: '#3c3e44',
     app: '#16CA61',
   },
   typography: {
     body: {
       fontSize: 17,
-      lineHeight: 20,
+      // lineHeight: 20,
     },
     callout: {
       fontSize: 15,
-      // lineHeight: 20,
       fontFamily: 'Montserrat-SemiBold',
     },
     caption: {

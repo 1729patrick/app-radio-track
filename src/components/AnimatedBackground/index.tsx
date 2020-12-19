@@ -17,7 +17,6 @@ import Animated, {
 import { shuffleColors, colors_ } from '~/utils/Colors';
 import StyleGuide from '~/utils/StyleGuide';
 
-
 export type AnimatedBackgroundHandler = {
   scrollHandler: any;
   setup: (args: { radioIndex: number; radiosSize: number }) => void;

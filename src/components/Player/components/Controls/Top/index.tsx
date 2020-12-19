@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,

@@ -13,6 +13,7 @@ import { SNAP_POINTS } from '../../constants';
 import styles from './styles';
 import TextTicker from 'react-native-text-ticker';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
+import { ARTIST_HEIGHT } from './constants';
 
 type ArtistType = {
   y: Animated.SharedValue<number>;
@@ -47,7 +48,7 @@ const Artist: React.FC<ArtistType> = ({ y, contentY, radio = {} }) => {
   // const onVoteUpPress = () => {};
 
   return (
-    <View>
+    <View style={{ height: ARTIST_HEIGHT }}>
       <Animated.View style={[styles.container, styleContent, style]}>
         <View style={styles.info}>
           {/* <RoundButton

@@ -27,6 +27,7 @@ import {
   COMPACT_HEIGHT,
   SNAP_POINTS,
   PADDING_HORIZONTAL,
+  ARTIST_AND_CONTROL_HEIGHT,
 } from '../../constants';
 import Album from './components';
 import { RadioType } from '~/types/Station';
@@ -49,7 +50,6 @@ type AlbumsProps = {
   onAlbumsMounted: () => void;
   scrollHandler: any;
   errorRadioId: string;
-  artistAndControlHeight: Animated.SharedValue<number>;
 };
 
 export type AlbumsHandler = {
@@ -67,7 +67,6 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     onAlbumsMounted,
     scrollHandler,
     errorRadioId,
-    artistAndControlHeight,
   },
   ref,
 ) => {
@@ -84,7 +83,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
             [
               0,
               -(width - COMPACT_HEIGHT) / 2 -
-                (height - (width + artistAndControlHeight.value + 10)) / 2,
+                (height - (width + ARTIST_AND_CONTROL_HEIGHT + 10)) / 2,
             ],
             Extrapolate.CLAMP,
           ),
@@ -107,7 +106,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
         },
       ],
     };
-  }, [artistAndControlHeight.value, y.value]);
+  }, [y.value]);
 
   const styleContent = useAnimatedStyle(() => {
     return {
@@ -118,7 +117,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
             [CONTENT_SNAP_POINTS[0], CONTENT_SNAP_POINTS[1]],
             [
               -(width - COMPACT_HEIGHT) / 2 -
-                (height - (width + artistAndControlHeight.value + 10)) / 2 +
+                (height - (width + ARTIST_AND_CONTROL_HEIGHT + 10)) / 2 +
                 STATUS_BAR_HEIGHT,
               0.2,
             ],
@@ -143,7 +142,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
         },
       ],
     };
-  }, [artistAndControlHeight.value, y.value]);
+  }, [y.value]);
 
   const scrollToAlbum = useCallback(
     ({ radioIndex, animated }: ScrollToAlbumArgs) => {
@@ -247,4 +246,4 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   );
 };
 
-export default forwardRef(Albums);
+export default memo(forwardRef(Albums));

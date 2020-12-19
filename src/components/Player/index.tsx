@@ -39,8 +39,6 @@ import { SNAP_POINTS, TIMING_DURATION } from './constants';
 import styles from './styles';
 import CompactPlayer from './components/CompactPlayer';
 
-import usePrevious from '~/hooks/usePrevious';
-
 import AnimatedBackground, {
   AnimatedBackgroundHandler,
 } from '~/components/AnimatedBackground';
@@ -88,7 +86,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   ref,
 ) => {
   const { translateY } = usePlayer();
-  const artistAndControlHeight = useSharedValue(300);
   const { showPlayerAd } = useAd();
 
   const contentTranslateY = useSharedValue(CONTENT_SNAP_POINTS[1]);
@@ -98,7 +95,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const duckTimeoutRef = useRef(0);
 
   const playingRef = useRef(playing);
-  const runWhenArtistAndControlMount = useRef<() => void | undefined>();
 
   const payingOnDisconnectMoment = useRef(false);
   const { addHistory } = useHistory();
@@ -374,8 +370,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         size?: 'expand' | 'compact';
       },
     ) => {
-      runWhenArtistAndControlMount.current = undefined;
-
       const size = args?.size || 'expand';
       const autoPlay = size !== 'compact';
 
@@ -410,20 +404,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       if (size === 'expand') {
         animateToPoint(SNAP_POINTS[0]);
       } else {
-        if (artistAndControlHeight.value !== 300) {
-          animateToPoint(SNAP_POINTS[1]);
-        } else {
-          runWhenArtistAndControlMount.current = () =>
-            animateToPoint(SNAP_POINTS[1]);
-        }
+        animateToPoint(SNAP_POINTS[1]);
       }
     },
-    [
-      addRadiosToTrackPlayer,
-      animateToPoint,
-      artistAndControlHeight.value,
-      setMetaData,
-    ],
+    [addRadiosToTrackPlayer, animateToPoint, setMetaData],
   );
 
   const onSetRadio = useCallback(
@@ -527,7 +511,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         duckTimeoutRef.current = BackgroundTimer.setTimeout(() => {
           payingOnDisconnectMoment.current = false;
           playTrackPlayer();
-        }, 2000);
+        }, 1000);
         return;
       }
 
@@ -647,15 +631,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [radioIndex, state.radios]);
 
   const onLayoutArtistAndControl = ({ nativeEvent }: LayoutChangeEvent) => {
-    if (artistAndControlHeight.value !== 300) {
-      return;
-    }
-
-    artistAndControlHeight.value = nativeEvent.layout.height;
-
-    if (typeof runWhenArtistAndControlMount.current === 'function') {
-      runWhenArtistAndControlMount.current();
-    }
+    console.log(nativeEvent.layout.height);
   };
 
   return (
@@ -704,7 +680,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
                 onAlbumsMounted={onAlbumsMounted}
                 scrollHandler={animatedBackgroundRef.current?.scrollHandler}
                 errorRadioId={errorRadioId}
-                artistAndControlHeight={artistAndControlHeight}
               />
             )}
 

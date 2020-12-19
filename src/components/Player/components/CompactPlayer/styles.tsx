@@ -24,6 +24,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     paddingRight: StyleGuide.spacing,
+    paddingBottom: 2,
   },
   title: {
     ...StyleGuide.typography.headline,
