@@ -6,7 +6,6 @@ import LottieView from 'lottie-react-native';
 import { RadioType } from '~/types/Station';
 import { image } from '~/services/api';
 
-
 type RadioProps = {
   playing: boolean;
   item: RadioType;
@@ -50,7 +49,7 @@ const Radio: React.FC<RadioProps> = ({
         {item.name}
       </Text>
       <Text style={styles.description} numberOfLines={1}>
-        {item.city?.name || item.slogan}
+        {item.slogan || item.city?.name}
       </Text>
     </View>
   );

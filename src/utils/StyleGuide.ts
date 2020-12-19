@@ -20,7 +20,7 @@ import { lighten } from 'polished';
 // <string>Montserrat-LightItalic.ttf</string>
 // <string>Montserrat-Medium.ttf</string>
 // <string>Montserrat-MediumItalic.ttf</string>
-// <string>Montserrat-Regu1lar.ttf</string>
+// <string>Montserrat-Regular.ttf</string>
 // <string>Montserrat-SemiBold.ttf</string>
 // <string>Montserrat-SemiBoldItalic.ttf</string>
 // <string>Montserrat-Thin.ttf</string>
@@ -37,7 +37,7 @@ const StyleGuide = {
     light: '#BFC1C4',
     background,
     backgroundPrimary: lighten(0.07, background),
-    border: lighten(0.2, background),
+    border: lighten(0.13, background),
     app: '#16CA61',
   },
   typography: {
@@ -46,21 +46,21 @@ const StyleGuide = {
       lineHeight: 20,
     },
     callout: {
-      fontSize: 14,
+      fontSize: 15,
       // lineHeight: 20,
-      fontFamily: 'Montserrat-Medium',
+      fontFamily: 'Montserrat-SemiBold',
     },
     caption: {
       fontFamily: 'Montserrat-Medium',
       fontSize: 17,
     },
     headline: {
-      fontSize: 17,
+      fontSize: 16,
       // lineHeight: 22,
       fontFamily: 'Montserrat-SemiBold',
     },
     subhead: {
-      fontSize: 13.5,
+      fontSize: 14,
       // lineHeight: 20,
       fontFamily: 'Montserrat-Medium',
       letterSpacing: -0.11,

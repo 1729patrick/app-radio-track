@@ -106,6 +106,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const isReconnected = useIsReconnected();
   const { isConnected } = useNetInfo();
 
+  type PlayerAnimationState = 'compact' | 'expanded' | 'closed' | 'active';
   const [state, setState] = useState<PlayerState>({
     title: '',
     radios: [],
@@ -113,10 +114,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const [radioIndex, setRadioIndex] = useState<number>(0);
 
   const [loading, setLoading] = useState(false);
-  const [playerState, setPlayerState] = useState<
-    'compact' | 'expanded' | 'closed' | 'active'
-  >('closed');
-  const playerStatePrevious = usePrevious(playerState);
+  const playerStateRef = useRef<PlayerAnimationState>('closed');
+  const playerStatePreviousRef = useRef<PlayerAnimationState>('closed');
 
   const albumsRef = useRef<AlbumsHandler>(null);
   const animatedBackgroundRef = useRef<AnimatedBackgroundHandler>(null);
@@ -129,6 +128,33 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const [errorRadioId, setErrorRadioId] = useState('');
   const seekRef = useRef<{ id?: string; date?: number }>({});
 
+  const setPlayerState = useCallback((state: PlayerAnimationState) => {
+    if (state === playerStateRef.current) {
+      return;
+    }
+
+    playerStatePreviousRef.current = playerStateRef.current;
+    playerStateRef.current = state;
+  }, []);
+
+  const onClose = useCallback(() => {
+    if (
+      playerStateRef.current === 'closed' &&
+      playerStatePreviousRef.current !== 'closed'
+    ) {
+      resetTrackPlayer();
+
+      setErrorRadioId('');
+      setRadioIndex(0);
+      setState({
+        title: '',
+        radios: [],
+      });
+
+      removePlayingRadio();
+    }
+  }, [removePlayingRadio]);
+
   //@ts-ignore
   //todo: MUST BE REFECTORY
   useDerivedValue(() => {
@@ -138,6 +164,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       runOnJS(setPlayerState)('compact');
     } else if (translateY.value === SNAP_POINTS[2]) {
       runOnJS(setPlayerState)('closed');
+      runOnJS(onClose)();
     } else {
       runOnJS(setPlayerState)('active');
     }
@@ -252,7 +279,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       if (
         previousRadio?.id === radio.id &&
         !error &&
-        playerState !== 'closed'
+        playerStateRef.current !== 'closed'
       ) {
         return;
       }
@@ -316,7 +343,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       addHistory(radiosRef.current[radioIndexRef.current]);
     },
-    [addHistory, playTrackPlayer, playerState],
+    [addHistory, playTrackPlayer],
   );
 
   const onTogglePlayback = useCallback(async () => {
@@ -500,7 +527,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         duckTimeoutRef.current = BackgroundTimer.setTimeout(() => {
           payingOnDisconnectMoment.current = false;
           playTrackPlayer();
-        }, 1500);
+        }, 2000);
         return;
       }
 
@@ -587,21 +614,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       return false;
     });
   }, [contentTranslateY, onCompactPlayer, translateY.value]);
-
-  useEffect(() => {
-    if (playerState === 'closed' && playerStatePrevious !== 'closed') {
-      resetTrackPlayer();
-
-      setErrorRadioId('');
-      setRadioIndex(0);
-      setState({
-        title: '',
-        radios: [],
-      });
-
-      removePlayingRadio();
-    }
-  }, [playerState, playerStatePrevious, removePlayingRadio]);
 
   useEffect(() => {
     if (isReconnected && payingOnDisconnectMoment.current) {

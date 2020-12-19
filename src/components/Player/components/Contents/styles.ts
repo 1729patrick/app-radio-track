@@ -1,7 +1,10 @@
-import { lighten } from 'polished';
 import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-import { INDICATOR_HEIGHT, INDICATOR_MARGIN_TOP } from './constants';
+import {
+  BACKGROUND_COLOR,
+  INDICATOR_HEIGHT,
+  INDICATOR_MARGIN_TOP,
+} from './constants';
 
 const { height, width } = Dimensions.get('window');
 
@@ -11,7 +14,7 @@ export default StyleSheet.create({
     zIndex: 3,
   },
   content: {
-    backgroundColor: lighten(0.1, StyleGuide.palette.backgroundPrimary),
+    backgroundColor: BACKGROUND_COLOR,
     height: height,
     width,
     borderTopRightRadius: StyleGuide.borderRadius * 3,

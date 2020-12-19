@@ -19,7 +19,6 @@ export default StyleSheet.create({
   title: {
     ...StyleGuide.typography.callout,
     color: StyleGuide.palette.primary,
-    fontSize: 15.5,
   },
   description: {
     ...StyleGuide.typography.subhead,

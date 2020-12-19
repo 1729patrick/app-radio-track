@@ -19,13 +19,10 @@ export default StyleSheet.create({
     ...StyleGuide.typography.callout,
     color: StyleGuide.palette.primary,
     marginTop: 10,
-    fontSize: 13.5,
-    paddingRight: StyleGuide.spacing * 1.5,
   },
   description: {
     ...StyleGuide.typography.subhead,
     color: StyleGuide.palette.secondary,
-    fontSize: 13.5,
     paddingRight: StyleGuide.spacing * 1.5,
   },
   playingContainer: {

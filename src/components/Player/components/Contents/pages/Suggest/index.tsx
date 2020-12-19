@@ -13,6 +13,7 @@ import { RouteProps } from '../../components/TabNavigator';
 import { RadioType } from '~/types/Station';
 import { useFetch } from '~/hooks/useFetch';
 import { CARD_SIZE } from '~/components/Radio/Card/constants';
+import { BACKGROUND_COLOR } from '../../constants';
 
 type SuggestProps = {
   routeProps: RouteProps;
@@ -91,7 +92,7 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
   }, [close.data]);
 
   if ((locationEmpty || closeEmpty) && !location.error && !location.error) {
-    return <Loader backgroundColor={StyleGuide.palette.border} />;
+    return <Loader backgroundColor={BACKGROUND_COLOR} />;
   }
 
   return (

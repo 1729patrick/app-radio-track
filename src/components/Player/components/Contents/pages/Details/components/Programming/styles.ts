@@ -13,7 +13,7 @@ export default StyleSheet.create({
     paddingBottom: 30,
   },
   content: {
-    backgroundColor: lighten(0.2, StyleGuide.palette.backgroundPrimary),
+    backgroundColor: lighten(0.1, StyleGuide.palette.backgroundPrimary),
     borderRadius: StyleGuide.borderRadius * 2.5,
     padding: CARD_PADDING,
     paddingBottom: 30,
@@ -56,7 +56,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   showMoreTitle: {
-    backgroundColor: lighten(0.2, StyleGuide.palette.backgroundPrimary),
+    backgroundColor: lighten(0.1, StyleGuide.palette.backgroundPrimary),
     borderWidth: 1,
     borderColor: StyleGuide.palette.secondary,
     paddingHorizontal: StyleGuide.spacing * 2,

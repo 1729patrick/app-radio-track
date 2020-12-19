@@ -16,7 +16,7 @@ export default StyleSheet.create({
     position: 'absolute',
     flexDirection: 'row',
     borderTopColor: StyleGuide.palette.border,
-    borderTopWidth: 1,
+    borderTopWidth: 1.5,
   },
   tab: { flex: 1, justifyContent: 'flex-end', alignItems: 'center' },
   title: {
