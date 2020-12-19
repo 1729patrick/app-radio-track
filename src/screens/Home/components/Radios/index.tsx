@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 import { Dimensions, Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { onExpandPlayer } from '~/components/Player';
@@ -7,11 +7,10 @@ import { usePlaying } from '~/contexts/PlayingContext';
 
 import Radio from '~/components/Radio/Card';
 
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import { RadioType } from '~/types/Station';
-import isEqual from 'lodash.isequal';
+
 import { CARD_SIZE } from '~/components/Radio/Card/constants';
-import { useSharedValue } from 'react-native-reanimated';
 import RoundButton from '~/components/Button/Round';
 import StyleGuide from '~/utils/StyleGuide';
 
@@ -34,7 +33,8 @@ const Radios: React.FC<RadiosProps> = ({
   onEndReached,
 }) => {
   const { playingRadioId } = usePlaying();
-  const x = useSharedValue(width / 3.4);
+  const flatListRef = useRef<FlatList<any>>(null);
+
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
@@ -69,7 +69,7 @@ const Radios: React.FC<RadiosProps> = ({
             onPress={onShowAllPress}
             Icon={Icon}
             size={24}
-            name="md-arrow-forward"
+            name="arrowright"
             color={StyleGuide.palette.light}
           />
         )}
@@ -87,9 +87,10 @@ const Radios: React.FC<RadiosProps> = ({
         renderItem={renderItem}
         onEndReached={onEndReached && onEndReached}
         onEndReachedThreshold={3}
+        decelerationRate={'fast'}
       />
     </View>
   );
 };
 
-export default memo(Radios, isEqual);
+export default memo(Radios);

@@ -6,8 +6,7 @@ const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   title: {
-    ...StyleGuide.typography.headline,
-    fontSize: 18.5,
+    ...StyleGuide.typography.title1,
     paddingBottom: StyleGuide.spacing * 2,
     color: StyleGuide.palette.primary,
     paddingHorizontal: StyleGuide.spacing * 2,
@@ -23,7 +22,7 @@ export default StyleSheet.create({
   region: {
     height: 50,
     width: '100%',
-    borderRadius: StyleGuide.borderRadius * 2,
+    borderRadius: StyleGuide.borderRadius * 1.5,
     marginBottom: StyleGuide.spacing * 1.5,
     backgroundColor: lighten(0.001, StyleGuide.palette.backgroundPrimary),
   },
@@ -37,7 +36,7 @@ export default StyleSheet.create({
   image: {
     width: 50,
     height: 50 / 1.5,
-    borderRadius: StyleGuide.borderRadius * 2,
+    borderRadius: StyleGuide.borderRadius,
   },
   regionTitle: {
     ...StyleGuide.typography.headline,

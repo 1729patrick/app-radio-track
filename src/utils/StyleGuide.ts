@@ -67,7 +67,7 @@ const StyleGuide = {
     },
     title1: {
       fontFamily: 'Montserrat-Bold',
-      fontSize: 23,
+      fontSize: 21,
       // lineHeight: 41,
       letterSpacing: 0.21,
     },

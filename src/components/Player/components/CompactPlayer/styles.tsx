@@ -32,7 +32,7 @@ export default StyleSheet.create({
   description: {
     ...StyleGuide.typography.subhead,
     color: StyleGuide.palette.secondary,
-    fontSize: 13,
+    fontSize: 13.5,
   },
   controls: { flexDirection: 'row', alignItems: 'center' },
   buttonContainer: {

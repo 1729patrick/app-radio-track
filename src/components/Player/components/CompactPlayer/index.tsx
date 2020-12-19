@@ -21,7 +21,6 @@ import { useFavorites } from '~/contexts/FavoriteContext';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
 
 import TextTicker from 'react-native-text-ticker';
-import isEqual from 'lodash.isequal';
 
 type CompactPlayerProps = {
   y?: Animated.SharedValue<number>;
@@ -173,4 +172,4 @@ const CompactPlayer: React.FC<CompactPlayerProps> = ({
   );
 };
 
-export default memo(CompactPlayer, isEqual);
+export default memo(CompactPlayer);

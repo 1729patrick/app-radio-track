@@ -10,7 +10,7 @@ import Error from '~/components/Error';
 import { BLOCKS } from '~/ads/constants';
 import Banner from '~/ads/components/Banner';
 import { usePlaying } from '~/contexts/PlayingContext';
-import isEqual from 'lodash.isequal';
+
 
 type FavoritesProps = {
   refreshTranslateY: (from: string) => void;

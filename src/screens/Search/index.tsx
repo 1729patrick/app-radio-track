@@ -17,7 +17,7 @@ import Error from '~/components/Error';
 import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';
 import { usePlaying } from '~/contexts/PlayingContext';
-import isEqual from 'lodash.isequal';
+
 import { useKeyboard } from '~/hooks/useKeyboard';
 
 type SearchProps = {
@@ -134,4 +134,4 @@ const Search: React.FC<SearchProps> = () => {
   );
 };
 
-export default memo(Search, isEqual);
+export default memo(Search);

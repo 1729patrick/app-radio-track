@@ -33,7 +33,6 @@ import { RadioType } from '~/types/Station';
 
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
 import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
-import isEqual from 'lodash.isequal';
 
 type ScrollToAlbumArgs = {
   radioIndex: number;

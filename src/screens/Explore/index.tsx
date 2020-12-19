@@ -9,7 +9,7 @@ import Header from '~/components/Header';
 
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 
-import isEqual from 'lodash.isequal';
+
 import Regions from './components/Regions';
 import Genres from './components/Genres';
 
@@ -32,6 +32,6 @@ const Explore: React.FC = () => {
   );
 };
 
-export default memo(Explore, isEqual);
+export default memo(Explore);
 
 // https://uigradients.com/#DeepPurple

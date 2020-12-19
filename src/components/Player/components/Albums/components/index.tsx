@@ -3,7 +3,6 @@ import { View, Image } from 'react-native';
 
 import { image } from '~/services/api';
 import { RadioType } from '~/types/Station';
-import isEqual from 'lodash.isequal';
 
 import styles from './styles';
 
@@ -36,4 +35,4 @@ const Album: React.FC<AlbumsProps> = ({ item, error }) => {
   );
 };
 
-export default memo(Album, isEqual);
+export default memo(Album);

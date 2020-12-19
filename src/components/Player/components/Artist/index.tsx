@@ -13,7 +13,6 @@ import { SNAP_POINTS } from '../../constants';
 import styles from './styles';
 import TextTicker from 'react-native-text-ticker';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
-import isEqual from 'lodash.isequal';
 
 type ArtistType = {
   y: Animated.SharedValue<number>;
@@ -86,4 +85,4 @@ const Artist: React.FC<ArtistType> = ({ y, contentY, radio = {} }) => {
   );
 };
 
-export default memo(Artist, isEqual);
+export default memo(Artist);

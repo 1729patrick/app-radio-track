@@ -5,7 +5,7 @@ import styles from './styles';
 import { REGIONS } from './data';
 import { useNavigation } from '@react-navigation/native';
 import StyleGuide from '~/utils/StyleGuide';
-import isEqual from 'lodash.isequal';
+
 
 const { width } = Dimensions.get('window');
 
@@ -59,4 +59,4 @@ const Regions = () => {
   );
 };
 
-export default memo(Regions, isEqual);
+export default memo(Regions);

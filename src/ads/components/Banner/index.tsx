@@ -1,7 +1,7 @@
 import React, { memo, useMemo, useState } from 'react';
 
 import { TestIds, BannerAd, BannerAdSize } from '@react-native-firebase/admob';
-import isEqual from 'lodash.isequal';
+
 
 const Banner = ({ id }: { id: string }) => {
   const [error, setError] = useState(false);
@@ -34,4 +34,4 @@ const Banner = ({ id }: { id: string }) => {
   );
 };
 
-export default memo(Banner, isEqual);
+export default memo(Banner);

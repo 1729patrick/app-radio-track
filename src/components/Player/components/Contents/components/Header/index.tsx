@@ -1,4 +1,3 @@
-import isEqual from 'lodash.isequal';
 import React, { memo } from 'react';
 import { Dimensions, View } from 'react-native';
 import Animated, {
@@ -61,4 +60,4 @@ const Header: React.FC<HeaderProps> = ({
   );
 };
 
-export default memo(Header, isEqual);
+export default memo(Header);

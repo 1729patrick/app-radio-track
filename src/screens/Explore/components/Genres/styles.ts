@@ -8,8 +8,7 @@ const CARD_WIDTH =
 
 export default StyleSheet.create({
   title: {
-    ...StyleGuide.typography.headline,
-    fontSize: 18.5,
+    ...StyleGuide.typography.title1,
     paddingBottom: StyleGuide.spacing * 2,
     color: StyleGuide.palette.primary,
     marginTop: StyleGuide.spacing * 3,
@@ -26,7 +25,7 @@ export default StyleSheet.create({
     height: 75,
     marginBottom: StyleGuide.spacing * 1.5,
     width: CARD_WIDTH,
-    borderRadius: StyleGuide.borderRadius * 2,
+    borderRadius: StyleGuide.borderRadius * 2.5,
     overflow: 'hidden',
   },
   button: {

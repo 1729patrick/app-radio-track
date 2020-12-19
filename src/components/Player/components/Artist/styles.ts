@@ -13,16 +13,15 @@ export default StyleSheet.create({
     paddingTop: 17,
   },
   title: {
-    ...StyleGuide.typography.headline,
+    ...StyleGuide.typography.title1,
     color: StyleGuide.palette.primary,
     textAlign: 'center',
     paddingBottom: 10,
-    fontSize: 18,
   },
   description: {
     textAlign: 'center',
     ...StyleGuide.typography.subhead,
-    fontSize: 15,
+    fontSize: 16,
     color: StyleGuide.palette.secondary,
   },
 });

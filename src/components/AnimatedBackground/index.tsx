@@ -16,7 +16,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { shuffleColors, colors_ } from '~/utils/Colors';
 import StyleGuide from '~/utils/StyleGuide';
-import isEqual from 'lodash.isequal';
+
 
 export type AnimatedBackgroundHandler = {
   scrollHandler: any;
@@ -99,4 +99,4 @@ const AnimatedBackground: React.ForwardRefRenderFunction<
   );
 };
 
-export default memo(forwardRef(AnimatedBackground), isEqual);
+export default memo(forwardRef(AnimatedBackground));

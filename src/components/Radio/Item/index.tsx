@@ -6,7 +6,7 @@ import StyleGuide from '~/utils/StyleGuide';
 import { RectButton } from 'react-native-gesture-handler';
 import RoundButton from '~/components/Button/Round';
 import LottieView from 'lottie-react-native';
-import isEqual from 'lodash.isequal';
+
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { RadioType } from '~/types/Station';
@@ -74,4 +74,4 @@ const Radio: React.FC<RadioProps> = ({
   );
 };
 
-export default memo(Radio, isEqual);
+export default memo(Radio);

@@ -4,15 +4,15 @@ import { CARD_SIZE } from '~/components/Radio/Card/constants';
 
 export default StyleSheet.create({
   card: {
-    width: CARD_SIZE - StyleGuide.spacing * 1.5,
-    marginHorizontal: StyleGuide.spacing * 0.75,
+    width: CARD_SIZE,
+    paddingHorizontal: StyleGuide.spacing,
   },
   button: { zIndex: 1 },
 
   image: {
-    height: CARD_SIZE - StyleGuide.spacing * 1.5,
-    width: CARD_SIZE - StyleGuide.spacing * 1.5,
-    borderRadius: StyleGuide.borderRadius * 4.5,
+    height: CARD_SIZE - StyleGuide.spacing * 2,
+    width: CARD_SIZE - StyleGuide.spacing * 2,
+    borderRadius: StyleGuide.borderRadius * 4,
     backgroundColor: StyleGuide.palette.backgroundPrimary,
   },
   title: {
@@ -34,9 +34,10 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.6)',
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: StyleGuide.borderRadius * 4,
   },
   playing: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
   },
 });

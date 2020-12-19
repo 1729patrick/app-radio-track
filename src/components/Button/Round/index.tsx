@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import StyleGuide from '~/utils/StyleGuide';
-import isEqual from 'lodash.isequal';
 
 import styles from './styles';
 
@@ -41,4 +40,4 @@ const RoundButton: React.FC<RoundButtonProp> = ({
   );
 };
 
-export default memo(RoundButton, isEqual);
+export default memo(RoundButton);

@@ -16,7 +16,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { RadioType } from '~/types/Station';
 import { useIsFocused } from '@react-navigation/native';
 import { useAd } from '~/ads/contexts/AdContext';
-import isEqual from 'lodash.isequal';
+
 
 const LibraryTab = createMaterialTopTabNavigator();
 
@@ -99,4 +99,4 @@ const Library = () => {
   );
 };
 
-export default memo(Library, isEqual);
+export default memo(Library);

@@ -11,11 +11,11 @@ export default StyleSheet.create({
     zIndex: 3,
   },
   content: {
-    backgroundColor: lighten(0.05, StyleGuide.palette.backgroundPrimary),
+    backgroundColor: lighten(0.1, StyleGuide.palette.backgroundPrimary),
     height: height,
     width,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    borderTopRightRadius: StyleGuide.borderRadius * 3,
+    borderTopLeftRadius: StyleGuide.borderRadius * 3,
   },
   indicatorContainer: {
     position: 'absolute',

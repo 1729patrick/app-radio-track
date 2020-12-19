@@ -15,7 +15,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { clamp } from 'react-native-redash';
-import isEqual from 'lodash.isequal';
+
 import { RadioType } from '~/types/Station';
 import { PlayerState } from '~/components/Player';
 
@@ -142,4 +142,4 @@ const TabNavigator: React.ForwardRefRenderFunction<
   );
 };
 
-export default memo(forwardRef(TabNavigator), isEqual);
+export default memo(forwardRef(TabNavigator));

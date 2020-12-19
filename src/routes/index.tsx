@@ -13,7 +13,6 @@ import TabBar from '~/components/TabBar/Bottom';
 import Playlist from '~/screens/Playlist';
 import Search from '~/screens/Search';
 import Library from '~/screens/Library';
-import isEqual from 'lodash.isequal';
 
 const Tab = createBottomTabNavigator();
 
@@ -112,4 +111,4 @@ const Routes = () => {
   );
 };
 
-export default React.memo(Routes, isEqual);
+export default React.memo(Routes);

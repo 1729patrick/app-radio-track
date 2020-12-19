@@ -1,4 +1,3 @@
-import isEqual from 'lodash.isequal';
 import React, { memo, useMemo } from 'react';
 import { View, Text } from 'react-native';
 
@@ -40,4 +39,4 @@ const Error = ({ type = 'offline' }: ErrorType) => {
   );
 };
 
-export default memo(Error, isEqual);
+export default memo(Error);

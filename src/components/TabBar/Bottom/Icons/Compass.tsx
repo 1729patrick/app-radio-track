@@ -1,4 +1,4 @@
-import isEqual from 'lodash.isequal';
+
 import * as React from 'react';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -19,7 +19,7 @@ export const InactiveCompass = React.memo(() => {
       style={style}
     />
   );
-}, isEqual);
+});
 
 export const ActiveCompass = React.memo(() => {
   return (
@@ -30,4 +30,4 @@ export const ActiveCompass = React.memo(() => {
       style={style}
     />
   );
-}, isEqual);
+});

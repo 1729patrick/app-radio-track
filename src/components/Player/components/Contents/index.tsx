@@ -27,7 +27,7 @@ import { SNAP_POINTS } from './constants';
 import TabNavigator, { TabNavigatorHandler } from './components/TabNavigator';
 import Details from './pages/Details';
 import Suggest from './pages/Suggest';
-import isEqual from 'lodash.isequal';
+
 import CompactPlayer from '../CompactPlayer';
 import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
 import { RadioType } from '~/types/Station';
@@ -242,4 +242,4 @@ const Contents: React.ForwardRefRenderFunction<
   );
 };
 
-export default memo(forwardRef(Contents), isEqual);
+export default memo(forwardRef(Contents));

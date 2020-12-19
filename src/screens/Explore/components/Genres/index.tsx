@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import isEqual from 'lodash.isequal';
+
 import React, { memo, useCallback } from 'react';
 import { Image, Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
@@ -50,4 +50,4 @@ const Genres = () => {
   );
 };
 
-export default memo(Genres, isEqual);
+export default memo(Genres);

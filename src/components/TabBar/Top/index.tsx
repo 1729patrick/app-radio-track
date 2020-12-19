@@ -6,7 +6,7 @@ import Animated, {
   useDerivedValue,
 } from 'react-native-reanimated';
 import { LayoutChangeEvent, TouchableOpacity } from 'react-native';
-import isEqual from 'lodash.isequal';
+
 
 import styles from './styles';
 import { HEADER_HEIGHT } from '~/components/Header/constants';
@@ -148,4 +148,4 @@ const TabBar: React.FC<TabBarProps & MaterialTopTabBarProps> = ({
   );
 };
 
-export default memo(TabBar, isEqual);
+export default memo(TabBar);

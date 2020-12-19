@@ -1,4 +1,3 @@
-import isEqual from 'lodash.isequal';
 import React, {
   forwardRef,
   memo,
@@ -239,4 +238,4 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
   );
 };
 
-export default memo(forwardRef(Review), isEqual);
+export default memo(forwardRef(Review));

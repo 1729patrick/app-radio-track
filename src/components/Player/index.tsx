@@ -8,7 +8,7 @@ import React, {
   useMemo,
   memo,
 } from 'react';
-import isEqual from 'lodash.isequal';
+
 import BackgroundTimer from 'react-native-background-timer';
 
 import { BackHandler, LayoutChangeEvent, Platform, View } from 'react-native';
@@ -721,7 +721,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   );
 };
 
-export default memo(forwardRef(Player), isEqual);
+export default memo(forwardRef(Player));
 
 function getStateName(state) {
   switch (state) {

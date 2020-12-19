@@ -18,7 +18,7 @@ import { useAd } from '~/ads/contexts/AdContext';
 import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';
 import { usePlaying } from '~/contexts/PlayingContext';
-import isEqual from 'lodash.isequal';
+
 
 type RootStackParamList = {
   Playlist: {
@@ -106,4 +106,4 @@ const Explore: React.FC = () => {
   );
 };
 
-export default memo(Explore, isEqual);
+export default memo(Explore);

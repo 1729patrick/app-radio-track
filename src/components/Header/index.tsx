@@ -7,7 +7,6 @@ import Animated, {
   useDerivedValue,
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
-import isEqual from 'lodash.isequal';
 
 import { HEADER_HEIGHT } from './constants';
 
@@ -91,4 +90,4 @@ const Header: React.FC<HeaderProps> = ({
   );
 };
 
-export default memo(Header, isEqual);
+export default memo(Header);

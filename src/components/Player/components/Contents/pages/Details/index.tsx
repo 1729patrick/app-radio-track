@@ -1,4 +1,3 @@
-import isEqual from 'lodash.isequal';
 import React, { memo, useMemo } from 'react';
 import { Linking, Text } from 'react-native';
 import {
@@ -22,7 +21,7 @@ const Description = memo(({ description, paddingTop }) => {
       <Text style={styles.description}>{description}</Text>
     </>
   );
-}, isEqual);
+});
 
 const Programming_ = memo(({ programming, paddingTop }) => {
   return (
@@ -31,7 +30,7 @@ const Programming_ = memo(({ programming, paddingTop }) => {
       <Programming programming={programming} />
     </>
   );
-}, isEqual);
+});
 
 const Address = memo(({ address, paddingTop }) => {
   return (
@@ -40,7 +39,7 @@ const Address = memo(({ address, paddingTop }) => {
       <Text style={styles.description}>{address}</Text>
     </>
   );
-}, isEqual);
+});
 
 const Web = memo(({ web, openSite, paddingTop }) => {
   return (
@@ -51,7 +50,7 @@ const Web = memo(({ web, openSite, paddingTop }) => {
       </TouchableWithoutFeedback>
     </>
   );
-}, isEqual);
+});
 
 const CONTENTS = [
   {
@@ -110,4 +109,4 @@ const Details: React.FC<DetailsProps> = ({ routeProps }) => {
   );
 };
 
-export default memo(Details, isEqual);
+export default memo(Details);

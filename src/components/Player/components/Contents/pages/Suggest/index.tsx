@@ -1,4 +1,3 @@
-import isEqual from 'lodash.isequal';
 import React, { memo, useCallback, useMemo } from 'react';
 import { Text, View } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
@@ -122,9 +121,10 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
         onEndReachedThreshold={3}
         horizontal
         snapToInterval={CARD_SIZE}
+        decelerationRate={'fast'}
       />
     </ScrollView>
   );
 };
 
-export default memo(Suggest, isEqual);
+export default memo(Suggest);

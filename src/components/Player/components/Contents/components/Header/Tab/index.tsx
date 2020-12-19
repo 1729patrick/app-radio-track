@@ -1,4 +1,3 @@
-import isEqual from 'lodash.isequal';
 import { lighten } from 'polished';
 import React, { memo } from 'react';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -64,4 +63,4 @@ const Tab: React.FC<TabProps> = ({
   );
 };
 
-export default memo(Tab, isEqual);
+export default memo(Tab);

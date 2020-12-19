@@ -1,4 +1,3 @@
-import isEqual from 'lodash.isequal';
 import React, {
   forwardRef,
   memo,
@@ -240,4 +239,4 @@ const Programming: React.FC<ProgrammingProps> = ({ programming }) => {
   );
 };
 
-export default memo(Programming, isEqual);
+export default memo(Programming);

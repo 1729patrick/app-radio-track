@@ -20,7 +20,7 @@ import { BLOCKS } from '~/ads/constants';
 import { useIsFocused } from '@react-navigation/native';
 import Loader from '~/components/Loader';
 import { usePlaying } from '~/contexts/PlayingContext';
-import isEqual from 'lodash.isequal';
+
 
 type HistoryProps = {
   refreshTranslateY: (from: string) => void;
