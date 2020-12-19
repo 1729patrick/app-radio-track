@@ -1,8 +1,7 @@
 import React, { memo, useCallback } from 'react';
-import { Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import styles from './styles';
 
-import FastImage from 'react-native-fast-image';
 import StyleGuide from '~/utils/StyleGuide';
 import { RectButton } from 'react-native-gesture-handler';
 import RoundButton from '~/components/Button/Round';
@@ -38,9 +37,8 @@ const Radio: React.FC<RadioProps> = ({
       ]}
       rippleColor={StyleGuide.palette.secondary}
       onPress={onRadioPress}>
-      <FastImage
+      <Image
         style={styles.image}
-        resizeMode={FastImage.resizeMode.cover}
         source={{
           uri: image(item.img),
         }}

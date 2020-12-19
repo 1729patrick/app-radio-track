@@ -1,8 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import isEqual from 'lodash.isequal';
 import React, { memo, useCallback } from 'react';
-import { Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image, Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import StyleGuide from '~/utils/StyleGuide';
@@ -40,7 +39,7 @@ const Genres = () => {
               {genre.title}
             </Text>
 
-            <FastImage
+            <Image
               style={styles.image}
               source={require('~/assets/vinyl.png')}
             />

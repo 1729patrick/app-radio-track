@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { Text, View } from 'react-native';
+import { Dimensions, Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { onExpandPlayer } from '~/components/Player';
 import styles from './styles';
@@ -7,8 +7,13 @@ import { usePlaying } from '~/contexts/PlayingContext';
 
 import Radio from '~/components/Radio/Card';
 
+import Icon from 'react-native-vector-icons/Ionicons';
 import { RadioType } from '~/types/Station';
 import isEqual from 'lodash.isequal';
+import { CARD_SIZE } from '~/components/Radio/Card/constants';
+import { useSharedValue } from 'react-native-reanimated';
+import RoundButton from '~/components/Button/Round';
+import StyleGuide from '~/utils/StyleGuide';
 
 export type RadiosProps = {
   title: string;
@@ -19,6 +24,7 @@ export type RadiosProps = {
   onEndReached?: () => void;
 };
 
+const { width } = Dimensions.get('window');
 const Radios: React.FC<RadiosProps> = ({
   title,
   radios = [],
@@ -28,7 +34,7 @@ const Radios: React.FC<RadiosProps> = ({
   onEndReached,
 }) => {
   const { playingRadioId } = usePlaying();
-
+  const x = useSharedValue(width / 3.4);
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
@@ -58,12 +64,15 @@ const Radios: React.FC<RadiosProps> = ({
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
-          activeOpacity={0.4}
-          onPress={onShowAllPress}
-          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
-          {showAll && <Text style={styles.showAll}>Ver Tudo</Text>}
-        </TouchableOpacity>
+        {showAll && (
+          <RoundButton
+            onPress={onShowAllPress}
+            Icon={Icon}
+            size={24}
+            name="md-arrow-forward"
+            color={StyleGuide.palette.light}
+          />
+        )}
       </View>
 
       <FlatList
@@ -73,6 +82,7 @@ const Radios: React.FC<RadiosProps> = ({
         horizontal
         showsVerticalScrollIndicator={false}
         data={radios}
+        snapToInterval={CARD_SIZE}
         keyExtractor={({ id }) => id}
         renderItem={renderItem}
         onEndReached={onEndReached && onEndReached}

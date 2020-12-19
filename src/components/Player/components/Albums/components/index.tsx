@@ -1,10 +1,8 @@
 import React, { memo } from 'react';
-import { View, Text } from 'react-native';
+import { View, Image } from 'react-native';
 
-import FastImage from 'react-native-fast-image';
 import { image } from '~/services/api';
 import { RadioType } from '~/types/Station';
-import LottieView from 'lottie-react-native';
 import isEqual from 'lodash.isequal';
 
 import styles from './styles';
@@ -17,12 +15,10 @@ type AlbumsProps = {
 const Album: React.FC<AlbumsProps> = ({ item, error }) => {
   return (
     <View style={[styles.card]}>
-      <FastImage
+      <Image
         style={styles.image}
-        resizeMode={FastImage.resizeMode.cover}
         source={{
           uri: image(item.img),
-          priority: FastImage.priority.high,
         }}
       />
       {/* {error && (

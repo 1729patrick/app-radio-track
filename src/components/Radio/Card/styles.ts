@@ -4,24 +4,29 @@ import { CARD_SIZE } from '~/components/Radio/Card/constants';
 
 export default StyleSheet.create({
   card: {
-    width: CARD_SIZE,
-    paddingHorizontal: 8,
+    width: CARD_SIZE - StyleGuide.spacing * 1.5,
+    marginHorizontal: StyleGuide.spacing * 0.75,
   },
   button: { zIndex: 1 },
+
   image: {
-    height: CARD_SIZE - 16,
-    width: CARD_SIZE - 16,
-    borderRadius: StyleGuide.borderRadius * 5,
+    height: CARD_SIZE - StyleGuide.spacing * 1.5,
+    width: CARD_SIZE - StyleGuide.spacing * 1.5,
+    borderRadius: StyleGuide.borderRadius * 4.5,
     backgroundColor: StyleGuide.palette.backgroundPrimary,
   },
   title: {
-    ...StyleGuide.typography.headline,
+    ...StyleGuide.typography.callout,
     color: StyleGuide.palette.primary,
     marginTop: 10,
+    fontSize: 13.5,
+    paddingRight: StyleGuide.spacing * 1.5,
   },
   description: {
     ...StyleGuide.typography.subhead,
     color: StyleGuide.palette.secondary,
+    fontSize: 13.5,
+    paddingRight: StyleGuide.spacing * 1.5,
   },
   playingContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -31,7 +36,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   playing: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
   },
 });

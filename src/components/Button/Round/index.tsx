@@ -11,6 +11,7 @@ type RoundButtonProp = {
   size: any;
   onPress: any;
   style?: any;
+  color?: string;
 };
 
 const RoundButton: React.FC<RoundButtonProp> = ({
@@ -19,22 +20,23 @@ const RoundButton: React.FC<RoundButtonProp> = ({
   size,
   onPress,
   style,
+  color = StyleGuide.palette.primary,
 }) => {
   return (
     <BorderlessButton
       rippleColor={StyleGuide.palette.secondary}
-      hitSlop={{ top: 42, bottom: 42, left: 42, right: 42 }}
+      hitSlop={{ top: 58, bottom: 58, left: 58, right: 58 }}
       onPress={onPress}
       style={[
         styles.container,
         {
-          height: size + 5,
-          width: size + 5,
-          borderRadius: (size + 5) / 2,
+          height: size + 6,
+          width: size + 6,
+          borderRadius: (size + 6) / 2,
         },
         style,
       ]}>
-      <Icon name={name} size={size} color={StyleGuide.palette.primary} />
+      <Icon name={name} size={size} color={color} />
     </BorderlessButton>
   );
 };

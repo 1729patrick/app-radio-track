@@ -1,3 +1,4 @@
+import { lighten } from 'polished';
 import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 
@@ -12,8 +13,8 @@ export default StyleSheet.create({
     paddingBottom: 30,
   },
   content: {
-    backgroundColor: '#43434C',
-    borderRadius: StyleGuide.borderRadius,
+    backgroundColor: lighten(0.14, StyleGuide.palette.backgroundPrimary),
+    borderRadius: StyleGuide.borderRadius * 2.5,
     padding: CARD_PADDING,
     paddingBottom: 30,
     height: 200,
@@ -55,9 +56,9 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   showMoreTitle: {
-    backgroundColor: StyleGuide.palette.border,
+    backgroundColor: lighten(0.14, StyleGuide.palette.backgroundPrimary),
     borderWidth: 1,
-    borderColor: StyleGuide.palette.light,
+    borderColor: StyleGuide.palette.secondary,
     paddingHorizontal: StyleGuide.spacing * 2,
     paddingVertical: StyleGuide.spacing,
     borderRadius: 100,

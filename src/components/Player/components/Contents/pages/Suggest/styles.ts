@@ -1,6 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+import { CARD_SIZE } from '~/components/Radio/Card/constants';
 import StyleGuide from '~/utils/StyleGuide';
 
+const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   contentContainer: {
     paddingBottom: StyleGuide.spacing * 4,
@@ -11,5 +13,7 @@ export default StyleSheet.create({
     paddingBottom: StyleGuide.spacing * 2,
     paddingHorizontal: StyleGuide.spacing * 2,
   },
-  carouselContentContainer: { paddingHorizontal: StyleGuide.spacing },
+  carouselContentContainer: {
+    paddingHorizontal: (width - CARD_SIZE * 3) / 2,
+  },
 });

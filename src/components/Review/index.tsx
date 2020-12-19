@@ -154,7 +154,10 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
 
   return (
     <Animated.View style={styles.container} pointerEvents="box-none">
-      <Animated.View style={[styles.background, styleBackground]} />
+      <Animated.View
+        style={[styles.background, styleBackground]}
+        onStartShouldSetResponder={onDismissReview}
+      />
       <PanGestureHandler onGestureEvent={panHandler} shouldCancelWhenOutside>
         <Animated.View
           style={[styles.content, style, styleKeyboard]}

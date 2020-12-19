@@ -1,6 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+import { CARD_SIZE } from '~/components/Radio/Card/constants';
 import StyleGuide from '~/utils/StyleGuide';
 
+const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     marginBottom: 55,
@@ -13,13 +15,14 @@ export default StyleSheet.create({
   },
   titleContainer: { flex: 1 },
   title: {
-    ...StyleGuide.typography.title1,
+    ...StyleGuide.typography.headline,
+    fontSize: 18.5,
     color: StyleGuide.palette.primary,
     flexWrap: 'wrap',
     paddingRight: StyleGuide.spacing * 2,
   },
   contentContainer: {
-    paddingHorizontal: StyleGuide.spacing,
+    paddingHorizontal: StyleGuide.spacing * 1.5,
     marginTop: StyleGuide.spacing * 2,
   },
   showAll: {

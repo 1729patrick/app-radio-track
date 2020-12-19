@@ -1,6 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { Dimensions, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Dimensions, Image, Text, View } from 'react-native';
 import { FlatList, RectButton } from 'react-native-gesture-handler';
 import styles from './styles';
 import { REGIONS } from './data';
@@ -31,7 +30,7 @@ const Regions = () => {
                 rippleColor={StyleGuide.palette.background}
                 style={styles.button}
                 onPress={() => onShowRegion(region)}>
-                <FastImage style={styles.image} source={region.image} />
+                <Image style={styles.image} source={region.image} />
                 <Text style={styles.regionTitle}>{region.title}</Text>
               </RectButton>
             </View>

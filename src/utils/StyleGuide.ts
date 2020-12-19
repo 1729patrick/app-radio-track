@@ -5,6 +5,8 @@
 // Montserrat-Bold
 // AirbnbCerealApp-Black
 
+import { lighten } from 'polished';
+
 // <string>Montserrat-Black.ttf</string>
 // <string>Montserrat-BlackItalic.ttf</string>
 // <string>Montserrat-Bold.ttf</string>
@@ -25,16 +27,17 @@
 // <string>Montserrat-ThinItalic.ttf</string>
 
 // #6d6e7c
+const background = '#1d1e21';
 const StyleGuide = {
   spacing: 8,
   borderRadius: 4,
   palette: {
     primary: '#fff',
-    secondary: '#6d6e7c',
-    light: '#ccc',
-    backgroundPrimary: '#1d1e21',
-    background: '#000',
-    border: '#303036',
+    secondary: '#A0A2A7',
+    light: '#BFC1C4',
+    background,
+    backgroundPrimary: lighten(0.07, background),
+    border: lighten(0.2, background),
     app: '#16CA61',
   },
   typography: {
@@ -43,7 +46,7 @@ const StyleGuide = {
       lineHeight: 20,
     },
     callout: {
-      fontSize: 15,
+      fontSize: 14,
       // lineHeight: 20,
       fontFamily: 'Montserrat-Medium',
     },
@@ -57,7 +60,7 @@ const StyleGuide = {
       fontFamily: 'Montserrat-SemiBold',
     },
     subhead: {
-      fontSize: 15,
+      fontSize: 13.5,
       // lineHeight: 20,
       fontFamily: 'Montserrat-Medium',
       letterSpacing: -0.11,

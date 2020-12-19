@@ -22,7 +22,7 @@ export default StyleSheet.create({
   title: {
     ...StyleGuide.typography.tabBarLabel,
     color: StyleGuide.palette.primary,
-    marginTop: 4,
+    marginTop: 3,
     marginBottom: 8,
   },
 });

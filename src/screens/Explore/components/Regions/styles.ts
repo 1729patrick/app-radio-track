@@ -6,7 +6,8 @@ const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   title: {
-    ...StyleGuide.typography.title1,
+    ...StyleGuide.typography.headline,
+    fontSize: 18.5,
     paddingBottom: StyleGuide.spacing * 2,
     color: StyleGuide.palette.primary,
     paddingHorizontal: StyleGuide.spacing * 2,

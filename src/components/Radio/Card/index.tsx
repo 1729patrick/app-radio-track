@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import styles from './styles';
 import LottieView from 'lottie-react-native';
 
-import FastImage from 'react-native-fast-image';
 import { RadioType } from '~/types/Station';
 import { image } from '~/services/api';
 import isEqual from 'lodash.isequal';
@@ -28,9 +27,8 @@ const Radio: React.FC<RadioProps> = ({
         hitSlop={{ top: 0, bottom: 50, left: 0, right: 0 }}
         style={styles.button}
         activeOpacity={0.4}>
-        <FastImage
+        <Image
           style={styles.image}
-          resizeMode={FastImage.resizeMode.cover}
           source={{
             uri: image(item.img),
           }}
@@ -48,11 +46,11 @@ const Radio: React.FC<RadioProps> = ({
         )}
       </TouchableOpacity>
 
-      <Text style={styles.title} numberOfLines={1}>
+      <Text style={styles.title} numberOfLines={2}>
         {item.name}
       </Text>
       <Text style={styles.description} numberOfLines={1}>
-        {item.slogan || item.city?.name}
+        {item.city?.name || item.slogan}
       </Text>
     </View>
   );

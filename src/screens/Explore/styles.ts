@@ -12,6 +12,7 @@ export default StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingTop: 25,
+    backgroundColor: StyleGuide.palette.background,
   },
   contentContainer: {
     flexGrow: 1,

@@ -13,6 +13,7 @@ import Loader from '~/components/Loader';
 import { RouteProps } from '../../components/TabNavigator';
 import { RadioType } from '~/types/Station';
 import { useFetch } from '~/hooks/useFetch';
+import { CARD_SIZE } from '~/components/Radio/Card/constants';
 
 type SuggestProps = {
   routeProps: RouteProps;
@@ -120,6 +121,7 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
         renderItem={renderItemRegion}
         onEndReachedThreshold={3}
         horizontal
+        snapToInterval={CARD_SIZE}
       />
     </ScrollView>
   );

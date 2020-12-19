@@ -17,9 +17,9 @@ export default StyleSheet.create({
   },
   info: { flex: 1, paddingHorizontal: StyleGuide.spacing * 2 },
   title: {
-    ...StyleGuide.typography.headline,
+    ...StyleGuide.typography.callout,
     color: StyleGuide.palette.primary,
-    fontSize: 16,
+    fontSize: 15.5,
   },
   description: {
     ...StyleGuide.typography.subhead,
