@@ -22,7 +22,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   card: {
-    height: 75,
+    height: 70,
     marginBottom: StyleGuide.spacing * 1.5,
     width: CARD_WIDTH,
     borderRadius: StyleGuide.borderRadius * 2.5,

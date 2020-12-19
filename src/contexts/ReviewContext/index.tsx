@@ -74,7 +74,7 @@ export const ReviewProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     checkToShow();
-  }, [checkToShow, getHistory, playingRadioId]);
+  }, [checkToShow, playingRadioId]);
 
   return (
     <ReviewContext.Provider value={{}}>

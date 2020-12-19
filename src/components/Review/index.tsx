@@ -164,7 +164,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
           <View style={styles.indicator} />
           <View style={styles.card}>
             <Text style={styles.title}>
-              Parabéns!! Você ouviu {radioCount} rádios 🎉
+              Você ouviu {radioCount} rádios, parabéns!! 🎉
             </Text>
 
             <LottieView
@@ -200,7 +200,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
                 ))}
               </View>
 
-              <View>
+              <View pointerEvents={starLevel ? 'auto' : 'none'}>
                 <View
                   style={[
                     styles.fiveStarContainer,

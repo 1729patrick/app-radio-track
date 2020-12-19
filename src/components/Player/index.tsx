@@ -220,20 +220,29 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [playbackState]);
 
   const playTrackPlayer = useCallback(async () => {
-    setPlaying(true);
-    const currentId = radiosRef.current[radioIndexRef.current]?.id;
+    return new Promise(async (resolve, reject) => {
+      try {
+        setPlaying(true);
+        const currentId = radiosRef.current[radioIndexRef.current]?.id;
 
-    if (seekRef.current?.id === currentId) {
-      const secondsSincePause =
-        (Date.now() - (seekRef.current.date || Date.now())) / 1000;
-      await TrackPlayer.seekTo(secondsSincePause);
-      seekRef.current = {};
-    }
+        if (seekRef.current?.id === currentId) {
+          const secondsSincePause =
+            (Date.now() - (seekRef.current.date || Date.now())) / 1000;
+          await TrackPlayer.seekTo(secondsSincePause);
+          seekRef.current = {};
+        }
 
-    await TrackPlayer.play();
+        await TrackPlayer.play();
 
-    setErrorRadioId('');
-    addHistory(radiosRef.current[radioIndexRef.current]);
+        setErrorRadioId('');
+        addHistory(radiosRef.current[radioIndexRef.current]);
+
+        resolve('');
+      } catch (e) {
+        console.log(e, 'playTrackPlayer');
+        reject();
+      }
+    });
   }, [addHistory]);
 
   const resetTrackPlayer = async () => {
@@ -268,76 +277,75 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       autoPlay?: boolean,
       error?: boolean,
     ) => {
-      const radio = radios[radioIndex];
+      try {
+        const radio = radios[radioIndex];
 
-      const previousRadio = radiosRef.current[radioIndexRef.current];
+        const previousRadio = radiosRef.current[radioIndexRef.current];
+        if (
+          previousRadio?.id === radio.id &&
+          !error &&
+          playerStateRef.current !== 'closed'
+        ) {
+          return;
+        }
+        const types = ['hls', 'dash', 'smoothstreaming'];
 
-      if (
-        previousRadio?.id === radio.id &&
-        !error &&
-        playerStateRef.current !== 'closed'
-      ) {
-        return;
+        const [{ type, url }] = radio.streams || [{}];
+        const currentTrack = {
+          url,
+          id: radio.id,
+          title: radio.name,
+          artist: radio.slogan || radio.city?.name || '',
+          artwork: image(radio.img),
+          type: (types.find((typeTrack) => typeTrack === type)
+            ? type
+            : undefined) as
+            | 'hls'
+            | 'default'
+            | 'dash'
+            | 'smoothstreaming'
+            | undefined,
+        };
+
+        await TrackPlayer.reset();
+        await TrackPlayer.add(currentTrack);
+        if (autoPlay) {
+          await playTrackPlayer();
+        }
+        if (radios.length === 1) {
+          return;
+        }
+
+        const playlists = radios.reduce(
+          (acc: { before: any; after: any }, radio, index) => {
+            const [{ type, url }] = radio.streams || [{}];
+
+            const track = {
+              url,
+              id: radio.id,
+              title: radio.name,
+              artist: radio.slogan || radio.city?.name,
+              artwork: image(radio.img),
+              type: types.find((typeTrack) => typeTrack === type)
+                ? type
+                : undefined,
+            };
+
+            return {
+              before: index < radioIndex ? [...acc.before, track] : acc.before,
+              after: index > radioIndex ? [...acc.after, track] : acc.after,
+            };
+          },
+          { before: [], after: [] },
+        );
+
+        await TrackPlayer.add(playlists.before, currentTrack.id);
+        await TrackPlayer.add(playlists.after);
+
+        addHistory(radiosRef.current[radioIndexRef.current]);
+      } catch (e) {
+        console.log(e, 'addRadiosToTrackPlayer');
       }
-
-      const types = ['hls', 'dash', 'smoothstreaming'];
-
-      const [{ type, url }] = radio.streams || [{}];
-
-      const currentTrack = {
-        url,
-        id: radio.id,
-        title: radio.name,
-        artist: radio.slogan || radio.city?.name || '',
-        artwork: image(radio.img),
-        type: (types.find((typeTrack) => typeTrack === type)
-          ? type
-          : undefined) as
-          | 'hls'
-          | 'default'
-          | 'dash'
-          | 'smoothstreaming'
-          | undefined,
-      };
-
-      await TrackPlayer.reset();
-
-      await TrackPlayer.add(currentTrack);
-      if (autoPlay) {
-        playTrackPlayer();
-      }
-
-      if (radios.length === 1) {
-        return;
-      }
-
-      const playlists = radios.reduce(
-        (acc: { before: any; after: any }, radio, index) => {
-          const [{ type, url }] = radio.streams || [{}];
-
-          const track = {
-            url,
-            id: radio.id,
-            title: radio.name,
-            artist: radio.slogan || radio.city?.name,
-            artwork: image(radio.img),
-            type: types.find((typeTrack) => typeTrack === type)
-              ? type
-              : undefined,
-          };
-
-          return {
-            before: index < radioIndex ? [...acc.before, track] : acc.before,
-            after: index > radioIndex ? [...acc.after, track] : acc.after,
-          };
-        },
-        { before: [], after: [] },
-      );
-
-      await TrackPlayer.add(playlists.before, currentTrack.id);
-      await TrackPlayer.add(playlists.after);
-
-      addHistory(radiosRef.current[radioIndexRef.current]);
     },
     [addHistory, playTrackPlayer],
   );
@@ -375,12 +383,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       if (args) {
         const { radioIndex, radios, title } = args;
-        setErrorRadioId('');
-
-        animatedBackgroundRef.current?.setup({
-          radioIndex,
-          radiosSize: radios.length,
-        });
 
         if (Platform.OS === 'android') {
           addRadiosToTrackPlayer(radios, radioIndex, autoPlay);
@@ -392,6 +394,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         radiosRef.current = radios;
         titleRef.current = title;
         seekRef.current = {};
+
+        setErrorRadioId('');
 
         setRadioIndex(radioIndex);
         setState({ radios, title });
@@ -631,7 +635,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [radioIndex, state.radios]);
 
   const onLayoutArtistAndControl = ({ nativeEvent }: LayoutChangeEvent) => {
-    console.log(nativeEvent.layout.height);
+    // console.log(nativeEvent.layout.height);
   };
 
   return (

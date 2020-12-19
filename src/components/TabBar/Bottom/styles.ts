@@ -30,6 +30,6 @@ export default StyleSheet.create({
   title: {
     ...StyleGuide.typography.tabBarLabel,
     marginTop: 3,
-    marginBottom: 5,
+    marginBottom: 7,
   },
 });

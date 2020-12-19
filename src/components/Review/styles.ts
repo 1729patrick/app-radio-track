@@ -1,4 +1,4 @@
-import { rgba } from 'polished';
+import { darken } from 'polished';
 import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 
@@ -17,10 +17,10 @@ export default StyleSheet.create({
     backgroundColor: StyleGuide.palette.background,
   },
   content: {
-    backgroundColor: StyleGuide.palette.backgroundPrimary,
+    backgroundColor: StyleGuide.palette.background,
     width,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    borderTopRightRadius: StyleGuide.borderRadius * 3,
+    borderTopLeftRadius: StyleGuide.borderRadius * 3,
   },
   indicator: {
     width: 40,
@@ -40,6 +40,7 @@ export default StyleSheet.create({
     color: StyleGuide.palette.primary,
     flexWrap: 'wrap',
     paddingRight: StyleGuide.spacing * 2,
+    zIndex: 2,
   },
 
   winner: {
@@ -50,12 +51,10 @@ export default StyleSheet.create({
     zIndex: 1,
   },
   description: {
-    ...StyleGuide.typography.title2,
-    fontSize: 18,
-    color: '#ddd',
+    ...StyleGuide.typography.callout,
+    fontSize: 16,
+    color: darken(0.2, StyleGuide.palette.primary),
     marginTop: StyleGuide.spacing,
-    lineHeight: 22,
-    // letterSpacing: 1,
   },
   stars: {
     flexDirection: 'row',

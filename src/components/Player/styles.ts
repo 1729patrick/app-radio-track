@@ -2,8 +2,8 @@ import { Dimensions, StyleSheet } from 'react-native';
 
 const { height, width } = Dimensions.get('window');
 
-import { SNAP_POINTS as CONTENT_SNAP_POINTS } from './components/Contents/constants';
 import { CONTROLS_TOP_HEIGHT } from './components/Controls/Top/constants';
+import { COMPACT_HEIGHT } from './constants';
 
 export default StyleSheet.create({
   container: {
@@ -13,7 +13,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     width,
     height,
-    paddingBottom: CONTENT_SNAP_POINTS[0],
+    paddingBottom: COMPACT_HEIGHT,
     paddingTop: CONTROLS_TOP_HEIGHT,
   },
 });

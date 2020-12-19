@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native';
+import { COMPACT_HEIGHT } from '../../constants';
 import { ARTIST_HEIGHT } from '../Artist/constants';
-import { SNAP_POINTS } from '../Contents/constants';
 import { CONTROLS_BOTTOM_HEIGHT } from '../Controls/Bottom/constants';
 import { CONTROLS_TOP_HEIGHT } from '../Controls/Top/constants';
 
@@ -10,7 +10,7 @@ export const ALBUM_HEIGHT_SIZE =
   CONTROLS_BOTTOM_HEIGHT -
   ARTIST_HEIGHT -
   CONTROLS_TOP_HEIGHT -
-  SNAP_POINTS[0] +
-  95;
+  COMPACT_HEIGHT +
+  15;
 
-export const ALBUM_SIZE = Math.min(width, ALBUM_HEIGHT_SIZE - 35);
+export const ALBUM_SIZE = Math.min(width, ALBUM_HEIGHT_SIZE);
