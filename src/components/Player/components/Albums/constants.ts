@@ -13,4 +13,4 @@ export const ALBUM_HEIGHT_SIZE =
   SNAP_POINTS[0] +
   95;
 
-export const ALBUM_SIZE = Math.min(width, ALBUM_HEIGHT_SIZE - 70);
+export const ALBUM_SIZE = Math.min(width, ALBUM_HEIGHT_SIZE - 35);

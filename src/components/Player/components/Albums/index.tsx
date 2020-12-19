@@ -83,7 +83,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
             [
               0,
               -(width - COMPACT_HEIGHT) / 2 -
-                (height - (width + ARTIST_AND_CONTROL_HEIGHT + 10)) / 2,
+                (height - (width + ARTIST_AND_CONTROL_HEIGHT)) / 2,
             ],
             Extrapolate.CLAMP,
           ),
@@ -100,7 +100,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           scale: interpolate(
             y.value,
             [SNAP_POINTS[1] * 0.25, SNAP_POINTS[1]],
-            [1, (COMPACT_HEIGHT * 1.2 - PADDING_HORIZONTAL) / width],
+            [1, (COMPACT_HEIGHT * 1.25 - PADDING_HORIZONTAL) / width],
             Extrapolate.CLAMP,
           ),
         },
@@ -117,7 +117,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
             [CONTENT_SNAP_POINTS[0], CONTENT_SNAP_POINTS[1]],
             [
               -(width - COMPACT_HEIGHT) / 2 -
-                (height - (width + ARTIST_AND_CONTROL_HEIGHT + 10)) / 2 +
+                (height - (width + ARTIST_AND_CONTROL_HEIGHT)) / 2 +
                 STATUS_BAR_HEIGHT,
               0.2,
             ],
@@ -136,7 +136,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           scale: interpolate(
             contentY.value,
             [CONTENT_SNAP_POINTS[0], CONTENT_SNAP_POINTS[1]],
-            [(COMPACT_HEIGHT * 1.2 - PADDING_HORIZONTAL) / width, 1],
+            [(COMPACT_HEIGHT * 1.25 - PADDING_HORIZONTAL) / width, 1],
             Extrapolate.CLAMP,
           ),
         },

@@ -668,20 +668,18 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               radio={radio}
             />
 
-            {radio && (
-              <Albums
-                ref={albumsRef}
-                y={translateY}
-                contentY={contentTranslateY}
-                radios={state.radios}
-                setRadioIndex={onSetRadioIndex}
-                radioIndex={radioIndexRef.current}
-                loading={loading}
-                onAlbumsMounted={onAlbumsMounted}
-                scrollHandler={animatedBackgroundRef.current?.scrollHandler}
-                errorRadioId={errorRadioId}
-              />
-            )}
+            <Albums
+              ref={albumsRef}
+              y={translateY}
+              contentY={contentTranslateY}
+              radios={state.radios || []}
+              setRadioIndex={onSetRadioIndex}
+              radioIndex={radioIndexRef.current}
+              loading={loading}
+              onAlbumsMounted={onAlbumsMounted}
+              scrollHandler={animatedBackgroundRef.current?.scrollHandler}
+              errorRadioId={errorRadioId}
+            />
 
             <View onLayout={onLayoutArtistAndControl}>
               <Artist
