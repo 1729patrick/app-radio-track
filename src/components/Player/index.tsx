@@ -697,6 +697,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
                 playing={playing}
                 buffering={buffering}
                 error={!!errorRadioId}
+                radioIndex={radioIndex}
+                radiosLength={state?.radios?.length}
               />
             </View>
           </AnimatedBackground>

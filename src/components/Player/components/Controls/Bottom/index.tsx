@@ -25,6 +25,8 @@ type BottomControlsProps = {
   buffering: boolean;
   onTogglePlayback: () => void;
   error: boolean;
+  radioIndex: number;
+  radiosLength: number;
 };
 
 const BottomControls: React.FC<BottomControlsProps> = ({
@@ -36,6 +38,8 @@ const BottomControls: React.FC<BottomControlsProps> = ({
   playing,
   buffering,
   error,
+  radioIndex,
+  radiosLength,
 }) => {
   const style = useAnimatedStyle(() => {
     return {
@@ -67,6 +71,7 @@ const BottomControls: React.FC<BottomControlsProps> = ({
           size={30}
           onPress={onPreviousRadio}
           Icon={Icon}
+          disabled={!radioIndex}
         />
 
         <View style={styles.playContainer}>
@@ -112,6 +117,7 @@ const BottomControls: React.FC<BottomControlsProps> = ({
           size={30}
           onPress={onNextRadio}
           Icon={Icon}
+          disabled={radioIndex + 1 === radiosLength}
         />
       </Animated.View>
     </View>

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import StyleGuide from '~/utils/StyleGuide';
 
@@ -11,6 +11,7 @@ type RoundButtonProp = {
   onPress: any;
   style?: any;
   color?: string;
+  disabled?: boolean;
 };
 
 const RoundButton: React.FC<RoundButtonProp> = ({
@@ -20,11 +21,17 @@ const RoundButton: React.FC<RoundButtonProp> = ({
   onPress,
   style,
   color = StyleGuide.palette.primary,
+  disabled,
 }) => {
+  const opacity = useMemo(() => {
+    return disabled ? 0.4 : 1;
+  }, [disabled]);
+
   return (
     <BorderlessButton
       rippleColor={StyleGuide.palette.secondary}
       hitSlop={{ top: 58, bottom: 58, left: 58, right: 58 }}
+      enabled={!disabled}
       onPress={onPress}
       style={[
         styles.container,
@@ -32,6 +39,7 @@ const RoundButton: React.FC<RoundButtonProp> = ({
           height: size + 6,
           width: size + 6,
           borderRadius: (size + 6) / 2,
+          opacity,
         },
         style,
       ]}>
