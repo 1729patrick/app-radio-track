@@ -62,6 +62,12 @@ const TabBar: React.FC<TabBarProps> = ({ state, navigation }) => {
           ),
         },
       ],
+      elevation: interpolate(
+        translateY.value,
+        [SNAP_POINTS[2] - 1, SNAP_POINTS[2]],
+        [0, 30],
+        Extrapolate.CLAMP,
+      ),
     };
   }, [translateY.value]);
 

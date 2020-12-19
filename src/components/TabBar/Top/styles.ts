@@ -16,6 +16,7 @@ export default StyleSheet.create({
     position: 'absolute',
     width: '100%',
     zIndex: 1,
+    elevation: 5,
   },
   indicator: {
     backgroundColor: StyleGuide.palette.primary,

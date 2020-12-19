@@ -19,6 +19,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: StyleGuide.spacing * 2,
+    elevation: 5,
   },
   input: {
     ...StyleGuide.typography.caption,

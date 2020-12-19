@@ -16,7 +16,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
 
-
 function daysIntoYear() {
   const date = new Date();
   return (
@@ -31,12 +30,27 @@ function daysIntoYear() {
 
 const dateOfYear = daysIntoYear() % 200;
 
+console.log(
+  `genres/${JSON.stringify(['gvfajea1', 'i59vt6nq', 'rdqj0603', 'se14b6m5'])}`,
+);
 const PLAYLISTS = [
   {
     key: 'recommend',
     url: 'playlists/recommend',
     title: 'Rádios recomendadas',
     initialPage: dateOfYear + 5,
+  },
+  {
+    key: 'news',
+    url: 'genres/["gvfajea1","i59vt6nq","rdqj0603","se14b6m5"]',
+    title: 'Acompanhe as notícias',
+    initialPage: 1,
+  },
+  {
+    key: 'sports',
+    url: 'genres/["iq5fvulg"]',
+    title: 'Tudo sobre esportes',
+    initialPage: 2,
   },
   {
     key: 'popular',

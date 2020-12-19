@@ -23,7 +23,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   border: {
-    height: 1.5,
+    height: 1,
     backgroundColor: StyleGuide.palette.border,
   },
   tab: { flex: 1, justifyContent: 'flex-end', alignItems: 'center' },

@@ -19,7 +19,6 @@ import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';
 import { usePlaying } from '~/contexts/PlayingContext';
 
-
 type RootStackParamList = {
   Playlist: {
     title: string;
@@ -84,6 +83,7 @@ const Explore: React.FC = () => {
         translateY={translateY}
         title={params?.title}
         backgroundColor={StyleGuide.palette.backgroundPrimary}
+        elevation={5}
       />
 
       {!data && !error && <Loader />}

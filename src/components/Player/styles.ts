@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
+import StyleGuide from '~/utils/StyleGuide';
 
 const { height, width } = Dimensions.get('window');
 
@@ -15,5 +16,6 @@ export default StyleSheet.create({
     height,
     paddingBottom: COMPACT_HEIGHT,
     paddingTop: CONTROLS_TOP_HEIGHT,
+    elevation: 30,
   },
 });

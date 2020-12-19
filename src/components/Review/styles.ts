@@ -14,7 +14,7 @@ export default StyleSheet.create({
   },
   background: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: StyleGuide.palette.background,
+    backgroundColor: StyleGuide.palette.border,
   },
   content: {
     backgroundColor: StyleGuide.palette.background,

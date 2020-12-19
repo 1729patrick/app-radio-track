@@ -28,6 +28,7 @@ import { lighten } from 'polished';
 
 // #6d6e7c
 const background = '#1d1e21';
+console.log(lighten(0.01, '#1d1e21'));
 const StyleGuide = {
   spacing: 8,
   borderRadius: 4,
@@ -36,8 +37,8 @@ const StyleGuide = {
     secondary: '#A0A2A7',
     light: '#BFC1C4',
     background,
-    backgroundPrimary: '#2e2f34',
-    border: '#3c3e44',
+    backgroundPrimary: '#1f2024',
+    border: '#27282c',
     app: '#16CA61',
   },
   typography: {
@@ -51,7 +52,7 @@ const StyleGuide = {
     },
     caption: {
       fontFamily: 'Montserrat-Medium',
-      fontSize: 17,
+      fontSize: 15,
     },
     headline: {
       fontSize: 16,

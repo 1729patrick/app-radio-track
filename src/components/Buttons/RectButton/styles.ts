@@ -6,7 +6,7 @@ export default StyleSheet.create({
   container: {
     width: '100%',
     height: 50,
-    borderRadius: StyleGuide.borderRadius,
+    borderRadius: StyleGuide.borderRadius * 2,
     marginTop: StyleGuide.spacing * 5,
     backgroundColor: lighten(0.1, StyleGuide.palette.backgroundPrimary),
   },
@@ -20,5 +20,6 @@ export default StyleSheet.create({
     ...StyleGuide.typography.headline,
     fontSize: 15,
     letterSpacing: 0.7,
+    paddingBottom: 1,
   },
 });

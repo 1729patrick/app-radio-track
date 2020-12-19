@@ -22,6 +22,7 @@ type HeaderProps = {
   title?: string;
   backgroundColor?: string;
   showBack?: boolean;
+  elevation?: number;
 };
 
 const Header: React.FC<HeaderProps> = ({
@@ -29,6 +30,7 @@ const Header: React.FC<HeaderProps> = ({
   title,
   backgroundColor = StyleGuide.palette.background,
   showBack = true,
+  elevation = 0,
 }) => {
   const { navigate, pop } = useNavigation<StackNavigationProp<any>>();
 
@@ -63,7 +65,11 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <Animated.View
-      style={[styles.container, styleContainer, { backgroundColor }]}>
+      style={[
+        styles.container,
+        styleContainer,
+        { backgroundColor, elevation },
+      ]}>
       <Animated.View style={[styles.content, styleContent]}>
         <View style={styles.left}>
           {showBack && (
@@ -76,7 +82,7 @@ const Header: React.FC<HeaderProps> = ({
             />
           )}
 
-          <Text style={styles.title}>{title || 'Rádio Online'}</Text>
+          <Text style={styles.title}>{title || 'Rádios Online'}</Text>
         </View>
 
         <RoundButton

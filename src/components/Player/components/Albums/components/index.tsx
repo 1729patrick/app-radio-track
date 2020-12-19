@@ -7,7 +7,7 @@ import { RadioType } from '~/types/Station';
 import styles from './styles';
 
 type AlbumsProps = {
-  item: RadioType;
+  item?: RadioType;
   error?: boolean;
 };
 
@@ -17,7 +17,7 @@ const Album: React.FC<AlbumsProps> = ({ item, error }) => {
       <Image
         style={styles.image}
         source={{
-          uri: image(item.img),
+          uri: image(item?.img),
         }}
       />
       {/* {error && (

@@ -24,7 +24,7 @@ export default StyleSheet.create({
     width: '100%',
     borderRadius: StyleGuide.borderRadius * 1.5,
     marginBottom: StyleGuide.spacing * 1.5,
-    backgroundColor: lighten(0.001, StyleGuide.palette.backgroundPrimary),
+    backgroundColor: lighten(0.03, StyleGuide.palette.backgroundPrimary),
   },
   button: {
     height: '100%',

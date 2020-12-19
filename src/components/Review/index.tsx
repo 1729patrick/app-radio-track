@@ -106,7 +106,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
 
   const styleBackground = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(translateY.value, snapPoints, [0.85, 0]),
+      opacity: interpolate(translateY.value, snapPoints, [0.75, 0]),
     };
   }, [keyboardHeight]);
 
