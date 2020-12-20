@@ -28,7 +28,6 @@ import { lighten } from 'polished';
 
 // #6d6e7c
 const background = '#1d1e21';
-console.log(lighten(0.01, '#1d1e21'));
 const StyleGuide = {
   spacing: 8,
   borderRadius: 4,

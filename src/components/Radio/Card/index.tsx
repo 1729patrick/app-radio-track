@@ -45,7 +45,7 @@ const Radio: React.FC<RadioProps> = ({
         )}
       </TouchableOpacity>
 
-      <View onLayout={(e) => console.log(e.nativeEvent.layout.height)}>
+      <View>
         <Text style={styles.title} numberOfLines={2}>
           {item.name}
         </Text>

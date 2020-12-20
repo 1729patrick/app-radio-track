@@ -222,7 +222,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const playTrackPlayer = useCallback(async () => {
     return new Promise(async (resolve, reject) => {
       try {
-        setPlaying(true);
         const currentId = radiosRef.current[radioIndexRef.current]?.id;
 
         if (seekRef.current?.id === currentId) {
@@ -237,6 +236,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         setErrorRadioId('');
         addHistory(radiosRef.current[radioIndexRef.current]);
 
+        setPlaying(true);
         resolve('');
       } catch (e) {
         console.log(e, 'playTrackPlayer');
@@ -309,9 +309,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
         await TrackPlayer.reset();
         await TrackPlayer.add(currentTrack);
+        await TrackPlayer.skip(currentTrack.id);
         if (autoPlay) {
           await playTrackPlayer();
         }
+
         if (radios.length === 1) {
           return;
         }

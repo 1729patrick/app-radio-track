@@ -30,9 +30,6 @@ function daysIntoYear() {
 
 const dateOfYear = daysIntoYear() % 200;
 
-console.log(
-  `genres/${JSON.stringify(['gvfajea1', 'i59vt6nq', 'rdqj0603', 'se14b6m5'])}`,
-);
 const PLAYLISTS = [
   {
     key: 'recommend',
