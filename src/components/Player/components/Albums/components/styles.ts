@@ -8,13 +8,14 @@ export default StyleSheet.create({
   card: {
     width: width,
     height: ALBUM_SIZE,
+    overflow: 'hidden',
   },
   image: {
     width: ALBUM_SIZE - 70,
     height: ALBUM_SIZE - 70,
     marginLeft: 'auto',
     marginRight: 'auto',
-    borderRadius: StyleGuide.borderRadius * 5,
+    // borderRadius: StyleGuide.borderRadius * 5,
     backgroundColor: StyleGuide.palette.background,
   },
   notFoundContainer: {

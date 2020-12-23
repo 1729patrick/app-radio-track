@@ -8,14 +8,22 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Dimensions, LayoutChangeEvent, Text, View } from 'react-native';
+import {
+  Dimensions,
+  LayoutChangeEvent,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import {
   PanGestureHandler,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import Animated, {
+  Extrapolate,
   interpolate,
   runOnJS,
+  useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -30,10 +38,11 @@ import { useKeyboard } from '~/hooks/useKeyboard';
 import RectButton from '../Buttons/RectButton';
 import WithoutFeedbackButton from '../Buttons/WithoutFeedback';
 import Input from '../Input';
+import Explore from '~/screens/Explore';
 
 const { height } = Dimensions.get('window');
 
-const TIMING_DURATION = 300;
+const TIMING_DURATION = 250;
 
 type ReviewProps = {
   onDismiss: () => void;
@@ -57,6 +66,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
   const [starLevel, setStarLevel] = useState(0);
   const translateY = useSharedValue(snapPoints[1]);
   const animationRef = useRef<LottieView>(null);
+  const inputRef = useRef<TextInput>(null);
 
   const onEnd = useCallback(() => {
     'worklet';
@@ -100,15 +110,31 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
 
   const styleKeyboard = useAnimatedStyle(() => {
     return {
-      marginTop: -keyboardHeight,
+      paddingBottom: keyboardHeight,
     };
   }, [keyboardHeight]);
 
   const styleBackground = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(translateY.value, snapPoints, [0.75, 0]),
+      opacity: interpolate(
+        translateY.value,
+        snapPoints,
+        [0.75, 0],
+        Extrapolate.CLAMP,
+      ),
     };
   }, [keyboardHeight]);
+
+  const styleFakeBackground = useAnimatedStyle(() => {
+    return {
+      bottom: interpolate(
+        translateY.value,
+        snapPoints,
+        [0, -height / 2],
+        Extrapolate.CLAMP,
+      ),
+    };
+  }, [translateY.value]);
 
   const onLayout = useCallback(({ nativeEvent }: LayoutChangeEvent) => {
     setContentHeight(height - nativeEvent.layout.height);
@@ -129,9 +155,11 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
   }, [animateToPoint, onConfirm, snapPoints, starLevel]);
 
   const onDismissReview = useCallback(() => {
-    animateToPoint(snapPoints[1]);
-    onDismiss();
-  }, [animateToPoint, onDismiss, snapPoints]);
+    if (translateY.value === snapPoints[0]) {
+      animateToPoint(snapPoints[1]);
+      onDismiss();
+    }
+  }, [animateToPoint, onDismiss, snapPoints, translateY.value]);
 
   const setReviewNotes = useCallback((notes: string) => {
     reviewNotesRef.current = notes;
@@ -147,6 +175,22 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
     show: (count) => setRadiosCount(count),
   }));
 
+  const onSelectStarLevel = (star: number) => {
+    if (star < 5) {
+      inputRef.current?.focus();
+    }
+
+    setStarLevel(star);
+  };
+
+  const animatedProps = useAnimatedProps(() => {
+    const pointerEvents = translateY.value === snapPoints[0] ? 'auto' : 'none';
+
+    return {
+      pointerEvents,
+    };
+  }, [translateY.value, snapPoints[0]]);
+
   if (!radioCount) {
     return null;
   }
@@ -156,7 +200,11 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
       <Animated.View
         style={[styles.background, styleBackground]}
         onStartShouldSetResponder={onDismissReview}
+        animatedProps={animatedProps}
       />
+
+      <Animated.View style={[styles.fakeBackground, styleFakeBackground]} />
+
       <PanGestureHandler onGestureEvent={panHandler} shouldCancelWhenOutside>
         <Animated.View
           style={[styles.content, style, styleKeyboard]}
@@ -184,7 +232,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
                 {[1, 2, 3, 4, 5].map((star) => (
                   <TouchableWithoutFeedback
                     hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
-                    onPress={() => setStarLevel(star)}
+                    onPress={() => onSelectStarLevel(star)}
                     key={star}>
                     <Icon
                       name={starLevel >= star ? 'star' : 'staro'}
@@ -223,6 +271,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
                   <Input
                     placeholder={'Descreva a sua experiência (opcional)'}
                     onChangeText={setReviewNotes}
+                    ref={inputRef}
                   />
                   <WithoutFeedbackButton
                     title={'CONFIRMAR'}

@@ -142,7 +142,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
         },
       ],
     };
-  }, [y.value]);
+  }, [contentY.value]);
 
   const scrollToAlbum = useCallback(
     ({ radioIndex, animated }: ScrollToAlbumArgs) => {
@@ -189,9 +189,16 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
 
   const renderItem = useCallback(
     ({ item }) => {
-      return <Album item={item} error={item.id === errorRadioId} />;
+      return (
+        <Album
+          item={item}
+          error={item.id === errorRadioId}
+          contentY={contentY}
+          y={y}
+        />
+      );
     },
-    [errorRadioId],
+    [contentY, errorRadioId, y],
   );
 
   const onLayout = useCallback(() => {
@@ -217,7 +224,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
   return (
     <Animated.View
       style={[styles.container, styleContent, style]}
-      {...{ animatedProps }}>
+      animatedProps={animatedProps}>
       {!hiddenFlatList && (
         <AnimatedFlatList
           ref={flatListRef}
@@ -241,7 +248,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           renderItem={renderItem}
         />
       )}
-      {loading && <Album item={radios[radioIndex]} />}
+      {loading && <Album item={radios[radioIndex]} contentY={contentY} y={y} />}
     </Animated.View>
   );
 };

@@ -15,6 +15,7 @@ import { FavoriteRadios, PlaylistRadios } from './components/Radios/types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
+import Input from '~/components/Input';
 
 function daysIntoYear() {
   const date = new Date();
@@ -148,6 +149,10 @@ const Home: React.FC = () => {
             onShowAll={onShowPlaylist}
           />
         ))}
+        {/* <Input
+          placeholder={'Descreva a sua experiência (opcional)'}
+          onChangeText={() => {}}
+        /> */}
       </Animated.ScrollView>
     </View>
   );

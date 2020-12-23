@@ -6,7 +6,7 @@ export const INDICATOR_HEIGHT = 5;
 export const INDICATOR_MARGIN_TOP = 10;
 export const TIMING_DURATION = 300;
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
@@ -15,6 +15,14 @@ export default StyleSheet.create({
   background: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: StyleGuide.palette.border,
+  },
+  fakeBackground: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: StyleGuide.palette.background,
+    height: height / 2,
+    marginTop: 'auto',
+    width,
   },
   content: {
     backgroundColor: StyleGuide.palette.background,

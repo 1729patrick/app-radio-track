@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { TextInput } from 'react-native-gesture-handler';
 import styles from './styles';
 
@@ -6,9 +6,18 @@ type InputProps = {
   placeholder: string;
   onChangeText: (text: string) => void;
 };
-const Input = ({ placeholder, onChangeText }: InputProps) => {
+
+type Ref =
+  | string
+  | ((instance: TextInput | null) => void)
+  | React.RefObject<TextInput>
+  | null
+  | undefined;
+
+const Input = ({ placeholder, onChangeText }: InputProps, ref: Ref) => {
   return (
     <TextInput
+      ref={ref}
       style={styles.container}
       placeholder={placeholder}
       onChangeText={onChangeText}
@@ -16,4 +25,4 @@ const Input = ({ placeholder, onChangeText }: InputProps) => {
   );
 };
 
-export default Input;
+export default forwardRef(Input);

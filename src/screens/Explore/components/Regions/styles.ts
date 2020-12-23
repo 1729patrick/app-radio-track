@@ -40,7 +40,7 @@ export default StyleSheet.create({
   },
   regionTitle: {
     ...StyleGuide.typography.headline,
-    paddingLeft: StyleGuide.borderRadius * 2,
+    paddingLeft: StyleGuide.borderRadius * 3,
     fontSize: 16,
     color: '#fff',
   },
