@@ -15,7 +15,28 @@ type ContextProps = {};
 
 const ReviewContext = createContext<ContextProps>({});
 
-const limitsToRequest = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100];
+const limitsToRequest = [
+  5,
+  10,
+  15,
+  20,
+  25,
+  30,
+  35,
+  40,
+  45,
+  50,
+  55,
+  60,
+  65,
+  70,
+  75,
+  80,
+  85,
+  90,
+  95,
+  100,
+];
 
 import api from '~/services/api';
 
@@ -23,6 +44,10 @@ import DeviceInfo from 'react-native-device-info';
 
 export const ReviewProvider: React.FC = ({ children }) => {
   const { getItem, setItem } = useAsyncStorage('@radios:review');
+  const { getItem: getLastCount, setItem: setLastCount } = useAsyncStorage(
+    '@radios:review:count',
+  );
+
   const countRef = useRef(0);
   const { playingRadioId } = usePlaying();
   const { getHistory } = useHistory();
@@ -57,7 +82,9 @@ export const ReviewProvider: React.FC = ({ children }) => {
     [onSaveReview],
   );
 
-  const onDismiss = useCallback(() => {}, []);
+  const onDismiss = useCallback(() => {
+    setLastCount(countRef.current?.toString());
+  }, [setLastCount]);
 
   const checkToShow = useCallback(async () => {
     const historyLength = getHistory()?.length;
@@ -71,11 +98,16 @@ export const ReviewProvider: React.FC = ({ children }) => {
 
     const reviewFromStorage = await getItem();
 
-    if (!reviewFromStorage && InAppReview.isAvailable()) {
-      countRef.current = limitsToRequest[limitBreak];
+    const lastCount = (await getLastCount()) || 0;
+    countRef.current = limitsToRequest[limitBreak];
+    if (
+      !reviewFromStorage &&
+      InAppReview.isAvailable() &&
+      +lastCount < countRef.current
+    ) {
       reviewRef.current?.show(countRef.current);
     }
-  }, [getHistory, getItem]);
+  }, [getHistory, getItem, getLastCount]);
 
   useEffect(() => {
     checkToShow();

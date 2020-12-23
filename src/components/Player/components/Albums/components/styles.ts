@@ -15,7 +15,7 @@ export default StyleSheet.create({
     height: ALBUM_SIZE - 70,
     marginLeft: 'auto',
     marginRight: 'auto',
-    // borderRadius: StyleGuide.borderRadius * 5,
+    borderRadius: StyleGuide.borderRadius * 5,
     backgroundColor: StyleGuide.palette.background,
   },
   notFoundContainer: {

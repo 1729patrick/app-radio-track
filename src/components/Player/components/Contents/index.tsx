@@ -138,17 +138,19 @@ const Contents: React.ForwardRefRenderFunction<
   const onStart = useCallback(() => {
     'worklet';
 
-    runOnJS(mountRoutes)();
+    // runOnJS(mountRoutes)();
     runOnJS(initializeTabActive)();
-  }, [initializeTabActive, mountRoutes]);
+  }, [initializeTabActive]);
 
   const onEnd = useCallback(() => {
     'worklet';
 
     if (translateY.value === SNAP_POINTS[1]) {
       runOnJS(unMountRoutes)();
+    } else if (translateY.value === SNAP_POINTS[0]) {
+      runOnJS(mountRoutes)();
     }
-  }, [translateY.value, unMountRoutes]);
+  }, [mountRoutes, translateY.value, unMountRoutes]);
 
   const animateToPoint = useCallback(
     (point: number) => {

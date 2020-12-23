@@ -49,7 +49,6 @@ type AlbumsProps = {
   loading?: boolean;
   onAlbumsMounted: () => void;
   scrollHandler: any;
-  errorRadioId: string;
 };
 
 export type AlbumsHandler = {
@@ -66,7 +65,6 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     loading,
     onAlbumsMounted,
     scrollHandler,
-    errorRadioId,
   },
   ref,
 ) => {
@@ -189,16 +187,9 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
 
   const renderItem = useCallback(
     ({ item }) => {
-      return (
-        <Album
-          item={item}
-          error={item.id === errorRadioId}
-          contentY={contentY}
-          y={y}
-        />
-      );
+      return <Album item={item} contentY={contentY} y={y} />;
     },
-    [contentY, errorRadioId, y],
+    [contentY, y],
   );
 
   const onLayout = useCallback(() => {

@@ -17,6 +17,7 @@ export default StyleSheet.create({
     paddingHorizontal: StyleGuide.spacing * 2,
     color: StyleGuide.palette.light,
     fontSize: 14,
+    lineHeight: 18,
   },
   link: {
     color: '#5B73C2',

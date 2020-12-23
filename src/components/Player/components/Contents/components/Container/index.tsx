@@ -57,13 +57,13 @@ const Container: React.ForwardRefRenderFunction<
 
   const renderItem = useCallback(
     ({ item }: { item: RouteType }) => {
-      if (!show) {
-        return null;
-      }
+      // if (!show) {
+      //   return null;
+      // }
 
       return (
         <View style={{ width, height: PAGE_HEIGHT }}>
-          <item.Component routeProps={routeProps} />
+          <item.Component routeProps={routeProps} show={show} />
         </View>
       );
     },

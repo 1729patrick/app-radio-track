@@ -4,9 +4,11 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
+import Loader from '~/components/Loader';
 
 import StyleGuide from '~/utils/StyleGuide';
 import { RouteProps } from '../../components/TabNavigator';
+import { BACKGROUND_COLOR } from '../../constants';
 import Programming from './components/Programming';
 import styles from './styles';
 
@@ -71,7 +73,7 @@ const CONTENTS = [
   },
 ];
 
-const Details: React.FC<DetailsProps> = ({ routeProps }) => {
+const Details: React.FC<DetailsProps> = ({ routeProps, show }) => {
   const radio = useMemo(() => {
     let { address, city, region } = routeProps?.radio || {};
     if (!address) {
@@ -97,6 +99,10 @@ const Details: React.FC<DetailsProps> = ({ routeProps }) => {
       await Linking.openURL(radio.web);
     }
   };
+
+  if (!show) {
+    return <Loader backgroundColor={BACKGROUND_COLOR} />;
+  }
 
   return (
     <ScrollView

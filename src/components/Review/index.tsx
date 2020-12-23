@@ -9,6 +9,7 @@ import React, {
   useState,
 } from 'react';
 import {
+  BackHandler,
   Dimensions,
   LayoutChangeEvent,
   Text,
@@ -191,6 +192,19 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
     };
   }, [translateY.value, snapPoints[0]]);
 
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      const modalOpen = translateY.value === snapPoints[0];
+      if (modalOpen) {
+        onDismissReview();
+
+        return true;
+      }
+
+      return false;
+    });
+  }, [onDismissReview, snapPoints, translateY.value]);
+
   if (!radioCount) {
     return null;
   }
@@ -212,7 +226,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
           <View style={styles.indicator} />
           <View style={styles.card}>
             <Text style={styles.title}>
-              Você ouviu {radioCount} rádios, parabéns!! 🎉
+              Você ouviu {radioCount} rádios,{'\n'}parabéns!! 🎉
             </Text>
 
             <LottieView

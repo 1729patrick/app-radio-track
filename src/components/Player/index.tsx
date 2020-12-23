@@ -311,7 +311,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         await TrackPlayer.add(currentTrack);
         await TrackPlayer.skip(currentTrack.id);
         if (autoPlay) {
-          await playTrackPlayer();
+          playTrackPlayer();
         }
 
         if (radios.length === 1) {
@@ -684,7 +684,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               loading={loading}
               onAlbumsMounted={onAlbumsMounted}
               scrollHandler={animatedBackgroundRef.current?.scrollHandler}
-              errorRadioId={errorRadioId}
             />
 
             <View onLayout={onLayoutArtistAndControl}>

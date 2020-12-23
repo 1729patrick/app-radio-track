@@ -4,7 +4,7 @@ import StyleGuide from '~/utils/StyleGuide';
 import styles from './styles';
 
 //@ts-ignore
-const size = Platform.select({ ios: 'large', android: 50 });
+const size = Platform.select({ ios: 'large', android: 45 });
 
 type LoaderProps = { backgroundColor?: string };
 

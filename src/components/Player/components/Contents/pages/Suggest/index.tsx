@@ -19,7 +19,7 @@ type SuggestProps = {
   routeProps: RouteProps;
 };
 
-const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
+const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
   const radio = useMemo(() => {
     return routeProps?.radio || {};
   }, [routeProps?.radio]);
@@ -91,7 +91,10 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps }) => {
     return close.data?.slice(0, 5) || [];
   }, [close.data]);
 
-  if ((locationEmpty || closeEmpty) && !location.error && !location.error) {
+  if (
+    ((locationEmpty || closeEmpty) && !location.error && !location.error) ||
+    !show
+  ) {
     return <Loader backgroundColor={BACKGROUND_COLOR} />;
   }
 
