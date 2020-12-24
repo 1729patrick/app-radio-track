@@ -11,4 +11,7 @@ export default StyleSheet.create({
     color: StyleGuide.palette.light,
     marginVertical: StyleGuide.spacing * 4,
   },
+  disabled: {
+    opacity: 0.5,
+  },
 });

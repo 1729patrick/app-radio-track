@@ -11,6 +11,7 @@ type TypesProps = {
     title: string;
     url: string;
     initialPage?: number;
+    initialPageAllList?: number;
     adType: string;
   }) => void;
   onEndReached?: () => void;
@@ -22,12 +23,11 @@ type PlaylistType = {
     key: string;
     title: string;
     initialPage?: number;
+    initialPageAllList?: number;
+    adType: string;
   };
-  toggleState: (args: {
-    key: string;
-    success: boolean;
-    error: boolean;
-  }) => void;
+  toggleState: (args: { key: string; success: boolean; error: string }) => void;
+  param?: string;
 };
 
 export const FavoriteRadios: React.FC<TypesProps> = ({
@@ -45,12 +45,13 @@ export const FavoriteRadios: React.FC<TypesProps> = ({
 
 export const PlaylistRadios: React.FC<TypesProps & PlaylistType> = ({
   playlist,
+  param,
   toggleState,
   onShowAll,
   ...props
 }) => {
   const { data, error, fetchMore } = useFetchPagination(
-    playlist.url,
+    `${playlist.url}${param}`,
     playlist.initialPage,
   );
 
@@ -76,8 +77,8 @@ export const PlaylistRadios: React.FC<TypesProps & PlaylistType> = ({
         onShowAll &&
         onShowAll({
           title: playlist.title,
-          url: playlist.url,
-          initialPage: playlist.initialPage,
+          url: `${playlist.url}${param}`,
+          initialPage: playlist.initialPageAllList || playlist.initialPage,
           adType: playlist.adType,
         })
       }

@@ -38,7 +38,7 @@ export const RegionProvider: React.FC = ({ children }) => {
 
   const readRegionFromStorage = useCallback(async () => {
     const regionId = await getItem();
-    setId(STATES.EMPTY);
+    setId(regionId || STATES.EMPTY);
   }, [getItem]);
 
   useEffect(() => {

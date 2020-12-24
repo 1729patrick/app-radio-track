@@ -37,43 +37,46 @@ function daysIntoYear() {
   );
 }
 
-const dateOfYear = daysIntoYear() % 200;
+const dateOfYear = daysIntoYear();
 
 const PLAYLISTS = [
   {
     key: 'recommend',
     url: 'playlists/recommend',
     title: 'Rádios recomendadas',
-    initialPage: dateOfYear + 5,
+    initialPage: (dateOfYear + 10) % 228,
   },
   {
     key: 'news',
     url: 'genres/["gvfajea1","i59vt6nq","rdqj0603","se14b6m5"]',
     title: 'Acompanhe as notícias',
-    initialPage: 1,
+    initialPage: dateOfYear % 16,
+    initialPageAllList: 1,
   },
   {
     key: 'sports',
     url: 'genres/["iq5fvulg"]',
     title: 'Tudo sobre esportes',
-    initialPage: 2,
+    initialPage: dateOfYear % 9,
+    initialPageAllList: 1,
   },
   {
     key: 'popular',
     url: 'playlists/popular',
     title: 'Rádios populares',
+    initialPage: (dateOfYear + 20) % 228,
   },
   {
     key: 'location',
-    url: 'playlists/location',
+    url: 'playlists/region/br/',
     title: 'Rádios da sua região',
-    initialPage: dateOfYear + 10,
+    initialPage: 1,
   },
   {
     key: 'random',
     url: 'playlists/random',
     title: 'Descubra novas rádios',
-    initialPage: dateOfYear + 15,
+    initialPage: (dateOfYear + 30) % 228,
   },
 ];
 
@@ -116,6 +119,10 @@ const Home: React.FC = () => {
     (args: { key: string; success: boolean; error: string }) => {
       const { key, success, error } = args;
 
+      if (key === 'location') {
+        return;
+      }
+
       setState((l) => {
         return { ...l, [key]: { success, error } };
       });
@@ -146,7 +153,6 @@ const Home: React.FC = () => {
     }
   }, [STATES.EMPTY, navigate, regionId]);
 
-  console.log(regionId);
   if (regionId === STATES.EMPTY) {
     return <Loader />;
   }
@@ -172,6 +178,7 @@ const Home: React.FC = () => {
             toggleState={toggleState}
             showAll
             onShowAll={onShowPlaylist}
+            param={playlist.key === 'location' ? regionId : ''}
           />
         ))}
       </Animated.ScrollView>

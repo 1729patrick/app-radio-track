@@ -36,9 +36,9 @@ const RoundButton: React.FC<RoundButtonProp> = ({
       style={[
         styles.container,
         {
-          height: size + 6,
-          width: size + 6,
-          borderRadius: (size + 6) / 2,
+          height: size + 10,
+          width: size + 10,
+          borderRadius: (size + 10) / 2,
           opacity,
         },
         style,

@@ -7,18 +7,24 @@ type WithoutFeedbackButtonProps = {
   title: string;
   onPress: () => void;
   titleStyle?: object;
+  disabled?: boolean;
 };
 
 const WithoutFeedbackButton = ({
   title,
   onPress,
   titleStyle,
+  disabled,
 }: WithoutFeedbackButtonProps) => {
+  console.log(disabled);
   return (
     <TouchableOpacity
       onPress={onPress}
-      hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
-      <Text style={[styles.title, titleStyle]}>{title}</Text>
+      hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+      disabled={disabled}>
+      <Text style={[styles.title, titleStyle, disabled ? styles.disabled : {}]}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };

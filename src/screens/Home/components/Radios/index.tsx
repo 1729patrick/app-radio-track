@@ -1,5 +1,5 @@
-import React, { memo, useCallback, useRef } from 'react';
-import { Dimensions, Text, View } from 'react-native';
+import React, { memo, useCallback } from 'react';
+import { Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { onExpandPlayer } from '~/components/Player';
 import styles from './styles';
@@ -7,7 +7,7 @@ import { usePlaying } from '~/contexts/PlayingContext';
 
 import Radio from '~/components/Radio/Card';
 
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { RadioType } from '~/types/Station';
 
 import { CARD_SIZE } from '~/components/Radio/Card/constants';
@@ -23,7 +23,6 @@ export type RadiosProps = {
   onEndReached?: () => void;
 };
 
-const { width } = Dimensions.get('window');
 const Radios: React.FC<RadiosProps> = ({
   title,
   radios = [],
@@ -33,7 +32,6 @@ const Radios: React.FC<RadiosProps> = ({
   onEndReached,
 }) => {
   const { playingRadioId } = usePlaying();
-  const flatListRef = useRef<FlatList<any>>(null);
 
   const renderItem = useCallback(
     ({ item, index }) => {
@@ -69,8 +67,8 @@ const Radios: React.FC<RadiosProps> = ({
             onPress={onShowAllPress}
             Icon={Icon}
             size={24}
-            name="arrowright"
-            color={StyleGuide.palette.light}
+            name="arrow-forward"
+            color={StyleGuide.palette.primary}
           />
         )}
       </View>

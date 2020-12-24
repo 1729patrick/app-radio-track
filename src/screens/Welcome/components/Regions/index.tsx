@@ -109,6 +109,7 @@ const Regions = ({ onContinue }, ref) => {
                 title={'CONTINUAR'}
                 onPress={() => onContinue(regionIdChecked)}
                 titleStyle={styles.titleButtonOK}
+                disabled={!regionIdChecked}
               />
             </View>
           </Animated.View>
