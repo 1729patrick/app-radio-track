@@ -42,7 +42,7 @@ export const RegionProvider: React.FC = ({ children }) => {
   }, [getItem]);
 
   useEffect(() => {
-    readRegionFromStorage;
+    readRegionFromStorage();
   }, [readRegionFromStorage]);
 
   return (

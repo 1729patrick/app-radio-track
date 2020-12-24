@@ -32,8 +32,6 @@ const useScrollPanGestureHandler = (
         context.upperBound = height - upperBound.value;
       },
       onActive: (event, context) => {
-        console.log({ y: translateY.value });
-
         const y = event.translationY + context.startY;
         if (y > context.upperBound) {
           translateY.value = y;

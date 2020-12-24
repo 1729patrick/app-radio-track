@@ -38,12 +38,14 @@ const Welcome = () => {
         <Text style={styles.description}>
           Leve milhares de estações de rádio no seu bolso.
         </Text>
-        <LottieView
-          source={require('~/assets/robot2.json')}
-          style={styles.robot}
-          speed={1}
-          autoPlay
-        />
+        <View onLayout={(e) => console.log(e.nativeEvent.layout.height)}>
+          <LottieView
+            source={require('~/assets/robot2.json')}
+            style={styles.robot}
+            speed={1}
+            autoPlay
+          />
+        </View>
       </View>
 
       <View style={styles.containerBottom}>

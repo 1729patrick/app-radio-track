@@ -15,28 +15,7 @@ type ContextProps = {};
 
 const ReviewContext = createContext<ContextProps>({});
 
-const limitsToRequest = [
-  5,
-  10,
-  15,
-  20,
-  25,
-  30,
-  35,
-  40,
-  45,
-  50,
-  55,
-  60,
-  65,
-  70,
-  75,
-  80,
-  85,
-  90,
-  95,
-  100,
-];
+const limitsToRequest = [5, 20, 35, 50, 75, 100, 125, 150, 175, 200];
 
 import api from '~/services/api';
 
@@ -55,7 +34,7 @@ export const ReviewProvider: React.FC = ({ children }) => {
   const reviewRef = useRef<ReviewHandler>(null);
 
   const onSaveReview = useCallback(
-    async (args: { starLevel: number; notes: string }) => {
+    async (args: { starLevel: number; notes?: string }) => {
       setItem(JSON.stringify(args));
 
       const deviceId = await DeviceInfo.getUniqueId();
@@ -76,7 +55,7 @@ export const ReviewProvider: React.FC = ({ children }) => {
   );
 
   const onRateApp = useCallback(
-    (args: { starLevel: number; notes: string }) => {
+    (args: { starLevel: number }) => {
       onSaveReview(args);
     },
     [onSaveReview],
@@ -110,7 +89,8 @@ export const ReviewProvider: React.FC = ({ children }) => {
   }, [getHistory, getItem, getLastCount]);
 
   useEffect(() => {
-    checkToShow();
+    // checkToShow();
+    reviewRef.current?.show(10);
   }, [checkToShow, playingRadioId]);
 
   return (

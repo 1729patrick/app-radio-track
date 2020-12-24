@@ -19,9 +19,7 @@ const Region: React.FC<RegionType> = ({
       style={[
         styles.container,
         {
-          backgroundColor: checked
-            ? StyleGuide.palette.backgroundPrimary
-            : undefined,
+          backgroundColor: checked ? StyleGuide.palette.border : undefined,
         },
       ]}>
       <View style={styles.info}>

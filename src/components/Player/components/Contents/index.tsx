@@ -186,6 +186,7 @@ const Contents: React.ForwardRefRenderFunction<
     SNAP_POINTS,
     animateToPoint,
     onStart,
+    onEnd,
   );
 
   const setActiveTab = useCallback(

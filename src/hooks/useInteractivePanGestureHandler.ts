@@ -14,6 +14,7 @@ export const useInteractivePanGestureHandler = (
   snapPoints: number[],
   animateToPoint: (point: number) => void,
   onStart?: () => void,
+  onEnd?: () => void,
 ) => {
   const panHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
@@ -45,6 +46,10 @@ export const useInteractivePanGestureHandler = (
       const point = snapPoint(translateY.value, velocity, validSnapPoints);
 
       animateToPoint(point);
+
+      if (onEnd) {
+        onEnd();
+      }
     },
   });
 
