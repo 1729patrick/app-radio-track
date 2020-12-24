@@ -8,16 +8,23 @@ import styles from './styles';
 type RectButtonProps = {
   title: string;
   onPress: () => void;
+  containerStyle?: object;
+  titleStyle?: object;
 };
 
-const RectButton = ({ title, onPress }: RectButtonProps) => {
+const RectButton = ({
+  title,
+  onPress,
+  containerStyle,
+  titleStyle,
+}: RectButtonProps) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <NativeRectButton
         onPress={onPress}
         style={styles.button}
         rippleColor={StyleGuide.palette.border}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title, titleStyle]}>{title}</Text>
       </NativeRectButton>
     </View>
   );

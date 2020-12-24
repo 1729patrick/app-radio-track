@@ -7,7 +7,6 @@ export default StyleSheet.create({
     width: '100%',
     height: 50,
     borderRadius: StyleGuide.borderRadius * 2,
-    marginTop: StyleGuide.spacing * 5,
     backgroundColor: lighten(0.1, StyleGuide.palette.backgroundPrimary),
   },
   button: {
@@ -18,6 +17,7 @@ export default StyleSheet.create({
   },
   title: {
     ...StyleGuide.typography.headline,
+    color: StyleGuide.palette.primary,
     fontSize: 15,
     letterSpacing: 0.7,
     paddingBottom: 1,

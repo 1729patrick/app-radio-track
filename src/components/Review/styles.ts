@@ -72,4 +72,5 @@ export default StyleSheet.create({
   },
   star: {},
   fiveStarContainer: { position: 'absolute', top: 0, width: '100%' },
+  button: { marginTop: StyleGuide.spacing * 5 },
 });

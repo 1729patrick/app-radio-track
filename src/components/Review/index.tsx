@@ -39,7 +39,6 @@ import { useKeyboard } from '~/hooks/useKeyboard';
 import RectButton from '../Buttons/RectButton';
 import WithoutFeedbackButton from '../Buttons/WithoutFeedback';
 import Input from '../Input';
-import Explore from '~/screens/Explore';
 
 const { height } = Dimensions.get('window');
 
@@ -271,7 +270,11 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
                       opacity: starLevel === 5 ? 1 : 0,
                     },
                   ]}>
-                  <RectButton title={'AVALIAR'} onPress={onRateAppReview} />
+                  <RectButton
+                    title={'AVALIAR'}
+                    onPress={onRateAppReview}
+                    containerStyle={styles.button}
+                  />
                   <WithoutFeedbackButton
                     title={'AVALIAR MAIS TARDE'}
                     onPress={onDismissReview}

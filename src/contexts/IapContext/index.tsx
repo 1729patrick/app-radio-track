@@ -8,10 +8,6 @@ import RNIap, {
   InAppPurchase,
   PurchaseError,
   SubscriptionPurchase,
-  acknowledgePurchaseAndroid,
-  consumePurchaseAndroid,
-  finishTransaction,
-  finishTransactionIOS,
   purchaseErrorListener,
   purchaseUpdatedListener,
 } from 'react-native-iap';
