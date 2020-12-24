@@ -89,8 +89,7 @@ export const ReviewProvider: React.FC = ({ children }) => {
   }, [getHistory, getItem, getLastCount]);
 
   useEffect(() => {
-    // checkToShow();
-    reviewRef.current?.show(10);
+    checkToShow();
   }, [checkToShow, playingRadioId]);
 
   return (

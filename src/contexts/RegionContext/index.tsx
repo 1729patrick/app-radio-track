@@ -38,12 +38,13 @@ export const RegionProvider: React.FC = ({ children }) => {
 
   const readRegionFromStorage = useCallback(async () => {
     const regionId = await getItem();
-    setId(regionId || STATES.EMPTY);
+    setId(STATES.EMPTY);
   }, [getItem]);
 
   useEffect(() => {
     readRegionFromStorage();
-  }, [readRegionFromStorage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <RegionContext.Provider value={{ regionId: id, setRegionId, STATES }}>

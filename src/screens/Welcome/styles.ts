@@ -7,8 +7,8 @@ const BOTTOM_CONTAINER_HEIGHT = 250;
 
 const TITLE_AND_DESCRIPTION_HEIGHT = 89.5;
 
-const ROBOT_HEIGHT = ((width - StyleGuide.spacing * 2) * 313) / 328;
 const ROBOT_WIDTH = width - StyleGuide.spacing * 2;
+const ROBOT_HEIGHT = (ROBOT_WIDTH * 313) / 328;
 
 const ADJUST_ROBOT_WIDTH =
   height -

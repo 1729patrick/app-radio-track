@@ -1,4 +1,11 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -81,8 +88,8 @@ const Home: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
   const { STATES, regionId } = useRegion();
   const [state, setState] = useState<StateType>({});
-  const { navigate, replace } = useNavigation<StackNavigationProp<any>>();
-
+  const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const welcomeShowedRef = useRef(false);
   const { onExpandPlayer } = usePlayer();
 
   const isLoading = useMemo(() => {
@@ -129,10 +136,20 @@ const Home: React.FC = () => {
   );
 
   useEffect(() => {
-    if (regionId === STATES.EMPTY) {
-      replace('Welcome');
+    if (welcomeShowedRef.current || !regionId) {
+      return;
     }
-  }, [STATES.EMPTY, navigate, regionId, replace]);
+    welcomeShowedRef.current = true;
+
+    if (regionId === STATES.EMPTY) {
+      navigate('Welcome');
+    }
+  }, [STATES.EMPTY, navigate, regionId]);
+
+  console.log(regionId);
+  if (regionId === STATES.EMPTY) {
+    return <Loader />;
+  }
 
   return (
     <View style={styles.container}>

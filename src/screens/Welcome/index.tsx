@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { View, Text } from 'react-native';
 
 import styles from './styles';
@@ -14,22 +14,30 @@ import { useRegion } from '~/contexts/RegionContext';
 
 const Welcome = () => {
   const regionsRef = useRef(null);
-  const { replace } = useNavigation<StackNavigationProp<any>>();
+  const { pop } = useNavigation<StackNavigationProp<any>>();
   const { setRegionId, STATES } = useRegion();
+  const radioIdRef = useRef('');
 
   const openRegions = () => {
     regionsRef.current?.show();
   };
 
   const onContinue = (regionId: string) => {
-    setRegionId(regionId);
-    replace('Home');
+    pop();
+    radioIdRef.current = regionId;
   };
 
   const onSkip = () => {
-    setRegionId(STATES.REQUEST_LATER);
-    replace('Home');
+    pop();
+    radioIdRef.current = STATES.REQUEST_LATER;
   };
+
+  useEffect(() => {
+    return () => {
+      setRegionId(radioIdRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -38,14 +46,12 @@ const Welcome = () => {
         <Text style={styles.description}>
           Leve milhares de estações de rádio no seu bolso.
         </Text>
-        <View onLayout={(e) => console.log(e.nativeEvent.layout.height)}>
-          <LottieView
-            source={require('~/assets/robot2.json')}
-            style={styles.robot}
-            speed={1}
-            autoPlay
-          />
-        </View>
+        <LottieView
+          source={require('~/assets/robot2.json')}
+          style={styles.robot}
+          speed={1}
+          autoPlay
+        />
       </View>
 
       <View style={styles.containerBottom}>

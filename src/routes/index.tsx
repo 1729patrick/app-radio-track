@@ -111,20 +111,9 @@ const AppScreen = () => {
   );
 };
 
-const AppStack = createStackNavigator();
-
 const Routes = () => {
   return (
     <NavigationContainer theme={theme}>
-      {/* <AppStack.Navigator headerMode="none" initialRouteName={initialRouteName}>
-        <HomeStack.Screen
-          name="Welcome"
-          component={Welcome}
-          options={options}
-        />
-        <HomeStack.Screen name="App" component={AppScreen} options={options} />
-      </AppStack.Navigator> */}
-
       <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
         <Tab.Screen name="Home" component={HomeStackScreen} />
         <Tab.Screen
