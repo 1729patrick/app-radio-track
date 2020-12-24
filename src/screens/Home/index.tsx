@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
 import Input from '~/components/Input';
+import { useRegion } from '~/contexts/RegionContext';
 
 function daysIntoYear() {
   const date = new Date();
@@ -78,8 +79,9 @@ type StateType = {
 
 const Home: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
+  const { STATES, regionId } = useRegion();
   const [state, setState] = useState<StateType>({});
-  const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const { navigate, replace } = useNavigation<StackNavigationProp<any>>();
 
   const { onExpandPlayer } = usePlayer();
 
@@ -126,6 +128,12 @@ const Home: React.FC = () => {
     [navigate],
   );
 
+  useEffect(() => {
+    if (regionId === STATES.EMPTY) {
+      replace('Welcome');
+    }
+  }, [STATES.EMPTY, navigate, regionId, replace]);
+
   return (
     <View style={styles.container}>
       <Header translateY={translateY} showBack={false} />
@@ -149,10 +157,6 @@ const Home: React.FC = () => {
             onShowAll={onShowPlaylist}
           />
         ))}
-        {/* <Input
-          placeholder={'Descreva a sua experiência (opcional)'}
-          onChangeText={() => {}}
-        /> */}
       </Animated.ScrollView>
     </View>
   );

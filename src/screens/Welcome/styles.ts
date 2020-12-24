@@ -8,8 +8,6 @@ const BOTTOM_CONTAINER_HEIGHT = 250;
 export default StyleSheet.create({
   container: {
     flexGrow: 1,
-
-    // justifyContent: 'center',
   },
   containerTop: {
     height: height - BOTTOM_CONTAINER_HEIGHT,

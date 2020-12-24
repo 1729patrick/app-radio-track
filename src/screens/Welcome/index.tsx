@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useRef } from 'react';
 import { View, Text } from 'react-native';
 
 import styles from './styles';
@@ -7,8 +7,30 @@ import Svg, { Path } from 'react-native-svg';
 import RectButton from '~/components/Buttons/RectButton';
 import WithoutFeedbackButton from '~/components/Buttons/WithoutFeedback';
 import Regions from './components/Regions';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import { useRegion } from '~/contexts/RegionContext';
 
 const Welcome = () => {
+  const regionsRef = useRef(null);
+  const { replace } = useNavigation<StackNavigationProp<any>>();
+  const { setRegionId, STATES } = useRegion();
+
+  const openRegions = () => {
+    regionsRef.current?.show();
+  };
+
+  const onContinue = (regionId: string) => {
+    setRegionId(regionId);
+    replace('Home');
+  };
+
+  const onSkip = () => {
+    setRegionId(STATES.REQUEST_LATER);
+    replace('Home');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.containerTop}>
@@ -27,13 +49,13 @@ const Welcome = () => {
       <View style={styles.containerBottom}>
         <RectButton
           title="Escolha o seu estado"
-          onPress={() => {}}
+          onPress={openRegions}
           containerStyle={styles.containerButtonChoose}
         />
 
         <WithoutFeedbackButton
           title={'DEIXAR PARA DEPOIS'}
-          onPress={() => {}}
+          onPress={onSkip}
           titleStyle={styles.titleButtonSkip}
         />
       </View>
@@ -45,7 +67,7 @@ const Welcome = () => {
         />
       </Svg>
 
-      <Regions />
+      <Regions ref={regionsRef} onContinue={onContinue} />
     </View>
   );
 };

@@ -21,6 +21,7 @@ import { BOTTOM_TAB_BAR_HEIGHT } from './constants';
 import { ActiveCompass, InactiveCompass } from './Icons/Compass';
 import { ActiveHome, InactiveHome } from './Icons/Home';
 import { ActiveLibrary, InactiveLibrary } from './Icons/Library';
+import { useRegion } from '~/contexts/RegionContext';
 
 const { width } = Dimensions.get('window');
 
@@ -47,7 +48,8 @@ const TABS = [
 
 type TabBarProps = BottomTabBarProps<BottomTabBarOptions>;
 
-const TabBar: React.FC<TabBarProps> = ({ state, navigation }) => {
+const TabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation }) => {
+  const { STATES, regionId } = useRegion();
   const { playerRef, translateY } = usePlayer();
 
   const style = useAnimatedStyle(() => {
@@ -98,6 +100,12 @@ const TabBar: React.FC<TabBarProps> = ({ state, navigation }) => {
       ),
     };
   }, []);
+
+  const focusedOptions = descriptors[state.routes[state.index].key].options;
+
+  if (focusedOptions.tabBarVisible === false || regionId === STATES.EMPTY) {
+    return null;
+  }
 
   return (
     <>

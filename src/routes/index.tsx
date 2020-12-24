@@ -37,16 +37,23 @@ const options = {
   },
 };
 
+const theme = {
+  dark: true,
+  colors: {
+    primary: '#000',
+    background: '#000',
+    card: '#000',
+    text: '#000',
+    border: '#000',
+    notification: '#000',
+  },
+};
+
 const HomeStack = createStackNavigator();
 
 function HomeStackScreen() {
   return (
-    <HomeStack.Navigator headerMode="none" initialRouteName="Welcome">
-      <HomeStack.Screen
-        name="Welcome"
-        component={Welcome}
-        options={{ tabBarVisible: false }}
-      />
+    <HomeStack.Navigator headerMode="none">
       <HomeStack.Screen name="Home" component={Home} />
       <HomeStack.Screen name="Search" component={Search} options={options} />
       <HomeStack.Screen
@@ -54,6 +61,7 @@ function HomeStackScreen() {
         component={Playlist}
         options={options}
       />
+      <HomeStack.Screen name="Welcome" component={Welcome} options={options} />
     </HomeStack.Navigator>
   );
 }
@@ -85,22 +93,39 @@ function LibraryStackScreen() {
   );
 }
 
-const theme = {
-  dark: true,
-  colors: {
-    primary: '#000',
-    background: '#000',
-    card: '#000',
-    text: '#000',
-    border: '#000',
-    notification: '#000',
-  },
+const AppScreen = () => {
+  return (
+    <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
+      <Tab.Screen name="Home" component={HomeStackScreen} />
+      <Tab.Screen
+        name="Explore"
+        component={ExploreStackScreen}
+        // options={{ unmountOnBlur: true }}
+      />
+      <Tab.Screen
+        name="Library"
+        component={LibraryStackScreen}
+        // options={{ unmountOnBlur: true }}
+      />
+    </Tab.Navigator>
+  );
 };
+
+const AppStack = createStackNavigator();
 
 const Routes = () => {
   return (
     <NavigationContainer theme={theme}>
-      {/* <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
+      {/* <AppStack.Navigator headerMode="none" initialRouteName={initialRouteName}>
+        <HomeStack.Screen
+          name="Welcome"
+          component={Welcome}
+          options={options}
+        />
+        <HomeStack.Screen name="App" component={AppScreen} options={options} />
+      </AppStack.Navigator> */}
+
+      <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
         <Tab.Screen name="Home" component={HomeStackScreen} />
         <Tab.Screen
           name="Explore"
@@ -112,8 +137,7 @@ const Routes = () => {
           component={LibraryStackScreen}
           // options={{ unmountOnBlur: true }}
         />
-      </Tab.Navigator> */}
-      <HomeStackScreen />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 };

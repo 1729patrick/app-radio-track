@@ -1,41 +1,59 @@
-import React, { memo, useCallback } from 'react';
-import { Text, View } from 'react-native';
-import { PanGestureHandler, ScrollView } from 'react-native-gesture-handler';
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
+import { BackHandler, Text, View } from 'react-native';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
-  useAnimatedScrollHandler,
+  Extrapolate,
+  interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { clamp } from 'react-native-redash';
-import {
-  HEADER_HEIGHT,
-  STATUS_BAR_HEIGHT,
-} from '~/components/Header/constants';
+import WithoutFeedbackButton from '~/components/Buttons/WithoutFeedback';
+
 import Indicator from '~/components/Indicator';
+import ModalBackground from '~/components/ModalBackground';
+import ScrollView from '~/components/ScrollView';
 import { REGIONS } from '~/data/regions';
 import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
+
 import { RegionType } from '~/screens/Explore/components/Regions';
-import {
-  REGIONS_PADDING_TOP,
-  REGIONS_SNAP_POINTS,
-  REGIONS_TIMING_DURATION,
-} from './constants';
+import { REGIONS_SNAP_POINTS } from './constants';
 import Region from './Region';
 
 import styles from './styles';
 
-const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
-const Regions = () => {
-  const translateY = useSharedValue(REGIONS_SNAP_POINTS[0]);
-  const scrollY = useSharedValue(0);
+const Regions = ({ onContinue }, ref) => {
+  const translateY = useSharedValue(REGIONS_SNAP_POINTS[2]);
+  const [regionIdChecked, setRegionIdChecked] = useState('');
+
+  const style = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(
+            translateY.value,
+            [0, 10000],
+            [0, 10000],
+            Extrapolate.CLAMP,
+          ),
+        },
+      ],
+    };
+  }, [translateY.value]);
 
   const animateToPoint = useCallback(
     (point: number) => {
       'worklet';
 
       translateY.value = withTiming(point, {
-        duration: REGIONS_TIMING_DURATION,
+        duration: 350,
       });
     },
     [translateY],
@@ -47,64 +65,72 @@ const Regions = () => {
     animateToPoint,
   );
 
-  const scrollHandler = useAnimatedScrollHandler<{}>(
-    {
-      onScroll: (event) => {
-        scrollY.value = clamp(
-          event.contentOffset.y,
-          0,
-          REGIONS_PADDING_TOP - HEADER_HEIGHT - STATUS_BAR_HEIGHT,
-        );
-      },
-    },
-    [],
-  );
+  const show = useCallback(() => {
+    animateToPoint(REGIONS_SNAP_POINTS[1]);
+  }, [animateToPoint]);
 
-  const style = useAnimatedStyle(() => {
-    console.log('translateY.value', translateY.value);
-    return {
-      transform: [
-        {
-          translateY: translateY.value,
-        },
-      ],
-    };
-  }, [translateY.value]);
+  const hidden = useCallback(() => {
+    animateToPoint(REGIONS_SNAP_POINTS[2]);
+  }, [animateToPoint]);
 
-  const styleScroll = useAnimatedStyle(() => {
-    console.log('scrollY.value', scrollY.value);
-    return {
-      transform: [
-        {
-          translateY: -scrollY.value,
-        },
-      ],
-    };
-  }, [scrollY.value]);
+  useImperativeHandle(ref, () => ({
+    show,
+  }));
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      const modalOpen = translateY.value !== REGIONS_SNAP_POINTS[2];
+      if (modalOpen) {
+        hidden();
+
+        return true;
+      }
+
+      return false;
+    });
+  }, [hidden, translateY.value]);
 
   return (
     <View style={styles.container}>
-      <PanGestureHandler onGestureEvent={panHandler}>
-        <Animated.View>
-          <Animated.View style={[styles.header, style, styleScroll]}>
-            <Indicator />
-            <Text style={styles.title}>Escolha seu estado</Text>
-          </Animated.View>
+      <ModalBackground
+        translateY={translateY}
+        snapPoints={[REGIONS_SNAP_POINTS[1], REGIONS_SNAP_POINTS[2]]}
+        onPress={hidden}
+      />
 
-          <Animated.View style={[styles.content, style]}>
-            <AnimatedScrollView
-              contentContainerStyle={styles.contentContainer}
-              showsVerticalScrollIndicator={false}
-              onScroll={scrollHandler}>
-              {REGIONS.map((region: RegionType) => (
-                <Region {...region} key={region.id} />
-              ))}
-            </AnimatedScrollView>
+      <Animated.View style={[styles.header, style]}>
+        <PanGestureHandler onGestureEvent={panHandler}>
+          <Animated.View>
+            <Indicator />
+            <View style={styles.headerContent}>
+              <Text style={styles.title}>Escolha o seu estado</Text>
+
+              <WithoutFeedbackButton
+                title={'CONTINUAR'}
+                onPress={() => onContinue(regionIdChecked)}
+                titleStyle={styles.titleButtonOK}
+              />
+            </View>
           </Animated.View>
-        </Animated.View>
-      </PanGestureHandler>
+        </PanGestureHandler>
+      </Animated.View>
+      <ScrollView
+        lowerBound={REGIONS_SNAP_POINTS[1]}
+        snapPoints={REGIONS_SNAP_POINTS}
+        translateY={translateY}
+        contentContainerStyle={styles.contentContainer}
+        animateToPoint={animateToPoint}>
+        {REGIONS.map((region: RegionType) => (
+          <Region
+            {...region}
+            key={region.id}
+            checked={region.id === regionIdChecked}
+            onPress={setRegionIdChecked}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 };
 
-export default memo(Regions);
+export default memo(forwardRef(Regions));

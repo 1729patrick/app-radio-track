@@ -6,7 +6,7 @@ import { HistoryProvider } from './contexts/HistoryContext';
 import { PlayingProvider } from './contexts/PlayingContext';
 import { AdProvider } from './ads/contexts/AdContext';
 import { ReviewProvider } from './contexts/ReviewContext';
-// import { IapProvider } from './contexts/IapContext';
+import { RegionProvider } from './contexts/RegionContext';
 
 export default () => {
   return (
@@ -16,9 +16,9 @@ export default () => {
           <PlayingProvider>
             <ReviewProvider>
               <AdProvider>
-                {/* <IapProvider> */}
-                <App />
-                {/* </IapProvider> */}
+                <RegionProvider>
+                  <App />
+                </RegionProvider>
               </AdProvider>
             </ReviewProvider>
           </PlayingProvider>

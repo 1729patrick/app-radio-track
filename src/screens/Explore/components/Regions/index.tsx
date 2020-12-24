@@ -5,13 +5,14 @@ import styles from './styles';
 import { REGIONS } from './data';
 import { useNavigation } from '@react-navigation/native';
 import StyleGuide from '~/utils/StyleGuide';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const { width } = Dimensions.get('window');
 
 export type RegionType = { id: string; image: any; title: string };
 
 const Regions = () => {
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<StackNavigationProp<any>>();
 
   const onShowRegion = useCallback(
     ({ title, id }: { title: string; id: (string | never[])[] }) => {

@@ -20,7 +20,7 @@ export const useInteractivePanGestureHandler = (
     GestureHandlerContext
   >({
     onStart: (_, context) => {
-      context.startY = translateY.value;
+      context.startY = Math.max(translateY.value, 0);
       context.currentRouteStartY = 0;
 
       if (onStart) {

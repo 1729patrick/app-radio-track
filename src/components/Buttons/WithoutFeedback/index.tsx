@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styles from './styles';
 
 type WithoutFeedbackButtonProps = {
@@ -15,11 +15,11 @@ const WithoutFeedbackButton = ({
   titleStyle,
 }: WithoutFeedbackButtonProps) => {
   return (
-    <TouchableWithoutFeedback
+    <TouchableOpacity
       onPress={onPress}
       hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
       <Text style={[styles.title, titleStyle]}>{title}</Text>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 };
 
