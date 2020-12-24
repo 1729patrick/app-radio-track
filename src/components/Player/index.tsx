@@ -11,7 +11,7 @@ import React, {
 
 import BackgroundTimer from 'react-native-background-timer';
 
-import { BackHandler, LayoutChangeEvent, Platform, View } from 'react-native';
+import { BackHandler, Platform, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import TrackPlayer, {
   //@ts-ignore
@@ -121,6 +121,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const titleRef = useRef<string>('');
   const albumsMountedRef = useRef<boolean>(false);
   const isCorrectRadioRef = useRef<boolean>(false);
+  const errorRadioIdRef = useRef('');
   const [errorRadioId, setErrorRadioId] = useState('');
   const seekRef = useRef<{ id?: string; date?: number }>({});
 
@@ -133,6 +134,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     playerStateRef.current = state;
   }, []);
 
+  const onSetErrorRadioId = useCallback((args) => {
+    setErrorRadioId(args);
+    errorRadioIdRef.current = args;
+  }, []);
+
   const onClose = useCallback(() => {
     if (
       playerStateRef.current === 'closed' &&
@@ -140,7 +146,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     ) {
       resetTrackPlayer();
 
-      setErrorRadioId('');
+      onSetErrorRadioId('');
       setRadioIndex(0);
       setState({
         title: '',
@@ -149,7 +155,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       removePlayingRadio();
     }
-  }, [removePlayingRadio]);
+  }, [onSetErrorRadioId, removePlayingRadio]);
 
   //@ts-ignore
   //todo: MUST BE REFECTORY
@@ -220,44 +226,31 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }, [playbackState]);
 
   const playTrackPlayer = useCallback(async () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const currentId = radiosRef.current[radioIndexRef.current]?.id;
+    try {
+      setPlaying(true);
 
-        if (seekRef.current?.id === currentId) {
-          const secondsSincePause =
-            (Date.now() - (seekRef.current.date || Date.now())) / 1000;
-          await TrackPlayer.seekTo(secondsSincePause);
-          seekRef.current = {};
-        }
+      const currentId = radiosRef.current[radioIndexRef.current]?.id;
 
-        await TrackPlayer.play();
-
-        setErrorRadioId('');
-        addHistory(radiosRef.current[radioIndexRef.current]);
-
-        setPlaying(true);
-        resolve('');
-      } catch (e) {
-        console.log(e, 'playTrackPlayer');
-        reject();
+      if (seekRef.current?.id === currentId) {
+        const secondsSincePause =
+          (Date.now() - (seekRef.current.date || Date.now())) / 1000;
+        await TrackPlayer.seekTo(secondsSincePause);
+        seekRef.current = {};
       }
-    });
-  }, [addHistory]);
+
+      await TrackPlayer.play();
+
+      onSetErrorRadioId('');
+      addHistory(radiosRef.current[radioIndexRef.current]);
+    } catch (e) {
+      console.log(e.message, 'playTrackPlayer');
+    }
+  }, [addHistory, onSetErrorRadioId]);
 
   const resetTrackPlayer = async () => {
     setPlaying(false);
     await TrackPlayer.reset();
   };
-
-  const onSkipPlayer = useCallback(async () => {
-    await TrackPlayer.skip(radiosRef.current[radioIndexRef.current].id);
-    playTrackPlayer();
-
-    addHistory(radiosRef.current[radioIndexRef.current]);
-
-    showPlayerAd();
-  }, [addHistory, playTrackPlayer, showPlayerAd]);
 
   const pauseTrackPlayer = useCallback(async () => {
     setPlaying(false);
@@ -346,11 +339,38 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
         addHistory(radiosRef.current[radioIndexRef.current]);
       } catch (e) {
-        console.log(e, 'addRadiosToTrackPlayer');
+        console.log(e.message, 'addRadiosToTrackPlayer');
       }
     },
     [addHistory, playTrackPlayer],
   );
+
+  const onSkipPlayer = useCallback(async () => {
+    if (errorRadioIdRef.current) {
+      onSetErrorRadioId('');
+      addRadiosToTrackPlayer(
+        radiosRef.current,
+        radioIndexRef.current,
+        true,
+        true,
+      );
+
+      return;
+    }
+
+    await TrackPlayer.skip(radiosRef.current[radioIndexRef.current].id);
+    playTrackPlayer();
+
+    addHistory(radiosRef.current[radioIndexRef.current]);
+
+    showPlayerAd();
+  }, [
+    addHistory,
+    addRadiosToTrackPlayer,
+    onSetErrorRadioId,
+    playTrackPlayer,
+    showPlayerAd,
+  ]);
 
   const onTogglePlayback = useCallback(async () => {
     if (playbackState === TrackPlayer.STATE_STOPPED || errorRadioId) {
@@ -397,7 +417,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         titleRef.current = title;
         seekRef.current = {};
 
-        setErrorRadioId('');
+        onSetErrorRadioId('');
 
         setRadioIndex(radioIndex);
         setState({ radios, title });
@@ -413,7 +433,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         animateToPoint(SNAP_POINTS[1]);
       }
     },
-    [addRadiosToTrackPlayer, animateToPoint, setMetaData],
+    [addRadiosToTrackPlayer, animateToPoint, onSetErrorRadioId, setMetaData],
   );
 
   const onSetRadio = useCallback(
@@ -423,7 +443,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       },
     ) => {
       const { radioIndex, radios, title } = args;
-      setErrorRadioId('');
+      onSetErrorRadioId('');
 
       animatedBackgroundRef.current?.setup({
         radioIndex,
@@ -447,7 +467,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       setMetaData({ radios, title, radioIndex });
     },
-    [addRadiosToTrackPlayer, setMetaData],
+    [addRadiosToTrackPlayer, onSetErrorRadioId, setMetaData],
   );
 
   const onCompactPlayer = useCallback(async () => {
@@ -556,7 +576,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
           );
         }
 
-        setErrorRadioId(radiosRef.current[radioIndexRef.current].id);
+        onSetErrorRadioId(radiosRef.current[radioIndexRef.current].id);
       }
 
       if (type === TrackPlayerEvents.REMOTE_NEXT) {
@@ -636,10 +656,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     return state.radios[radioIndex];
   }, [radioIndex, state.radios]);
 
-  const onLayoutArtistAndControl = ({ nativeEvent }: LayoutChangeEvent) => {
-    // console.log(nativeEvent.layout.height);
-  };
-
   return (
     <View style={styles.container} pointerEvents="box-none">
       <PanGestureHandler onGestureEvent={panHandler}>
@@ -686,26 +702,24 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               scrollHandler={animatedBackgroundRef.current?.scrollHandler}
             />
 
-            <View onLayout={onLayoutArtistAndControl}>
-              <Artist
-                y={translateY}
-                contentY={contentTranslateY}
-                radio={state.radios[radioIndex]}
-              />
+            <Artist
+              y={translateY}
+              contentY={contentTranslateY}
+              radio={state.radios[radioIndex]}
+            />
 
-              <BottomControls
-                y={translateY}
-                contentY={contentTranslateY}
-                onNextRadio={onNextRadio}
-                onPreviousRadio={onPreviousRadio}
-                onTogglePlayback={onTogglePlayback}
-                playing={playing}
-                buffering={buffering}
-                error={!!errorRadioId}
-                radioIndex={radioIndex}
-                radiosLength={state?.radios?.length}
-              />
-            </View>
+            <BottomControls
+              y={translateY}
+              contentY={contentTranslateY}
+              onNextRadio={onNextRadio}
+              onPreviousRadio={onPreviousRadio}
+              onTogglePlayback={onTogglePlayback}
+              playing={playing}
+              buffering={buffering}
+              error={!!errorRadioId}
+              radioIndex={radioIndex}
+              radiosLength={state?.radios?.length}
+            />
           </AnimatedBackground>
         </Animated.View>
       </PanGestureHandler>

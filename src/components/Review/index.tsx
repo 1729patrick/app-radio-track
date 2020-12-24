@@ -225,7 +225,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
           <View style={styles.indicator} />
           <View style={styles.card}>
             <Text style={styles.title}>
-              Você ouviu {radioCount} rádios,{'\n'}parabéns!! 🎉
+              Você ouviu {radioCount} rádios.{'\n'}Que legal 🎉
             </Text>
 
             <LottieView

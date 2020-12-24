@@ -65,6 +65,7 @@ const PLAYLISTS = [
     url: 'playlists/popular',
     title: 'Rádios populares',
     initialPage: (dateOfYear + 20) % 228,
+    initialPageAllList: 1,
   },
   {
     key: 'location',

@@ -15,7 +15,29 @@ type ContextProps = {};
 
 const ReviewContext = createContext<ContextProps>({});
 
-const limitsToRequest = [5, 20, 35, 50, 75, 100, 125, 150, 175, 200];
+const limitsToRequest = [
+  5,
+  10,
+  20,
+  30,
+  40,
+  50,
+  60,
+  70,
+  80,
+  90,
+  100,
+  110,
+  120,
+  130,
+  140,
+  150,
+  160,
+  170,
+  180,
+  190,
+  200,
+];
 
 import api from '~/services/api';
 

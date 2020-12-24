@@ -16,7 +16,6 @@ const WithoutFeedbackButton = ({
   titleStyle,
   disabled,
 }: WithoutFeedbackButtonProps) => {
-  console.log(disabled);
   return (
     <TouchableOpacity
       onPress={onPress}

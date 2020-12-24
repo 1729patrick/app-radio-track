@@ -44,7 +44,7 @@ const Welcome = () => {
       <View style={styles.containerTop}>
         <Text style={styles.title}>Bem-vindo</Text>
         <Text style={styles.description}>
-          Leve milhares de estações de rádio no seu bolso.
+          Leve milhares de estações de rádio no seu bolso
         </Text>
         <LottieView
           source={require('~/assets/robot2.json')}
