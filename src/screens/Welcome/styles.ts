@@ -13,7 +13,6 @@ export default StyleSheet.create({
   },
   containerTop: {
     height: height - BOTTOM_CONTAINER_HEIGHT,
-    zIndex: 20,
     justifyContent: 'flex-end',
     backgroundColor: StyleGuide.palette.background,
     paddingHorizontal: StyleGuide.spacing * 2,

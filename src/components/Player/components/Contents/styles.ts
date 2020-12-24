@@ -1,10 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-import {
-  BACKGROUND_COLOR,
-  INDICATOR_HEIGHT,
-  INDICATOR_MARGIN_TOP,
-} from './constants';
+import { INDICATOR_HEIGHT, INDICATOR_MARGIN_TOP } from './constants';
 
 const { height, width } = Dimensions.get('window');
 
@@ -14,7 +10,7 @@ export default StyleSheet.create({
     zIndex: 3,
   },
   content: {
-    backgroundColor: BACKGROUND_COLOR,
+    backgroundColor: StyleGuide.palette.backgroundSecondary,
     height: height,
     width,
     borderTopRightRadius: StyleGuide.borderRadius * 3,

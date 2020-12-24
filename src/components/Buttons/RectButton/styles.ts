@@ -7,6 +7,7 @@ export default StyleSheet.create({
     width: '100%',
     height: 50,
     borderRadius: StyleGuide.borderRadius * 2,
+    overflow: 'hidden',
     backgroundColor: lighten(0.1, StyleGuide.palette.backgroundPrimary),
   },
   button: {

@@ -23,7 +23,7 @@ const RectButton = ({
       <NativeRectButton
         onPress={onPress}
         style={styles.button}
-        rippleColor={StyleGuide.palette.border}>
+        rippleColor={StyleGuide.palette.secondary}>
         <Text style={[styles.title, titleStyle]}>{title}</Text>
       </NativeRectButton>
     </View>

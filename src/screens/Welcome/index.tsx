@@ -6,6 +6,7 @@ import LottieView from 'lottie-react-native';
 import Svg, { Path } from 'react-native-svg';
 import RectButton from '~/components/Buttons/RectButton';
 import WithoutFeedbackButton from '~/components/Buttons/WithoutFeedback';
+import Regions from './components/Regions';
 
 const Welcome = () => {
   return (
@@ -43,6 +44,8 @@ const Welcome = () => {
           fill="#1d1e21"
         />
       </Svg>
+
+      <Regions />
     </View>
   );
 };

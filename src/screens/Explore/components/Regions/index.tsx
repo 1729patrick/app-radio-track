@@ -6,8 +6,9 @@ import { REGIONS } from './data';
 import { useNavigation } from '@react-navigation/native';
 import StyleGuide from '~/utils/StyleGuide';
 
-
 const { width } = Dimensions.get('window');
+
+export type RegionType = { id: string; image: any; title: string };
 
 const Regions = () => {
   const { navigate } = useNavigation();
@@ -21,7 +22,7 @@ const Regions = () => {
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: { id: string; image: any; title: string }[] }) => {
+    ({ item }: { item: RegionType[] }) => {
       return (
         <View style={styles.group}>
           {item.map((region) => (
