@@ -121,7 +121,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const titleRef = useRef<string>('');
   const albumsMountedRef = useRef<boolean>(false);
   const isCorrectRadioRef = useRef<boolean>(false);
-  const errorRadioIdRef = useRef('');
   const [errorRadioId, setErrorRadioId] = useState('');
   const seekRef = useRef<{ id?: string; date?: number }>({});
 
@@ -134,11 +133,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     playerStateRef.current = state;
   }, []);
 
-  const onSetErrorRadioId = useCallback((args) => {
-    setErrorRadioId(args);
-    errorRadioIdRef.current = args;
-  }, []);
-
   const onClose = useCallback(() => {
     if (
       playerStateRef.current === 'closed' &&
@@ -146,7 +140,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     ) {
       resetTrackPlayer();
 
-      onSetErrorRadioId('');
+      setErrorRadioId('');
       setRadioIndex(0);
       setState({
         title: '',
@@ -155,7 +149,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       removePlayingRadio();
     }
-  }, [onSetErrorRadioId, removePlayingRadio]);
+  }, [setErrorRadioId, removePlayingRadio]);
 
   //@ts-ignore
   //todo: MUST BE REFECTORY
@@ -240,12 +234,12 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       await TrackPlayer.play();
 
-      onSetErrorRadioId('');
+      setErrorRadioId('');
       addHistory(radiosRef.current[radioIndexRef.current]);
     } catch (e) {
       console.log(e.message, 'playTrackPlayer');
     }
-  }, [addHistory, onSetErrorRadioId]);
+  }, [addHistory, setErrorRadioId]);
 
   const resetTrackPlayer = async () => {
     setPlaying(false);
@@ -346,31 +340,13 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   );
 
   const onSkipPlayer = useCallback(async () => {
-    if (errorRadioIdRef.current) {
-      onSetErrorRadioId('');
-      addRadiosToTrackPlayer(
-        radiosRef.current,
-        radioIndexRef.current,
-        true,
-        true,
-      );
-
-      return;
-    }
-
     await TrackPlayer.skip(radiosRef.current[radioIndexRef.current].id);
     playTrackPlayer();
 
     addHistory(radiosRef.current[radioIndexRef.current]);
 
     showPlayerAd();
-  }, [
-    addHistory,
-    addRadiosToTrackPlayer,
-    onSetErrorRadioId,
-    playTrackPlayer,
-    showPlayerAd,
-  ]);
+  }, [addHistory, playTrackPlayer, showPlayerAd]);
 
   const onTogglePlayback = useCallback(async () => {
     if (playbackState === TrackPlayer.STATE_STOPPED || errorRadioId) {
@@ -417,7 +393,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         titleRef.current = title;
         seekRef.current = {};
 
-        onSetErrorRadioId('');
+        setErrorRadioId('');
 
         setRadioIndex(radioIndex);
         setState({ radios, title });
@@ -433,7 +409,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         animateToPoint(SNAP_POINTS[1]);
       }
     },
-    [addRadiosToTrackPlayer, animateToPoint, onSetErrorRadioId, setMetaData],
+    [addRadiosToTrackPlayer, animateToPoint, setErrorRadioId, setMetaData],
   );
 
   const onSetRadio = useCallback(
@@ -443,7 +419,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       },
     ) => {
       const { radioIndex, radios, title } = args;
-      onSetErrorRadioId('');
+      setErrorRadioId('');
 
       animatedBackgroundRef.current?.setup({
         radioIndex,
@@ -467,7 +443,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
       setMetaData({ radios, title, radioIndex });
     },
-    [addRadiosToTrackPlayer, onSetErrorRadioId, setMetaData],
+    [addRadiosToTrackPlayer, setErrorRadioId, setMetaData],
   );
 
   const onCompactPlayer = useCallback(async () => {
@@ -567,16 +543,16 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         //   args,
         // );
 
-        if (!errorRadioId) {
-          addRadiosToTrackPlayer(
-            radiosRef.current,
-            radioIndexRef.current,
-            false,
-            true,
-          );
-        }
+        // if (!errorRadioId) {
+        //   addRadiosToTrackPlayer(
+        //     radiosRef.current,
+        //     radioIndexRef.current,
+        //     false,
+        //     true,
+        //   );
+        // }
 
-        onSetErrorRadioId(radiosRef.current[radioIndexRef.current].id);
+        setErrorRadioId(radiosRef.current[radioIndexRef.current].id);
       }
 
       if (type === TrackPlayerEvents.REMOTE_NEXT) {

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 
 import React, { memo, useCallback } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, ImageBackground, Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import StyleGuide from '~/utils/StyleGuide';
@@ -24,13 +24,16 @@ const Genres = () => {
       <Text style={styles.title}>Estilos músicais</Text>
 
       {GENRES.map((genre) => (
-        <LinearGradient
-          key={genre.title}
-          start={{ x: 0, y: 1 }}
-          end={{ x: 1, y: 0 }}
-          locations={[0.2, 1]}
-          colors={genre.colors}
-          style={styles.card}>
+        <ImageBackground source={genre.image} style={styles.card}>
+          <LinearGradient
+            key={genre.title}
+            start={{ x: -0.25, y: 1 }}
+            end={{ x: 1, y: 0 }}
+            locations={[0.2, 1]}
+            colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0)']}
+            style={styles.image}
+          />
+
           <RectButton
             rippleColor={StyleGuide.palette.background}
             style={styles.button}
@@ -39,12 +42,12 @@ const Genres = () => {
               {genre.title}
             </Text>
 
-            <Image
+            {/* <Image
               style={styles.image}
               source={require('~/assets/vinyl.png')}
-            />
+            /> */}
           </RectButton>
-        </LinearGradient>
+        </ImageBackground>
       ))}
     </View>
   );
