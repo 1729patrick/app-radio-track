@@ -44,7 +44,7 @@ const Tab = memo(
         accessibilityState={isFocused ? { selected: true } : {}}
         accessibilityLabel={options.tabBarAccessibilityLabel}
         testID={options.tabBarTestID}
-        onPress={() => onPress(route.key, route.name, isFocused, index)}
+        onPress={() => onPress(route.key, route.name, isFocused)}
         onLongPress={() => onLongPress(route.key)}
         style={styles.tab}
         onLayout={(props) => onLayout(props, index)}>
@@ -110,7 +110,7 @@ const TabBar: React.FC<TabBarProps & MaterialTopTabBarProps> = ({
   );
 
   const onPress = useCallback(
-    (target, name, isFocused, index) => {
+    (target, name, isFocused) => {
       const event = navigation.emit({
         target,
         type: 'tabPress',
@@ -119,11 +119,9 @@ const TabBar: React.FC<TabBarProps & MaterialTopTabBarProps> = ({
 
       if (!isFocused && !event.defaultPrevented) {
         navigation.navigate(name);
-        console.log(position.value);
-        // position.setValue(index);
       }
     },
-    [navigation, position],
+    [navigation],
   );
 
   return (
@@ -134,6 +132,7 @@ const TabBar: React.FC<TabBarProps & MaterialTopTabBarProps> = ({
 
       {state.routes.map((route, index) => (
         <Tab
+          key={route.name}
           descriptors={descriptors}
           route={route}
           state={state}
