@@ -83,9 +83,7 @@ export const ReviewProvider: React.FC = ({ children }) => {
     [onSaveReview],
   );
 
-  const onDismiss = useCallback(() => {
-    setLastCount(countRef.current?.toString());
-  }, [setLastCount]);
+  const onDismiss = useCallback(() => {}, []);
 
   const checkToShow = useCallback(async () => {
     const historyLength = getHistory()?.length;
@@ -102,15 +100,15 @@ export const ReviewProvider: React.FC = ({ children }) => {
     const lastCount = (await getLastCount()) || 0;
     countRef.current = limitsToRequest[limitBreak];
 
-    console.log({ lastCount });
     if (
       !reviewFromStorage &&
       InAppReview.isAvailable() &&
       +lastCount < countRef.current
     ) {
+      setLastCount(countRef.current?.toString());
       reviewRef.current?.show(countRef.current);
     }
-  }, [getHistory, getItem, getLastCount]);
+  }, [getHistory, getItem, getLastCount, setLastCount]);
 
   useEffect(() => {
     checkToShow();

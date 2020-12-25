@@ -212,7 +212,6 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
     };
   }, [y, contentY]);
 
-  console.log({ loading, hiddenFlatList });
   return (
     <Animated.View
       style={[styles.container, styleContent, style]}
