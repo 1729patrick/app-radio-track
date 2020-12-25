@@ -21,7 +21,7 @@ const AdContext = createContext<ContextProps>({
   showPlayerAd: () => {},
 });
 
-const TIME_OUT_MINUTOS = 4;
+const TIME_OUT_MINUTOS = 2;
 const TIME_TO_SHOW = 1000 * 60 * TIME_OUT_MINUTOS;
 
 export const AdProvider: React.FC = ({ children }) => {
