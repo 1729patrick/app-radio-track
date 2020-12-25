@@ -47,7 +47,7 @@ const Welcome = () => {
           Leve milhares de estações de rádio no seu bolso
         </Text>
         <LottieView
-          source={require('~/assets/robot2.json')}
+          source={require('~/assets/robot.json')}
           style={styles.robot}
           speed={1}
           autoPlay

@@ -230,7 +230,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
 
             <LottieView
               ref={animationRef}
-              source={require('~/assets/robot2.json')}
+              source={require('~/assets/robot.json')}
               style={styles.winner}
               speed={1}
               autoPlay
