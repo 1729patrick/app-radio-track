@@ -90,7 +90,7 @@ export const GENRES = [
     title: 'Eletrônica',
     colors: ['#512DA8', '#673AB7'],
     id: ['5tdskeqj', 'airjhfnm', 'l4fe852i'],
-    image: require('~/assets/genres/eletronic.png'),
+    image: require('~/assets/genres/eletronic.jpg'),
   },
   {
     title: 'Jazz',
@@ -160,6 +160,6 @@ export const GENRES = [
       'vru55fep',
       [],
     ],
-    image: require('~/assets/genres/others.png'),
+    image: require('~/assets/genres/others.jpg'),
   },
 ];
