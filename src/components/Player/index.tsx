@@ -505,7 +505,11 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
   const onAlbumsMounted = useCallback(() => {
     albumsMountedRef.current = true;
-  }, []);
+
+    if (radioIndex === radioIndexRef.current) {
+      setLoading(false);
+    }
+  }, [radioIndex]);
 
   const onRemoteDuck = useCallback(
     ({ permanent, paused }: { permanent: boolean; paused: boolean }) => {

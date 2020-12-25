@@ -101,6 +101,8 @@ export const ReviewProvider: React.FC = ({ children }) => {
 
     const lastCount = (await getLastCount()) || 0;
     countRef.current = limitsToRequest[limitBreak];
+
+    console.log({ lastCount });
     if (
       !reviewFromStorage &&
       InAppReview.isAvailable() &&
