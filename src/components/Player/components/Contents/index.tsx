@@ -198,10 +198,7 @@ const Contents: React.ForwardRefRenderFunction<
 
   return (
     <Animated.View style={styles.container}>
-      <PanGestureHandler
-        onGestureEvent={panHandler}
-        shouldCancelWhenOutside
-        hitSlop={{ top: 20 }}>
+      <PanGestureHandler onGestureEvent={panHandler} hitSlop={{ top: 20 }}>
         <Animated.View style={[style]}>
           <Animated.View style={[styles.compactPlayer, styleCompact]}>
             <CompactPlayer
