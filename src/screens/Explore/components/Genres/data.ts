@@ -120,7 +120,7 @@ export const GENRES = [
     title: 'Hip Hop',
     colors: ['#3f4c6b', '#606c88'],
     id: ['jcqc2oqe'],
-    image: require('~/assets/genres/hip_hop.png'),
+    image: require('~/assets/genres/hip_hop.jpg'),
   },
   {
     title: 'Reggae',

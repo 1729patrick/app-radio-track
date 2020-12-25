@@ -27,10 +27,10 @@ const Genres = () => {
         <ImageBackground source={genre.image} style={styles.card}>
           <LinearGradient
             key={genre.title}
-            start={{ x: -0.25, y: 1 }}
+            start={{ x: -0.5, y: 1 }}
             end={{ x: 1, y: 0 }}
             locations={[0.2, 1]}
-            colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0)']}
+            colors={['rgba(0,0,0,0.85)', 'rgba(0,0,0,0.1)']}
             style={styles.image}
           />
 
