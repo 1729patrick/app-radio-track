@@ -14,12 +14,15 @@ import { RadioType } from '~/types/Station';
 import { useFetch } from '~/hooks/useFetch';
 import { CARD_SIZE } from '~/components/Radio/Card/constants';
 import { BACKGROUND_COLOR } from '../../constants';
+import { useAd } from '~/ads/contexts/AdContext';
 
 type SuggestProps = {
   routeProps: RouteProps;
 };
 
 const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
+  const { showRelationalAd } = useAd();
+
   const radio = useMemo(() => {
     return routeProps?.radio || {};
   }, [routeProps?.radio]);
@@ -34,13 +37,15 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
 
   const onSetRadio = useCallback(
     (radioIndex: number, radios?: RadioType[]) => {
+      console.log('chanou');
+      showRelationalAd();
       routeProps.onSetRadio({
         radioIndex,
         title: '',
         radios: radios || [],
       });
     },
-    [routeProps],
+    [routeProps, showRelationalAd],
   );
 
   const renderItemSimilar = useCallback(

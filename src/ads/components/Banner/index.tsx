@@ -2,7 +2,6 @@ import React, { memo, useMemo, useState } from 'react';
 
 import { TestIds, BannerAd, BannerAdSize } from '@react-native-firebase/admob';
 
-
 const Banner = ({ id }: { id: string }) => {
   const [error, setError] = useState(false);
   const unitId = useMemo(() => {

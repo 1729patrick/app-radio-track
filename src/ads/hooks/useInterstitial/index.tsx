@@ -7,8 +7,7 @@ import {
 } from '@react-native-firebase/admob';
 
 const useInterstitial = (id: string) => {
-  const loadedRef = useRef<boolean | undefined>();
-  const showOnLoadRef = useRef<boolean | undefined>();
+  const loadedRef = useRef<boolean | undefined>(false);
 
   const interstitial = useMemo(() => {
     const unitId = __DEV__ ? TestIds.INTERSTITIAL : id;
@@ -20,12 +19,13 @@ const useInterstitial = (id: string) => {
   }, [id]);
 
   const showAd = useCallback(() => {
-    if (interstitial.loaded) {
+    if (loadedRef.current) {
       interstitial.show();
     }
   }, [interstitial]);
 
   const loadAd = useCallback(() => {
+    loadedRef.current = false;
     interstitial.load();
   }, [interstitial]);
 
@@ -33,6 +33,8 @@ const useInterstitial = (id: string) => {
     const eventListener = interstitial.onAdEvent((type) => {
       if (type === AdEventType.CLOSED || type === AdEventType.ERROR) {
         loadAd();
+      } else if (type === AdEventType.LOADED) {
+        loadedRef.current = true;
       }
     });
 
