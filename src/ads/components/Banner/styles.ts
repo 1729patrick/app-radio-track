@@ -61,7 +61,7 @@ export default StyleSheet.create({
     backgroundColor: StyleGuide.palette.app,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: StyleGuide.borderRadius * 2.5,
+    borderRadius: StyleGuide.borderRadius * 1.5,
   },
   callToActionText: {
     ...StyleGuide.typography.headline,

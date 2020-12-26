@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -47,9 +46,9 @@ const ModalBackground = ({
   return (
     <Animated.View
       style={[styles.container, style]}
-      animatedProps={animatedProps}>
-      <TouchableWithoutFeedback onPress={onPress} style={[styles.button]} />
-    </Animated.View>
+      onStartShouldSetResponder={onPress}
+      animatedProps={animatedProps}
+    />
   );
 };
 
