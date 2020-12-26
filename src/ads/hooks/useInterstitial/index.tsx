@@ -40,7 +40,7 @@ const useInterstitial = (id: string) => {
   }, [interstitial, loadAd]);
 
   useEffect(() => {
-    const eventListener = interstitial.onAdEvent((type, error) => {
+    const eventListener = interstitial.onAdEvent((type) => {
       if (type === AdEventType.CLOSED) {
         loadAd();
       } else if (type === AdEventType.LOADED) {

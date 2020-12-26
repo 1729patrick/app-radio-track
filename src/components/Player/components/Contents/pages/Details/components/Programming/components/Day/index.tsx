@@ -7,14 +7,14 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { LayoutChangeEvent, View } from 'react-native';
+import { LayoutChangeEvent, View, Text } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { Text } from 'react-native-svg';
+
 import { ProgramType } from '~/types/Station';
 import { CARD_PADDING, TIMING_DURATION } from '../../constants';
 
