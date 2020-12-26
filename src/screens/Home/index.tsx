@@ -22,7 +22,6 @@ import { FavoriteRadios, PlaylistRadios } from './components/Radios/types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
-import Input from '~/components/Input';
 import { useRegion } from '~/contexts/RegionContext';
 
 function daysIntoYear() {
@@ -132,12 +131,7 @@ const Home: React.FC = () => {
   );
 
   const onShowPlaylist = useCallback(
-    (args: {
-      title: string;
-      url: string;
-      initialPage?: number;
-      adType: string;
-    }) => {
+    (args: { title: string; url: string; initialPage?: number }) => {
       navigate('Playlist', args);
     },
     [navigate],

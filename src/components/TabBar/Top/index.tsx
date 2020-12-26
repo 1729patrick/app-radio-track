@@ -1,60 +1,15 @@
-import React, { memo, useCallback, useRef, useState } from 'react';
-import Animated, {
-  Extrapolate,
-  interpolate,
-  useAnimatedStyle,
-  useDerivedValue,
-} from 'react-native-reanimated';
-import { LayoutChangeEvent, TouchableOpacity } from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import Animated, { Extrapolate } from 'react-native-reanimated';
+import { LayoutChangeEvent } from 'react-native';
 
 import styles from './styles';
-import { HEADER_HEIGHT } from '~/components/Header/constants';
 import StyleGuide from '~/utils/StyleGuide';
 import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
+import Tab from './components/Tab';
 
 type TabBarProps = {
   translateY: Animated.SharedValue<number>;
 };
-
-const Tab = memo(
-  ({
-    descriptors,
-    route,
-    state,
-    inputRange,
-    index,
-    position,
-    onPress,
-    onLongPress,
-    onLayout,
-  }) => {
-    const { options } = descriptors[route.key];
-    const isFocused = state.index === index;
-
-    const opacity = Animated.interpolateNode(position, {
-      inputRange,
-      outputRange: inputRange.map((i) => (i === index ? 1 : 0.65)),
-    });
-
-    return (
-      <TouchableOpacity
-        activeOpacity={1}
-        key={route.key}
-        accessibilityRole="button"
-        accessibilityState={isFocused ? { selected: true } : {}}
-        accessibilityLabel={options.tabBarAccessibilityLabel}
-        testID={options.tabBarTestID}
-        onPress={() => onPress(route.key, route.name, isFocused)}
-        onLongPress={() => onLongPress(route.key)}
-        style={styles.tab}
-        onLayout={(props) => onLayout(props, index)}>
-        <Animated.Text style={[styles.title, { opacity }]}>
-          {options.title}
-        </Animated.Text>
-      </TouchableOpacity>
-    );
-  },
-);
 
 const TabBar: React.FC<TabBarProps & MaterialTopTabBarProps> = ({
   state,

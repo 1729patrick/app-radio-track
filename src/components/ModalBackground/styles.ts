@@ -6,4 +6,5 @@ export default StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: StyleGuide.palette.border,
   },
+  button: { flexGrow: 1 },
 });

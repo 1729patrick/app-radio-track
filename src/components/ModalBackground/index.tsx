@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -9,7 +10,17 @@ import Animated, {
 
 import styles from './styles';
 
-const ModalBackground = ({ translateY, snapPoints, onPress }) => {
+type ModalBackgroundProps = {
+  translateY: Animated.SharedValue<number>;
+  snapPoints: number[];
+  onPress: () => void;
+};
+
+const ModalBackground = ({
+  translateY,
+  snapPoints,
+  onPress,
+}: ModalBackgroundProps) => {
   const opacity = useDerivedValue(() => {
     return interpolate(
       translateY.value,
@@ -36,9 +47,9 @@ const ModalBackground = ({ translateY, snapPoints, onPress }) => {
   return (
     <Animated.View
       style={[styles.container, style]}
-      onStartShouldSetResponder={onPress}
-      animatedProps={animatedProps}
-    />
+      animatedProps={animatedProps}>
+      <TouchableWithoutFeedback onPress={onPress} style={[styles.button]} />
+    </Animated.View>
   );
 };
 

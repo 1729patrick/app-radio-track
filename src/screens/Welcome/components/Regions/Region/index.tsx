@@ -6,7 +6,12 @@ import styles from './styles';
 import StyleGuide from '~/utils/StyleGuide';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-const Region: React.FC<RegionType> = ({
+type RegionProps = RegionType & {
+  checked: boolean;
+  onPress: (id: string) => void;
+};
+
+const Region: React.FC<RegionProps> = ({
   image,
   title,
   checked,

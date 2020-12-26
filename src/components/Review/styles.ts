@@ -12,10 +12,6 @@ export default StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
   },
-  background: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: StyleGuide.palette.border,
-  },
   fakeBackground: {
     position: 'absolute',
     bottom: 0,

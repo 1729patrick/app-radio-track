@@ -51,7 +51,7 @@ const Tab: React.FC<TabProps> = ({
     );
 
     return { color };
-  }, [translateX.value]);
+  }, [translateX]);
 
   return (
     <TouchableWithoutFeedback

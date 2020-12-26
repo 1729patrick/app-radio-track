@@ -39,9 +39,6 @@ import { SNAP_POINTS, TIMING_DURATION } from './constants';
 import styles from './styles';
 import CompactPlayer from './components/CompactPlayer';
 
-import AnimatedBackground, {
-  AnimatedBackgroundHandler,
-} from '~/components/AnimatedBackground';
 import { usePlayer } from '~/contexts/PlayerContext';
 import { RadioType } from '~/types/Station';
 import { useHistory } from '~/contexts/HistoryContext';
@@ -114,7 +111,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   const playerStatePreviousRef = useRef<PlayerAnimationState>('closed');
 
   const albumsRef = useRef<AlbumsHandler>(null);
-  const animatedBackgroundRef = useRef<AnimatedBackgroundHandler>(null);
 
   const radioIndexRef = useRef<number>(0);
   const radiosRef = useRef<RadioType[]>([]);
@@ -421,11 +417,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       const { radioIndex, radios, title } = args;
       setErrorRadioId('');
 
-      animatedBackgroundRef.current?.setup({
-        radioIndex,
-        radiosSize: radios.length,
-      });
-
       if (Platform.OS === 'android') {
         addRadiosToTrackPlayer(radios, radioIndex, true);
       }
@@ -640,7 +631,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     <View style={styles.container} pointerEvents="box-none">
       <PanGestureHandler onGestureEvent={panHandler}>
         <Animated.View style={[style]}>
-          <AnimatedBackground style={styles.player} ref={animatedBackgroundRef}>
+          <View style={styles.player}>
             <Contents
               translateY={contentTranslateY}
               playing={playing}
@@ -679,7 +670,6 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               radioIndex={radioIndexRef.current}
               loading={loading}
               onAlbumsMounted={onAlbumsMounted}
-              scrollHandler={animatedBackgroundRef.current?.scrollHandler}
             />
 
             <Artist
@@ -700,7 +690,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
               radioIndex={radioIndex}
               radiosLength={state?.radios?.length}
             />
-          </AnimatedBackground>
+          </View>
         </Animated.View>
       </PanGestureHandler>
     </View>
@@ -709,7 +699,8 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 
 export default memo(forwardRef(Player));
 
-function getStateName(state) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getStateName(state: number) {
   switch (state) {
     case TrackPlayer.STATE_NONE:
       return 'None';

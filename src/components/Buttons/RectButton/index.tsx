@@ -1,5 +1,4 @@
-import { lighten } from 'polished';
-import React from 'react';
+import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 import { RectButton as NativeRectButton } from 'react-native-gesture-handler';
@@ -30,4 +29,4 @@ const RectButton = ({
   );
 };
 
-export default RectButton;
+export default memo(RectButton);

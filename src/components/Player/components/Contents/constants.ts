@@ -19,3 +19,5 @@ export const BACKGROUND_COLOR = lighten(
   0.07,
   StyleGuide.palette.backgroundPrimary,
 );
+
+export const AD_BACKGROUND_COLOR = lighten(0.05, BACKGROUND_COLOR);

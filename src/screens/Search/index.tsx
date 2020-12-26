@@ -108,6 +108,7 @@ const Search: React.FC<SearchProps> = () => {
           <RoundButton
             onPress={onClearSearch}
             name={'close'}
+            color={StyleGuide.palette.light}
             size={24}
             Icon={Icon}
           />

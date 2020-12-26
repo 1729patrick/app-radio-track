@@ -24,7 +24,6 @@ import Animated, {
   Extrapolate,
   interpolate,
   runOnJS,
-  useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -39,6 +38,7 @@ import { useKeyboard } from '~/hooks/useKeyboard';
 import RectButton from '../Buttons/RectButton';
 import WithoutFeedbackButton from '../Buttons/WithoutFeedback';
 import Input from '../Input';
+import ModalBackground from '../ModalBackground';
 
 const { height } = Dimensions.get('window');
 
@@ -114,17 +114,6 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
     };
   }, [keyboardHeight]);
 
-  const styleBackground = useAnimatedStyle(() => {
-    return {
-      opacity: interpolate(
-        translateY.value,
-        snapPoints,
-        [0.75, 0],
-        Extrapolate.CLAMP,
-      ),
-    };
-  }, [keyboardHeight]);
-
   const styleFakeBackground = useAnimatedStyle(() => {
     return {
       bottom: interpolate(
@@ -183,14 +172,6 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
     setStarLevel(star);
   };
 
-  const animatedProps = useAnimatedProps(() => {
-    const pointerEvents = translateY.value === snapPoints[0] ? 'auto' : 'none';
-
-    return {
-      pointerEvents,
-    };
-  }, [translateY.value, snapPoints[0]]);
-
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => {
       const modalOpen = translateY.value === snapPoints[0];
@@ -210,10 +191,10 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
 
   return (
     <Animated.View style={styles.container} pointerEvents="box-none">
-      <Animated.View
-        style={[styles.background, styleBackground]}
-        onStartShouldSetResponder={onDismissReview}
-        animatedProps={animatedProps}
+      <ModalBackground
+        translateY={translateY}
+        snapPoints={snapPoints}
+        onPress={onDismissReview}
       />
 
       <Animated.View style={[styles.fakeBackground, styleFakeBackground]} />

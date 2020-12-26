@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, memo } from 'react';
 import { TextInput } from 'react-native-gesture-handler';
 import styles from './styles';
 
@@ -25,4 +25,4 @@ const Input = ({ placeholder, onChangeText }: InputProps, ref: Ref) => {
   );
 };
 
-export default forwardRef(Input);
+export default memo(forwardRef(Input));

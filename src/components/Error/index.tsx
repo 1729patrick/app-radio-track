@@ -19,10 +19,10 @@ const MESSAGES = {
 };
 
 type ErrorType = {
-  type?: string;
+  type?: 'favoritesEmpty' | 'historyEmpty' | 'Network Error';
 };
 
-const Error = ({ type = 'offline' }: ErrorType) => {
+const Error = ({ type = 'Network Error' }: ErrorType) => {
   const title = useMemo(() => {
     return MESSAGES[type]?.title;
   }, [type]);

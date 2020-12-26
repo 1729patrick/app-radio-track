@@ -4,7 +4,7 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
 } from 'react-native-reanimated';
-import { RouteType } from '../..';
+import { RouteType } from '../TabNavigator';
 
 import styles from './styles';
 import Tab from './Tab';

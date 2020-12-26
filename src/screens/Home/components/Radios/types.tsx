@@ -12,7 +12,6 @@ type TypesProps = {
     url: string;
     initialPage?: number;
     initialPageAllList?: number;
-    adType: string;
   }) => void;
   onEndReached?: () => void;
 };
@@ -24,7 +23,6 @@ type PlaylistType = {
     title: string;
     initialPage?: number;
     initialPageAllList?: number;
-    adType: string;
   };
   toggleState: (args: { key: string; success: boolean; error: string }) => void;
   param?: string;
@@ -79,7 +77,6 @@ export const PlaylistRadios: React.FC<TypesProps & PlaylistType> = ({
           title: playlist.title,
           url: `${playlist.url}${param}`,
           initialPage: playlist.initialPageAllList || playlist.initialPage,
-          adType: playlist.adType,
         })
       }
     />

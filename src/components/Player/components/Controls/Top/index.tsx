@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -29,7 +29,7 @@ const TopControls: React.FC<TopControlsProps> = ({
   y,
   onCompactPlayer,
   title,
-  radio = {},
+  radio,
   contentY,
 }) => {
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();

@@ -93,24 +93,6 @@ function LibraryStackScreen() {
   );
 }
 
-const AppScreen = () => {
-  return (
-    <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
-      <Tab.Screen name="Home" component={HomeStackScreen} />
-      <Tab.Screen
-        name="Explore"
-        component={ExploreStackScreen}
-        // options={{ unmountOnBlur: true }}
-      />
-      <Tab.Screen
-        name="Library"
-        component={LibraryStackScreen}
-        // options={{ unmountOnBlur: true }}
-      />
-    </Tab.Navigator>
-  );
-};
-
 const Routes = () => {
   return (
     <NavigationContainer theme={theme}>

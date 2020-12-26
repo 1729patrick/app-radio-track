@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import styles from './styles';
@@ -28,4 +28,4 @@ const WithoutFeedbackButton = ({
   );
 };
 
-export default WithoutFeedbackButton;
+export default memo(WithoutFeedbackButton);

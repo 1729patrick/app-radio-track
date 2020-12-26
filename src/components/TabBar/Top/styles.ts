@@ -24,14 +24,4 @@ export default StyleSheet.create({
     position: 'absolute',
     bottom: 0,
   },
-  title: {
-    ...StyleGuide.typography.tabBarLabel,
-    fontSize: 15,
-  },
-  tab: {
-    paddingHorizontal: StyleGuide.spacing * 2,
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });

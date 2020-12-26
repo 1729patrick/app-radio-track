@@ -7,7 +7,6 @@ import { RectButton } from 'react-native-gesture-handler';
 import RoundButton from '~/components/Button/Round';
 import LottieView from 'lottie-react-native';
 
-
 import Icon from 'react-native-vector-icons/Ionicons';
 import { RadioType } from '~/types/Station';
 import { image } from '~/services/api';

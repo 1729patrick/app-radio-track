@@ -29,7 +29,18 @@ import Region from './Region';
 
 import styles from './styles';
 
-const Regions = ({ onContinue }, ref) => {
+type RegionsProps = {
+  onContinue: (regionId: string) => void;
+};
+
+export type RegionHandler = {
+  show: () => void;
+};
+
+const Regions: React.ForwardRefRenderFunction<RegionHandler, RegionsProps> = (
+  { onContinue },
+  ref,
+) => {
   const translateY = useSharedValue(REGIONS_SNAP_POINTS[2]);
   const [regionIdChecked, setRegionIdChecked] = useState('');
 

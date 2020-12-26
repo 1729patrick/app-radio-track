@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import NativeAdView, {
   AdvertiserView,
@@ -15,13 +15,23 @@ import { MEDIA_WIDTH } from './constants';
 
 import styles from './styles';
 
-export default ({ media, id }) => {
+type BannerProps = {
+  media?: boolean;
+  id: string;
+  backgroundColor?: string;
+};
+
+const Banner = ({
+  media,
+  id,
+  backgroundColor = StyleGuide.palette.backgroundSecondary,
+}: BannerProps) => {
   const adUnitID = useMemo(() => {
     return __DEV__ ? 'ca-app-pub-3940256099942544/2247696110' : id;
   }, [id]);
 
   const [aspectRatio, setAspectRatio] = useState(1);
-  const _onAdFailedToLoad = (event) => {
+  const _onAdFailedToLoad = (event: any) => {
     console.log(event.nativeEvent);
   };
 
@@ -37,7 +47,7 @@ export default ({ media, id }) => {
     console.log('Ad impressionr recorded');
   };
 
-  const _onUnifiedNativeAdLoaded = (event) => {
+  const _onUnifiedNativeAdLoaded = (event: any) => {
     console.log(event);
     console.log('Views have populated with the Ad');
     console.log(event.aspectRatio);
@@ -55,7 +65,7 @@ export default ({ media, id }) => {
       onAdImpression={_onAdImpression}
       onUnifiedNativeAdLoaded={_onUnifiedNativeAdLoaded}
       refreshInterval={60000 * 2}
-      style={styles.container}
+      style={[styles.container, { backgroundColor }]}
       adUnitID={adUnitID} // REPLACE WITH NATIVE_AD_VIDEO_ID for video ads.
     >
       <View style={styles.content}>
@@ -93,3 +103,5 @@ export default ({ media, id }) => {
     </NativeAdView>
   );
 };
+
+export default memo(Banner);

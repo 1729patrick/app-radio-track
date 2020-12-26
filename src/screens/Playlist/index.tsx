@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -24,7 +24,6 @@ type RootStackParamList = {
     title: string;
     url: string;
     initialPage?: number;
-    adType: string;
   };
 };
 

@@ -15,7 +15,7 @@ const Regions = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
 
   const onShowRegion = useCallback(
-    ({ title, id }: { title: string; id: (string | never[])[] }) => {
+    ({ title, id }: RegionType) => {
       const url = `playlists/region/br/${id}`;
       navigate('Playlist', { title, url });
     },

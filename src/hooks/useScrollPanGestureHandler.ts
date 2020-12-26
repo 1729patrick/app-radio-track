@@ -1,11 +1,11 @@
 import { Dimensions } from 'react-native';
 import { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
-import {
+import Animated, {
   cancelAnimation,
   useAnimatedGestureHandler,
   withDecay,
 } from 'react-native-reanimated';
-import { clamp, snapPoint } from 'react-native-redash';
+import { snapPoint } from 'react-native-redash';
 
 type GestureHandlerContext = {
   startY: number;
@@ -15,11 +15,11 @@ type GestureHandlerContext = {
 const { height } = Dimensions.get('window');
 
 const useScrollPanGestureHandler = (
-  translateY,
-  lowerBound,
-  upperBound,
-  animateToPoint,
-  snapPoints,
+  translateY: Animated.SharedValue<number>,
+  lowerBound: number,
+  upperBound: Animated.SharedValue<number>,
+  animateToPoint: (point: number) => void,
+  snapPoints: number[],
 ) => {
   const panHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,

@@ -7,7 +7,10 @@ import styles from './styles';
 import { RectButton } from 'react-native-gesture-handler';
 import { useSearchHistory } from '~/contexts/SearchHistoryContext';
 
-const History = ({ onPress }) => {
+type HistoryProps = {
+  onPress: (searchTerm: string) => void;
+};
+const History = ({ onPress }: HistoryProps) => {
   const { getSearchHistory } = useSearchHistory();
 
   const histories = useMemo(getSearchHistory, [getSearchHistory]);

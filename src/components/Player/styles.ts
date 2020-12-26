@@ -11,6 +11,7 @@ export default StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   player: {
+    backgroundColor: StyleGuide.palette.backgroundPrimary,
     justifyContent: 'center',
     width,
     height,

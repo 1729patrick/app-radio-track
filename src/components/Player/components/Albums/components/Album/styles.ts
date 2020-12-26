@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-import { ALBUM_SIZE } from '../constants';
+import { ALBUM_SIZE } from '../../constants';
 
 const { width } = Dimensions.get('window');
 

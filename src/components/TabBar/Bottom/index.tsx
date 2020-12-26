@@ -123,7 +123,6 @@ const TabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation }) => {
             <Text
               style={[
                 styles.title,
-                // eslint-disable-next-line react-native/no-inline-styles
                 {
                   color: isFocused(index)
                     ? StyleGuide.palette.primary

@@ -1,11 +1,8 @@
-import { lighten } from 'polished';
 import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-import { BACKGROUND_COLOR } from './constants';
+import { BACKGROUND_COLOR, CARD_PADDING } from '../../constants';
 
 const { width } = Dimensions.get('window');
-
-export const CARD_PADDING = StyleGuide.spacing * 2;
 
 export default StyleSheet.create({
   container: {

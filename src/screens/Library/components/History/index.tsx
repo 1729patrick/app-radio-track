@@ -1,11 +1,4 @@
-import React, {
-  useCallback,
-  forwardRef,
-  useMemo,
-  useState,
-  useEffect,
-  memo,
-} from 'react';
+import React, { useCallback, forwardRef, useState, useEffect } from 'react';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Radio from '~/components/Radio/Item';
 

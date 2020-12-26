@@ -13,7 +13,7 @@ import { RouteProps } from '../../components/TabNavigator';
 import { RadioType } from '~/types/Station';
 import { useFetch } from '~/hooks/useFetch';
 import { CARD_SIZE } from '~/components/Radio/Card/constants';
-import { BACKGROUND_COLOR } from '../../constants';
+import { AD_BACKGROUND_COLOR, BACKGROUND_COLOR } from '../../constants';
 import { useAd } from '~/ads/contexts/AdContext';
 
 type SuggestProps = {
@@ -60,7 +60,9 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
             playing={false}
           />
 
-          {!index && <Banner id={BLOCKS.MUSIC} />}
+          {!index && (
+            <Banner id={BLOCKS.MUSIC} backgroundColor={AD_BACKGROUND_COLOR} />
+          )}
         </View>
       );
     },

@@ -6,3 +6,4 @@ export const BACKGROUND_COLOR = lighten(
   0.13,
   StyleGuide.palette.backgroundPrimary,
 );
+export const CARD_PADDING = StyleGuide.spacing * 2;

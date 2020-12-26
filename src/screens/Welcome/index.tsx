@@ -6,14 +6,14 @@ import LottieView from 'lottie-react-native';
 import Svg, { Path } from 'react-native-svg';
 import RectButton from '~/components/Buttons/RectButton';
 import WithoutFeedbackButton from '~/components/Buttons/WithoutFeedback';
-import Regions from './components/Regions';
+import Regions, { RegionHandler } from './components/Regions';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { useRegion } from '~/contexts/RegionContext';
 
 const Welcome = () => {
-  const regionsRef = useRef(null);
+  const regionsRef = useRef<RegionHandler>(null);
   const { pop } = useNavigation<StackNavigationProp<any>>();
   const { setRegionId, STATES } = useRegion();
   const radioIdRef = useRef('');

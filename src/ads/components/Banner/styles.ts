@@ -7,9 +7,6 @@ const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   container: {
     width,
-    backgroundColor: StyleGuide.palette.backgroundSecondary,
-    borderWidth: 0.5,
-    borderColor: StyleGuide.palette.border,
   },
   content: {
     width: '100%',
@@ -23,8 +20,8 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    width: 55,
-    height: 55,
+    width: 46.5,
+    height: 46.5,
     borderRadius: StyleGuide.borderRadius * 2.5,
   },
   components: {
@@ -60,11 +57,11 @@ export default StyleSheet.create({
   },
   callToActionButton: {
     paddingHorizontal: StyleGuide.spacing * 1.5,
-    paddingVertical: StyleGuide.spacing * 1.5,
+    paddingVertical: StyleGuide.spacing * 1,
     backgroundColor: StyleGuide.palette.app,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: StyleGuide.borderRadius * 2,
+    borderRadius: StyleGuide.borderRadius * 2.5,
   },
   callToActionText: {
     ...StyleGuide.typography.headline,

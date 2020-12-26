@@ -9,7 +9,6 @@ import Header from '~/components/Header';
 
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 
-
 import Regions from './components/Regions';
 import Genres from './components/Genres';
 

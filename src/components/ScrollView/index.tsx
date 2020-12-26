@@ -7,7 +7,14 @@ import Animated, {
 } from 'react-native-reanimated';
 import useScrollPanGestureHandler from '~/hooks/useScrollPanGestureHandler';
 
-const ScrollView = ({
+type ScrollViewProps = {
+  translateY: Animated.SharedValue<number>;
+  lowerBound: number;
+  snapPoints: number[];
+  contentContainerStyle: object;
+  animateToPoint: (point: number) => void;
+};
+const ScrollView: React.FC<ScrollViewProps> = ({
   translateY,
   children,
   lowerBound,

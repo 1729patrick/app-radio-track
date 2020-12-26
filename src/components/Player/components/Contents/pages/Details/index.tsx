@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import Loader from '~/components/Loader';
+import { ProgrammingType } from '~/types/Station';
 
 import StyleGuide from '~/utils/StyleGuide';
 import { RouteProps } from '../../components/TabNavigator';
@@ -16,43 +17,71 @@ type DetailsProps = {
   routeProps: RouteProps;
 };
 
-const Description = memo(({ description, paddingTop }) => {
-  return (
-    <>
-      <Text style={[styles.title, { paddingTop }]}>Sobre a rádio</Text>
-      <Text style={styles.description}>{description}</Text>
-    </>
-  );
-});
+const Description = memo(
+  ({
+    description,
+    paddingTop,
+  }: {
+    description: string;
+    paddingTop: number;
+  }) => {
+    return (
+      <>
+        <Text style={[styles.title, { paddingTop }]}>Sobre a rádio</Text>
+        <Text style={styles.description}>{description}</Text>
+      </>
+    );
+  },
+);
 
-const Programming_ = memo(({ programming, paddingTop }) => {
-  return (
-    <>
-      <Text style={[styles.title, { paddingTop }]}>Programação</Text>
-      <Programming programming={programming} />
-    </>
-  );
-});
+const Programming_ = memo(
+  ({
+    programming,
+    paddingTop,
+  }: {
+    programming: ProgrammingType;
+    paddingTop: number;
+  }) => {
+    return (
+      <>
+        <Text style={[styles.title, { paddingTop }]}>Programação</Text>
+        <Programming programming={programming} />
+      </>
+    );
+  },
+);
 
-const Address = memo(({ address, paddingTop }) => {
-  return (
-    <>
-      <Text style={[styles.title, { paddingTop }]}>Endereço</Text>
-      <Text style={styles.description}>{address}</Text>
-    </>
-  );
-});
+const Address = memo(
+  ({ address, paddingTop }: { address: string; paddingTop: number }) => {
+    return (
+      <>
+        <Text style={[styles.title, { paddingTop }]}>Endereço</Text>
+        <Text style={styles.description}>{address}</Text>
+      </>
+    );
+  },
+);
 
-const Web = memo(({ web, openSite, paddingTop }) => {
-  return (
-    <>
-      <Text style={[styles.title, { paddingTop }]}>Site</Text>
-      <TouchableWithoutFeedback onPress={openSite}>
-        <Text style={[styles.description, styles.link]}>{web}</Text>
-      </TouchableWithoutFeedback>
-    </>
-  );
-});
+const Web = memo(
+  ({
+    web,
+    openSite,
+    paddingTop,
+  }: {
+    web: string;
+    openSite: () => void;
+    paddingTop: number;
+  }) => {
+    return (
+      <>
+        <Text style={[styles.title, { paddingTop }]}>Site</Text>
+        <TouchableWithoutFeedback onPress={openSite}>
+          <Text style={[styles.description, styles.link]}>{web}</Text>
+        </TouchableWithoutFeedback>
+      </>
+    );
+  },
+);
 
 const CONTENTS = [
   {

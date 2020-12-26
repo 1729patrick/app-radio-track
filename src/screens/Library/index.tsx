@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { memo, useEffect, useMemo, useRef } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import StyleGuide from '~/utils/StyleGuide';
@@ -14,11 +14,7 @@ import Loader from '~/components/Loader';
 import History from './components/History';
 import { FlatList } from 'react-native-gesture-handler';
 import { RadioType } from '~/types/Station';
-import {
-  useIsFocused,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useAd } from '~/ads/contexts/AdContext';
 
 const LibraryTab = createMaterialTopTabNavigator();
@@ -62,9 +58,9 @@ const Library = () => {
       />
       <LibraryTab.Navigator
         lazy
-        lazyPlaceholder={Loader}
+        lazyPlaceholder={() => <Loader />}
         springVelocityScale={1}
-        tabBar={(props) => <TabBar {...props} translateY={translateY} />}>
+        tabBar={(props) => <TabBar {...props} />}>
         <LibraryTab.Screen
           name="Favorites"
           component={FavoritesWithScrollHandler}

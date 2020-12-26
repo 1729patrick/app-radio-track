@@ -29,7 +29,7 @@ import {
   PADDING_HORIZONTAL,
   ARTIST_AND_CONTROL_HEIGHT,
 } from '../../constants';
-import Album from './components';
+import Album from './components/Album';
 import { RadioType } from '~/types/Station';
 
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
@@ -48,7 +48,6 @@ type AlbumsProps = {
   radioIndex: number;
   loading?: boolean;
   onAlbumsMounted: () => void;
-  scrollHandler: any;
 };
 
 export type AlbumsHandler = {
@@ -56,16 +55,7 @@ export type AlbumsHandler = {
 };
 
 const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
-  {
-    y,
-    contentY,
-    radios,
-    setRadioIndex,
-    radioIndex,
-    loading,
-    onAlbumsMounted,
-    scrollHandler,
-  },
+  { y, contentY, radios, setRadioIndex, radioIndex, loading, onAlbumsMounted },
   ref,
 ) => {
   const flatListRef = useRef<FlatList<any>>(null);
@@ -234,7 +224,6 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
           horizontal
           snapToInterval={width}
           disableIntervalMomentum
-          onScroll={scrollHandler}
           data={radios}
           keyExtractor={({ id }) => `${id}`}
           renderItem={renderItem}
