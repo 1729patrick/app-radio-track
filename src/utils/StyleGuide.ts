@@ -29,7 +29,7 @@ import { lighten } from 'polished';
 // #6d6e7c
 const background = '#1d1e21';
 
-// const x = lighten(0.07, '#1f2024');
+// const x = lighten(0.02, background);
 // console.log(x);
 const StyleGuide = {
   spacing: 8,
@@ -39,7 +39,7 @@ const StyleGuide = {
     secondary: '#A0A2A7',
     light: '#BFC1C4',
     background,
-    backgroundPrimary: '#1f2024',
+    backgroundPrimary: '#222326',
     backgroundSecondary: '#303137',
     border: '#27282c',
     app: '#16CA61',

@@ -19,37 +19,37 @@ const HistoryContext = createContext<ContextProps>({
 });
 
 export const HistoryProvider: React.FC = ({ children }) => {
-  const history = useRef<RadioType[]>([]);
+  const historyRef = useRef<RadioType[]>([]);
   const { getItem, setItem } = useAsyncStorage('@radios:history');
 
   const addHistory = useCallback(
     (radio: RadioType) => {
-      const historyWithoutRadio = history.current.filter(
+      const historyRefWithoutRadio = historyRef.current.filter(
         (h) => h.id !== radio.id,
       );
 
-      history.current = [radio, ...historyWithoutRadio];
+      historyRef.current = [radio, ...historyRefWithoutRadio];
 
-      setItem(JSON.stringify(history.current));
+      setItem(JSON.stringify(historyRef.current));
     },
     [setItem],
   );
 
   const readHistoryFromStorage = useCallback(async () => {
-    const historyFromStorage = await getItem();
-    if (historyFromStorage) {
-      history.current = JSON.parse(historyFromStorage);
+    const historyRefFromStorage = await getItem();
+    if (historyRefFromStorage) {
+      historyRef.current = JSON.parse(historyRefFromStorage);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getItem]);
 
   const getHistory = useCallback((): RadioType[] => {
-    return history.current;
+    return historyRef.current;
   }, []);
 
   useEffect(() => {
     readHistoryFromStorage();
-  }, [readHistoryFromStorage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <HistoryContext.Provider value={{ getHistory, addHistory }}>

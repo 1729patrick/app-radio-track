@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, View, Text } from 'react-native';
 import { RegionType } from '~/screens/Explore/components/Regions';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import styles from './styles';
 import StyleGuide from '~/utils/StyleGuide';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -27,11 +27,7 @@ const Region: React.FC<RegionType> = ({
         <Text style={styles.title}>{title}</Text>
       </View>
       {checked && (
-        <Icon
-          name="ios-checkmark"
-          size={28}
-          color={StyleGuide.palette.primary}
-        />
+        <Icon name="check" size={28} color={StyleGuide.palette.primary} />
       )}
     </TouchableWithoutFeedback>
   );

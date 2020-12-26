@@ -3,7 +3,7 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import RoundButton from '~/components/Button/Round';
 import { usePlayer } from '~/contexts/PlayerContext';
 import { useFetch } from '~/hooks/useFetch';
@@ -19,12 +19,15 @@ import { BLOCKS } from '~/ads/constants';
 import { usePlaying } from '~/contexts/PlayingContext';
 
 import { useKeyboard } from '~/hooks/useKeyboard';
+import History from './components/History';
+import { useSearchHistory } from '~/contexts/SearchHistoryContext';
 
 type SearchProps = {
   onCloseSearch: () => void;
 };
 
 const Search: React.FC<SearchProps> = () => {
+  const { addSearchHistory } = useSearchHistory();
   const { playingRadioId } = usePlaying();
   const [searchTerm, setSearchTerm] = useState('');
   const { height } = useKeyboard();
@@ -48,13 +51,19 @@ const Search: React.FC<SearchProps> = () => {
 
   const onExpandPlayerPress = useCallback(
     ({ radioIndex }: { radioIndex: number }) => {
+      const radioName = data[radioIndex]?.name;
+      if (radioName) {
+        addSearchHistory(radioName);
+      }
+
       onExpandPlayer({
         title: searchTerm || '',
         radios: data?.length ? data : [],
         radioIndex,
       });
+      pop();
     },
-    [data, onExpandPlayer, searchTerm],
+    [addSearchHistory, data, onExpandPlayer, pop, searchTerm],
   );
 
   const notFound = useMemo(() => data && !data?.length, [data]);
@@ -81,7 +90,7 @@ const Search: React.FC<SearchProps> = () => {
       <View style={styles.header}>
         <RoundButton
           onPress={onBackPress}
-          name={'arrow-back'}
+          name={'arrowleft'}
           size={24}
           Icon={Icon}
         />
@@ -99,7 +108,7 @@ const Search: React.FC<SearchProps> = () => {
           <RoundButton
             onPress={onClearSearch}
             name={'close'}
-            size={26}
+            size={24}
             Icon={Icon}
           />
         )}
@@ -118,6 +127,8 @@ const Search: React.FC<SearchProps> = () => {
       )}
 
       {!data?.length && !notFound && !!error && <Error type={error?.message} />}
+
+      {!searchTerm && !notFound && <History onPress={setSearchTerm} />}
 
       {!notFound && (
         <FlatList

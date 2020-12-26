@@ -6,7 +6,8 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
 } from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/AntDesign';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { HEADER_HEIGHT } from './constants';
 
@@ -75,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({
           {showBack && (
             <RoundButton
               onPress={onBackPress}
-              name={'arrow-back'}
+              name={'arrowleft'}
               size={24}
               Icon={Icon}
               style={styles.backButton}
@@ -89,7 +90,7 @@ const Header: React.FC<HeaderProps> = ({
           size={22}
           name="md-search-outline"
           onPress={onOpenSearch}
-          Icon={Icon}
+          Icon={IonIcon}
         />
       </Animated.View>
     </Animated.View>

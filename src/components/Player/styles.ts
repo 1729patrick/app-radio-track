@@ -16,6 +16,6 @@ export default StyleSheet.create({
     height,
     paddingBottom: COMPACT_HEIGHT,
     paddingTop: CONTROLS_TOP_HEIGHT,
-    elevation: 30,
+    elevation: 10,
   },
 });

@@ -7,7 +7,7 @@ import { usePlaying } from '~/contexts/PlayingContext';
 
 import Radio from '~/components/Radio/Card';
 
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import { RadioType } from '~/types/Station';
 
 import { CARD_SIZE } from '~/components/Radio/Card/constants';
@@ -67,8 +67,8 @@ const Radios: React.FC<RadiosProps> = ({
             onPress={onShowAllPress}
             Icon={Icon}
             size={24}
-            name="arrow-forward"
-            color={StyleGuide.palette.primary}
+            name="arrowright"
+            color={StyleGuide.palette.light}
           />
         )}
       </View>
