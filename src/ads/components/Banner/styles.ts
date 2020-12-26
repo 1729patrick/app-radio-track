@@ -8,13 +8,15 @@ export default StyleSheet.create({
   container: {
     width,
     backgroundColor: StyleGuide.palette.backgroundSecondary,
-    paddingHorizontal: StyleGuide.spacing,
+    borderWidth: 0.5,
+    borderColor: StyleGuide.palette.border,
   },
   content: {
     width: '100%',
+    paddingHorizontal: StyleGuide.spacing * 2,
+    paddingVertical: StyleGuide.spacing * 2,
   },
   info: {
-    height: 100,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -23,10 +25,13 @@ export default StyleSheet.create({
   icon: {
     width: 55,
     height: 55,
+    borderRadius: StyleGuide.borderRadius * 2.5,
   },
   components: {
     flex: 1,
     paddingHorizontal: StyleGuide.spacing,
+
+    justifyContent: 'center',
   },
   headLine: {
     ...StyleGuide.typography.title2,
@@ -54,26 +59,26 @@ export default StyleSheet.create({
     marginLeft: StyleGuide.spacing,
   },
   callToActionButton: {
-    height: 40,
-    paddingHorizontal: 12,
+    paddingHorizontal: StyleGuide.spacing * 1.5,
+    paddingVertical: StyleGuide.spacing * 1.5,
     backgroundColor: StyleGuide.palette.app,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: StyleGuide.borderRadius * 2,
-    elevation: 10,
   },
   callToActionText: {
     ...StyleGuide.typography.headline,
     color: StyleGuide.palette.primary,
-    fontSize: 11,
+    fontSize: 12,
     letterSpacing: 0.7,
     paddingBottom: 1,
     flexWrap: 'wrap',
     textAlign: 'center',
   },
   media: {
+    marginTop: StyleGuide.spacing * 2,
     width: MEDIA_WIDTH,
-    marginHorizontal: StyleGuide.spacing,
-    backgroundColor: StyleGuide.palette.backgroundSecondary,
+    borderRadius: StyleGuide.borderRadius * 30,
+    overflow: 'hidden',
   },
 });

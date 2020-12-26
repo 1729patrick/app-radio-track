@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 
 const { width, height } = Dimensions.get('window');
-const WAVE_HEIGHT = (width * 320) / 1440;
+const WAVE_HEIGHT = (width * 320) / 1435;
 const BOTTOM_CONTAINER_HEIGHT = 250;
 
 const TITLE_AND_DESCRIPTION_HEIGHT = 89.5;

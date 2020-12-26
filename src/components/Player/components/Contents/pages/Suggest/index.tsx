@@ -37,7 +37,6 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
 
   const onSetRadio = useCallback(
     (radioIndex: number, radios?: RadioType[]) => {
-      console.log('chanou');
       showRelationalAd();
       routeProps.onSetRadio({
         radioIndex,
