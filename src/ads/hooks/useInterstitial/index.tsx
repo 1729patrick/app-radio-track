@@ -20,13 +20,9 @@ const useInterstitial = (id: string) => {
   }, [id]);
 
   const showAd = useCallback(() => {
-    if (loadedRef.current) {
+    if (interstitial.loaded) {
       interstitial.show();
-    } else if (loadedRef.current === undefined) {
-      showOnLoadRef.current = true;
     }
-
-    loadedRef.current = false;
   }, [interstitial]);
 
   const loadAd = useCallback(() => {
@@ -35,13 +31,8 @@ const useInterstitial = (id: string) => {
 
   useEffect(() => {
     const eventListener = interstitial.onAdEvent((type) => {
-      if (type === AdEventType.LOADED) {
-        loadedRef.current = true;
-
-        if (showOnLoadRef.current) {
-          showAd();
-          showOnLoadRef.current = false;
-        }
+      if (type === AdEventType.CLOSED || type === AdEventType.ERROR) {
+        loadAd();
       }
     });
 
@@ -53,7 +44,11 @@ const useInterstitial = (id: string) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interstitial]);
 
-  return { showAd, loadAd };
+  useEffect(() => {
+    loadAd();
+  }, [loadAd]);
+
+  return { showAd };
 };
 
 export default useInterstitial;

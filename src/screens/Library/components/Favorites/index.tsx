@@ -11,15 +11,12 @@ import { BLOCKS } from '~/ads/constants';
 import Banner from '~/ads/components/Banner';
 import { usePlaying } from '~/contexts/PlayingContext';
 
-
-type FavoritesProps = {
-  refreshTranslateY: (from: string) => void;
-};
+type FavoritesProps = {};
 
 const Favorites: React.ForwardRefRenderFunction<
   FlatList<RadioType>,
   FavoritesProps
-> = ({ refreshTranslateY }, ref) => {
+> = ({}, ref) => {
   const { onExpandPlayer } = usePlayer();
   const { favorites } = useFavorites();
   const { playingRadioId } = usePlaying();
@@ -68,7 +65,6 @@ const Favorites: React.ForwardRefRenderFunction<
       keyExtractor={({ id }) => `${id}`}
       renderItem={renderItem}
       onEndReachedThreshold={3}
-      onScrollEndDrag={() => refreshTranslateY('favorites')}
     />
   );
 };

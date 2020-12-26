@@ -230,6 +230,7 @@ const Albums: React.ForwardRefRenderFunction<AlbumsHandler, AlbumsProps> = (
             index,
           })}
           decelerationRate={'fast'}
+          initialNumToRender={1}
           horizontal
           snapToInterval={width}
           disableIntervalMomentum

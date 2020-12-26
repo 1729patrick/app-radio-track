@@ -21,15 +21,12 @@ import { useIsFocused } from '@react-navigation/native';
 import Loader from '~/components/Loader';
 import { usePlaying } from '~/contexts/PlayingContext';
 
-
-type HistoryProps = {
-  refreshTranslateY: (from: string) => void;
-};
+type HistoryProps = {};
 
 const History: React.ForwardRefRenderFunction<
   FlatList<RadioType>,
   HistoryProps
-> = ({ refreshTranslateY }, ref) => {
+> = ({}, ref) => {
   const isFocused = useIsFocused();
   const { onExpandPlayer } = usePlayer();
   const { playingRadioId } = usePlaying();
@@ -90,7 +87,6 @@ const History: React.ForwardRefRenderFunction<
       keyExtractor={({ id }) => `${id}`}
       renderItem={renderItem}
       onEndReachedThreshold={3}
-      onScrollEndDrag={() => refreshTranslateY('history')}
     />
   );
 };

@@ -14,7 +14,11 @@ import Loader from '~/components/Loader';
 import History from './components/History';
 import { FlatList } from 'react-native-gesture-handler';
 import { RadioType } from '~/types/Station';
-import { useIsFocused } from '@react-navigation/native';
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { useAd } from '~/ads/contexts/AdContext';
 
 const LibraryTab = createMaterialTopTabNavigator();
@@ -25,51 +29,29 @@ const Library = () => {
   const favoritesRef = useRef<FlatList<RadioType>>(null);
   const isFocused = useIsFocused();
   const { showLibraryAd } = useAd();
+  const { dangerouslyGetParent } = useNavigation();
+  const isTabChangeRef = useRef(true);
 
   useEffect(() => {
-    if (isFocused) {
+    const { index } = dangerouslyGetParent()?.dangerouslyGetState() || {};
+
+    if (index === 2 && isTabChangeRef.current) {
+      isTabChangeRef.current = false;
       showLibraryAd();
     }
-  }, [isFocused, showLibraryAd]);
 
-  const refreshTranslateY = useCallback((from) => {
-    // const offset = Math.max(Math.abs(translateY.value), 0);
-    // if (!offset || isNaN(offset)) {
-    //   return;
-    // }
-    // if (from !== 'history') {
-    //   historyRef.current?.scrollToOffset({
-    //     offset,
-    //     animated: false,
-    //   });
-    // }
-    // if (from !== 'favorites') {
-    //   favoritesRef.current?.scrollToOffset({
-    //     offset,
-    //     animated: false,
-    //   });
-    // }
-  }, []);
+    if (!isFocused && index !== 2) {
+      isTabChangeRef.current = true;
+    }
+  }, [dangerouslyGetParent, isFocused, showLibraryAd]);
 
   const FavoritesWithScrollHandler = useMemo(() => {
-    return () => (
-      <Favorites
-        translateY={translateY}
-        ref={favoritesRef}
-        refreshTranslateY={refreshTranslateY}
-      />
-    );
-  }, [refreshTranslateY, translateY]);
+    return () => <Favorites ref={favoritesRef} />;
+  }, []);
 
   const HistoryWithScrollHandler = useMemo(() => {
-    return () => (
-      <History
-        translateY={translateY}
-        ref={historyRef}
-        refreshTranslateY={refreshTranslateY}
-      />
-    );
-  }, [refreshTranslateY, translateY]);
+    return () => <History ref={historyRef} />;
+  }, []);
 
   return (
     <>
