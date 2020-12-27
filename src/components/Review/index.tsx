@@ -34,7 +34,6 @@ import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import styles from './styles';
 import StyleGuide from '~/utils/StyleGuide';
-import InAppReview from 'react-native-in-app-review';
 import { useKeyboard } from '~/hooks/useKeyboard';
 import RectButton from '../Buttons/RectButton';
 import WithoutFeedbackButton from '../Buttons/WithoutFeedback';
@@ -132,11 +131,9 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
   }, []);
 
   const onRateAppReview = useCallback(() => {
-    if (InAppReview.isAvailable()) {
-      InAppReview.RequestInAppReview();
-    } else {
+    try {
       Linking.openURL(`market://details?id=${DeviceInfo.getBundleId()}`);
-    }
+    } catch (e) {}
 
     animateToPoint(snapPoints[1]);
     onRateApp({ starLevel });
