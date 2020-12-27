@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "rm -r android/app/build && react-native run-android",
+    "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "release:android": "cd android && ./gradlew assembleRelease && cd .. && open android/app/build/outputs/apk/release",
