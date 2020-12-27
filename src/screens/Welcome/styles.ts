@@ -30,9 +30,10 @@ export default StyleSheet.create({
   },
   waves: {
     position: 'absolute',
-    width: width,
-    height: WAVE_HEIGHT + 10,
-    top: height - BOTTOM_CONTAINER_HEIGHT - 11,
+    height: WAVE_HEIGHT,
+    left: 0,
+    right: 0,
+    top: height - BOTTOM_CONTAINER_HEIGHT - 1,
   },
   robot: {
     width: Math.min(ROBOT_WIDTH + ADJUST_ROBOT_WIDTH, ROBOT_WIDTH),
