@@ -40,6 +40,7 @@ import WithoutFeedbackButton from '../Buttons/WithoutFeedback';
 import Input from '../Input';
 import ModalBackground from '../ModalBackground';
 import DeviceInfo from 'react-native-device-info';
+import BackgroundTimer from 'react-native-background-timer';
 
 const { height } = Dimensions.get('window');
 
@@ -135,8 +136,8 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
       Linking.openURL(`market://details?id=${DeviceInfo.getBundleId()}`);
     } catch (e) {}
 
-    animateToPoint(snapPoints[1]);
     onRateApp({ starLevel });
+    BackgroundTimer.setTimeout(() => animateToPoint(snapPoints[1]), 5000);
   }, [animateToPoint, onRateApp, snapPoints, starLevel]);
 
   const onConfirmReview = useCallback(() => {
