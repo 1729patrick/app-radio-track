@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 
 const { width, height } = Dimensions.get('window');
-const WAVE_HEIGHT = (width * 320) / 1435;
+const WAVE_HEIGHT = (width * 320) / 1440;
 const BOTTOM_CONTAINER_HEIGHT = 250;
 
 const TITLE_AND_DESCRIPTION_HEIGHT = 89.5;
@@ -31,8 +31,8 @@ export default StyleSheet.create({
   waves: {
     position: 'absolute',
     width: width,
-    height: WAVE_HEIGHT,
-    top: height - BOTTOM_CONTAINER_HEIGHT - 1,
+    height: WAVE_HEIGHT + 10,
+    top: height - BOTTOM_CONTAINER_HEIGHT - 11,
   },
   robot: {
     width: Math.min(ROBOT_WIDTH + ADJUST_ROBOT_WIDTH, ROBOT_WIDTH),

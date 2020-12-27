@@ -135,8 +135,8 @@ android {
         applicationId "pax.radio.brasil"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 15
-        versionName "20.12.2.3"
+        versionCode 16
+        versionName "20.12.2.4"
         multiDexEnabled true
     }
     splits {
