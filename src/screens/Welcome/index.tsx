@@ -42,7 +42,7 @@ const Welcome = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerTop}>
-        <Text style={styles.title}>Bem-vindo</Text>
+        <Text style={styles.title}>Bem-vindo (a)</Text>
         <Text style={styles.description}>
           Leve milhares de estações de rádio no seu bolso
         </Text>
