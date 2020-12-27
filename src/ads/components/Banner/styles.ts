@@ -11,7 +11,7 @@ export default StyleSheet.create({
   content: {
     width: '100%',
     paddingHorizontal: StyleGuide.spacing * 2,
-    paddingVertical: StyleGuide.spacing * 2,
+    paddingVertical: StyleGuide.spacing,
   },
   info: {
     width: '100%',
@@ -20,14 +20,14 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    width: 46.5,
-    height: 46.5,
+    width: 47,
+    height: 47,
     borderRadius: StyleGuide.borderRadius * 2.5,
   },
   components: {
     flex: 1,
-    paddingHorizontal: StyleGuide.spacing,
-
+    paddingLeft: StyleGuide.spacing * 2,
+    paddingRight: StyleGuide.spacing,
     justifyContent: 'center',
   },
   headLine: {
@@ -62,6 +62,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: StyleGuide.borderRadius * 1.5,
+    marginRight: -StyleGuide.spacing,
   },
   callToActionText: {
     ...StyleGuide.typography.headline,

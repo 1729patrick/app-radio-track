@@ -12,6 +12,7 @@ import {
   BackHandler,
   Dimensions,
   LayoutChangeEvent,
+  Linking,
   Text,
   TextInput,
   View,
@@ -39,6 +40,7 @@ import RectButton from '../Buttons/RectButton';
 import WithoutFeedbackButton from '../Buttons/WithoutFeedback';
 import Input from '../Input';
 import ModalBackground from '../ModalBackground';
+import DeviceInfo from 'react-native-device-info';
 
 const { height } = Dimensions.get('window');
 
@@ -132,6 +134,8 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
   const onRateAppReview = useCallback(() => {
     if (InAppReview.isAvailable()) {
       InAppReview.RequestInAppReview();
+    } else {
+      Linking.openURL(`market://details?id=${DeviceInfo.getBundleId()}`);
     }
 
     animateToPoint(snapPoints[1]);

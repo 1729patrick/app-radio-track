@@ -27,7 +27,7 @@ const ModalBackground = ({
       [0.75, 0],
       Extrapolate.CLAMP,
     );
-  }, [translateY.value]);
+  }, [translateY.value, snapPoints]);
 
   const style = useAnimatedStyle(() => {
     return {

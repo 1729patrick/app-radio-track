@@ -9,7 +9,6 @@ import { ProgrammingType } from '~/types/Station';
 
 import StyleGuide from '~/utils/StyleGuide';
 import { RouteProps } from '../../components/TabNavigator';
-import { BACKGROUND_COLOR } from '../../constants';
 import Programming from './components/Programming';
 import styles from './styles';
 
@@ -130,7 +129,7 @@ const Details: React.FC<DetailsProps> = ({ routeProps, show }) => {
   };
 
   if (!show) {
-    return <Loader backgroundColor={BACKGROUND_COLOR} />;
+    return <Loader backgroundColor={StyleGuide.palette.backgroundSecondary} />;
   }
 
   return (

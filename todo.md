@@ -1,8 +1,5 @@
 TODO:
 
-fixs:
-adicionar ts para o welcome e search history
-
 feat:
 forma de sugerir novas rádios
 joinha para avaliar as músicas

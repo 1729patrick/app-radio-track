@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import Review, { ReviewHandler } from '~/components/Review';
 import { useHistory } from '../HistoryContext';
-import InAppReview from 'react-native-in-app-review';
 
 import { usePlaying } from '../PlayingContext';
 type ContextProps = {};
@@ -60,9 +59,16 @@ export const ReviewProvider: React.FC = ({ children }) => {
       setItem(JSON.stringify(args));
 
       const deviceId = await DeviceInfo.getUniqueId();
+      const model = await DeviceInfo.getDevice();
+      const name = await DeviceInfo.getDeviceName();
+
       api.post('app/reviews', {
         ...args,
-        deviceId,
+        device: {
+          model,
+          name,
+          id: deviceId,
+        },
         historyCount: countRef.current,
       });
     },
@@ -100,18 +106,15 @@ export const ReviewProvider: React.FC = ({ children }) => {
     const lastCount = (await getLastCount()) || 0;
     countRef.current = limitsToRequest[limitBreak];
 
-    if (
-      !reviewFromStorage &&
-      InAppReview.isAvailable() &&
-      +lastCount < countRef.current
-    ) {
+    if (!reviewFromStorage && +lastCount < countRef.current) {
       setLastCount(countRef.current?.toString());
       reviewRef.current?.show(countRef.current);
     }
   }, [getHistory, getItem, getLastCount, setLastCount]);
 
   useEffect(() => {
-    checkToShow();
+    // checkToShow();
+    reviewRef.current?.show(10);
   }, [checkToShow, playingRadioId]);
 
   return (

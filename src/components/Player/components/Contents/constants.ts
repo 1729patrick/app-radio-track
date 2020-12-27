@@ -15,9 +15,7 @@ export const INDICATOR_HEIGHT = 5;
 export const INDICATOR_MARGIN_TOP = 10;
 export const TIMING_DURATION = 300;
 
-export const BACKGROUND_COLOR = lighten(
-  0.07,
-  StyleGuide.palette.backgroundPrimary,
+export const AD_BACKGROUND_COLOR = lighten(
+  0.05,
+  StyleGuide.palette.backgroundSecondary,
 );
-
-export const AD_BACKGROUND_COLOR = lighten(0.05, BACKGROUND_COLOR);
