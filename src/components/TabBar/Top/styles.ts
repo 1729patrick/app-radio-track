@@ -19,7 +19,7 @@ export default StyleSheet.create({
     elevation: 5,
   },
   indicator: {
-    backgroundColor: StyleGuide.palette.primary,
+    backgroundColor: StyleGuide.palette.app,
     height: 2,
     position: 'absolute',
     bottom: 0,

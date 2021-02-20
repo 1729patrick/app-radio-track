@@ -38,7 +38,7 @@ const Tab: React.FC<TabProps> = ({
     const colorActive = interpolateColor(
       animation.value,
       [0, 1],
-      [colorInactive, StyleGuide.palette.primary],
+      [colorInactive, StyleGuide.palette.app],
     );
 
     const color = interpolateColor(

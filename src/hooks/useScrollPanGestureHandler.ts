@@ -65,7 +65,7 @@ const useScrollPanGestureHandler = (
         }
       },
     },
-    [],
+    [snapPoints],
   );
 
   return { panHandler };

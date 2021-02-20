@@ -10,6 +10,7 @@ import useScrollPanGestureHandler from '~/hooks/useScrollPanGestureHandler';
 type ScrollViewProps = {
   translateY: Animated.SharedValue<number>;
   lowerBound: number;
+  headerHeight: number;
   snapPoints: number[];
   contentContainerStyle: object;
   animateToPoint: (point: number) => void;
@@ -21,9 +22,9 @@ const ScrollView: React.FC<ScrollViewProps> = ({
   snapPoints,
   contentContainerStyle,
   animateToPoint,
+  headerHeight,
 }) => {
   const upperBound = useSharedValue(0);
-
   const { panHandler } = useScrollPanGestureHandler(
     translateY,
     lowerBound,
@@ -44,9 +45,10 @@ const ScrollView: React.FC<ScrollViewProps> = ({
 
   const onLayout = useCallback(
     ({ nativeEvent }: LayoutChangeEvent) => {
-      upperBound.value = nativeEvent.layout.height + nativeEvent.layout.y;
+      upperBound.value =
+        nativeEvent.layout.height + nativeEvent.layout.y - headerHeight;
     },
-    [upperBound],
+    [headerHeight, upperBound],
   );
 
   return (

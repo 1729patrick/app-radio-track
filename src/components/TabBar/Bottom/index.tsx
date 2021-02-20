@@ -21,6 +21,7 @@ import { BOTTOM_TAB_BAR_HEIGHT } from './constants';
 import { ActiveCompass, InactiveCompass } from './Icons/Compass';
 import { ActiveHome, InactiveHome } from './Icons/Home';
 import { ActiveLibrary, InactiveLibrary } from './Icons/Library';
+import { ActiveProfile, InactiveProfile } from './Icons/Profile';
 import { useRegion } from '~/contexts/RegionContext';
 
 const { width } = Dimensions.get('window');
@@ -43,6 +44,12 @@ const TABS = [
     title: 'Biblioteca',
     InactiveIcon: InactiveLibrary,
     ActiveIcon: ActiveLibrary,
+  },
+  {
+    name: 'Profile',
+    title: 'Perfil',
+    InactiveIcon: InactiveProfile,
+    ActiveIcon: ActiveProfile,
   },
 ];
 
@@ -125,7 +132,7 @@ const TabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation }) => {
                 styles.title,
                 {
                   color: isFocused(index)
-                    ? StyleGuide.palette.primary
+                    ? StyleGuide.palette.app
                     : StyleGuide.palette.secondary,
                 },
               ]}>

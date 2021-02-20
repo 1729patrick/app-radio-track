@@ -1,30 +1,4 @@
-// AirbnbCerealApp-Light
-// Montserrat-Medium
-// Montserrat-SemiBold
-// AirbnbCerealApp-Bold
-// Montserrat-Bold
-// AirbnbCerealApp-Black
-
 import { lighten } from 'polished';
-
-// <string>Montserrat-Black.ttf</string>
-// <string>Montserrat-BlackItalic.ttf</string>
-// <string>Montserrat-Bold.ttf</string>
-// <string>Montserrat-BoldItalic.ttf</string>
-// <string>Montserrat-ExtraBold.ttf</string>
-// <string>Montserrat-ExtraBoldItalic.ttf</string>
-// <string>Montserrat-ExtraLight.ttf</string>
-// <string>Montserrat-ExtraLightItalic.ttf</string>
-// <string>Montserrat-Italic.ttf</string>
-// <string>Montserrat-Light.ttf</string>
-// <string>Montserrat-LightItalic.ttf</string>
-// <string>Montserrat-Medium.ttf</string>
-// <string>Montserrat-MediumItalic.ttf</string>
-// <string>Montserrat-Regular.ttf</string>
-// <string>Montserrat-SemiBold.ttf</string>
-// <string>Montserrat-SemiBoldItalic.ttf</string>
-// <string>Montserrat-Thin.ttf</string>
-// <string>Montserrat-ThinItalic.ttf</string>
 
 // #6d6e7c
 const background = '#1d1e21';

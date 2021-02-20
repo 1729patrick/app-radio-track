@@ -14,6 +14,7 @@ import Playlist from '~/screens/Playlist';
 import Search from '~/screens/Search';
 import Library from '~/screens/Library';
 import Welcome from '~/screens/Welcome';
+import Profile from '~/screens/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -93,6 +94,16 @@ function LibraryStackScreen() {
   );
 }
 
+const ProfileStack = createStackNavigator();
+
+function ProfileStackScreen() {
+  return (
+    <ProfileStack.Navigator headerMode="none">
+      <ProfileStack.Screen name="Profile" component={Profile} />
+    </ProfileStack.Navigator>
+  );
+}
+
 const Routes = () => {
   return (
     <NavigationContainer theme={theme}>
@@ -106,6 +117,11 @@ const Routes = () => {
         <Tab.Screen
           name="Library"
           component={LibraryStackScreen}
+          // options={{ unmountOnBlur: true }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={ProfileStackScreen}
           // options={{ unmountOnBlur: true }}
         />
       </Tab.Navigator>

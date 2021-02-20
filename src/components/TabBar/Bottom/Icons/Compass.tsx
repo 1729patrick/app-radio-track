@@ -24,7 +24,7 @@ export const ActiveCompass = React.memo(() => {
   return (
     <Icon
       name="ios-compass-sharp"
-      color={StyleGuide.palette.primary}
+      color={StyleGuide.palette.app}
       size={24.5}
       style={style}
     />

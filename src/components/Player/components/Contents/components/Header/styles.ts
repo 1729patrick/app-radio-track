@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
 
   tabIndicator: {
-    backgroundColor: StyleGuide.palette.primary,
+    backgroundColor: StyleGuide.palette.app,
     height: 2,
     width: 100,
     position: 'absolute',

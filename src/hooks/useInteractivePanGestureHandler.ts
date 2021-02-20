@@ -1,4 +1,7 @@
-import Animated, { useAnimatedGestureHandler } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedGestureHandler,
+  withDecay,
+} from 'react-native-reanimated';
 import { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import { clamp, snapPoint } from 'react-native-redash';
 

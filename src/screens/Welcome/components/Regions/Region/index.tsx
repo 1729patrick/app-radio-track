@@ -4,7 +4,7 @@ import { RegionType } from '~/screens/Explore/components/Regions';
 import Icon from 'react-native-vector-icons/AntDesign';
 import styles from './styles';
 import StyleGuide from '~/utils/StyleGuide';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { RectButton } from 'react-native-gesture-handler';
 
 type RegionProps = RegionType & {
   checked: boolean;
@@ -19,22 +19,28 @@ const Region: React.FC<RegionProps> = ({
   onPress,
 }) => {
   return (
-    <TouchableWithoutFeedback
+    <RectButton
       onPress={() => onPress(id)}
-      style={[
-        styles.container,
-        {
-          backgroundColor: checked ? StyleGuide.palette.border : undefined,
-        },
-      ]}>
+      rippleColor={StyleGuide.palette.secondary}
+      style={[styles.container]}>
       <View style={styles.info}>
         <Image source={image} style={styles.image} />
-        <Text style={styles.title}>{title}</Text>
+        <Text
+          style={[
+            styles.title,
+            {
+              color: checked
+                ? StyleGuide.palette.app
+                : StyleGuide.palette.primary,
+            },
+          ]}>
+          {title}
+        </Text>
       </View>
       {checked && (
-        <Icon name="check" size={28} color={StyleGuide.palette.primary} />
+        <Icon name="check" size={28} color={StyleGuide.palette.app} />
       )}
-    </TouchableWithoutFeedback>
+    </RectButton>
   );
 };
 

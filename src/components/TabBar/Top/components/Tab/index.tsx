@@ -4,6 +4,7 @@ import React, { memo } from 'react';
 import { LayoutChangeEvent, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
+import StyleGuide from '~/utils/StyleGuide';
 
 import styles from './styles';
 
@@ -33,9 +34,11 @@ const Tab = ({
   const { options } = descriptors[route.key];
   const isFocused = state.index === index;
 
-  const opacity = Animated.interpolateNode(position, {
+  const color = Animated.interpolateColors(position, {
     inputRange,
-    outputRange: inputRange.map((i) => (i === index ? 1 : 0.65)),
+    outputColorRange: inputRange.map((i) =>
+      i === index ? StyleGuide.palette.app : StyleGuide.palette.secondary,
+    ),
   });
 
   return (
@@ -49,7 +52,7 @@ const Tab = ({
         onPress={() => onPress(route.key, route.name, isFocused)}
         onLongPress={() => onLongPress(route.key)}
         style={styles.tab}>
-        <Animated.Text style={[styles.title, { opacity }]}>
+        <Animated.Text style={[styles.title, { color }]}>
           {options.title}
         </Animated.Text>
       </TouchableOpacity>

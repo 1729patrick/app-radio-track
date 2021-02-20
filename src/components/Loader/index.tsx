@@ -13,7 +13,7 @@ const Loader: React.FC<LoaderProps> = ({
 }) => {
   return (
     <View style={[styles.container, { backgroundColor }]}>
-      <ActivityIndicator color={StyleGuide.palette.primary} size={size} />
+      <ActivityIndicator color={StyleGuide.palette.app} size={size} />
     </View>
   );
 };

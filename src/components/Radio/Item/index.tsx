@@ -30,10 +30,7 @@ const Radio: React.FC<RadioProps> = ({
 
   return (
     <RectButton
-      style={[
-        styles.container,
-        { backgroundColor: playing ? StyleGuide.palette.border : undefined },
-      ]}
+      style={[styles.container]}
       rippleColor={StyleGuide.palette.secondary}
       onPress={onRadioPress}>
       <Image
@@ -44,11 +41,11 @@ const Radio: React.FC<RadioProps> = ({
       />
 
       <View style={styles.info}>
-        <Text style={styles.title} numberOfLines={1}>
+        <Text style={[styles.title]} numberOfLines={1}>
           {item.name}
         </Text>
 
-        <Text style={styles.description} numberOfLines={1}>
+        <Text style={[styles.description]} numberOfLines={1}>
           {item.slogan || item.city?.name}
         </Text>
       </View>
@@ -60,12 +57,27 @@ const Radio: React.FC<RadioProps> = ({
           loop
           style={styles.playing}
           speed={1}
+          colorFilters={[
+            {
+              keypath: 'Path 6',
+              color: StyleGuide.palette.app,
+            },
+            {
+              keypath: 'Path 7',
+              color: StyleGuide.palette.app,
+            },
+            {
+              keypath: 'Path 8',
+              color: StyleGuide.palette.app,
+            },
+          ]}
         />
       ) : (
         <RoundButton
           Icon={Icon}
           name="ios-play-circle-outline"
           size={27}
+          color={StyleGuide.palette.app}
           onPress={onRadioPress}
         />
       )}

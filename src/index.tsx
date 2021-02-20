@@ -8,6 +8,7 @@ import { AdProvider } from './ads/contexts/AdContext';
 import { ReviewProvider } from './contexts/ReviewContext';
 import { RegionProvider } from './contexts/RegionContext';
 import { SearchHistoryProvider } from './contexts/SearchHistoryContext';
+import { ModalProvider } from './contexts/ModalContext';
 
 export default () => {
   return (
@@ -19,7 +20,9 @@ export default () => {
               <AdProvider>
                 <RegionProvider>
                   <SearchHistoryProvider>
-                    <App />
+                    <ModalProvider>
+                      <App />
+                    </ModalProvider>
                   </SearchHistoryProvider>
                 </RegionProvider>
               </AdProvider>
