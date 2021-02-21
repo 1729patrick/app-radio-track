@@ -10,6 +10,7 @@ export default StyleSheet.create({
     paddingTop: StyleGuide.spacing * 4,
     paddingBottom: StyleGuide.spacing * 2,
     paddingHorizontal: StyleGuide.spacing * 2,
+    color: StyleGuide.palette.primary,
   },
   carouselContentContainer: {
     paddingHorizontal: StyleGuide.spacing,

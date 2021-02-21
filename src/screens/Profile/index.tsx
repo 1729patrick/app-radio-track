@@ -1,19 +1,22 @@
 import React, { memo, useMemo } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import GetPremium from './components/GetPremium';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { RectButton, ScrollView } from 'react-native-gesture-handler';
-import StyleGuide from '~/utils/StyleGuide';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import SuggestRadio from './screens/SuggestRadio';
 import Theme from './screens/Theme';
 import { useModal } from '~/contexts/ModalContext';
 import Location from './screens/Location/indes';
+import Item from '~/components/List/Item';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const Profile = () => {
-  // const modalRef = useRef<ModalHandler>(null);
   const { setContent } = useModal();
+  const { navigate } = useNavigation<StackNavigationProp<any>>();
+
   const screens = useMemo(
     () => [
       {
@@ -54,16 +57,17 @@ const Profile = () => {
           }),
       },
       {
-        title: 'Sobre',
-        descriptions: [
-          'Termos e Condições',
-          'Politica de Privacidade',
-          'Feedback',
-        ],
-        icon: 'information-outline',
+        title: 'Termos e Condições',
+        icon: 'file-document-outline',
+        onPress: () => navigate('TermsAndConditions'),
+      },
+      {
+        title: 'Política de Privacidade',
+        icon: 'lock',
+        onPress: () => navigate('PolicyPrivacy'),
       },
     ],
-    [setContent],
+    [navigate, setContent],
   );
 
   return (
@@ -74,16 +78,14 @@ const Profile = () => {
         <GetPremium />
 
         {screens.map((screen) => (
-          <RectButton
+          <Item
             key={screen.title}
-            style={styles.screenContainer}
-            rippleColor={StyleGuide.palette.primary}
-            onPress={screen.onPress}>
-            <Icon name={screen.icon} size={22} />
-            <View style={styles.screenInfo}>
-              <Text style={styles.screenTitle}>{screen.title}</Text>
-            </View>
-          </RectButton>
+            Icon={Icon}
+            icon={screen.icon}
+            description={screen.description}
+            onPress={screen.onPress}
+            title={screen.title}
+          />
         ))}
       </ScrollView>
     </View>

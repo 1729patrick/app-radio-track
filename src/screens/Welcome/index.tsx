@@ -59,6 +59,7 @@ const Welcome = () => {
           title="Escolha o seu estado"
           onPress={openRegions}
           containerStyle={styles.containerButtonChoose}
+          titleStyle={styles.titleButtonChoose}
         />
 
         <WithoutFeedbackButton

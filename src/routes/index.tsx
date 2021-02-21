@@ -15,6 +15,8 @@ import Search from '~/screens/Search';
 import Library from '~/screens/Library';
 import Welcome from '~/screens/Welcome';
 import Profile from '~/screens/Profile';
+import TermsAndConditions from '~/screens/Profile/screens/TermsAndConditions';
+import PolicyPrivacy from '~/screens/Profile/screens/PolicyPrivacy';
 
 const Tab = createBottomTabNavigator();
 
@@ -100,6 +102,16 @@ function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator headerMode="none">
       <ProfileStack.Screen name="Profile" component={Profile} />
+      <ProfileStack.Screen
+        name="TermsAndConditions"
+        component={TermsAndConditions}
+        options={options}
+      />
+      <ProfileStack.Screen
+        name="PolicyPrivacy"
+        component={PolicyPrivacy}
+        options={options}
+      />
     </ProfileStack.Navigator>
   );
 }

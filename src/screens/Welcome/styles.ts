@@ -24,7 +24,7 @@ export default StyleSheet.create({
   containerTop: {
     height: height - BOTTOM_CONTAINER_HEIGHT,
     justifyContent: 'center',
-    backgroundColor: StyleGuide.palette.background,
+    backgroundColor: '#1d1e21',
     paddingHorizontal: StyleGuide.spacing * 2,
     paddingTop: height * 0.1,
   },
@@ -45,18 +45,18 @@ export default StyleSheet.create({
   title: {
     ...StyleGuide.typography.title1,
     fontSize: 24,
-    color: StyleGuide.palette.primary,
+    color: '#fff',
   },
   description: {
     ...StyleGuide.typography.subhead,
     fontSize: 16,
-    color: StyleGuide.palette.primary,
+    color: '#fff',
     marginTop: StyleGuide.spacing * 2,
     width: '80%',
   },
   containerBottom: {
     paddingHorizontal: StyleGuide.spacing * 2,
-    backgroundColor: StyleGuide.palette.primary,
+    backgroundColor: '#fff',
     height: BOTTOM_CONTAINER_HEIGHT,
     justifyContent: 'center',
   },
@@ -66,9 +66,10 @@ export default StyleSheet.create({
   },
   containerButtonChoose: {
     marginTop: WAVE_HEIGHT,
-    backgroundColor: StyleGuide.palette.background,
+    backgroundColor: '#1d1e21',
   },
+  titleButtonChoose: { color: '#fff' },
   titleButtonSkip: {
-    color: StyleGuide.palette.background,
+    color: '#1d1e21',
   },
 });

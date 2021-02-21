@@ -10,12 +10,13 @@ export default StyleSheet.create({
     minHeight: CARD_SIZE - StyleGuide.spacing * 2 + NAME_AND_DESCRIPTION_HEIGHT,
   },
   button: { zIndex: 1 },
-
   image: {
     height: CARD_SIZE - StyleGuide.spacing * 2,
     width: CARD_SIZE - StyleGuide.spacing * 2,
     borderRadius: StyleGuide.borderRadius * 4,
     backgroundColor: StyleGuide.palette.backgroundPrimary,
+    borderWidth: 1,
+    borderColor: StyleGuide.palette.backgroundSecondary,
   },
   title: {
     ...StyleGuide.typography.callout,

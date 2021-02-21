@@ -23,8 +23,9 @@ export default StyleSheet.create({
     height: 50,
     width: '100%',
     borderRadius: StyleGuide.borderRadius * 1.5,
-    marginBottom: StyleGuide.spacing * 1.5,
+    marginVertical: StyleGuide.spacing * 0.75,
     backgroundColor: lighten(0.03, StyleGuide.palette.backgroundPrimary),
+    elevation: 4,
   },
   button: {
     height: '100%',
@@ -42,6 +43,6 @@ export default StyleSheet.create({
     ...StyleGuide.typography.headline,
     paddingLeft: StyleGuide.borderRadius * 3,
     fontSize: 16,
-    color: '#fff',
+    color: StyleGuide.palette.primary,
   },
 });

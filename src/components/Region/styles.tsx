@@ -14,6 +14,6 @@ export default StyleSheet.create({
     ...StyleGuide.typography.headline,
     paddingLeft: StyleGuide.borderRadius * 3,
     fontSize: 16,
-    color: '#fff',
+    color: StyleGuide.palette.primary,
   },
 });

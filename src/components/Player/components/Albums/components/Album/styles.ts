@@ -17,6 +17,8 @@ export default StyleSheet.create({
     marginRight: 'auto',
     borderRadius: StyleGuide.borderRadius * 5,
     backgroundColor: StyleGuide.palette.background,
+    borderWidth: 1,
+    borderColor: StyleGuide.palette.backgroundSecondary,
   },
   notFoundContainer: {
     ...StyleSheet.absoluteFillObject,

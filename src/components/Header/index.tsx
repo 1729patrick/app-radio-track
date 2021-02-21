@@ -23,6 +23,7 @@ type HeaderProps = {
   title?: string;
   backgroundColor?: string;
   showBack?: boolean;
+  showSearch?: boolean;
   elevation?: number;
 };
 
@@ -31,6 +32,7 @@ const Header: React.FC<HeaderProps> = ({
   title,
   backgroundColor = StyleGuide.palette.background,
   showBack = true,
+  showSearch = true,
   elevation = 0,
 }) => {
   const { navigate, pop } = useNavigation<StackNavigationProp<any>>();
@@ -86,12 +88,14 @@ const Header: React.FC<HeaderProps> = ({
           <Text style={styles.title}>{title || 'Rádio Online'}</Text>
         </View>
 
-        <RoundButton
-          size={22}
-          name="md-search-outline"
-          onPress={onOpenSearch}
-          Icon={IonIcon}
-        />
+        {showSearch && (
+          <RoundButton
+            size={22}
+            name="md-search-outline"
+            onPress={onOpenSearch}
+            Icon={IonIcon}
+          />
+        )}
       </Animated.View>
     </Animated.View>
   );

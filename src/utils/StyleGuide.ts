@@ -5,19 +5,33 @@ const background = '#1d1e21';
 
 // const x = lighten(0.02, background);
 // console.log(x);
+
+const darkPalette = {
+  primary: '#eee',
+  secondary: '#A0A2A7',
+  light: '#BFC1C4',
+  background,
+  backgroundPrimary: '#222326',
+  backgroundSecondary: '#303137',
+  border: '#27282c',
+  app: '#16CA61',
+};
+
+const lightPalette = {
+  primary: '#222326',
+  secondary: '#6d6e7c',
+  light: '#808080',
+  background: '#fafafa',
+  backgroundPrimary: '#fff',
+  backgroundSecondary: '#efefef',
+  border: '#BFC1C4',
+  app: '#16CA61',
+};
+
 const StyleGuide = {
   spacing: 8,
   borderRadius: 4,
-  palette: {
-    primary: '#fff',
-    secondary: '#A0A2A7',
-    light: '#BFC1C4',
-    background,
-    backgroundPrimary: '#222326',
-    backgroundSecondary: '#303137',
-    border: '#27282c',
-    app: '#16CA61',
-  },
+  palette: lightPalette,
   typography: {
     body: {
       fontSize: 17,

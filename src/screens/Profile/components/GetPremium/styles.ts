@@ -5,6 +5,7 @@ export default StyleSheet.create({
   title: {
     ...StyleGuide.typography.title1,
     textAlign: 'center',
+    color: StyleGuide.palette.primary,
     paddingHorizontal: StyleGuide.spacing * 3,
     marginTop: StyleGuide.spacing * 6,
   },
