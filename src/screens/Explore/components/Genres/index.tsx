@@ -4,12 +4,17 @@ import React, { memo, useCallback } from 'react';
 import { ImageBackground, Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import StyleGuide from '~/utils/StyleGuide';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
+
 import { GENRES } from './data';
 
-import styles from './styles';
+import getStyles from './styles';
+
 const Genres = () => {
+  const { palette } = useTheme();
   const { navigate } = useNavigation();
+  const styles = useStyles(getStyles);
 
   const onShowGenre = useCallback(
     ({ title, id }: { title: string; id: (string | never[])[] }) => {
@@ -37,7 +42,7 @@ const Genres = () => {
           />
 
           <RectButton
-            rippleColor={StyleGuide.palette.background}
+            rippleColor={palette.background}
             style={styles.button}
             onPress={() => onShowGenre(genre)}>
             <Text style={styles.genreTitle} numberOfLines={1}>

@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -37,14 +38,15 @@ import {
 
 import { MODAL_SNAP_POINTS } from './constants';
 
-import styles from './styles';
+import getStyles from './styles';
+import { useTheme } from '~/contexts/ThemeContext';
+import { palette } from '~/utils/StyleGuide';
 
 const { height } = Dimensions.get('window');
 
 type ModalProps = {
   onContinue: () => void;
   title: string;
-  id: string;
   children: ReactNode;
   confirm: string;
 };
@@ -54,9 +56,15 @@ export type ModalHandler = {
 };
 
 const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
-  { onContinue, title, children, id, confirm },
+  { onContinue, title, children, confirm },
   ref,
 ) => {
+  const { palette } = useTheme();
+
+  const styles = useMemo(() => {
+    return getStyles(palette);
+  }, [palette]);
+
   const [snapPoints, setSnapPoints] = useState(MODAL_SNAP_POINTS);
   const translateY = useSharedValue(snapPoints[MODAL_SNAP_POINTS.length - 1]);
 

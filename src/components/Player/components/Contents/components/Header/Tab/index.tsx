@@ -1,13 +1,14 @@
 import { lighten } from 'polished';
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import StyleGuide from '~/utils/StyleGuide';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
 
-import styles from './styles';
+import getStyles from './styles';
 
 type TabProps = {
   indicatorWidth: number;
@@ -18,7 +19,6 @@ type TabProps = {
   onPress: (index: number) => void;
   animation: Animated.SharedValue<number>;
 };
-const colorInactive = lighten(0.1, StyleGuide.palette.secondary);
 
 const Tab: React.FC<TabProps> = ({
   indicatorWidth,
@@ -29,16 +29,22 @@ const Tab: React.FC<TabProps> = ({
   onPress,
   animation,
 }) => {
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
+  const colorInactive = useMemo(() => lighten(0.1, palette.secondary), [
+    palette.secondary,
+  ]);
+
   //@ts-ignore
   const style = useAnimatedStyle(() => {
     if (translateX.value < 0) {
-      return { color: StyleGuide.palette.secondary };
+      return { color: palette.secondary };
     }
 
     const colorActive = interpolateColor(
       animation.value,
       [0, 1],
-      [colorInactive, StyleGuide.palette.app],
+      [colorInactive, palette.app],
     );
 
     const color = interpolateColor(

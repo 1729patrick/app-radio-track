@@ -4,9 +4,10 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
 } from 'react-native-reanimated';
+import useStyles from '~/hooks/useStyles';
 import { RouteType } from '../TabNavigator';
 
-import styles from './styles';
+import getStyles from './styles';
 import Tab from './Tab';
 
 const { width } = Dimensions.get('window');
@@ -26,6 +27,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const indicatorWidth = width / routes.length;
   const inputRange = routes.map((_, i: number) => i);
+  const styles = useStyles(getStyles);
 
   const x = useDerivedValue(() => {
     return (translateX.value * width) / routes.length;

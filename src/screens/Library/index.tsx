@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useMemo, useRef } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import StyleGuide from '~/utils/StyleGuide';
 import Header from '~/components/Header';
 
 import Favorites from './components/Favorites';
@@ -16,6 +15,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { RadioType } from '~/types/Station';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useAd } from '~/ads/contexts/AdContext';
+import { useTheme } from '~/contexts/ThemeContext';
 
 const LibraryTab = createMaterialTopTabNavigator();
 
@@ -27,6 +27,7 @@ const Library = () => {
   const { showLibraryAd } = useAd();
   const { dangerouslyGetParent } = useNavigation();
   const isTabChangeRef = useRef(true);
+  const { palette } = useTheme();
 
   useEffect(() => {
     const { index } = dangerouslyGetParent()?.dangerouslyGetState() || {};
@@ -54,7 +55,7 @@ const Library = () => {
       <Header
         translateY={translateY}
         showBack={false}
-        backgroundColor={StyleGuide.palette.backgroundPrimary}
+        backgroundColor={palette.backgroundPrimary}
       />
       <LibraryTab.Navigator
         lazy

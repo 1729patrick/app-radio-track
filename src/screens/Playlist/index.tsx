@@ -1,14 +1,14 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import { View } from 'react-native';
 
-import styles from './styles';
+import getStyles from './styles';
 
 import Header from '~/components/Header';
 
 import { usePlayer } from '~/contexts/PlayerContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import StyleGuide from '~/utils/StyleGuide';
+
 import { FlatList } from 'react-native-gesture-handler';
 import Radio from '~/components/Radio/Item';
 import { useFetchPagination } from '~/hooks/useFetchPagination';
@@ -18,6 +18,8 @@ import { useAd } from '~/ads/contexts/AdContext';
 import Banner from '~/ads/components/Banner';
 import { BLOCKS } from '~/ads/constants';
 import { usePlaying } from '~/contexts/PlayingContext';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
 
 type RootStackParamList = {
   Playlist: {
@@ -34,6 +36,8 @@ const Explore: React.FC = () => {
   const { params } = useRoute<RouteProps>();
   const { showPlaylistAd } = useAd();
   const { playingRadioId } = usePlaying();
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
 
   const { data, error, fetchMore } = useFetchPagination(
     params.url,
@@ -64,11 +68,16 @@ const Explore: React.FC = () => {
             playing={playingRadioId === item.id}
           />
 
-          {!index && <Banner id={BLOCKS.MUSIC} />}
+          {!index && (
+            <Banner
+              id={BLOCKS.MUSIC}
+              backgroundColor={palette.backgroundSecondary}
+            />
+          )}
         </>
       );
     },
-    [onExpandPlayerPress, playingRadioId],
+    [onExpandPlayerPress, palette.backgroundSecondary, playingRadioId],
   );
 
   useEffect(() => {
@@ -81,7 +90,7 @@ const Explore: React.FC = () => {
       <Header
         translateY={translateY}
         title={params?.title}
-        backgroundColor={StyleGuide.palette.backgroundPrimary}
+        backgroundColor={palette.backgroundPrimary}
         elevation={5}
       />
 

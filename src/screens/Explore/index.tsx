@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import styles from './styles';
+import getStyles from './styles';
 
 import Animated from 'react-native-reanimated';
 
@@ -11,9 +11,11 @@ import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 
 import Regions from './components/Regions';
 import Genres from './components/Genres';
+import useStyles from '~/hooks/useStyles';
 
 const Explore: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
+  const styles = useStyles(getStyles);
 
   return (
     <View style={styles.container}>

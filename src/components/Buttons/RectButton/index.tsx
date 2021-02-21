@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
 import { Text, View } from 'react-native';
-import StyleGuide from '~/utils/StyleGuide';
 import { RectButton as NativeRectButton } from 'react-native-gesture-handler';
-import styles from './styles';
+import getStyles from './styles';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
 
 type RectButtonProps = {
   title: string;
@@ -17,12 +18,15 @@ const RectButton = ({
   containerStyle,
   titleStyle,
 }: RectButtonProps) => {
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
+
   return (
     <View style={[styles.container, containerStyle]}>
       <NativeRectButton
         onPress={onPress}
         style={styles.button}
-        rippleColor={StyleGuide.palette.secondary}>
+        rippleColor={palette.secondary}>
         <Text style={[styles.title, titleStyle]}>{title}</Text>
       </NativeRectButton>
     </View>

@@ -1,8 +1,9 @@
 import React, { forwardRef, memo } from 'react';
 import { TextInputProps } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import StyleGuide from '~/utils/StyleGuide';
-import styles from './styles';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
+import getStyles from './styles';
 
 type InputProps = {
   placeholder: string;
@@ -14,12 +15,15 @@ const Input: React.ForwardRefRenderFunction<TextInputProps, InputProps> = (
   { placeholder, onChangeText, style },
   ref,
 ) => {
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
+
   return (
     <TextInput
       ref={ref}
       style={[styles.container, style]}
       placeholder={placeholder}
-      placeholderTextColor={StyleGuide.palette.primary}
+      placeholderTextColor={palette.primary}
       onChangeText={onChangeText}
     />
   );

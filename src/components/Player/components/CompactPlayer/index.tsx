@@ -9,18 +9,19 @@ import Animated, {
 import Icon from 'react-native-vector-icons/Ionicons';
 import LottieView from 'lottie-react-native';
 
-import styles from './styles';
+import getStyles from './styles';
 
 import { SNAP_POINTS } from '../../constants';
 import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 
-import StyleGuide from '~/utils/StyleGuide';
 import RoundButton from '~/components/Button/Round';
 import { RadioType } from '~/types/Station';
 import { useFavorites } from '~/contexts/FavoriteContext';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
 
 import TextTicker from 'react-native-text-ticker';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
 
 type CompactPlayerProps = {
   y?: Animated.SharedValue<number>;
@@ -44,10 +45,12 @@ const CompactPlayer: React.FC<CompactPlayerProps> = ({
   onTogglePlayback,
   radio,
   error,
-  rippleColor = StyleGuide.palette.secondary,
+  rippleColor,
   top,
 }) => {
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
 
   const style = useAnimatedStyle(() => {
     if (!y) {
@@ -86,7 +89,7 @@ const CompactPlayer: React.FC<CompactPlayerProps> = ({
         <RectButton
           style={styles.compactButton}
           onPress={onPress}
-          rippleColor={rippleColor}>
+          rippleColor={rippleColor || palette.secondary}>
           <View style={styles.info}>
             <TextTicker
               bounce={false}
@@ -127,14 +130,14 @@ const CompactPlayer: React.FC<CompactPlayerProps> = ({
 
             <View style={styles.buttonContainer}>
               <BorderlessButton
-                rippleColor={StyleGuide.palette.primary}
+                rippleColor={palette.primary}
                 style={styles.button}
                 onPress={onTogglePlayback}>
                 {!playing && !error && (
                   <Icon
                     name="play"
                     size={buffering ? 15 : 23}
-                    color={StyleGuide.palette.primary}
+                    color={palette.primary}
                     style={styles.playButton}
                   />
                 )}
@@ -142,16 +145,12 @@ const CompactPlayer: React.FC<CompactPlayerProps> = ({
                   <Icon
                     name="ios-pause-sharp"
                     size={buffering ? 15 : 23}
-                    color={StyleGuide.palette.primary}
+                    color={palette.primary}
                     style={styles.stopButton}
                   />
                 )}
                 {error && (
-                  <Icon
-                    name="reload"
-                    size={23}
-                    color={StyleGuide.palette.primary}
-                  />
+                  <Icon name="reload" size={23} color={palette.primary} />
                 )}
               </BorderlessButton>
               {buffering && !error && (

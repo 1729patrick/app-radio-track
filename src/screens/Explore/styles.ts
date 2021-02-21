@@ -8,16 +8,17 @@ import {
   STATUS_BAR_HEIGHT,
 } from '~/components/Header/constants';
 
-export default StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    paddingTop: 25,
-    backgroundColor: StyleGuide.palette.background,
-  },
-  contentContainer: {
-    flexGrow: 1,
-    paddingTop: STATUS_BAR_HEIGHT + HEADER_HEIGHT,
-    paddingBottom:
-      BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT + StyleGuide.spacing * 0.5,
-  },
-});
+export default (palette) =>
+  StyleSheet.create({
+    container: {
+      flexGrow: 1,
+      paddingTop: 25,
+      backgroundColor: palette.background,
+    },
+    contentContainer: {
+      flexGrow: 1,
+      paddingTop: STATUS_BAR_HEIGHT + HEADER_HEIGHT,
+      paddingBottom:
+        BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT + StyleGuide.spacing * 0.5,
+    },
+  });

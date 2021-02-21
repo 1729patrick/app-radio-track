@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { View } from 'react-native';
 
-import styles from './styles';
+import getStyles from './styles';
 
 import Animated from 'react-native-reanimated';
 
@@ -23,6 +23,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
 import { useRegion } from '~/contexts/RegionContext';
+import useStyles from '~/hooks/useStyles';
 
 function daysIntoYear() {
   const date = new Date();
@@ -94,6 +95,7 @@ const Home: React.FC = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const welcomeShowedRef = useRef(false);
   const { onExpandPlayer } = usePlayer();
+  const styles = useStyles(getStyles);
 
   const isLoading = useMemo(() => {
     if (!Object.values(state).length) {

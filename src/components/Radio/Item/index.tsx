@@ -1,8 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import { Image, Text, View } from 'react-native';
-import styles from './styles';
+import getStyles from './styles';
 
-import StyleGuide from '~/utils/StyleGuide';
 import { RectButton } from 'react-native-gesture-handler';
 import RoundButton from '~/components/Button/Round';
 import LottieView from 'lottie-react-native';
@@ -10,6 +9,8 @@ import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { RadioType } from '~/types/Station';
 import { image } from '~/services/api';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
 
 type RadioProps = {
   playing: boolean;
@@ -24,6 +25,9 @@ const Radio: React.FC<RadioProps> = ({
   index,
   onExpandPlayer,
 }) => {
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
+
   const onRadioPress = useCallback(() => {
     onExpandPlayer({ radioIndex: index });
   }, [index, onExpandPlayer]);
@@ -31,7 +35,7 @@ const Radio: React.FC<RadioProps> = ({
   return (
     <RectButton
       style={[styles.container]}
-      rippleColor={StyleGuide.palette.secondary}
+      rippleColor={palette.secondary}
       onPress={onRadioPress}>
       <Image
         style={styles.image}
@@ -60,15 +64,15 @@ const Radio: React.FC<RadioProps> = ({
           colorFilters={[
             {
               keypath: 'Path 6',
-              color: StyleGuide.palette.app,
+              color: palette.app,
             },
             {
               keypath: 'Path 7',
-              color: StyleGuide.palette.app,
+              color: palette.app,
             },
             {
               keypath: 'Path 8',
-              color: StyleGuide.palette.app,
+              color: palette.app,
             },
           ]}
         />
@@ -77,7 +81,7 @@ const Radio: React.FC<RadioProps> = ({
           Icon={Icon}
           name="ios-play-circle-outline"
           size={27}
-          color={StyleGuide.palette.app}
+          color={palette.app}
           onPress={onRadioPress}
         />
       )}

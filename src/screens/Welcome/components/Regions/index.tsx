@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useState,
 } from 'react';
 import { BackHandler, Text, View } from 'react-native';
@@ -27,7 +28,8 @@ import { RegionType } from '~/screens/Explore/components/Regions';
 import { REGIONS_SNAP_POINTS } from './constants';
 import Region from '~/components/Region';
 
-import styles from './styles';
+import getStyles from './styles';
+import { useTheme } from '~/contexts/ThemeContext';
 
 type RegionsProps = {
   onContinue: (regionId: string) => void;
@@ -43,6 +45,11 @@ const Regions: React.ForwardRefRenderFunction<RegionHandler, RegionsProps> = (
 ) => {
   const translateY = useSharedValue(REGIONS_SNAP_POINTS[2]);
   const [regionIdChecked, setRegionIdChecked] = useState('');
+  const { palette } = useTheme();
+
+  const styles = useMemo(() => {
+    return getStyles(palette);
+  }, [palette]);
 
   const style = useAnimatedStyle(() => {
     return {

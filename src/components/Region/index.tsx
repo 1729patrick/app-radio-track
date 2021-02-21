@@ -2,9 +2,11 @@ import React from 'react';
 import { Image, View, Text } from 'react-native';
 import { RegionType } from '~/screens/Explore/components/Regions';
 import Icon from 'react-native-vector-icons/AntDesign';
-import styles from './styles';
-import StyleGuide from '~/utils/StyleGuide';
+import getStyles from './styles';
+
 import { RectButton } from 'react-native-gesture-handler';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
 
 type RegionProps = RegionType & {
   checked: boolean;
@@ -18,10 +20,13 @@ const Region: React.FC<RegionProps> = ({
   id,
   onPress,
 }) => {
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
+
   return (
     <RectButton
       onPress={() => onPress(id)}
-      rippleColor={StyleGuide.palette.secondary}
+      rippleColor={palette.secondary}
       style={[styles.container]}>
       <View style={styles.info}>
         <Image source={image} style={styles.image} />
@@ -29,17 +34,13 @@ const Region: React.FC<RegionProps> = ({
           style={[
             styles.title,
             {
-              color: checked
-                ? StyleGuide.palette.app
-                : StyleGuide.palette.primary,
+              color: checked ? palette.app : palette.primary,
             },
           ]}>
           {title}
         </Text>
       </View>
-      {checked && (
-        <Icon name="check" size={28} color={StyleGuide.palette.app} />
-      )}
+      {checked && <Icon name="check" size={28} color={palette.app} />}
     </RectButton>
   );
 };

@@ -2,12 +2,15 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Header from '~/components/Header';
+import { useTheme } from '~/contexts/ThemeContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
-import StyleGuide from '~/utils/StyleGuide';
+import useStyles from '~/hooks/useStyles';
 
-import styles from './styles';
+import getStyles from './styles';
 
 const PolicyPrivacy = () => {
+  const styles = useStyles(getStyles);
+  const { palette } = useTheme();
   const { translateY } = useAnimatedHeader();
 
   return (
@@ -15,7 +18,7 @@ const PolicyPrivacy = () => {
       <Header
         translateY={translateY}
         title={'Termos e Condições'}
-        backgroundColor={StyleGuide.palette.backgroundPrimary}
+        backgroundColor={palette.backgroundPrimary}
         elevation={5}
         showSearch={false}
       />

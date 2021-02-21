@@ -1,11 +1,13 @@
 import React, { memo, useCallback } from 'react';
 import { Dimensions, Image, Text, View } from 'react-native';
 import { FlatList, RectButton } from 'react-native-gesture-handler';
-import styles from './styles';
+import getStyles from './styles';
 import { REGIONS } from './data';
 import { useNavigation } from '@react-navigation/native';
 import StyleGuide from '~/utils/StyleGuide';
 import { StackNavigationProp } from '@react-navigation/stack';
+import useStyles from '~/hooks/useStyles';
+import { useTheme } from '~/contexts/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
@@ -13,6 +15,8 @@ export type RegionType = { id: string; image: any; title: string };
 
 const Regions = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const styles = useStyles(getStyles);
+  const { palette } = useTheme();
 
   const onShowRegion = useCallback(
     ({ title, id }: RegionType) => {
@@ -29,7 +33,7 @@ const Regions = () => {
           {item.map((region) => (
             <View style={styles.region} key={region.id}>
               <RectButton
-                rippleColor={StyleGuide.palette.background}
+                rippleColor={palette.background}
                 style={styles.button}
                 onPress={() => onShowRegion(region)}>
                 <Image style={styles.image} source={region.image} />
@@ -40,7 +44,15 @@ const Regions = () => {
         </View>
       );
     },
-    [onShowRegion],
+    [
+      onShowRegion,
+      palette.background,
+      styles.button,
+      styles.group,
+      styles.image,
+      styles.region,
+      styles.regionTitle,
+    ],
   );
 
   return (

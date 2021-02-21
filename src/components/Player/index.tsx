@@ -36,7 +36,7 @@ import BottomControls from './components/Controls/Bottom';
 import TopControls from './components/Controls/Top';
 
 import { SNAP_POINTS, TIMING_DURATION } from './constants';
-import styles from './styles';
+import getStyles from './styles';
 import CompactPlayer from './components/CompactPlayer';
 
 import { usePlayer } from '~/contexts/PlayerContext';
@@ -50,6 +50,7 @@ import Contents, { ContentsHandler } from './components/Contents';
 import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from './components/Contents/constants';
 import { useAd } from '~/ads/contexts/AdContext';
+import useStyles from '~/hooks/useStyles';
 
 TrackPlayerEvents.REMOTE_NEXT = 'remote-next';
 
@@ -84,6 +85,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
 ) => {
   const { translateY } = usePlayer();
   const { showPlayerAd } = useAd();
+  const styles = useStyles(getStyles);
 
   const contentTranslateY = useSharedValue(CONTENT_SNAP_POINTS[1]);
   const [playing, setPlaying] = useState(false);

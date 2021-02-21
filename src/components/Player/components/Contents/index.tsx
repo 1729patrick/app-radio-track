@@ -21,7 +21,7 @@ import Animated, {
 import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
 import { TIMING_DURATION } from './constants';
 
-import styles from './styles';
+import getStyles from './styles';
 
 import { SNAP_POINTS } from './constants';
 import TabNavigator, { TabNavigatorHandler } from './components/TabNavigator';
@@ -32,6 +32,7 @@ import CompactPlayer from '../CompactPlayer';
 import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
 import { RadioType } from '~/types/Station';
 import { PlayerState } from '../..';
+import useStyles from '~/hooks/useStyles';
 
 type ContentsProps = {
   translateY: Animated.SharedValue<number>;
@@ -79,6 +80,7 @@ const Contents: React.ForwardRefRenderFunction<
 ) => {
   const tabNavigatorRef = useRef<TabNavigatorHandler>(null);
   const activeTab = useSharedValue(0);
+  const styles = useStyles(getStyles);
 
   const initializeTabActive = useCallback(() => {
     tabNavigatorRef.current?.initializeTabActive();

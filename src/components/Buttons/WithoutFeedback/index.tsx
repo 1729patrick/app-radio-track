@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
 import { Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import styles from './styles';
+import useStyles from '~/hooks/useStyles';
+import getStyles from './styles';
 
 type WithoutFeedbackButtonProps = {
   title: string;
@@ -16,6 +17,8 @@ const WithoutFeedbackButton = ({
   titleStyle,
   disabled,
 }: WithoutFeedbackButtonProps) => {
+  const styles = useStyles(getStyles);
+
   return (
     <TouchableOpacity
       onPress={onPress}

@@ -3,13 +3,15 @@ import { useFavorites } from '~/contexts/FavoriteContext';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Radio from '~/components/Radio/Item';
 
-import styles from './styles';
+import getStyles from './styles';
 import { RadioType } from '~/types/Station';
 import { FlatList } from 'react-native-gesture-handler';
 import Error from '~/components/Error';
 import { BLOCKS } from '~/ads/constants';
 import Banner from '~/ads/components/Banner';
 import { usePlaying } from '~/contexts/PlayingContext';
+import useStyles from '~/hooks/useStyles';
+import { useTheme } from '~/contexts/ThemeContext';
 
 type FavoritesProps = {};
 
@@ -20,6 +22,8 @@ const Favorites: React.ForwardRefRenderFunction<
   const { onExpandPlayer } = usePlayer();
   const { favorites } = useFavorites();
   const { playingRadioId } = usePlaying();
+  const styles = useStyles(getStyles);
+  const { palette } = useTheme();
 
   const onExpandPlayerPress = useCallback(
     ({ radioIndex }: { radioIndex: number }) => {
@@ -42,11 +46,16 @@ const Favorites: React.ForwardRefRenderFunction<
             index={index}
             onExpandPlayer={onExpandPlayerPress}
           />
-          {!index && <Banner id={BLOCKS.MUSIC} />}
+          {!index && (
+            <Banner
+              id={BLOCKS.MUSIC}
+              backgroundColor={palette.backgroundSecondary}
+            />
+          )}
         </>
       );
     },
-    [onExpandPlayerPress, playingRadioId],
+    [onExpandPlayerPress, palette.backgroundSecondary, playingRadioId],
   );
 
   if (!favorites.length) {

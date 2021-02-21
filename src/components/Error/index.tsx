@@ -1,7 +1,8 @@
 import React, { memo, useMemo } from 'react';
 import { View, Text } from 'react-native';
+import useStyles from '~/hooks/useStyles';
 
-import styles from './styles';
+import getStyles from './styles';
 
 const MESSAGES = {
   favoritesEmpty: {
@@ -23,6 +24,8 @@ type ErrorType = {
 };
 
 const Error = ({ type = 'Network Error' }: ErrorType) => {
+  const styles = useStyles(getStyles);
+
   const title = useMemo(() => {
     return MESSAGES[type]?.title;
   }, [type]);

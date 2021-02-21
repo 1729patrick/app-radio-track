@@ -9,27 +9,33 @@ import { ReviewProvider } from './contexts/ReviewContext';
 import { RegionProvider } from './contexts/RegionContext';
 import { SearchHistoryProvider } from './contexts/SearchHistoryContext';
 import { ModalProvider } from './contexts/ModalContext';
+import { AppearanceProvider } from 'react-native-appearance';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 export default () => {
   return (
-    <FavoriteProvider>
-      <HistoryProvider>
-        <PlayerProvider>
-          <PlayingProvider>
-            <ReviewProvider>
-              <AdProvider>
-                <RegionProvider>
-                  <SearchHistoryProvider>
-                    <ModalProvider>
-                      <App />
-                    </ModalProvider>
-                  </SearchHistoryProvider>
-                </RegionProvider>
-              </AdProvider>
-            </ReviewProvider>
-          </PlayingProvider>
-        </PlayerProvider>
-      </HistoryProvider>
-    </FavoriteProvider>
+    <AppearanceProvider>
+      <ThemeProvider>
+        <FavoriteProvider>
+          <HistoryProvider>
+            <PlayerProvider>
+              <PlayingProvider>
+                <ReviewProvider>
+                  <AdProvider>
+                    <RegionProvider>
+                      <SearchHistoryProvider>
+                        <ModalProvider>
+                          <App />
+                        </ModalProvider>
+                      </SearchHistoryProvider>
+                    </RegionProvider>
+                  </AdProvider>
+                </ReviewProvider>
+              </PlayingProvider>
+            </PlayerProvider>
+          </HistoryProvider>
+        </FavoriteProvider>
+      </ThemeProvider>
+    </AppearanceProvider>
   );
 };

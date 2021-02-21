@@ -8,10 +8,9 @@ import RoundButton from '~/components/Button/Round';
 import { usePlayer } from '~/contexts/PlayerContext';
 import { useFetch } from '~/hooks/useFetch';
 import { FetchWithPagination } from '~/types/Fetch';
-import StyleGuide from '~/utils/StyleGuide';
 import Radio from '~/components/Radio/Item';
 
-import styles from './styles';
+import getStyles from './styles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
 import Banner from '~/ads/components/Banner';
@@ -21,6 +20,8 @@ import { usePlaying } from '~/contexts/PlayingContext';
 import { useKeyboard } from '~/hooks/useKeyboard';
 import History from './components/History';
 import { useSearchHistory } from '~/contexts/SearchHistoryContext';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
 
 type SearchProps = {
   onCloseSearch: () => void;
@@ -36,6 +37,8 @@ const Search: React.FC<SearchProps> = () => {
       ? `/search?q=${searchTerm.trimLeft().trimRight()}`
       : null,
   );
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
 
   const { pop } = useNavigation<StackNavigationProp<any>>();
 
@@ -78,11 +81,16 @@ const Search: React.FC<SearchProps> = () => {
             index={index}
             onExpandPlayer={onExpandPlayerPress}
           />
-          {!index && <Banner id={BLOCKS.MUSIC} />}
+          {!index && (
+            <Banner
+              id={BLOCKS.MUSIC}
+              backgroundColor={palette.backgroundSecondary}
+            />
+          )}
         </>
       );
     },
-    [onExpandPlayerPress, playingRadioId],
+    [onExpandPlayerPress, palette.backgroundSecondary, playingRadioId],
   );
 
   return (
@@ -97,7 +105,7 @@ const Search: React.FC<SearchProps> = () => {
 
         <TextInput
           placeholder="Pesquise a rádio"
-          placeholderTextColor={StyleGuide.palette.secondary}
+          placeholderTextColor={palette.secondary}
           style={styles.input}
           value={searchTerm}
           onChangeText={setSearchTerm}
@@ -108,7 +116,7 @@ const Search: React.FC<SearchProps> = () => {
           <RoundButton
             onPress={onClearSearch}
             name={'close'}
-            color={StyleGuide.palette.light}
+            color={palette.light}
             size={24}
             Icon={Icon}
           />

@@ -60,10 +60,6 @@ export default StyleSheet.create({
     height: BOTTOM_CONTAINER_HEIGHT,
     justifyContent: 'center',
   },
-  label: {
-    ...StyleGuide.typography.headline,
-    color: StyleGuide.palette.background,
-  },
   containerButtonChoose: {
     marginTop: WAVE_HEIGHT,
     backgroundColor: '#1d1e21',

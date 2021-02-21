@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 import { LayoutChangeEvent, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import StyleGuide from '~/utils/StyleGuide';
+import { useTheme } from '~/contexts/ThemeContext';
 
 import styles from './styles';
 
@@ -33,11 +33,12 @@ const Tab = ({
 }: TabProps) => {
   const { options } = descriptors[route.key];
   const isFocused = state.index === index;
+  const { palette } = useTheme();
 
   const color = Animated.interpolateColors(position, {
     inputRange,
     outputColorRange: inputRange.map((i) =>
-      i === index ? StyleGuide.palette.app : StyleGuide.palette.secondary,
+      i === index ? palette.app : palette.secondary,
     ),
   });
 

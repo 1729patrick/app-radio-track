@@ -4,42 +4,43 @@ import { ALBUM_SIZE } from '../../constants';
 
 const { width } = Dimensions.get('window');
 
-export default StyleSheet.create({
-  card: {
-    width: width,
-    height: ALBUM_SIZE,
-    overflow: 'hidden',
-  },
-  image: {
-    width: ALBUM_SIZE - 70,
-    height: ALBUM_SIZE - 70,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    borderRadius: StyleGuide.borderRadius * 5,
-    backgroundColor: StyleGuide.palette.background,
-    borderWidth: 1,
-    borderColor: StyleGuide.palette.backgroundSecondary,
-  },
-  notFoundContainer: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: StyleGuide.palette.border,
-    width: ALBUM_SIZE - 70,
-    height: ALBUM_SIZE - 70,
-    top: 35,
-    left: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 35,
-    borderRadius: StyleGuide.borderRadius,
-  },
-  notFound: {
-    width: ALBUM_SIZE - 140,
-  },
-  notFoundTitle: {
-    textAlign: 'center',
-    ...StyleGuide.typography.headline,
-    color: StyleGuide.palette.primary,
-    flex: 1,
-    textAlignVertical: 'center',
-  },
-});
+export default (palette) =>
+  StyleSheet.create({
+    card: {
+      width: width,
+      height: ALBUM_SIZE,
+      overflow: 'hidden',
+    },
+    image: {
+      width: ALBUM_SIZE - 70,
+      height: ALBUM_SIZE - 70,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      borderRadius: borderRadius * 5,
+      backgroundColor: palette.background,
+      borderWidth: 1,
+      borderColor: palette.backgroundSecondary,
+    },
+    notFoundContainer: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: palette.border,
+      width: ALBUM_SIZE - 70,
+      height: ALBUM_SIZE - 70,
+      top: 35,
+      left: 35,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingTop: 35,
+      borderRadius: StyleGuide.borderRadius,
+    },
+    notFound: {
+      width: ALBUM_SIZE - 140,
+    },
+    notFoundTitle: {
+      textAlign: 'center',
+      ...StyleGuide.typography.headline,
+      color: palette.primary,
+      flex: 1,
+      textAlignVertical: 'center',
+    },
+  });

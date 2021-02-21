@@ -17,6 +17,8 @@ import Welcome from '~/screens/Welcome';
 import Profile from '~/screens/Profile';
 import TermsAndConditions from '~/screens/Profile/screens/TermsAndConditions';
 import PolicyPrivacy from '~/screens/Profile/screens/PolicyPrivacy';
+import StyleGuide, { palette } from '~/utils/StyleGuide';
+import { useTheme } from '~/contexts/ThemeContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,15 +42,27 @@ const options = {
   },
 };
 
-const theme = {
+const dark = {
   dark: true,
   colors: {
-    primary: '#000',
-    background: '#000',
-    card: '#000',
-    text: '#000',
-    border: '#000',
-    notification: '#000',
+    primary: palette.dark.primary,
+    background: palette.dark.background,
+    card: palette.dark.backgroundPrimary,
+    text: palette.dark.primary,
+    border: palette.dark.border,
+    notification: palette.dark.background,
+  },
+};
+
+const light = {
+  dark: false,
+  colors: {
+    primary: palette.light.primary,
+    background: palette.light.background,
+    card: palette.light.backgroundPrimary,
+    text: palette.light.primary,
+    border: palette.light.border,
+    notification: palette.light.background,
   },
 };
 
@@ -117,8 +131,10 @@ function ProfileStackScreen() {
 }
 
 const Routes = () => {
+  const { mode } = useTheme();
+
   return (
-    <NavigationContainer theme={theme}>
+    <NavigationContainer theme={mode === 'dark' ? dark : light}>
       <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
         <Tab.Screen name="Home" component={HomeStackScreen} />
         <Tab.Screen

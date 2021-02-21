@@ -1,9 +1,11 @@
 import React, { memo } from 'react';
 import { View, Text } from 'react-native';
-import styles from './styles';
+import getStyles from './styles';
 import Icon from 'react-native-vector-icons/AntDesign';
-import StyleGuide from '~/utils/StyleGuide';
+
 import RectButton from '~/components/Buttons/RectButton';
+import useStyles from '~/hooks/useStyles';
+import { useTheme } from '~/contexts/ThemeContext';
 
 const advantages = [
   'Ouça sem propagandas',
@@ -12,6 +14,9 @@ const advantages = [
 ];
 
 const GetPremium = () => {
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
+
   return (
     <View>
       <Text style={[styles.title]}>
@@ -21,7 +26,7 @@ const GetPremium = () => {
       <View style={styles.advantages}>
         {advantages.map((advantage) => (
           <View style={[styles.advantageCard]} key={advantage}>
-            <Icon name="checkcircle" color={StyleGuide.palette.app} size={22} />
+            <Icon name="checkcircle" color={palette.app} size={22} />
             <Text style={[styles.advantageTitle]}>{advantage}</Text>
           </View>
         ))}
@@ -31,7 +36,7 @@ const GetPremium = () => {
         <RectButton
           title={'Seja Premium'}
           onPress={() => {}}
-          containerStyle={{ backgroundColor: StyleGuide.palette.app }}
+          containerStyle={{ backgroundColor: palette.app }}
         />
       </View>
 

@@ -14,9 +14,11 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import useStyles from '~/hooks/useStyles';
 
 import { ProgramType } from '~/types/Station';
 import { CARD_PADDING, TIMING_DURATION } from '../../constants';
+import getStyles from './styles';
 
 export type ItemHandler = {
   onExpand: () => void;
@@ -31,12 +33,12 @@ type ItemProps = {
   onMinimizeAll: () => void;
 };
 
-import styles from './styles';
-
 const Day: React.ForwardRefRenderFunction<ItemHandler, ItemProps> = (
   { programmingDay, day, onExpandAll, onMinimizeAll },
   ref,
 ) => {
+  const styles = useStyles(getStyles);
+
   const titleHeightRef = useRef(0);
   const programHeightRef = useRef(0);
   const [fullHeight, setFullHeight] = useState(0);

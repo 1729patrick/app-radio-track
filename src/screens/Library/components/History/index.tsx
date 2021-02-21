@@ -2,7 +2,7 @@ import React, { useCallback, forwardRef, useState, useEffect } from 'react';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Radio from '~/components/Radio/Item';
 
-import styles from './styles';
+import getStyles from './styles';
 
 import { useHistory } from '~/contexts/HistoryContext';
 import { RadioType } from '~/types/Station';
@@ -13,6 +13,8 @@ import { BLOCKS } from '~/ads/constants';
 import { useIsFocused } from '@react-navigation/native';
 import Loader from '~/components/Loader';
 import { usePlaying } from '~/contexts/PlayingContext';
+import useStyles from '~/hooks/useStyles';
+import { useTheme } from '~/contexts/ThemeContext';
 
 type HistoryProps = {};
 
@@ -25,6 +27,8 @@ const History: React.ForwardRefRenderFunction<
   const { playingRadioId } = usePlaying();
   const [history, setHistory] = useState<RadioType[]>();
   const { getHistory } = useHistory();
+  const styles = useStyles(getStyles);
+  const { palette } = useTheme();
 
   useEffect(() => {
     if (isFocused) {
@@ -53,11 +57,16 @@ const History: React.ForwardRefRenderFunction<
             index={index}
             onExpandPlayer={onExpandPlayerPress}
           />
-          {!index && <Banner id={BLOCKS.MUSIC} />}
+          {!index && (
+            <Banner
+              id={BLOCKS.MUSIC}
+              backgroundColor={palette.backgroundSecondary}
+            />
+          )}
         </>
       );
     },
-    [onExpandPlayerPress, playingRadioId],
+    [onExpandPlayerPress, palette.backgroundSecondary, playingRadioId],
   );
 
   if (!history) {

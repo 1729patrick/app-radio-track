@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import styles from './styles';
+import getStyles from './styles';
 
 import { SNAP_POINTS } from '../../../constants';
 
@@ -24,6 +24,7 @@ type TopControlsProps = {
   radio: RadioType;
 };
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../../Contents/constants';
+import useStyles from '~/hooks/useStyles';
 
 const TopControls: React.FC<TopControlsProps> = ({
   y,
@@ -33,6 +34,7 @@ const TopControls: React.FC<TopControlsProps> = ({
   contentY,
 }) => {
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
+  const styles = useStyles(getStyles);
 
   const style = useAnimatedStyle(() => {
     return {

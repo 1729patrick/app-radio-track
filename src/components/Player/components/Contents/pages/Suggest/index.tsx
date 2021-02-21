@@ -6,7 +6,7 @@ import { BLOCKS } from '~/ads/constants';
 import RadioItem from '~/components/Radio/Item';
 import RadioCard from '~/components/Radio/Card';
 
-import styles from './styles';
+import getStyles from './styles';
 import StyleGuide from '~/utils/StyleGuide';
 import Loader from '~/components/Loader';
 import { RouteProps } from '../../components/TabNavigator';
@@ -15,6 +15,8 @@ import { useFetch } from '~/hooks/useFetch';
 import { CARD_SIZE } from '~/components/Radio/Card/constants';
 import { AD_BACKGROUND_COLOR } from '../../constants';
 import { useAd } from '~/ads/contexts/AdContext';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
 
 type SuggestProps = {
   routeProps: RouteProps;
@@ -22,6 +24,8 @@ type SuggestProps = {
 
 const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
   const { showRelationalAd } = useAd();
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
 
   const radio = useMemo(() => {
     return routeProps?.radio || {};
@@ -101,7 +105,7 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
     ((locationEmpty || closeEmpty) && !location.error && !location.error) ||
     !show
   ) {
-    return <Loader backgroundColor={StyleGuide.palette.backgroundSecondary} />;
+    return <Loader backgroundColor={palette.backgroundSecondary} />;
   }
 
   return (

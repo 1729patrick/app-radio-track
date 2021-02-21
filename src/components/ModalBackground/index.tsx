@@ -6,8 +6,9 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
 } from 'react-native-reanimated';
+import useStyles from '~/hooks/useStyles';
 
-import styles from './styles';
+import getStyles from './styles';
 
 type ModalBackgroundProps = {
   translateY: Animated.SharedValue<number>;
@@ -20,6 +21,8 @@ const ModalBackground = ({
   snapPoints,
   onPress,
 }: ModalBackgroundProps) => {
+  const styles = useStyles(getStyles);
+
   const opacity = useDerivedValue(() => {
     return interpolate(
       translateY.value,

@@ -10,22 +10,23 @@ import NativeAdView, {
   MediaView,
   StoreView,
 } from 'react-native-admob-native-ads';
-import StyleGuide from '~/utils/StyleGuide';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
+
 import { MEDIA_WIDTH } from './constants';
 
-import styles from './styles';
+import getStyles from './styles';
 
 type BannerProps = {
   media?: boolean;
   id: string;
-  backgroundColor?: string;
+  backgroundColor: string;
 };
 
-const Banner = ({
-  media,
-  id,
-  backgroundColor = StyleGuide.palette.backgroundSecondary,
-}: BannerProps) => {
+const Banner = ({ media, id, backgroundColor }: BannerProps) => {
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
+
   const adUnitID = useMemo(() => {
     return __DEV__ ? 'ca-app-pub-3940256099942544/2247696110' : id;
   }, [id]);
@@ -79,8 +80,8 @@ const Banner = ({
             <View style={styles.starContainer}>
               <StarRatingView
                 starSize={12}
-                fullStarColor={StyleGuide.palette.app}
-                emptyStarColor={StyleGuide.palette.secondary}
+                fullStarColor={palette.app}
+                emptyStarColor={palette.secondary}
                 containerStyle={styles.starRating}
               />
 

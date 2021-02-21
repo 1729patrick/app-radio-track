@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react';
 import { Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { onExpandPlayer } from '~/components/Player';
-import styles from './styles';
+import getStyles from './styles';
 import { usePlaying } from '~/contexts/PlayingContext';
 
 import Radio from '~/components/Radio/Card';
@@ -12,7 +12,8 @@ import { RadioType } from '~/types/Station';
 
 import { CARD_SIZE } from '~/components/Radio/Card/constants';
 import RoundButton from '~/components/Button/Round';
-import StyleGuide from '~/utils/StyleGuide';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
 
 export type RadiosProps = {
   title: string;
@@ -32,6 +33,8 @@ const Radios: React.FC<RadiosProps> = ({
   onEndReached,
 }) => {
   const { playingRadioId } = usePlaying();
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
 
   const renderItem = useCallback(
     ({ item, index }) => {
@@ -68,7 +71,7 @@ const Radios: React.FC<RadiosProps> = ({
             Icon={Icon}
             size={24}
             name="arrowright"
-            color={StyleGuide.palette.light}
+            color={palette.light}
           />
         )}
       </View>

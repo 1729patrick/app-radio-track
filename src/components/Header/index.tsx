@@ -11,12 +11,14 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { HEADER_HEIGHT } from './constants';
 
-import styles from './styles';
+import getStyles from './styles';
 import { Text, View } from 'react-native';
 import RoundButton from '../Button/Round';
 import { useNavigation } from '@react-navigation/native';
-import StyleGuide from '~/utils/StyleGuide';
+
 import { StackNavigationProp } from '@react-navigation/stack';
+import useStyles from '~/hooks/useStyles';
+import { useTheme } from '~/contexts/ThemeContext';
 
 type HeaderProps = {
   translateY: Animated.SharedValue<number>;
@@ -30,12 +32,14 @@ type HeaderProps = {
 const Header: React.FC<HeaderProps> = ({
   translateY,
   title,
-  backgroundColor = StyleGuide.palette.background,
+  backgroundColor,
   showBack = true,
   showSearch = true,
   elevation = 0,
 }) => {
   const { navigate, pop } = useNavigation<StackNavigationProp<any>>();
+  const styles = useStyles(getStyles);
+  const { palette } = useTheme();
 
   const y = useDerivedValue(() => {
     const validY = interpolate(
@@ -71,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({
       style={[
         styles.container,
         styleContainer,
-        { backgroundColor, elevation },
+        { backgroundColor: backgroundColor || palette.background, elevation },
       ]}>
       <Animated.View style={[styles.content, styleContent]}>
         <View style={styles.left}>

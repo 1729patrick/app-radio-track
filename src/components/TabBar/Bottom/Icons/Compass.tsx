@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import StyleGuide from '~/utils/StyleGuide';
+import { useTheme } from '~/contexts/ThemeContext';
 
 const style = {
   marginTop: -3.5,
@@ -10,10 +10,12 @@ const style = {
   marginRight: -2.75,
 };
 export const InactiveCompass = React.memo(() => {
+  const { palette } = useTheme();
+
   return (
     <Icon
       name="ios-compass-outline"
-      color={StyleGuide.palette.secondary}
+      color={palette.secondary}
       size={24.5}
       style={style}
     />
@@ -21,10 +23,12 @@ export const InactiveCompass = React.memo(() => {
 });
 
 export const ActiveCompass = React.memo(() => {
+  const { palette } = useTheme();
+
   return (
     <Icon
       name="ios-compass-sharp"
-      color={StyleGuide.palette.app}
+      color={palette.app}
       size={24.5}
       style={style}
     />

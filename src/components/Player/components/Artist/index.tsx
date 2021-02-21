@@ -10,10 +10,11 @@ import Animated, {
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import { RadioType } from '~/types/Station';
 import { SNAP_POINTS } from '../../constants';
-import styles from './styles';
+import getStyles from './styles';
 import TextTicker from 'react-native-text-ticker';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../Contents/constants';
 import { ARTIST_HEIGHT } from './constants';
+import useStyles from '~/hooks/useStyles';
 
 type ArtistType = {
   y: Animated.SharedValue<number>;
@@ -22,6 +23,8 @@ type ArtistType = {
 };
 
 const Artist: React.FC<ArtistType> = ({ y, contentY, radio = {} }) => {
+  const styles = useStyles(getStyles);
+
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(

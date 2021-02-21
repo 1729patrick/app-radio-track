@@ -3,8 +3,7 @@ import { Dimensions, Text, View } from 'react-native';
 import { usePlayer } from '~/contexts/PlayerContext';
 import Player from '../../Player';
 
-import StyleGuide from '~/utils/StyleGuide';
-import styles from './styles';
+import getStyles from './styles';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import {
   BottomTabBarOptions,
@@ -23,6 +22,8 @@ import { ActiveHome, InactiveHome } from './Icons/Home';
 import { ActiveLibrary, InactiveLibrary } from './Icons/Library';
 import { ActiveProfile, InactiveProfile } from './Icons/Profile';
 import { useRegion } from '~/contexts/RegionContext';
+import useStyles from '~/hooks/useStyles';
+import { useTheme } from '~/contexts/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
@@ -58,6 +59,8 @@ type TabBarProps = BottomTabBarProps<BottomTabBarOptions>;
 const TabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation }) => {
   const { STATES, regionId } = useRegion();
   const { playerRef, translateY } = usePlayer();
+  const styles = useStyles(getStyles);
+  const { palette } = useTheme();
 
   const style = useAnimatedStyle(() => {
     return {
@@ -131,9 +134,7 @@ const TabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation }) => {
               style={[
                 styles.title,
                 {
-                  color: isFocused(index)
-                    ? StyleGuide.palette.app
-                    : StyleGuide.palette.secondary,
+                  color: isFocused(index) ? palette.app : palette.secondary,
                 },
               ]}>
               {tab.title}

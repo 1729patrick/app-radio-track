@@ -1,10 +1,11 @@
 import React, { memo } from 'react';
 import { Text, View, TouchableOpacity, Image } from 'react-native';
-import styles from './styles';
+import getStyles from './styles';
 import LottieView from 'lottie-react-native';
 
 import { RadioType } from '~/types/Station';
 import { image } from '~/services/api';
+import useStyles from '~/hooks/useStyles';
 
 type RadioProps = {
   playing: boolean;
@@ -19,6 +20,8 @@ const Radio: React.FC<RadioProps> = ({
   index,
   onExpandPlayer,
 }) => {
+  const styles = useStyles(getStyles);
+
   return (
     <View style={[styles.card]}>
       <TouchableOpacity

@@ -2,7 +2,8 @@ import React, { memo, useMemo } from 'react';
 import { View } from 'react-native';
 import GetPremium from './components/GetPremium';
 import styles from './styles';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconMD from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconIon from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import SuggestRadio from './screens/SuggestRadio';
@@ -12,8 +13,10 @@ import Location from './screens/Location/indes';
 import Item from '~/components/List/Item';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useTheme } from '~/contexts/ThemeContext';
 
 const Profile = () => {
+  const { palette } = useTheme();
   const { setContent } = useModal();
   const { navigate } = useNavigation<StackNavigationProp<any>>();
 
@@ -22,6 +25,7 @@ const Profile = () => {
       {
         title: 'País/Região',
         icon: 'earth',
+        Icon: IconMD,
         onPress: () =>
           setContent({
             id: 'Location',
@@ -32,7 +36,8 @@ const Profile = () => {
       },
       {
         title: 'Tema',
-        icon: 'theme-light-dark',
+        icon: 'color-palette',
+        Icon: IconIon,
         onPress: () =>
           setContent({
             id: 'Theme',
@@ -48,6 +53,7 @@ const Profile = () => {
       {
         title: 'Sugerir estação de rádio',
         icon: 'radio',
+        Icon: IconMD,
         onPress: () =>
           setContent({
             id: 'SuggestRadio',
@@ -58,12 +64,14 @@ const Profile = () => {
       },
       {
         title: 'Termos e Condições',
-        icon: 'file-document-outline',
+        icon: 'document-text',
+        Icon: IconIon,
         onPress: () => navigate('TermsAndConditions'),
       },
       {
         title: 'Política de Privacidade',
         icon: 'lock',
+        Icon: IconMD,
         onPress: () => navigate('PolicyPrivacy'),
       },
     ],
@@ -71,7 +79,7 @@ const Profile = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: palette.background }]}>
       <ScrollView
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
@@ -80,9 +88,8 @@ const Profile = () => {
         {screens.map((screen) => (
           <Item
             key={screen.title}
-            Icon={Icon}
+            Icon={screen.Icon}
             icon={screen.icon}
-            description={screen.description}
             onPress={screen.onPress}
             title={screen.title}
           />

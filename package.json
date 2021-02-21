@@ -32,6 +32,7 @@
     "react": "17.0.1",
     "react-native": "0.63.4",
     "react-native-admob-native-ads": "^0.3.9",
+    "react-native-appearance": "^0.3.4",
     "react-native-background-timer": "^2.4.1",
     "react-native-device-info": "^8.0.1",
     "react-native-fast-image": "^8.3.4",

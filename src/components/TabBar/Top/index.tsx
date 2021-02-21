@@ -1,11 +1,12 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Animated, { Extrapolate } from 'react-native-reanimated';
 import { LayoutChangeEvent } from 'react-native';
 
-import styles from './styles';
+import getStyles from './styles';
 import StyleGuide from '~/utils/StyleGuide';
 import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import Tab from './components/Tab';
+import { useTheme } from '~/contexts/ThemeContext';
 
 type TabBarProps = {
   translateY: Animated.SharedValue<number>;
@@ -17,6 +18,12 @@ const TabBar: React.FC<TabBarProps & MaterialTopTabBarProps> = ({
   navigation,
   position,
 }) => {
+  const { palette } = useTheme();
+
+  const styles = useMemo(() => {
+    return getStyles(palette);
+  }, [palette]);
+
   const inputRange = state.routes.map((_, i: number) => i);
   const tabPositionRef = useRef<{ x: number; width: number }[]>([]);
   const [tabsPosition, setTabsPosition] = useState([

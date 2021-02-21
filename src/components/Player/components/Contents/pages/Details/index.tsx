@@ -5,12 +5,14 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import Loader from '~/components/Loader';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
 import { ProgrammingType } from '~/types/Station';
 
 import StyleGuide from '~/utils/StyleGuide';
 import { RouteProps } from '../../components/TabNavigator';
 import Programming from './components/Programming';
-import styles from './styles';
+import getStyles from './styles';
 
 type DetailsProps = {
   routeProps: RouteProps;
@@ -102,6 +104,9 @@ const CONTENTS = [
 ];
 
 const Details: React.FC<DetailsProps> = ({ routeProps, show }) => {
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
+
   const radio = useMemo(() => {
     let { address, city, region } = routeProps?.radio || {};
     if (!address) {
@@ -129,7 +134,7 @@ const Details: React.FC<DetailsProps> = ({ routeProps, show }) => {
   };
 
   if (!show) {
-    return <Loader backgroundColor={StyleGuide.palette.backgroundSecondary} />;
+    return <Loader backgroundColor={palette.backgroundSecondary} />;
   }
 
   return (

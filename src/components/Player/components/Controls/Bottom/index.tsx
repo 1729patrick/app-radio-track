@@ -6,15 +6,17 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
-import styles from './styles';
+import getStyles from './styles';
 
 import { SNAP_POINTS } from '../../../constants';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
-import StyleGuide from '~/utils/StyleGuide';
+
 import RoundButton from '~/components/Button/Round';
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../../Contents/constants';
 import { CONTROLS_BOTTOM_HEIGHT } from './constants';
+import useStyles from '~/hooks/useStyles';
+import { useTheme } from '~/contexts/ThemeContext';
 
 type BottomControlsProps = {
   y: Animated.SharedValue<number>;
@@ -41,6 +43,9 @@ const BottomControls: React.FC<BottomControlsProps> = ({
   radioIndex,
   radiosLength,
 }) => {
+  const styles = useStyles(getStyles);
+  const { palette } = useTheme();
+
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
@@ -78,27 +83,17 @@ const BottomControls: React.FC<BottomControlsProps> = ({
           <View style={styles.playBackground} />
 
           <BorderlessButton
-            rippleColor={StyleGuide.palette.primary}
+            rippleColor={palette.primary}
             style={styles.playButton}
             onPress={onTogglePlayback}>
             {!playing && !error && (
-              <Icon name="play" size={30} color={StyleGuide.palette.primary} />
+              <Icon name="play" size={30} color={palette.primary} />
             )}
             {playing && !error && (
-              <Icon
-                name="ios-pause-sharp"
-                size={30}
-                color={StyleGuide.palette.primary}
-              />
+              <Icon name="ios-pause-sharp" size={30} color={palette.primary} />
             )}
 
-            {error && (
-              <Icon
-                name="reload"
-                size={32}
-                color={StyleGuide.palette.primary}
-              />
-            )}
+            {error && <Icon name="reload" size={32} color={palette.primary} />}
 
             {buffering && !error && (
               <LottieView
@@ -106,6 +101,24 @@ const BottomControls: React.FC<BottomControlsProps> = ({
                 autoPlay
                 loop
                 style={styles.loader}
+                colorFilters={[
+                  {
+                    keypath: 'Camada de forma 1',
+                    color: palette.primary,
+                  },
+                  {
+                    keypath: 'Camada de forma 2',
+                    color: palette.primary,
+                  },
+                  {
+                    keypath: 'Camada de forma 3',
+                    color: palette.primary,
+                  },
+                  {
+                    keypath: 'Camada de forma 4',
+                    color: palette.primary,
+                  },
+                ]}
                 speed={1.3}
               />
             )}

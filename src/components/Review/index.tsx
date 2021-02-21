@@ -32,8 +32,8 @@ import Animated, {
 import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
 import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import styles from './styles';
-import StyleGuide from '~/utils/StyleGuide';
+import getStyles from './styles';
+
 import { useKeyboard } from '~/hooks/useKeyboard';
 import RectButton from '../Buttons/RectButton';
 import WithoutFeedbackButton from '../Buttons/WithoutFeedback';
@@ -41,6 +41,8 @@ import Input from '../Input';
 import ModalBackground from '../ModalBackground';
 import DeviceInfo from 'react-native-device-info';
 import BackgroundTimer from 'react-native-background-timer';
+import { useTheme } from '~/contexts/ThemeContext';
+import useStyles from '~/hooks/useStyles';
 
 const { height } = Dimensions.get('window');
 
@@ -58,6 +60,9 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
   { onConfirm, onRateApp, onDismiss },
   ref,
 ) => {
+  const { palette } = useTheme();
+  const styles = useStyles(getStyles);
+
   const { keyboardHeight } = useKeyboard();
 
   const [radioCount, setRadiosCount] = useState(0);
@@ -234,11 +239,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
                       name={starLevel >= star ? 'star' : 'staro'}
                       size={33}
                       style={styles.star}
-                      color={
-                        starLevel >= star
-                          ? StyleGuide.palette.app
-                          : StyleGuide.palette.primary
-                      }
+                      color={starLevel >= star ? palette.app : palette.primary}
                     />
                   </TouchableWithoutFeedback>
                 ))}
