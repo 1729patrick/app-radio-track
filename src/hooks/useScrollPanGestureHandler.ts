@@ -33,7 +33,8 @@ const useScrollPanGestureHandler = (
       },
       onActive: (event, context) => {
         const y = event.translationY + context.startY;
-        if (y > context.upperBound) {
+
+        if (y >= context.upperBound) {
           translateY.value = y;
         }
       },

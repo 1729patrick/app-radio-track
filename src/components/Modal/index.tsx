@@ -58,10 +58,7 @@ const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
   ref,
 ) => {
   const [snapPoints, setSnapPoints] = useState(MODAL_SNAP_POINTS);
-  const translateY = useSharedValue(snapPoints[2]);
-  const [contentHeight, setContentHeight] = useState<number | undefined>(
-    undefined,
-  );
+  const translateY = useSharedValue(snapPoints[MODAL_SNAP_POINTS.length - 1]);
 
   const style = useAnimatedStyle(() => {
     return {
@@ -97,13 +94,14 @@ const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
 
   const show = useCallback(
     (snapPoint?: number) => {
-      animateToPoint(snapPoints[snapPoint ?? 1]);
+      const initialSnapPoint = snapPoints.length - 2;
+      animateToPoint(snapPoints[snapPoint ?? initialSnapPoint]);
     },
     [animateToPoint, snapPoints],
   );
 
   const hidden = useCallback(() => {
-    animateToPoint(snapPoints[2]);
+    animateToPoint(snapPoints[snapPoints.length - 1]);
   }, [animateToPoint, snapPoints]);
 
   useImperativeHandle(ref, () => ({
@@ -130,30 +128,36 @@ const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
       return;
     }
 
-    if (contentHeight) {
-      show();
-      return;
-    }
+    const totalModalHeight = layoutHeight + HEADER_HEIGHT + STATUS_BAR_HEIGHT;
 
-    setSnapPoints(
-      snapPoints.map((snapPointHeight, index) => {
-        if (index === 1) {
-          const totalModalHeight =
-            layoutHeight + HEADER_HEIGHT + STATUS_BAR_HEIGHT;
-
-          return height - totalModalHeight;
+    const snapPointsRecalculated = MODAL_SNAP_POINTS.map(
+      (snapPointHeight, index) => {
+        if (index === MODAL_SNAP_POINTS.length - 2) {
+          const snapPointWithContentHeight = height - totalModalHeight;
+          return snapPointWithContentHeight >= 0
+            ? snapPointWithContentHeight
+            : snapPointHeight - 1;
         }
 
         return snapPointHeight;
-      }),
+      },
     );
 
-    setContentHeight(Math.max(layoutHeight, height));
+    let snapPointsAvailable = snapPointsRecalculated;
+
+    if (totalModalHeight <= height) {
+      const [_, second, third] = snapPointsRecalculated;
+      snapPointsAvailable = [second, third];
+    }
+
+    setSnapPoints(snapPointsAvailable);
   };
 
   useEffect(() => {
-    setContentHeight(undefined);
-  }, [id]);
+    if (JSON.stringify(snapPoints) !== JSON.stringify(MODAL_SNAP_POINTS)) {
+      show();
+    }
+  }, [show, snapPoints]);
 
   const onComplete = () => {
     onContinue();
@@ -164,9 +168,21 @@ const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
     <View style={styles.container}>
       <ModalBackground
         translateY={translateY}
-        snapPoints={[snapPoints[1], snapPoints[2]]}
+        snapPoints={[
+          snapPoints[snapPoints.length - 2],
+          snapPoints[snapPoints.length - 1],
+        ]}
         onPress={hidden}
       />
+
+      <ScrollView
+        lowerBound={snapPoints[snapPoints.length - 2]}
+        snapPoints={snapPoints}
+        translateY={translateY}
+        contentContainerStyle={styles.contentContainer}
+        animateToPoint={animateToPoint}>
+        <View onLayout={onLayoutContent}>{children}</View>
+      </ScrollView>
 
       <Animated.View style={[styles.header, style]}>
         <PanGestureHandler onGestureEvent={panHandler}>
@@ -184,17 +200,6 @@ const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
           </Animated.View>
         </PanGestureHandler>
       </Animated.View>
-      <ScrollView
-        lowerBound={snapPoints[1]}
-        headerHeight={HEADER_HEIGHT + STATUS_BAR_HEIGHT}
-        snapPoints={snapPoints}
-        translateY={translateY}
-        contentContainerStyle={styles.contentContainer}
-        animateToPoint={animateToPoint}>
-        <View onLayout={onLayoutContent} style={{ height: contentHeight }}>
-          {children}
-        </View>
-      </ScrollView>
     </View>
   );
 };

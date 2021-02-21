@@ -9,6 +9,7 @@ import StyleGuide from '~/utils/StyleGuide';
 import SuggestRadio from './screens/SuggestRadio';
 import Theme from './screens/Theme';
 import { useModal } from '~/contexts/ModalContext';
+import Location from './screens/Location/indes';
 
 const Profile = () => {
   // const modalRef = useRef<ModalHandler>(null);
@@ -18,6 +19,13 @@ const Profile = () => {
       {
         title: 'País/Região',
         icon: 'earth',
+        onPress: () =>
+          setContent({
+            id: 'Location',
+            content: Location,
+            title: 'Escolha o seu estado',
+            confirm: 'Confirmar',
+          }),
       },
       {
         title: 'Tema',
@@ -30,10 +38,10 @@ const Profile = () => {
             confirm: 'OK',
           }),
       },
-      {
-        title: 'Alarme',
-        icon: 'alarm',
-      },
+      // {
+      //   title: 'Alarme',
+      //   icon: 'alarm',
+      // },
       {
         title: 'Sugerir estação de rádio',
         icon: 'radio',

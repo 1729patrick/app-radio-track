@@ -25,7 +25,7 @@ import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestur
 
 import { RegionType } from '~/screens/Explore/components/Regions';
 import { REGIONS_SNAP_POINTS } from './constants';
-import Region from './Region';
+import Region from '~/components/Region';
 
 import styles from './styles';
 
@@ -130,6 +130,7 @@ const Regions: React.ForwardRefRenderFunction<RegionHandler, RegionsProps> = (
         lowerBound={REGIONS_SNAP_POINTS[1]}
         snapPoints={REGIONS_SNAP_POINTS}
         translateY={translateY}
+        headerHeight={0}
         contentContainerStyle={styles.contentContainer}
         animateToPoint={animateToPoint}>
         {REGIONS.map((region: RegionType) => (

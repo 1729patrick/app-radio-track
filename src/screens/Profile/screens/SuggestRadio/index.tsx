@@ -33,6 +33,12 @@ const SuggestRadio = () => {
         style={styles.input}
       />
       <Input
+        placeholder={'Email'}
+        onChangeText={() => null}
+        style={styles.input}
+        // ref={inputRef}
+      />
+      <Input
         placeholder={'Pais'}
         onChangeText={() => null}
         style={styles.input}
@@ -40,12 +46,6 @@ const SuggestRadio = () => {
       />
       <Input
         placeholder={'Estado'}
-        onChangeText={() => null}
-        style={styles.input}
-        // ref={inputRef}
-      />
-      <Input
-        placeholder={'Email'}
         onChangeText={() => null}
         style={styles.input}
         // ref={inputRef}

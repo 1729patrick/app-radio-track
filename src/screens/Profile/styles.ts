@@ -4,7 +4,11 @@ import { BOTTOM_TAB_BAR_HEIGHT } from '~/components/TabBar/Bottom/constants';
 import StyleGuide from '~/utils/StyleGuide';
 
 export default StyleSheet.create({
-  container: { paddingTop: 25, backgroundColor: StyleGuide.palette.background },
+  container: {
+    paddingTop: 25,
+    backgroundColor: StyleGuide.palette.background,
+    flex: 1,
+  },
   contentContainer: {
     flexGrow: 1,
     paddingBottom: BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT,

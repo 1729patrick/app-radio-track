@@ -6,6 +6,8 @@ import {
 import { INDICATOR_TOTAL_HEIGHT } from '~/components/Indicator/constants';
 import StyleGuide from '~/utils/StyleGuide';
 
+const headerHeight = HEADER_HEIGHT + STATUS_BAR_HEIGHT;
+
 export default StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
@@ -13,15 +15,19 @@ export default StyleSheet.create({
   fakeBackground: {},
   contentContainer: {
     backgroundColor: StyleGuide.palette.backgroundSecondary,
-    marginTop: -1,
+    paddingTop: headerHeight,
+    borderTopRightRadius: StyleGuide.borderRadius * 3,
+    borderTopLeftRadius: StyleGuide.borderRadius * 3,
   },
   header: {
     backgroundColor: StyleGuide.palette.backgroundSecondary,
     paddingHorizontal: StyleGuide.spacing * 2,
     zIndex: 2,
-    height: HEADER_HEIGHT + STATUS_BAR_HEIGHT,
+    height: headerHeight,
     borderTopRightRadius: StyleGuide.borderRadius * 3,
     borderTopLeftRadius: StyleGuide.borderRadius * 3,
+    position: 'absolute',
+    width: '100%',
   },
   headerContent: {
     flexDirection: 'row',
