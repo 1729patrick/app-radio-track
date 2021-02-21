@@ -19,6 +19,7 @@ import TermsAndConditions from '~/screens/Profile/screens/TermsAndConditions';
 import PolicyPrivacy from '~/screens/Profile/screens/PolicyPrivacy';
 import StyleGuide, { palette } from '~/utils/StyleGuide';
 import { useTheme } from '~/contexts/ThemeContext';
+import Theme from '~/screens/Profile/screens/Theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -126,6 +127,7 @@ function ProfileStackScreen() {
         component={PolicyPrivacy}
         options={options}
       />
+      <ProfileStack.Screen name="Theme" component={Theme} options={options} />
     </ProfileStack.Navigator>
   );
 }
@@ -134,7 +136,7 @@ const Routes = () => {
   const { mode } = useTheme();
 
   return (
-    <NavigationContainer theme={mode === 'dark' ? dark : light}>
+    <NavigationContainer theme={mode === 'light' ? light : dark}>
       <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
         <Tab.Screen name="Home" component={HomeStackScreen} />
         <Tab.Screen

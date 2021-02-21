@@ -6,13 +6,13 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { ColorSchemeName, useColorScheme } from 'react-native';
-import { Appearance } from 'react-native-appearance';
+import { useColorScheme } from 'react-native';
+import { Appearance, ColorSchemeName } from 'react-native-appearance';
 import { palette } from '~/utils/StyleGuide';
 
 type ContextProps = {
-  mode: 'light' | 'dark';
-  setTheme: (mode?: ColorSchemeName) => void;
+  mode: ColorSchemeName;
+  setTheme: (mode: ColorSchemeName) => void;
   palette: {
     primary: string;
     secondary: string;
@@ -32,15 +32,11 @@ const ThemeContext = createContext<ContextProps>({
 
 export const ThemeProvider: React.FC = ({ children }) => {
   const colorScheme = useColorScheme();
-  const [mode, setMode] = useState<'light' | 'dark'>(colorScheme || 'dark');
-  const { getItem, setItem } = useAsyncStorage('@radios:mode');
+  const [mode, setMode] = useState<ColorSchemeName>(colorScheme || 'dark');
+  const { getItem, setItem } = useAsyncStorage('@radios:theme');
 
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      if (colorScheme === 'no-preference') {
-        return;
-      }
-
       setMode(colorScheme);
     });
 
@@ -51,16 +47,14 @@ export const ThemeProvider: React.FC = ({ children }) => {
     const radioPlayingFromStorage = await getItem();
 
     if (radioPlayingFromStorage) {
-      setMode(mode);
+      setMode(radioPlayingFromStorage as ColorSchemeName);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setTheme = (mode: ColorSchemeName) => {
-    const newTheme = mode || colorScheme || 'dark';
-
-    setMode(newTheme);
-    setItem(newTheme);
+    setMode(mode);
+    setItem(mode);
   };
 
   useEffect(() => {
@@ -68,7 +62,12 @@ export const ThemeProvider: React.FC = ({ children }) => {
   }, [readThemeFromStorage]);
 
   return (
-    <ThemeContext.Provider value={{ setTheme, mode, palette: palette[mode] }}>
+    <ThemeContext.Provider
+      value={{
+        setTheme,
+        mode,
+        palette: mode === 'light' ? palette.light : palette.dark,
+      }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -18,4 +18,5 @@ export default (palette) =>
       ...StyleGuide.typography.subhead,
       color: palette.secondary,
     },
+    checkbox: { marginLeft: 'auto' },
   });

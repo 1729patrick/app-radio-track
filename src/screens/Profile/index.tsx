@@ -38,13 +38,7 @@ const Profile = () => {
         title: 'Tema',
         icon: 'color-palette',
         Icon: IconIon,
-        onPress: () =>
-          setContent({
-            id: 'Theme',
-            content: Theme,
-            title: 'Tema',
-            confirm: 'OK',
-          }),
+        onPress: () => navigate('Theme'),
       },
       // {
       //   title: 'Alarme',

@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { IconProps } from 'react-native-vector-icons/Icon';
 import { useTheme } from '~/contexts/ThemeContext';
 import useStyles from '~/hooks/useStyles';
-import StyleGuide from '~/utils/StyleGuide';
+import IconMD from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import getStyles from './styles';
 
@@ -14,6 +14,8 @@ type ItemProps = {
   Icon: React.ElementType<IconProps>;
   icon: string;
   description?: string;
+  checked?: boolean;
+  showCheck?: boolean;
 };
 
 const Item: React.FC<ItemProps> = ({
@@ -22,6 +24,8 @@ const Item: React.FC<ItemProps> = ({
   Icon,
   icon,
   description,
+  checked = false,
+  showCheck = false,
 }) => {
   const { palette } = useTheme();
   const styles = useStyles(getStyles);
@@ -37,6 +41,24 @@ const Item: React.FC<ItemProps> = ({
         <Text style={styles.title}>{title}</Text>
         {description && <Text style={styles.description}>{description}</Text>}
       </View>
+
+      {showCheck && !checked && (
+        <IconMD
+          name={'checkbox-blank-circle-outline'}
+          size={24}
+          color={palette.primary}
+          style={styles.checkbox}
+        />
+      )}
+
+      {showCheck && checked && (
+        <IconMD
+          name={'checkbox-marked-circle'}
+          size={24}
+          color={palette.primary}
+          style={styles.checkbox}
+        />
+      )}
     </RectButton>
   );
 };
