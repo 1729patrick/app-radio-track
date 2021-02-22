@@ -10,7 +10,7 @@ import getStyles from './styles';
 
 const PolicyPrivacy = () => {
   const styles = useStyles(getStyles);
-  const { palette } = useTheme();
+const { palette } = useTheme();
   const { translateY } = useAnimatedHeader();
 
   return (

@@ -6,10 +6,6 @@ import IconMD from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconIon from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import SuggestRadio from './screens/SuggestRadio';
-import Theme from './screens/Theme';
-import { useModal } from '~/contexts/ModalContext';
-import Location from './screens/Location/indes';
 import Item from '~/components/List/Item';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -17,7 +13,6 @@ import { useTheme } from '~/contexts/ThemeContext';
 
 const Profile = () => {
   const { palette } = useTheme();
-  const { setContent } = useModal();
   const { navigate } = useNavigation<StackNavigationProp<any>>();
 
   const screens = useMemo(
@@ -26,13 +21,7 @@ const Profile = () => {
         title: 'País/Região',
         icon: 'earth',
         Icon: IconMD,
-        onPress: () =>
-          setContent({
-            id: 'Location',
-            content: Location,
-            title: 'Escolha o seu estado',
-            confirm: 'Confirmar',
-          }),
+        onPress: () => navigate('Location'),
       },
       {
         title: 'Tema',
@@ -48,13 +37,7 @@ const Profile = () => {
         title: 'Sugerir estação de rádio',
         icon: 'radio',
         Icon: IconMD,
-        onPress: () =>
-          setContent({
-            id: 'SuggestRadio',
-            content: SuggestRadio,
-            title: 'Sugerir estação de rádio',
-            confirm: 'Enviar',
-          }),
+        onPress: () => navigate('SuggestRadio'),
       },
       {
         title: 'Termos e Condições',
@@ -69,7 +52,7 @@ const Profile = () => {
         onPress: () => navigate('PolicyPrivacy'),
       },
     ],
-    [navigate, setContent],
+    [navigate],
   );
 
   return (

@@ -20,6 +20,8 @@ import PolicyPrivacy from '~/screens/Profile/screens/PolicyPrivacy';
 import StyleGuide, { palette } from '~/utils/StyleGuide';
 import { useTheme } from '~/contexts/ThemeContext';
 import Theme from '~/screens/Profile/screens/Theme';
+import Location from '~/screens/Profile/screens/Location/indes';
+import SuggestRadio from '~/screens/Profile/screens/SuggestRadio';
 
 const Tab = createBottomTabNavigator();
 
@@ -125,6 +127,16 @@ function ProfileStackScreen() {
       <ProfileStack.Screen
         name="PolicyPrivacy"
         component={PolicyPrivacy}
+        options={options}
+      />
+      <ProfileStack.Screen
+        name="Location"
+        component={Location}
+        options={options}
+      />
+      <ProfileStack.Screen
+        name="SuggestRadio"
+        component={SuggestRadio}
         options={options}
       />
       <ProfileStack.Screen name="Theme" component={Theme} options={options} />

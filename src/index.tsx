@@ -8,7 +8,6 @@ import { AdProvider } from './ads/contexts/AdContext';
 import { ReviewProvider } from './contexts/ReviewContext';
 import { RegionProvider } from './contexts/RegionContext';
 import { SearchHistoryProvider } from './contexts/SearchHistoryContext';
-import { ModalProvider } from './contexts/ModalContext';
 import { AppearanceProvider } from 'react-native-appearance';
 import { ThemeProvider } from './contexts/ThemeContext';
 
@@ -24,9 +23,7 @@ export default () => {
                   <AdProvider>
                     <RegionProvider>
                       <SearchHistoryProvider>
-                        <ModalProvider>
-                          <App />
-                        </ModalProvider>
+                        <App />
                       </SearchHistoryProvider>
                     </RegionProvider>
                   </AdProvider>

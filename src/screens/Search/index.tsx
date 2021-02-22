@@ -37,7 +37,7 @@ const Search: React.FC<SearchProps> = () => {
       ? `/search?q=${searchTerm.trimLeft().trimRight()}`
       : null,
   );
-  const { palette } = useTheme();
+const { palette } = useTheme();
   const styles = useStyles(getStyles);
 
   const { pop } = useNavigation<StackNavigationProp<any>>();

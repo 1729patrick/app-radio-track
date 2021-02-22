@@ -16,7 +16,7 @@ export default (palette) =>
       height: ALBUM_SIZE - 70,
       marginLeft: 'auto',
       marginRight: 'auto',
-      borderRadius: borderRadius * 5,
+      borderRadius: StyleGuide.borderRadius * 5,
       backgroundColor: palette.background,
       borderWidth: 1,
       borderColor: palette.backgroundSecondary,

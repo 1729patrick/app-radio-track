@@ -33,7 +33,7 @@ const Radios: React.FC<RadiosProps> = ({
   onEndReached,
 }) => {
   const { playingRadioId } = usePlaying();
-  const { palette } = useTheme();
+const { palette } = useTheme();
   const styles = useStyles(getStyles);
 
   const renderItem = useCallback(

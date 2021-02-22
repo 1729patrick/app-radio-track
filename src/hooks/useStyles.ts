@@ -6,9 +6,10 @@ function useStyles(getStyles) {
 
   const styles = useMemo(() => {
     return getStyles(palette);
-  }, [getStyles, palette]);
+  }, [palette, getStyles]);
 
   return styles;
+  // return getStyles(palette.dark);
 }
 
 export default useStyles;
