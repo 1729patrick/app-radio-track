@@ -10,7 +10,7 @@ import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 import styles from './styles';
 
 const Theme = () => {
-  const { setTheme, mode } = useTheme();
+  const { setTheme, theme } = useTheme();
   const { palette } = useTheme();
   const { translateY } = useAnimatedHeader();
 
@@ -48,15 +48,15 @@ const Theme = () => {
         showSearch={false}
       />
 
-      {themes.map((theme) => (
+      {themes.map(({ Icon, id, onPress, icon, title }) => (
         <Item
           showCheck
-          key={theme.title}
-          Icon={theme.Icon}
-          icon={theme.icon}
-          checked={mode === theme.id}
-          onPress={theme.onPress}
-          title={theme.title}
+          key={title}
+          Icon={Icon}
+          icon={icon}
+          checked={theme === id}
+          onPress={onPress}
+          title={title}
         />
       ))}
     </View>

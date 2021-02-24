@@ -55,7 +55,7 @@ const Item: React.FC<ItemProps> = ({
         <IconMD
           name={'checkbox-marked-circle'}
           size={24}
-          color={palette.primary}
+          color={palette.app}
           style={styles.checkbox}
         />
       )}

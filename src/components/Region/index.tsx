@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, View, Text } from 'react-native';
 import { RegionType } from '~/screens/Explore/components/Regions';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import getStyles from './styles';
 
 import { RectButton } from 'react-native-gesture-handler';
@@ -30,17 +30,25 @@ const Region: React.FC<RegionProps> = ({
       style={[styles.container]}>
       <View style={styles.info}>
         <Image source={image} style={styles.image} />
-        <Text
-          style={[
-            styles.title,
-            {
-              color: checked ? palette.app : palette.primary,
-            },
-          ]}>
-          {title}
-        </Text>
+        <Text style={[styles.title]}>{title}</Text>
       </View>
-      {checked && <Icon name="check" size={28} color={palette.app} />}
+      {!checked && (
+        <Icon
+          name={'checkbox-blank-circle-outline'}
+          size={24}
+          color={palette.primary}
+          style={styles.checkbox}
+        />
+      )}
+
+      {checked && (
+        <Icon
+          name={'checkbox-marked-circle'}
+          size={24}
+          color={palette.app}
+          style={styles.checkbox}
+        />
+      )}
     </RectButton>
   );
 };

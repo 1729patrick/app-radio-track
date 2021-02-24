@@ -6,12 +6,14 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { useColorScheme } from 'react-native';
+import { StyleSheet, useColorScheme, View } from 'react-native';
 import { Appearance, ColorSchemeName } from 'react-native-appearance';
+import FastImage from 'react-native-fast-image';
 import { palette } from '~/utils/StyleGuide';
 
 type ContextProps = {
   mode: ColorSchemeName;
+  theme: ColorSchemeName;
   setTheme: (mode: ColorSchemeName) => void;
   palette: {
     primary: string;
@@ -26,6 +28,7 @@ type ContextProps = {
 };
 const ThemeContext = createContext<ContextProps>({
   mode: 'dark',
+  theme: 'dark',
   setTheme: () => null,
   palette: palette.dark,
 });
@@ -33,26 +36,37 @@ const ThemeContext = createContext<ContextProps>({
 export const ThemeProvider: React.FC = ({ children }) => {
   const colorScheme = useColorScheme();
   const [mode, setMode] = useState<ColorSchemeName>(colorScheme || 'dark');
+  const [_mode, _setMode] = useState<ColorSchemeName>();
+
   const { getItem, setItem } = useAsyncStorage('@radios:theme');
 
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      setMode(colorScheme);
+      if (mode === 'no-preference') {
+        _setMode(colorScheme);
+      }
     });
 
     return () => subscription.remove();
-  }, []);
+  }, [mode]);
 
   const readThemeFromStorage = useCallback(async () => {
-    const radioPlayingFromStorage = await getItem();
+    const modeFromStorage = await getItem();
 
-    if (radioPlayingFromStorage) {
-      setMode(radioPlayingFromStorage as ColorSchemeName);
+    if (modeFromStorage) {
+      const mode = modeFromStorage as ColorSchemeName;
+
+      setTheme(mode);
+      return;
     }
+
+    setTheme(colorScheme || 'dark');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setTheme = (mode: ColorSchemeName) => {
+    _setMode(mode !== 'no-preference' ? mode : colorScheme || 'dark');
+
     setMode(mode);
     setItem(mode);
   };
@@ -65,10 +79,27 @@ export const ThemeProvider: React.FC = ({ children }) => {
     <ThemeContext.Provider
       value={{
         setTheme,
-        mode,
-        palette: mode === 'light' ? palette.light : palette.dark,
+        theme: mode,
+        mode: _mode,
+        palette: _mode === 'light' ? palette.light : palette.dark,
       }}>
       {children}
+      {!_mode && (
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              backgroundColor: '#222326',
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+          ]}>
+          <FastImage
+            source={require('~/assets/launch_logo.png')}
+            style={{ height: 150, width: 143.644067796 }}
+          />
+        </View>
+      )}
     </ThemeContext.Provider>
   );
 };
