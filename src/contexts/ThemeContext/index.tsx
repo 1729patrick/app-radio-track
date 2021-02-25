@@ -9,6 +9,7 @@ import React, {
 import { StyleSheet, useColorScheme, View } from 'react-native';
 import { Appearance, ColorSchemeName } from 'react-native-appearance';
 import FastImage from 'react-native-fast-image';
+import Logo from '~/components/Logo';
 import { palette } from '~/utils/StyleGuide';
 
 type ContextProps = {
@@ -36,7 +37,7 @@ const ThemeContext = createContext<ContextProps>({
 export const ThemeProvider: React.FC = ({ children }) => {
   const colorScheme = useColorScheme();
   const [mode, setMode] = useState<ColorSchemeName>(colorScheme || 'dark');
-  const [_mode, _setMode] = useState<ColorSchemeName>();
+  const [_mode, _setMode] = useState<ColorSchemeName>(undefined);
 
   const { getItem, setItem } = useAsyncStorage('@radios:theme');
 
@@ -85,19 +86,8 @@ export const ThemeProvider: React.FC = ({ children }) => {
       }}>
       {children}
       {!_mode && (
-        <View
-          style={[
-            StyleSheet.absoluteFill,
-            {
-              backgroundColor: '#222326',
-              alignItems: 'center',
-              justifyContent: 'center',
-            },
-          ]}>
-          <FastImage
-            source={require('~/assets/launch_logo.png')}
-            style={{ height: 150, width: 143.644067796 }}
-          />
+        <View style={[StyleSheet.absoluteFill, styles.splashScreen]}>
+          <Logo />
         </View>
       )}
     </ThemeContext.Provider>
@@ -105,3 +95,11 @@ export const ThemeProvider: React.FC = ({ children }) => {
 };
 
 export const useTheme = () => useContext(ThemeContext);
+
+const styles = StyleSheet.create({
+  splashScreen: {
+    backgroundColor: '#222326',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

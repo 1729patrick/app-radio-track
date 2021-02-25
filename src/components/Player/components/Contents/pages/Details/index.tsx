@@ -22,6 +22,7 @@ const Description = memo(
   ({
     description,
     paddingTop,
+    styles,
   }: {
     description: string;
     paddingTop: number;
@@ -39,6 +40,7 @@ const Programming_ = memo(
   ({
     programming,
     paddingTop,
+    styles,
   }: {
     programming: ProgrammingType;
     paddingTop: number;
@@ -53,7 +55,14 @@ const Programming_ = memo(
 );
 
 const Address = memo(
-  ({ address, paddingTop }: { address: string; paddingTop: number }) => {
+  ({
+    address,
+    paddingTop,
+    styles,
+  }: {
+    address: string;
+    paddingTop: number;
+  }) => {
     return (
       <>
         <Text style={[styles.title, { paddingTop }]}>Endereço</Text>
@@ -68,6 +77,7 @@ const Web = memo(
     web,
     openSite,
     paddingTop,
+    styles,
   }: {
     web: string;
     openSite: () => void;
@@ -142,7 +152,10 @@ const Details: React.FC<DetailsProps> = ({ routeProps, show }) => {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.contentContainer}>
       {contents.map(({ key, component: Component, paddingTop }) => (
-        <Component key={key} {...{ [key]: radio[key], openSite, paddingTop }} />
+        <Component
+          key={key}
+          {...{ [key]: radio[key], openSite, paddingTop, styles }}
+        />
       ))}
     </ScrollView>
   );

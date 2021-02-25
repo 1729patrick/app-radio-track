@@ -6,6 +6,7 @@ export default (palette) =>
     container: {
       paddingVertical: StyleGuide.spacing,
       flexDirection: 'row',
+      alignItems: 'center',
       justifyContent: 'space-between',
       paddingHorizontal: StyleGuide.spacing * 2,
     },
