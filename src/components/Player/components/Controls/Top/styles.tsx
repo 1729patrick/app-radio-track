@@ -3,7 +3,9 @@ import { STATUS_BAR_HEIGHT } from '~/components/Header/constants';
 import StyleGuide from '~/utils/StyleGuide';
 import { CONTROLS_TOP_HEIGHT } from './constants';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       top: 0,

@@ -1,7 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { useTheme } from '~/contexts/ThemeContext';
-import StyleGuide from '~/utils/StyleGuide';
 
 import styles from './styles';
 

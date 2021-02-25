@@ -8,7 +8,9 @@ export const TIMING_DURATION = 300;
 
 const { width, height } = Dimensions.get('window');
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,

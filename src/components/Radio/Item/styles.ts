@@ -2,7 +2,9 @@ import { StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 import { IMAGE_SIZE, ITEM_HEIGHT } from './constants';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       height: ITEM_HEIGHT,

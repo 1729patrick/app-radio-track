@@ -4,7 +4,9 @@ import { COMPACT_HEIGHT } from '../../constants';
 
 const { width } = Dimensions.get('window');
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       top: 0,

@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,

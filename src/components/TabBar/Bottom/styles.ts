@@ -4,7 +4,9 @@ import { BOTTOM_TAB_BAR_HEIGHT } from './constants';
 
 const { height } = Dimensions.get('window');
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       height: BOTTOM_TAB_BAR_HEIGHT,

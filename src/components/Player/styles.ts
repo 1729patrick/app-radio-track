@@ -5,7 +5,9 @@ const { height, width } = Dimensions.get('window');
 import { CONTROLS_TOP_HEIGHT } from './components/Controls/Top/constants';
 import { COMPACT_HEIGHT } from './constants';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,

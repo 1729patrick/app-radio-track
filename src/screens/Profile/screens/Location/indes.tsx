@@ -8,8 +8,10 @@ import { useTheme } from '~/contexts/ThemeContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useRegion } from '~/contexts/RegionContext';
 
 const Location = () => {
+  const { regionId, setRegionId } = useRegion();
   const { palette } = useTheme();
   const { translateY } = useAnimatedHeader();
 
@@ -29,8 +31,8 @@ const Location = () => {
           <Region
             {...region}
             key={region.id}
-            checked={region.id === ''}
-            onPress={() => null}
+            checked={region.id === regionId}
+            onPress={() => setRegionId(region.id)}
           />
         ))}
       </ScrollView>

@@ -8,7 +8,9 @@ import StyleGuide from '~/utils/StyleGuide';
 
 const headerHeight = HEADER_HEIGHT + STATUS_BAR_HEIGHT;
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,

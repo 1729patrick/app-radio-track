@@ -4,7 +4,9 @@ import { MEDIA_WIDTH } from './constants';
 
 const { width } = Dimensions.get('window');
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       width,

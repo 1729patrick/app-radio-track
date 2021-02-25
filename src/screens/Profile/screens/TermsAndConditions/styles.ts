@@ -5,7 +5,9 @@ import {
 } from '~/components/Header/constants';
 import StyleGuide from '~/utils/StyleGuide';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       backgroundColor: palette.background,

@@ -2,7 +2,9 @@ import { lighten } from 'polished';
 import { StyleSheet } from 'react-native';
 import StyleGuide, { palette } from '~/utils/StyleGuide';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       ...StyleGuide.typography.caption,

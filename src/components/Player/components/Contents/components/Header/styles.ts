@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { COMPACT_HEIGHT } from '~/components/Player/constants';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',

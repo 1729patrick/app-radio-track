@@ -8,24 +8,25 @@ import React, {
 } from 'react';
 import { StyleSheet, useColorScheme, View } from 'react-native';
 import { Appearance, ColorSchemeName } from 'react-native-appearance';
-import FastImage from 'react-native-fast-image';
 import Logo from '~/components/Logo';
 import { palette } from '~/utils/StyleGuide';
+
+export type PalleteType = {
+  primary: string;
+  secondary: string;
+  light: string;
+  background: string;
+  backgroundPrimary: string;
+  backgroundSecondary: string;
+  border: string;
+  app: string;
+};
 
 type ContextProps = {
   mode: ColorSchemeName;
   theme: ColorSchemeName;
   setTheme: (mode: ColorSchemeName) => void;
-  palette: {
-    primary: string;
-    secondary: string;
-    light: string;
-    background: string;
-    backgroundPrimary: string;
-    backgroundSecondary: string;
-    border: string;
-    app: string;
-  };
+  palette: PalleteType;
 };
 const ThemeContext = createContext<ContextProps>({
   mode: 'dark',

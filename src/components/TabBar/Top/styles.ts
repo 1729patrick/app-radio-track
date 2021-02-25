@@ -6,7 +6,9 @@ import {
 
 import { TOP_TAB_BAR_HEIGHT } from './constants';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',

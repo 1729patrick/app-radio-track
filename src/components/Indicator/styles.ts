@@ -2,7 +2,9 @@ import { StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
 import { INDICATOR_HEIGHT, INDICATOR_MARGIN_TOP } from './constants';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       width: 40,

@@ -4,7 +4,9 @@ import StyleGuide from '~/utils/StyleGuide';
 
 const { width } = Dimensions.get('window');
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     title: {
       ...StyleGuide.typography.title1,

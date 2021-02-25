@@ -2,7 +2,9 @@ import { StyleSheet } from 'react-native';
 import { HEADER_HEIGHT, STATUS_BAR_HEIGHT } from './constants';
 import StyleGuide from '~/utils/StyleGuide';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       justifyContent: 'center',

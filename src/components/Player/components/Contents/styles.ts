@@ -4,7 +4,9 @@ import { INDICATOR_HEIGHT, INDICATOR_MARGIN_TOP } from './constants';
 
 const { height, width } = Dimensions.get('window');
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,

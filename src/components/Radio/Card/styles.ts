@@ -3,7 +3,9 @@ import StyleGuide from '~/utils/StyleGuide';
 import { CARD_SIZE } from '~/components/Radio/Card/constants';
 
 const NAME_AND_DESCRIPTION_HEIGHT = 62.5;
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     card: {
       width: CARD_SIZE,

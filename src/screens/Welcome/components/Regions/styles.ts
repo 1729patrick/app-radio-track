@@ -6,7 +6,9 @@ import {
 import { INDICATOR_TOTAL_HEIGHT } from '~/components/Indicator/constants';
 import StyleGuide from '~/utils/StyleGuide';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,

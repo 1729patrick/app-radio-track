@@ -8,7 +8,9 @@ import { BOTTOM_TAB_BAR_HEIGHT } from '~/components/TabBar/Bottom/constants';
 import { COMPACT_HEIGHT } from '~/components/Player/constants';
 import { TOP_TAB_BAR_HEIGHT } from '~/components/TabBar/Top/constants';
 
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     contentContainer: {
       backgroundColor: palette.background,

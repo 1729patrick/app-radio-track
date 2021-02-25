@@ -7,7 +7,9 @@ const CARD_WIDTH =
   (width - StyleGuide.spacing * 4) / 2 - StyleGuide.spacing * 0.75;
 
 const CARD_HEIGHT = 75;
-export default (palette) =>
+import { PalleteType } from '~/contexts/ThemeContext';
+
+export default (palette: PalleteType) =>
   StyleSheet.create({
     title: {
       ...StyleGuide.typography.title1,
