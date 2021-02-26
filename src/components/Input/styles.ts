@@ -12,5 +12,7 @@ export default (palette: PalleteType) =>
       backgroundColor: lighten(0.1, palette.backgroundPrimary),
       paddingLeft: StyleGuide.spacing * 1.5,
       borderRadius: StyleGuide.borderRadius * 2,
+      borderWidth: 1,
+      borderColor: palette.border,
     },
   });

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTheme } from '~/contexts/ThemeContext';
 
-function useStyles<T>(getStyles: T): T {
+function useStyles(getStyles: any) {
   const { palette } = useTheme();
 
   const styles = useMemo(() => {

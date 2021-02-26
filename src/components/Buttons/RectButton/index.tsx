@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { RectButton as NativeRectButton } from 'react-native-gesture-handler';
 import getStyles from './styles';
 import { useTheme } from '~/contexts/ThemeContext';
@@ -10,6 +10,7 @@ type RectButtonProps = {
   onPress: () => void;
   containerStyle?: object;
   titleStyle?: object;
+  loading?: boolean;
 };
 
 const RectButton = ({
@@ -17,6 +18,7 @@ const RectButton = ({
   onPress,
   containerStyle,
   titleStyle,
+  loading,
 }: RectButtonProps) => {
   const { palette } = useTheme();
   const styles = useStyles(getStyles);
@@ -27,7 +29,8 @@ const RectButton = ({
         onPress={onPress}
         style={styles.button}
         rippleColor={palette.secondary}>
-        <Text style={[styles.title, titleStyle]}>{title}</Text>
+        {!loading && <Text style={[styles.title, titleStyle]}>{title}</Text>}
+        {loading && <ActivityIndicator color={palette.primary} size={35} />}
       </NativeRectButton>
     </View>
   );

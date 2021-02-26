@@ -12,8 +12,6 @@ import { PalleteType } from '~/contexts/ThemeContext';
 export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: StyleGuide.spacing * 2,
-      paddingBottom: StyleGuide.spacing * 1.5,
       paddingTop: HEADER_HEIGHT + STATUS_BAR_HEIGHT,
     },
     input: { marginTop: StyleGuide.spacing * 2 },
@@ -22,6 +20,10 @@ export default (palette: PalleteType) =>
       marginTop: StyleGuide.spacing * 3,
     },
     contentContainer: {
-      paddingBottom: BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT,
+      flexGrow: 1,
+      paddingTop: StyleGuide.spacing,
+      paddingBottom:
+        BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT + StyleGuide.spacing * 3,
+      paddingHorizontal: StyleGuide.spacing * 2,
     },
   });

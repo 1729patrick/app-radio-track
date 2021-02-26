@@ -10,6 +10,7 @@ import { StyleSheet, useColorScheme, View } from 'react-native';
 import { Appearance, ColorSchemeName } from 'react-native-appearance';
 import Logo from '~/components/Logo';
 import { palette } from '~/utils/StyleGuide';
+import SplashScreen from 'react-native-splash-screen';
 
 export type PalleteType = {
   primary: string;
@@ -77,6 +78,10 @@ export const ThemeProvider: React.FC = ({ children }) => {
     readThemeFromStorage();
   }, [readThemeFromStorage]);
 
+  useEffect(() => {
+    SplashScreen.hide();
+  }, [_mode]);
+
   return (
     <ThemeContext.Provider
       value={{
@@ -86,11 +91,11 @@ export const ThemeProvider: React.FC = ({ children }) => {
         palette: _mode === 'light' ? palette.light : palette.dark,
       }}>
       {children}
-      {!_mode && (
+      {/* {!_mode && (
         <View style={[StyleSheet.absoluteFill, styles.splashScreen]}>
           <Logo />
         </View>
-      )}
+      )} */}
     </ThemeContext.Provider>
   );
 };

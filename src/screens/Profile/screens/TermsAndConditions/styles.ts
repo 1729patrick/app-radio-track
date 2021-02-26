@@ -6,6 +6,8 @@ import {
 import StyleGuide from '~/utils/StyleGuide';
 
 import { PalleteType } from '~/contexts/ThemeContext';
+import { BOTTOM_TAB_BAR_HEIGHT } from '~/components/TabBar/Bottom/constants';
+import { COMPACT_HEIGHT } from '~/components/Player/constants';
 
 export default (palette: PalleteType) =>
   StyleSheet.create({
@@ -14,7 +16,9 @@ export default (palette: PalleteType) =>
       flex: 1,
     },
     contentContainer: {
-      paddingVertical: HEADER_HEIGHT + STATUS_BAR_HEIGHT,
+      paddingTop: HEADER_HEIGHT + STATUS_BAR_HEIGHT,
+      paddingBottom:
+        BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT + StyleGuide.spacing * 3,
       paddingHorizontal: StyleGuide.spacing * 2,
     },
     title: {

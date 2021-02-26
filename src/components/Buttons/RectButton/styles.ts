@@ -21,7 +21,7 @@ export default (palette: PalleteType) =>
     },
     title: {
       ...StyleGuide.typography.headline,
-      color: palette.primary,
+      color: '#fff',
       fontSize: 15,
       letterSpacing: 0.7,
       paddingBottom: 1,

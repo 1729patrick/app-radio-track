@@ -7,6 +7,7 @@ import Header from '~/components/Header';
 import Item from '~/components/List/Item';
 import { useTheme } from '~/contexts/ThemeContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
+
 import styles from './styles';
 
 const Theme = () => {

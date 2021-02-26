@@ -1,5 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
+import Toast from 'react-native-toast-message';
+
 import { useTheme } from './contexts/ThemeContext';
 import Routes from './routes';
 
@@ -13,6 +15,7 @@ const App = () => {
         translucent
         backgroundColor="transparent"
       />
+      <Toast ref={(ref) => Toast.setRef(ref)} />
       <Routes />
     </>
   );
