@@ -14,6 +14,8 @@ import { useTheme } from '~/contexts/ThemeContext';
 import { useIAP } from '~/contexts/IAPContext';
 import Header from '~/components/Header';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
+import { useRegion } from '~/contexts/RegionContext';
+import { REGIONS } from '~/data/regions';
 
 const Profile = () => {
   const { translateY } = useAnimatedHeader();
@@ -22,11 +24,13 @@ const Profile = () => {
 
   const { palette } = useTheme();
   const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const { regionId } = useRegion();
 
   const screens = useMemo(
     () => [
       {
         title: 'País/Região',
+        description: REGIONS.find((r) => r.id === regionId)?.title,
         icon: 'earth',
         Icon: IconMDI,
         onPress: () => navigate('Location'),
@@ -37,22 +41,14 @@ const Profile = () => {
         Icon: IconIon,
         onPress: () => navigate('Theme'),
       },
-      // {
-      //   title: 'Alarme',
-      //   icon: 'alarm',
-      // },
+
       {
         title: 'Sugerir estação de rádio',
         icon: 'radio',
         Icon: IconMDI,
         onPress: () => navigate('SuggestRadio'),
       },
-      // {
-      //   title: 'Termos e Condições',
-      //   icon: 'document-text',
-      //   Icon: IconIon,
-      //   onPress: () => navigate('TermsAndConditions'),
-      // },
+
       {
         title: 'Política de Privacidade',
         icon: 'lock',
@@ -70,7 +66,7 @@ const Profile = () => {
           ),
       },
     ],
-    [navigate, isPremium],
+    [isPremium, regionId, navigate],
   );
 
   return (
@@ -91,6 +87,7 @@ const Profile = () => {
                 key={screen.title}
                 Icon={screen.Icon}
                 icon={screen.icon}
+                description={screen.description}
                 onPress={screen.onPress}
                 title={screen.title}
               />

@@ -12,6 +12,7 @@ import {
   PurchaseError,
   SubscriptionPurchase,
 } from 'react-native-iap';
+import toast from '~/services/toast';
 import IAP from '~/utils/IAP';
 
 type ContextProps = {
@@ -29,11 +30,15 @@ export const IAPProvider: React.FC = ({ children }) => {
     const receipt = purchase.transactionReceipt;
     if (receipt) {
       try {
-        // const ackResult = await finishTransaction(purchase);
-        // console.log(ackResult);
+        await finishTransaction(purchase);
         setIsPremium(true);
+        toast.success({
+          message: 'Obrigado!! Agora você é Radio Online Premium.',
+        });
       } catch (ackErr) {
-        console.log({ ackErr });
+        toast.error({
+          message: 'Sua subscrição foi recusada! Tente novamente mais tarde.',
+        });
       }
     }
   };
@@ -43,7 +48,9 @@ export const IAPProvider: React.FC = ({ children }) => {
       return;
     }
 
-    console.log('purchaseErrorListener', error);
+    toast.error({
+      message: 'Sua subscrição foi recusada! Tente novamente mais tarde.',
+    });
   };
 
   const init = useCallback(async () => {
