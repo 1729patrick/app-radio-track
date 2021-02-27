@@ -4,7 +4,6 @@ import { FlatList, RectButton } from 'react-native-gesture-handler';
 import getStyles from './styles';
 import { REGIONS } from './data';
 import { useNavigation } from '@react-navigation/native';
-import StyleGuide from '~/utils/StyleGuide';
 import { StackNavigationProp } from '@react-navigation/stack';
 import useStyles from '~/hooks/useStyles';
 import { useTheme } from '~/contexts/ThemeContext';

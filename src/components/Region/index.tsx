@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Image, View, Text } from 'react-native';
 import { RegionType } from '~/screens/Explore/components/Regions';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,6 +11,7 @@ import useStyles from '~/hooks/useStyles';
 type RegionProps = RegionType & {
   checked: boolean;
   onPress: (id: string) => void;
+  disabled?: boolean;
 };
 
 const Region: React.FC<RegionProps> = ({
@@ -19,16 +20,18 @@ const Region: React.FC<RegionProps> = ({
   checked,
   id,
   onPress,
+  disabled,
 }) => {
   const { palette } = useTheme();
   const styles = useStyles(getStyles);
 
   return (
     <RectButton
+      enabled={!disabled}
       onPress={() => onPress(id)}
       rippleColor={palette.secondary}
-      style={[styles.container]}>
-      <View style={styles.info}>
+      style={[styles.container, disabled ? styles.disabled : {}]}>
+      <View style={[styles.info]}>
         <Image source={image} style={styles.image} />
         <Text style={[styles.title]}>{title}</Text>
       </View>
@@ -53,4 +56,4 @@ const Region: React.FC<RegionProps> = ({
   );
 };
 
-export default Region;
+export default memo(Region);

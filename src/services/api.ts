@@ -18,4 +18,16 @@ export const image = (img?: string) => {
   return `${baseURL}/files/${img}.jpg`;
 };
 
+export const flag = (img?: string) => {
+  if (!img) {
+    return '';
+  }
+
+  if (img?.startsWith(baseURL)) {
+    return img;
+  }
+
+  return `${baseURL}/flags/${img}.png`;
+};
+
 export default api;

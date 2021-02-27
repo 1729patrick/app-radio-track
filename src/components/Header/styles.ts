@@ -33,10 +33,23 @@ export default (palette: PalleteType) =>
       ...StyleGuide.typography.headline,
       color: palette.primary,
     },
+    rightButtons: { flexDirection: 'row', alignItems: 'center' },
     button: {
       width: 32,
       height: 32,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    flagButton: {
+      width: 33,
+      height: 33,
+      marginLeft: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    flag: {
+      width: 27,
+      height: 27,
+      borderRadius: 20,
     },
   });

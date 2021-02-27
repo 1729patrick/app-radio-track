@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 
 import Animated, {
   Extrapolate,
@@ -12,13 +12,20 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import { HEADER_HEIGHT } from './constants';
 
 import getStyles from './styles';
-import { Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import RoundButton from '../Button/Round';
 import { useNavigation } from '@react-navigation/native';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import useStyles from '~/hooks/useStyles';
 import { useTheme } from '~/contexts/ThemeContext';
+import Modal from '../Modal';
+import {
+  BorderlessButton,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
+import { useCountry } from '~/contexts/CountryContext';
+import { flag } from '~/services/api';
 
 type HeaderProps = {
   translateY: Animated.SharedValue<number>;
@@ -40,6 +47,7 @@ const Header: React.FC<HeaderProps> = ({
   const { navigate, pop } = useNavigation<StackNavigationProp<any>>();
   const styles = useStyles(getStyles);
   const { palette } = useTheme();
+  const { show } = useCountry();
 
   const y = useDerivedValue(() => {
     const validY = interpolate(
@@ -92,14 +100,24 @@ const Header: React.FC<HeaderProps> = ({
           <Text style={styles.title}>{title || 'Rádio Online'}</Text>
         </View>
 
-        {showSearch && (
-          <RoundButton
-            size={22}
-            name="md-search-outline"
-            onPress={onOpenSearch}
-            Icon={IonIcon}
-          />
-        )}
+        <View style={styles.rightButtons}>
+          {showSearch && (
+            <RoundButton
+              size={22}
+              name="md-search-outline"
+              onPress={onOpenSearch}
+              Icon={IonIcon}
+            />
+          )}
+
+          <BorderlessButton
+            rippleColor={palette.secondary}
+            hitSlop={{ top: 58, bottom: 58, left: 58, right: 58 }}
+            onPress={show}
+            style={styles.flagButton}>
+            <Image source={{ uri: flag('br') }} style={styles.flag} />
+          </BorderlessButton>
+        </View>
       </Animated.View>
     </Animated.View>
   );

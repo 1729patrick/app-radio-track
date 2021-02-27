@@ -40,7 +40,6 @@ import { MODAL_SNAP_POINTS } from './constants';
 
 import getStyles from './styles';
 import { useTheme } from '~/contexts/ThemeContext';
-import { palette } from '~/utils/StyleGuide';
 
 const { height } = Dimensions.get('window');
 
@@ -160,12 +159,6 @@ const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
 
     setSnapPoints(snapPointsAvailable);
   };
-
-  useEffect(() => {
-    if (JSON.stringify(snapPoints) !== JSON.stringify(MODAL_SNAP_POINTS)) {
-      show();
-    }
-  }, [show, snapPoints]);
 
   const onComplete = () => {
     onContinue();

@@ -11,7 +11,7 @@ import IAP from '~/utils/IAP';
 const advantages = [
   'Ouça sem propagandas',
   'Áudio de alta qualidade',
-  'Escute as rádios de mais de 100 países',
+  'Escute rádios de mais de 100 países',
 ];
 
 const GetPremium = () => {

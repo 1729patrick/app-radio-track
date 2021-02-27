@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import Counties from '~/components/Countries';
 import Modal, { ModalHandler } from '~/components/Modal';
 
 type setContentArgs = {
@@ -42,16 +43,29 @@ export const ModalProvider: React.FC = ({ children }) => {
     setContent(args.content);
   };
 
+  // useEffect(() => {
+  //   modalRef.current?.show();
+  // }, []);
+
   return (
     <ModalContext.Provider value={{ setContent: onSetContent }}>
       {children}
-      <Modal
+      {/* <Modal
         ref={modalRef}
         onContinue={() => {}}
         id={id}
         title={title}
         confirm={confirm}>
         {content && content}
+      </Modal> */}
+
+      <Modal
+        ref={modalRef}
+        onContinue={() => {}}
+        id={'countries'}
+        title={'Selecione o País'}
+        confirm={'OK'}>
+        <Counties />
       </Modal>
     </ModalContext.Provider>
   );

@@ -29,7 +29,7 @@ const Profile = () => {
   const screens = useMemo(
     () => [
       {
-        title: 'País/Região',
+        title: 'Região/Estado',
         description: REGIONS.find((r) => r.id === regionId)?.title,
         icon: 'earth',
         Icon: IconMDI,
@@ -48,7 +48,6 @@ const Profile = () => {
         Icon: IconMDI,
         onPress: () => navigate('SuggestRadio'),
       },
-
       {
         title: 'Política de Privacidade',
         icon: 'lock',

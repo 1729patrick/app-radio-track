@@ -11,6 +11,7 @@ import { SearchHistoryProvider } from './contexts/SearchHistoryContext';
 import { AppearanceProvider } from 'react-native-appearance';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { IAPProvider } from './contexts/IAPContext';
+import { CountryProvider } from './contexts/CountryContext';
 
 export default () => {
   return (
@@ -25,7 +26,9 @@ export default () => {
                     <AdProvider>
                       <RegionProvider>
                         <SearchHistoryProvider>
-                          <App />
+                          <CountryProvider>
+                            <App />
+                          </CountryProvider>
                         </SearchHistoryProvider>
                       </RegionProvider>
                     </AdProvider>

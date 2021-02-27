@@ -24,4 +24,5 @@ export default (palette: PalleteType) =>
       fontSize: 16,
       color: palette.primary,
     },
+    disabled: { opacity: 0.3 },
   });

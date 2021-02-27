@@ -19,7 +19,7 @@ const Location = () => {
     <View style={styles.container}>
       <Header
         translateY={translateY}
-        title={'Pais/Região'}
+        title={'Região/Estado'}
         backgroundColor={palette.backgroundPrimary}
         elevation={5}
         showSearch={false}
