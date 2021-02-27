@@ -1,8 +1,9 @@
 import React, { memo, useMemo } from 'react';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 import GetPremium from './components/GetPremium';
 import styles from './styles';
-import IconMD from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconMDI from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconMD from 'react-native-vector-icons/MaterialIcons';
 import IconIon from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -10,8 +11,15 @@ import Item from '~/components/List/Item';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTheme } from '~/contexts/ThemeContext';
+import { useIAP } from '~/contexts/IAPContext';
+import Header from '~/components/Header';
+import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 
 const Profile = () => {
+  const { translateY } = useAnimatedHeader();
+
+  const { isPremium } = useIAP();
+
   const { palette } = useTheme();
   const { navigate } = useNavigation<StackNavigationProp<any>>();
 
@@ -20,7 +28,7 @@ const Profile = () => {
       {
         title: 'País/Região',
         icon: 'earth',
-        Icon: IconMD,
+        Icon: IconMDI,
         onPress: () => navigate('Location'),
       },
       {
@@ -36,41 +44,58 @@ const Profile = () => {
       {
         title: 'Sugerir estação de rádio',
         icon: 'radio',
-        Icon: IconMD,
+        Icon: IconMDI,
         onPress: () => navigate('SuggestRadio'),
       },
-      {
-        title: 'Termos e Condições',
-        icon: 'document-text',
-        Icon: IconIon,
-        onPress: () => navigate('TermsAndConditions'),
-      },
+      // {
+      //   title: 'Termos e Condições',
+      //   icon: 'document-text',
+      //   Icon: IconIon,
+      //   onPress: () => navigate('TermsAndConditions'),
+      // },
       {
         title: 'Política de Privacidade',
         icon: 'lock',
-        Icon: IconMD,
+        Icon: IconMDI,
         onPress: () => navigate('PolicyPrivacy'),
       },
+      {
+        title: 'Cancelar Assinatura',
+        icon: 'cancel',
+        hidden: !isPremium,
+        Icon: IconMD,
+        onPress: () =>
+          Linking.openURL(
+            'https://play.google.com/store/account/subscriptions?package=pax.radio.brasil&sku=mensal_sub',
+          ),
+      },
     ],
-    [navigate],
+    [navigate, isPremium],
   );
 
   return (
     <View style={[styles.container, { backgroundColor: palette.background }]}>
+      {isPremium && isPremium !== undefined && (
+        <Header translateY={translateY} showBack={false} />
+      )}
+
       <ScrollView
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
-        <GetPremium />
+        {!isPremium && isPremium !== undefined && <GetPremium />}
 
-        {screens.map((screen) => (
-          <Item
-            key={screen.title}
-            Icon={screen.Icon}
-            icon={screen.icon}
-            onPress={screen.onPress}
-            title={screen.title}
-          />
-        ))}
+        {screens.map(
+          (screen) =>
+            !screen.hidden && (
+              <Item
+                key={screen.title}
+                Icon={screen.Icon}
+                icon={screen.icon}
+                onPress={screen.onPress}
+                title={screen.title}
+              />
+            ),
+        )}
       </ScrollView>
     </View>
   );

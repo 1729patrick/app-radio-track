@@ -10,7 +10,7 @@ export default (palette: PalleteType) =>
       textAlign: 'center',
       color: palette.primary,
       paddingHorizontal: StyleGuide.spacing * 3,
-      marginTop: StyleGuide.spacing * 6,
+      paddingTop: StyleGuide.spacing,
     },
     advantageCard: {
       marginTop: StyleGuide.spacing * 1.5,

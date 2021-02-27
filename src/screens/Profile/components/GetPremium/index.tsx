@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import RectButton from '~/components/Buttons/RectButton';
 import useStyles from '~/hooks/useStyles';
 import { useTheme } from '~/contexts/ThemeContext';
+import IAP from '~/utils/IAP';
 
 const advantages = [
   'Ouça sem propagandas',
@@ -35,7 +36,7 @@ const GetPremium = () => {
       <View style={styles.containerBottom}>
         <RectButton
           title={'Seja Premium'}
-          onPress={() => {}}
+          onPress={() => IAP.requestSubscription('mensal_sub')}
           containerStyle={{ backgroundColor: palette.app }}
         />
       </View>

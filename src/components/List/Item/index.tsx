@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { IconProps } from 'react-native-vector-icons/Icon';
@@ -63,4 +63,4 @@ const Item: React.FC<ItemProps> = ({
   );
 };
 
-export default Item;
+export default memo(Item);

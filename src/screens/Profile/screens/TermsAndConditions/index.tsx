@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Header from '~/components/Header';
@@ -17,15 +17,13 @@ const TermsAndConditions = () => {
     <View style={styles.container}>
       <Header
         translateY={translateY}
-        title={'Termos e Condições'}
+        title={'Terms and Conditions'}
         backgroundColor={palette.backgroundPrimary}
         elevation={5}
         showSearch={false}
       />
 
-      <ScrollView
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         <Text style={styles.title}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
         </Text>
@@ -131,4 +129,4 @@ const TermsAndConditions = () => {
   );
 };
 
-export default TermsAndConditions;
+export default memo(TermsAndConditions);

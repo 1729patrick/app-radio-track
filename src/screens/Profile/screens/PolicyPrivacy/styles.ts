@@ -14,12 +14,12 @@ export default (palette: PalleteType) =>
     container: {
       backgroundColor: palette.background,
       flex: 1,
+      paddingTop: HEADER_HEIGHT + STATUS_BAR_HEIGHT,
+      paddingBottom: BOTTOM_TAB_BAR_HEIGHT,
     },
     contentContainer: {
-      paddingVertical: HEADER_HEIGHT + STATUS_BAR_HEIGHT,
       paddingHorizontal: StyleGuide.spacing * 2,
-      paddingBottom:
-        BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT + StyleGuide.spacing * 3,
+      paddingBottom: COMPACT_HEIGHT + StyleGuide.spacing * 3,
     },
     title: {
       ...StyleGuide.typography.title2,
@@ -29,6 +29,7 @@ export default (palette: PalleteType) =>
     description: {
       ...StyleGuide.typography.subhead,
       color: palette.primary,
-      marginTop: StyleGuide.spacing * 3,
+      marginTop: StyleGuide.spacing * 2,
     },
+    bold: { fontFamily: 'Montserrat-Bold' },
   });

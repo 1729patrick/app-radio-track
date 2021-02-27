@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
+import DeviceInfo from 'react-native-device-info';
 import Review, { ReviewHandler } from '~/components/Review';
 import { useHistory } from '../HistoryContext';
 
@@ -39,8 +40,6 @@ const limitsToRequest = [
 ];
 
 import api from '~/services/api';
-
-import DeviceInfo from 'react-native-device-info';
 
 export const ReviewProvider: React.FC = ({ children }) => {
   const { getItem, setItem } = useAsyncStorage('@radios:review');

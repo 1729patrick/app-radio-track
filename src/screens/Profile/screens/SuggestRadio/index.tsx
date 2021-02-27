@@ -1,4 +1,4 @@
-import React, { RefObject, useRef, useState } from 'react';
+import React, { memo, RefObject, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import RectButton from '~/components/Buttons/RectButton';
@@ -132,4 +132,4 @@ const SuggestRadio = () => {
   );
 };
 
-export default SuggestRadio;
+export default memo(SuggestRadio);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 import IconIon from 'react-native-vector-icons/Ionicons';
 import IconMD from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -64,4 +64,4 @@ const Theme = () => {
   );
 };
 
-export default Theme;
+export default memo(Theme);

@@ -10,28 +10,31 @@ import { RegionProvider } from './contexts/RegionContext';
 import { SearchHistoryProvider } from './contexts/SearchHistoryContext';
 import { AppearanceProvider } from 'react-native-appearance';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { IAPProvider } from './contexts/IAPContext';
 
 export default () => {
   return (
     <AppearanceProvider>
       <ThemeProvider>
-        <FavoriteProvider>
-          <HistoryProvider>
-            <PlayerProvider>
-              <PlayingProvider>
-                <ReviewProvider>
-                  <AdProvider>
-                    <RegionProvider>
-                      <SearchHistoryProvider>
-                        <App />
-                      </SearchHistoryProvider>
-                    </RegionProvider>
-                  </AdProvider>
-                </ReviewProvider>
-              </PlayingProvider>
-            </PlayerProvider>
-          </HistoryProvider>
-        </FavoriteProvider>
+        <IAPProvider>
+          <FavoriteProvider>
+            <HistoryProvider>
+              <PlayerProvider>
+                <PlayingProvider>
+                  <ReviewProvider>
+                    <AdProvider>
+                      <RegionProvider>
+                        <SearchHistoryProvider>
+                          <App />
+                        </SearchHistoryProvider>
+                      </RegionProvider>
+                    </AdProvider>
+                  </ReviewProvider>
+                </PlayingProvider>
+              </PlayerProvider>
+            </HistoryProvider>
+          </FavoriteProvider>
+        </IAPProvider>
       </ThemeProvider>
     </AppearanceProvider>
   );

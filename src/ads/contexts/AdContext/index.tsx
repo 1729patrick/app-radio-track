@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext } from 'react';
 import { BLOCKS } from '~/ads/constants';
 import useInterstitial from '~/ads/hooks/useInterstitial';
+import { useIAP } from '~/contexts/IAPContext';
 
 type ContextProps = {
   showPlaylistAd: () => void;
@@ -17,14 +18,22 @@ const AdContext = createContext<ContextProps>({
 });
 
 export const AdProvider: React.FC = ({ children }) => {
+  const { isPremium } = useIAP();
   const playlistInterstitial = useInterstitial(BLOCKS.PLAYLIST);
   const libraryInterstitial = useInterstitial(BLOCKS.LIBRARY);
   const playerInterstitial = useInterstitial(BLOCKS.PLAYER);
   const relationalInterstitial = useInterstitial(BLOCKS.RELATIONAL);
 
-  const show = useCallback(({ showAd }: { showAd: () => void }) => {
-    showAd();
-  }, []);
+  const show = useCallback(
+    ({ showAd }: { showAd: () => void }) => {
+      if (isPremium) {
+        return;
+      }
+
+      showAd();
+    },
+    [isPremium],
+  );
 
   const showPlaylistAd = useCallback(() => {
     show(playlistInterstitial);
