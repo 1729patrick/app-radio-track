@@ -9,7 +9,7 @@ export default (palette: PalleteType) =>
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: StyleGuide.spacing * 2,
-      paddingVertical: StyleGuide.spacing * 2,
+      height: 63,
     },
     info: { flexDirection: 'column', marginLeft: StyleGuide.spacing * 1.5 },
     title: {

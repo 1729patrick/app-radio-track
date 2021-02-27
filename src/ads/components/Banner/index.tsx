@@ -10,6 +10,7 @@ import NativeAdView, {
   MediaView,
   StoreView,
 } from 'react-native-admob-native-ads';
+import { useIAP } from '~/contexts/IAPContext';
 import { useTheme } from '~/contexts/ThemeContext';
 import useStyles from '~/hooks/useStyles';
 
@@ -24,6 +25,7 @@ type BannerProps = {
 };
 
 const Banner = ({ media, id, backgroundColor }: BannerProps) => {
+  const { isPremium } = useIAP();
   const { palette } = useTheme();
   const styles = useStyles(getStyles);
 
@@ -54,6 +56,10 @@ const Banner = ({ media, id, backgroundColor }: BannerProps) => {
     console.log(event.aspectRatio);
     setAspectRatio(event.aspectRatio);
   };
+
+  if (isPremium) {
+    return null;
+  }
 
   return (
     <NativeAdView

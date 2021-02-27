@@ -6,7 +6,7 @@ import { PalleteType } from '~/contexts/ThemeContext';
 export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
-      paddingVertical: StyleGuide.spacing,
+      paddingVertical: StyleGuide.spacing * 1.5,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',

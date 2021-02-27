@@ -270,7 +270,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
                   // eslint-disable-next-line react-native/no-inline-styles
                   style={{ opacity: starLevel > 0 && starLevel < 5 ? 1 : 0 }}>
                   <Input
-                    placeholder={'Descreva a sua experiência (opcional)'}
+                    placeholder={'Descreva a sua experiência'}
                     onChangeText={setReviewNotes}
                     ref={inputRef}
                   />
