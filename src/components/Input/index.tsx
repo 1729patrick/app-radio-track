@@ -23,7 +23,7 @@ const Input: React.ForwardRefRenderFunction<
       ref={ref}
       style={[styles.container, style]}
       placeholder={placeholder}
-      placeholderTextColor={palette.primary}
+      placeholderTextColor={palette.light}
       onChangeText={onChangeText}
     />
   );

@@ -1,5 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { memo, RefObject, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 import { ScrollView } from 'react-native-gesture-handler';
 import RectButton from '~/components/Buttons/RectButton';
 import Header from '~/components/Header';
@@ -8,16 +11,27 @@ import { useTheme } from '~/contexts/ThemeContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 import { useKeyboard } from '~/hooks/useKeyboard';
 import useStyles from '~/hooks/useStyles';
+import api from '~/services/api';
+import toast from '~/services/toast';
 import StyleGuide from '~/utils/StyleGuide';
-import { success } from '~/utils/Toast';
 
 import getStyles from './styles';
+
+const keys = [
+  { key: 'name', error: 'Preencha o Nome da rádio.' },
+  { key: 'slogan', error: 'Preencha o Slogan da rádio.' },
+  { key: 'streamURL', error: 'Preencha a Stream URL da rádio.' },
+  { key: 'genres', error: 'Preencha os Gêneros da rádio.' },
+  { key: 'website', error: 'Preencha o Website da rádio.' },
+  { key: 'address', error: 'Preencha o Endereço da rádio.' },
+];
 
 const SuggestRadio = () => {
   const { palette } = useTheme();
   const { translateY } = useAnimatedHeader();
   const { keyboardOpen } = useKeyboard();
   const [loading, setLoading] = useState(false);
+  const { pop } = useNavigation<StackNavigationProp<any>>();
 
   const nameRef = useRef<TextInput>(null);
   const sloganRef = useRef<TextInput>(null);
@@ -27,15 +41,47 @@ const SuggestRadio = () => {
   const addressRef = useRef<TextInput>(null);
   const emailRef = useRef<TextInput>(null);
 
+  const radioRef = useRef<{}>({});
+
   const styles = useStyles(getStyles);
 
   const focus = (ref: RefObject<TextInput>) => {
     ref.current?.focus();
   };
 
-  const onSubmit = () => {
-    setLoading(true);
-    success();
+  const formIsValid = () => {
+    for (let { key, error } of keys) {
+      if (!radioRef.current[key]) {
+        throw new Error(error);
+      }
+    }
+
+    return true;
+  };
+
+  const onSubmit = async () => {
+    try {
+      if (!formIsValid()) {
+        return;
+      }
+
+      setLoading(true);
+
+      await api.post('stations', radioRef.current);
+      toast.success({
+        message: 'Pedido enviado! Vamos analisar a sua sugestão em breve.',
+      });
+      pop();
+    } catch (e) {
+      toast.error({ message: e.message });
+      // success();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onChangeText = (key: string, value: string) => {
+    radioRef.current[key] = value;
   };
 
   return (
@@ -60,7 +106,7 @@ const SuggestRadio = () => {
           returnKeyType="next"
           placeholder={'Nome'}
           autoCapitalize={'words'}
-          onChangeText={() => null}
+          onChangeText={(value) => onChangeText('name', value)}
           style={styles.input}
           ref={nameRef}
           onSubmitEditing={() => focus(sloganRef)}
@@ -69,14 +115,14 @@ const SuggestRadio = () => {
           returnKeyType="next"
           placeholder={'Slogan'}
           autoCapitalize={'words'}
-          onChangeText={() => null}
+          onChangeText={(value) => onChangeText('slogan', value)}
           style={styles.input}
           ref={sloganRef}
           onSubmitEditing={() => focus(streamRef)}
         />
         <Input
           placeholder={'Strem URL'}
-          onChangeText={() => null}
+          onChangeText={(value) => onChangeText('streamURL', value)}
           autoCapitalize={'none'}
           returnKeyType="next"
           ref={streamRef}
@@ -86,7 +132,7 @@ const SuggestRadio = () => {
 
         <Input
           placeholder={'Gêneros'}
-          onChangeText={() => null}
+          onChangeText={(value) => onChangeText('genres', value)}
           autoCapitalize={'words'}
           returnKeyType="next"
           style={styles.input}
@@ -95,7 +141,7 @@ const SuggestRadio = () => {
         />
         <Input
           placeholder={'Website'}
-          onChangeText={() => null}
+          onChangeText={(value) => onChangeText('website', value)}
           autoCapitalize={'none'}
           returnKeyType="next"
           ref={websiteRef}
@@ -106,14 +152,14 @@ const SuggestRadio = () => {
           returnKeyType="next"
           placeholder={'Endereço'}
           autoCapitalize={'words'}
-          onChangeText={() => null}
+          onChangeText={(value) => onChangeText('address', value)}
           style={styles.input}
           ref={addressRef}
           onSubmitEditing={() => focus(emailRef)}
         />
         <Input
           placeholder={'Email (opcional)'}
-          onChangeText={() => null}
+          onChangeText={(value) => onChangeText('email', value)}
           autoCapitalize={'none'}
           returnKeyType="next"
           style={styles.input}
