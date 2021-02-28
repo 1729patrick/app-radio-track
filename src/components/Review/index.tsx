@@ -142,7 +142,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
     } catch (e) {}
 
     onRateApp({ starLevel });
-    BackgroundTimer.setTimeout(() => animateToPoint(snapPoints[1]), 5000);
+    BackgroundTimer.setTimeout(() => animateToPoint(snapPoints[1]), 1500);
   }, [animateToPoint, onRateApp, snapPoints, starLevel]);
 
   const onConfirmReview = useCallback(() => {
