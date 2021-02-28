@@ -62,7 +62,7 @@ export const ThemeProvider: React.FC = ({ children }) => {
       return;
     }
 
-    setTheme(colorScheme || 'dark');
+    setTheme(colorScheme || 'no-preference');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -78,6 +78,7 @@ export const ThemeProvider: React.FC = ({ children }) => {
   }, [readThemeFromStorage]);
 
   useEffect(() => {
+    console.log({ _mode });
     if (_mode) {
       setTimeout(SplashScreen.hide, 500);
     }

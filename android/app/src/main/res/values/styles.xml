@@ -2,6 +2,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:textColor">#ffffff</item>
         <item name="android:navigationBarColor">@color/primary_dark</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
