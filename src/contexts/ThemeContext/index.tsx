@@ -6,9 +6,8 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { StyleSheet, useColorScheme, View } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
 import { Appearance, ColorSchemeName } from 'react-native-appearance';
-import Logo from '~/components/Logo';
 import { palette } from '~/utils/StyleGuide';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -79,7 +78,9 @@ export const ThemeProvider: React.FC = ({ children }) => {
   }, [readThemeFromStorage]);
 
   useEffect(() => {
-    SplashScreen.hide();
+    if (_mode) {
+      setTimeout(SplashScreen.hide, 500);
+    }
   }, [_mode]);
 
   return (

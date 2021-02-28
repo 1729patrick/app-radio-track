@@ -48,8 +48,8 @@ export default (palette: PalleteType) =>
       justifyContent: 'center',
     },
     flag: {
-      width: 27,
-      height: 27,
+      width: 25,
+      height: 25,
       borderRadius: 20,
       backgroundColor: palette.light,
     },

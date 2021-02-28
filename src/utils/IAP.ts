@@ -1,9 +1,5 @@
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import RNIap, {
-  InAppPurchase,
-  PurchaseError,
-  SubscriptionPurchase,
-  finishTransaction,
   purchaseErrorListener,
   purchaseUpdatedListener,
 } from 'react-native-iap';
@@ -30,7 +26,7 @@ class IAP {
         this.getProducts();
         this.getSubscriptions();
       } catch (err) {
-        Alert.alert('purchase error', JSON.stringify(err));
+        // Alert.alert('purchase error', JSON.stringify(err));
         reject();
       }
 
@@ -47,7 +43,7 @@ class IAP {
 
       return products;
     } catch (err) {
-      Alert.alert(err.message);
+      // Alert.alert(err.message);
     }
   };
 
@@ -57,7 +53,7 @@ class IAP {
 
       return products;
     } catch (err) {
-      Alert.alert(err.message);
+      // Alert.alert(err.message);
     }
   };
 
@@ -67,7 +63,7 @@ class IAP {
 
       return purchases;
     } catch (err) {
-      Alert.alert(err.message);
+      // Alert.alert(err.message);
     }
   };
 

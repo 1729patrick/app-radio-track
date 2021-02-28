@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Alert } from 'react-native';
 import {
   finishTransaction,
   InAppPurchase,
@@ -44,7 +43,7 @@ export const IAPProvider: React.FC = ({ children }) => {
   };
 
   const onError = (error: PurchaseError) => {
-    if (error.code === 'E_USER_CANCELLED') {
+    if (error.code === 'E_USER_CANCELLED' || error.code === 'E_SERVICE_ERROR') {
       return;
     }
 

@@ -2,7 +2,7 @@ export default [
   {
     id: '5p1jpfdd',
     code: 'br',
-    name: 'Brazil',
+    name: 'Brasil',
   },
   {
     id: 'q21hmp0o',
