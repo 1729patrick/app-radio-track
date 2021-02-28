@@ -13,10 +13,10 @@ import { RouteProps } from '../../components/TabNavigator';
 import { RadioType } from '~/types/Station';
 import { useFetch } from '~/hooks/useFetch';
 import { CARD_SIZE } from '~/components/Radio/Card/constants';
-import { AD_BACKGROUND_COLOR } from '../../constants';
 import { useAd } from '~/ads/contexts/AdContext';
 import { useTheme } from '~/contexts/ThemeContext';
 import useStyles from '~/hooks/useStyles';
+import { darken, lighten } from 'polished';
 
 type SuggestProps = {
   routeProps: RouteProps;
@@ -24,7 +24,7 @@ type SuggestProps = {
 
 const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
   const { showRelationalAd } = useAd();
-  const { palette } = useTheme();
+  const { palette, mode } = useTheme();
   const styles = useStyles(getStyles);
 
   const radio = useMemo(() => {
@@ -53,6 +53,11 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
 
   const renderItemSimilar = useCallback(
     (item, index) => {
+      const backgroundColor =
+        mode === 'light'
+          ? darken(0.05, palette.backgroundSecondary)
+          : lighten(0.05, palette.backgroundSecondary);
+
       return (
         <View key={item.id}>
           <RadioItem
@@ -65,12 +70,12 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
           />
 
           {!index && (
-            <Banner id={BLOCKS.MUSIC} backgroundColor={AD_BACKGROUND_COLOR} />
+            <Banner id={BLOCKS.MUSIC} backgroundColor={backgroundColor} />
           )}
         </View>
       );
     },
-    [close.data, onSetRadio],
+    [close.data, onSetRadio, palette.backgroundSecondary],
   );
 
   const renderItemRegion = useCallback(

@@ -15,8 +15,3 @@ export const SNAP_POINTS = [
 export const INDICATOR_HEIGHT = 5;
 export const INDICATOR_MARGIN_TOP = 10;
 export const TIMING_DURATION = 300;
-
-export const AD_BACKGROUND_COLOR = lighten(
-  0.05,
-  palette.dark.backgroundSecondary,
-);

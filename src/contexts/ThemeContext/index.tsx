@@ -92,21 +92,8 @@ export const ThemeProvider: React.FC = ({ children }) => {
         palette: _mode === 'light' ? palette.light : palette.dark,
       }}>
       {children}
-      {/* {!_mode && (
-        <View style={[StyleSheet.absoluteFill, styles.splashScreen]}>
-          <Logo />
-        </View>
-      )} */}
     </ThemeContext.Provider>
   );
 };
 
 export const useTheme = () => useContext(ThemeContext);
-
-const styles = StyleSheet.create({
-  splashScreen: {
-    backgroundColor: '#222326',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
