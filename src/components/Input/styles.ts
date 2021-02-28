@@ -1,6 +1,6 @@
 import { lighten } from 'polished';
 import { StyleSheet } from 'react-native';
-import StyleGuide, { palette } from '~/utils/StyleGuide';
+import StyleGuide from '~/utils/StyleGuide';
 
 import { PalleteType } from '~/contexts/ThemeContext';
 
@@ -14,5 +14,6 @@ export default (palette: PalleteType) =>
       borderRadius: StyleGuide.borderRadius * 2,
       borderWidth: 1,
       borderColor: palette.border,
+      color: palette.primary,
     },
   });

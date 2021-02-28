@@ -78,7 +78,6 @@ export const ThemeProvider: React.FC = ({ children }) => {
   }, [readThemeFromStorage]);
 
   useEffect(() => {
-    console.log({ _mode });
     if (_mode) {
       setTimeout(SplashScreen.hide, 500);
     }

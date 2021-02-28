@@ -28,7 +28,8 @@ export default (palette: PalleteType) =>
       borderRadius: StyleGuide.borderRadius * 1.5,
       marginVertical: StyleGuide.spacing * 0.75,
       backgroundColor: lighten(0.03, palette.backgroundPrimary),
-      elevation: 4,
+      borderWidth: 1,
+      borderColor: palette.border,
     },
     button: {
       height: '100%',

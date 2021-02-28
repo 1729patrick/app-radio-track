@@ -1,10 +1,11 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import StyleGuide from '~/utils/StyleGuide';
-import { BACKGROUND_COLOR, CARD_PADDING } from '../../constants';
+import { CARD_PADDING } from '../../constants';
 
 const { width } = Dimensions.get('window');
 
 import { PalleteType } from '~/contexts/ThemeContext';
+import { lighten } from 'polished';
 
 export default (palette: PalleteType) =>
   StyleSheet.create({
@@ -14,7 +15,7 @@ export default (palette: PalleteType) =>
       paddingBottom: 30,
     },
     content: {
-      backgroundColor: BACKGROUND_COLOR,
+      backgroundColor: lighten(0.05, palette.backgroundPrimary),
       borderRadius: StyleGuide.borderRadius * 2.5,
       padding: CARD_PADDING,
       paddingBottom: 30,
@@ -29,11 +30,13 @@ export default (palette: PalleteType) =>
       ...StyleGuide.typography.title1,
       paddingTop: StyleGuide.spacing,
       paddingBottom: StyleGuide.spacing * 3,
+      color: palette.primary,
     },
     dayTitle: {
       ...StyleGuide.typography.subhead,
       paddingBottom: StyleGuide.spacing,
       fontSize: 14,
+      color: palette.primary,
     },
     programming: {
       flexDirection: 'row',
@@ -56,12 +59,14 @@ export default (palette: PalleteType) =>
       alignItems: 'center',
       justifyContent: 'center',
     },
-    showMoreTitle: {
-      backgroundColor: BACKGROUND_COLOR,
+    showMoreButton: {
+      backgroundColor: lighten(0.05, palette.backgroundPrimary),
       borderWidth: 1,
       borderColor: palette.secondary,
       paddingHorizontal: StyleGuide.spacing * 2,
       paddingVertical: StyleGuide.spacing,
       borderRadius: 100,
+      color: palette.primary,
     },
+    showMoreTitle: { color: palette.primary },
   });

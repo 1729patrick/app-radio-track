@@ -1,5 +1,4 @@
-import { lighten } from 'polished';
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated, {
   interpolateColor,
@@ -31,9 +30,6 @@ const Tab: React.FC<TabProps> = ({
 }) => {
   const { palette } = useTheme();
   const styles = useStyles(getStyles);
-  const colorInactive = useMemo(() => lighten(0.1, palette.secondary), [
-    palette.secondary,
-  ]);
 
   //@ts-ignore
   const style = useAnimatedStyle(() => {
@@ -44,7 +40,7 @@ const Tab: React.FC<TabProps> = ({
     const colorActive = interpolateColor(
       animation.value,
       [0, 1],
-      [colorInactive, palette.app],
+      [palette.secondary, palette.app],
     );
 
     const color = interpolateColor(
@@ -52,7 +48,7 @@ const Tab: React.FC<TabProps> = ({
       inputRange,
       //@ts-ignore
       inputRange.map((i: number) =>
-        i === index ? colorActive : colorInactive,
+        i === index ? colorActive : palette.secondary,
       ),
     );
 

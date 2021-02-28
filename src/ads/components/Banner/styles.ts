@@ -36,10 +36,12 @@ export default (palette: PalleteType) =>
     headLine: {
       ...StyleGuide.typography.title2,
       fontSize: 13,
+      color: palette.primary,
     },
     tagLine: {
       ...StyleGuide.typography.subhead,
       fontSize: 10,
+      color: palette.primary,
     },
     advertiser: {
       fontSize: 10,

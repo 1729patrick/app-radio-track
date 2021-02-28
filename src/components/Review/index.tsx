@@ -277,6 +277,7 @@ const Review: React.ForwardRefRenderFunction<ReviewHandler, ReviewProps> = (
                   <WithoutFeedbackButton
                     title={'CONFIRMAR'}
                     onPress={onConfirmReview}
+                    titleStyle={{ color: palette.app }}
                   />
                 </View>
               </View>

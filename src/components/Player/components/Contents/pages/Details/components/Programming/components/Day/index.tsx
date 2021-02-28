@@ -139,6 +139,10 @@ const Day: React.ForwardRefRenderFunction<ItemHandler, ItemProps> = (
     return { height: height.value };
   }, [height.value]);
 
+  if (!programmingDay.length) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.content, style]}>
@@ -166,9 +170,9 @@ const Day: React.ForwardRefRenderFunction<ItemHandler, ItemProps> = (
       {(fullHeight > minHeight || expanded) && (
         <Animated.View style={[styles.showMoreContainer, showMoreStyle]}>
           <TouchableWithoutFeedback
-            style={styles.showMoreTitle}
+            style={styles.showMoreButton}
             onPress={showMore}>
-            <Text>{title}</Text>
+            <Text style={styles.showMoreTitle}>{title}</Text>
           </TouchableWithoutFeedback>
         </Animated.View>
       )}

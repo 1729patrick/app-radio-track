@@ -31,7 +31,8 @@ export default (palette: PalleteType) =>
       width: CARD_WIDTH,
       borderRadius: StyleGuide.borderRadius * 2.5,
       overflow: 'hidden',
-      elevation: 1,
+      borderWidth: 1,
+      borderColor: palette.border,
     },
     button: {
       width: '100%',

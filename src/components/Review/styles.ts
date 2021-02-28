@@ -71,5 +71,5 @@ export default (palette: PalleteType) =>
     },
     star: {},
     fiveStarContainer: { position: 'absolute', top: 0, width: '100%' },
-    button: { marginTop: StyleGuide.spacing * 5 },
+    button: { marginTop: StyleGuide.spacing * 5, backgroundColor: palette.app },
   });

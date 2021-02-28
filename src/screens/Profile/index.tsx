@@ -70,14 +70,13 @@ const Profile = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: palette.background }]}>
-      {isPremium ||
-        (isPremium === undefined && (
-          <Header
-            translateY={translateY}
-            showBack={false}
-            showRightButtons={false}
-          />
-        ))}
+      {(isPremium || isPremium === undefined) && (
+        <Header
+          translateY={translateY}
+          showBack={false}
+          showRightButtons={false}
+        />
+      )}
 
       <ScrollView
         contentContainerStyle={styles.contentContainer}

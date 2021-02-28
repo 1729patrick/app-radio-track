@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StatusBar } from 'react-native';
 
 import styles from './styles';
 import LottieView from 'lottie-react-native';
@@ -41,6 +41,12 @@ const Welcome = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        barStyle={'light-content'}
+        translucent
+        backgroundColor="transparent"
+      />
+
       <View style={styles.containerTop}>
         <Text style={styles.title}>Bem-vindo (a)</Text>
         <Text style={styles.description}>

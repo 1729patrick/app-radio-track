@@ -6,7 +6,7 @@ export default (palette: PalleteType) =>
   StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: palette.border,
+      backgroundColor: '#27282c',
     },
     button: { height: '100%', width: '100%' },
   });
