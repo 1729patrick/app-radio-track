@@ -580,7 +580,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
   }));
 
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => {
+    const handler = () => {
       const contentsOpen = contentTranslateY.value === CONTENT_SNAP_POINTS[0];
       if (contentsOpen) {
         contentsRef.current?.onCompactContent();
@@ -595,7 +595,10 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
       }
 
       return false;
-    });
+    };
+    BackHandler.addEventListener('hardwareBackPress', handler);
+
+    return () => BackHandler.removeEventListener('hardwareBackPress', handler);
   }, [contentTranslateY, onCompactPlayer, translateY.value]);
 
   useEffect(() => {

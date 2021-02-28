@@ -51,5 +51,6 @@ export default (palette: PalleteType) =>
       width: 27,
       height: 27,
       borderRadius: 20,
+      backgroundColor: palette.light,
     },
   });

@@ -1,13 +1,11 @@
 import React from 'react';
 import Region from '~/components/Region';
-import { RegionType } from '~/screens/Explore/components/Regions';
 import { REGIONS } from '~/data/regions';
 import Header from '~/components/Header';
-import { View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useTheme } from '~/contexts/ThemeContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 import styles from './styles';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useRegion } from '~/contexts/RegionContext';
 
 const Location = () => {
@@ -22,20 +20,22 @@ const Location = () => {
         title={'Região/Estado'}
         backgroundColor={palette.backgroundPrimary}
         elevation={5}
-        showSearch={false}
+        showRightButtons={false}
       />
-      <ScrollView
+      <FlatList
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.contentContainer}>
-        {REGIONS.map((region: RegionType) => (
+        contentContainerStyle={styles.contentContainer}
+        data={REGIONS}
+        keyExtractor={(region) => region.id}
+        renderItem={({ item: region }) => (
           <Region
             {...region}
             key={region.id}
             checked={region.id === regionId}
             onPress={() => setRegionId(region.id)}
           />
-        ))}
-      </ScrollView>
+        )}
+      />
     </View>
   );
 };

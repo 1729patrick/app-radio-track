@@ -20,7 +20,7 @@ const TermsAndConditions = () => {
         title={'Terms and Conditions'}
         backgroundColor={palette.backgroundPrimary}
         elevation={5}
-        showSearch={false}
+        showRightButtons={false}
       />
 
       <ScrollView contentContainerStyle={styles.contentContainer}>

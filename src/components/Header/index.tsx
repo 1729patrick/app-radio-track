@@ -19,7 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import useStyles from '~/hooks/useStyles';
 import { useTheme } from '~/contexts/ThemeContext';
-import Modal from '../Modal';
+import Modal from '../Modal/ScrollView';
 import {
   BorderlessButton,
   TouchableOpacity,
@@ -32,7 +32,7 @@ type HeaderProps = {
   title?: string;
   backgroundColor?: string;
   showBack?: boolean;
-  showSearch?: boolean;
+  showRightButtons?: boolean;
   elevation?: number;
 };
 
@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({
   title,
   backgroundColor,
   showBack = true,
-  showSearch = true,
+  showRightButtons = true,
   elevation = 0,
 }) => {
   const { navigate, pop } = useNavigation<StackNavigationProp<any>>();
@@ -100,24 +100,24 @@ const Header: React.FC<HeaderProps> = ({
           <Text style={styles.title}>{title || 'Rádio Online'}</Text>
         </View>
 
-        <View style={styles.rightButtons}>
-          {showSearch && (
+        {showRightButtons && (
+          <View style={styles.rightButtons}>
             <RoundButton
               size={22}
               name="md-search-outline"
               onPress={onOpenSearch}
               Icon={IonIcon}
             />
-          )}
 
-          <BorderlessButton
-            rippleColor={palette.secondary}
-            hitSlop={{ top: 58, bottom: 58, left: 58, right: 58 }}
-            onPress={show}
-            style={styles.flagButton}>
-            <Image source={{ uri: flag('br') }} style={styles.flag} />
-          </BorderlessButton>
-        </View>
+            <BorderlessButton
+              rippleColor={palette.secondary}
+              hitSlop={{ top: 58, bottom: 58, left: 58, right: 58 }}
+              onPress={show}
+              style={styles.flagButton}>
+              <Image source={{ uri: flag('br') }} style={styles.flag} />
+            </BorderlessButton>
+          </View>
+        )}
       </Animated.View>
     </Animated.View>
   );

@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import Counties from '~/components/Countries';
-import Modal, { ModalHandler } from '~/components/Modal';
+import Modal, { ModalHandler } from '~/components/Modal/ScrollView';
 
 type setContentArgs = {
   id: string;

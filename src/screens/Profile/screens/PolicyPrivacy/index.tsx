@@ -20,7 +20,7 @@ const PolicyPrivacy = () => {
         title={'Privacy Policy'}
         backgroundColor={palette.backgroundPrimary}
         elevation={5}
-        showSearch={false}
+        showRightButtons={false}
       />
 
       <ScrollView contentContainerStyle={styles.contentContainer}>

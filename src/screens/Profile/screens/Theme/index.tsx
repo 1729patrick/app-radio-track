@@ -46,7 +46,7 @@ const Theme = () => {
         title={'Tema'}
         backgroundColor={palette.backgroundPrimary}
         elevation={5}
-        showSearch={false}
+        showRightButtons={false}
       />
 
       {themes.map(({ Icon, id, onPress, icon, title }) => (

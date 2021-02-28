@@ -7,14 +7,7 @@ import React, {
 } from 'react';
 import Counties from '~/components/Countries';
 import Loader from '~/components/Loader';
-import Modal, { ModalHandler } from '~/components/Modal';
-
-type setContentArgs = {
-  id: string;
-  content: Element;
-  title: string;
-  confirm: string;
-};
+import Modal, { ModalHandler } from '~/components/Modal/FlatList';
 
 type ContextProps = {
   show: () => void;

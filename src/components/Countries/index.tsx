@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
-import { View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import COUNTRIES from '~/data/countries';
 import Region from '../Region';
-import styles from './styles';
 import { flag } from '~/services/api';
 
 type CountiesProps = {
@@ -12,19 +11,23 @@ type CountiesProps = {
 
 const Counties: React.FC<CountiesProps> = ({ countryId, setCountryId }) => {
   return (
-    <View style={styles.container}>
-      {COUNTRIES.map((country) => (
-        <Region
-          key={country.id}
-          disabled={country.code !== 'br'}
-          id={country.id}
-          title={country.name}
-          checked={country.code === 'br'}
-          image={{ uri: flag(country.code) }}
-          onPress={setCountryId}
-        />
-      ))}
-    </View>
+    <FlatList
+      data={COUNTRIES}
+      keyExtractor={({ id }) => id}
+      showsVerticalScrollIndicator={false}
+      renderItem={({ item: country }) => {
+        return (
+          <Region
+            disabled={country.code !== 'br'}
+            id={country.id}
+            title={country.name}
+            checked={country.code === 'br'}
+            image={{ uri: flag(country.code) }}
+            onPress={setCountryId}
+          />
+        );
+      }}
+    />
   );
 };
 
