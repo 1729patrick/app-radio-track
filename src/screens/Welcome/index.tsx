@@ -6,35 +6,33 @@ import LottieView from 'lottie-react-native';
 import Svg, { Path } from 'react-native-svg';
 import RectButton from '~/components/Buttons/RectButton';
 import WithoutFeedbackButton from '~/components/Buttons/WithoutFeedback';
-import Regions, { RegionHandler } from './components/Regions';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
-import { useRegion } from '~/contexts/RegionContext';
+import { STATES, useLocation } from '~/contexts/LocationContext';
+import Regions, { RegionsHandler } from '~/components/Regions';
+import Modal, { ModalHandler } from '~/components/Modal/FlatList';
 
 const Welcome = () => {
-  const regionsRef = useRef<RegionHandler>(null);
   const { pop } = useNavigation<StackNavigationProp<any>>();
-  const { setRegionId, STATES } = useRegion();
-  const radioIdRef = useRef('');
+  const { regions, setRegionId } = useLocation();
+  const modalRef = useRef<ModalHandler>(null);
+  const regionsRef = useRef<RegionsHandler>(null);
 
   const openRegions = () => {
-    regionsRef.current?.show();
+    modalRef.current?.show();
   };
 
-  const onContinue = (regionId: string) => {
+  const onContinue = () => {
     pop();
-    radioIdRef.current = regionId;
   };
 
   const onSkip = () => {
     pop();
-    radioIdRef.current = STATES.REQUEST_LATER;
   };
 
   useEffect(() => {
     return () => {
-      setRegionId(radioIdRef.current);
+      setRegionId(regionsRef.current?.regionId || STATES.REQUEST_LATER);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -62,7 +60,7 @@ const Welcome = () => {
 
       <View style={styles.containerBottom}>
         <RectButton
-          title="Escolha o seu estado"
+          title="Selecione o estado"
           onPress={openRegions}
           containerStyle={styles.containerButtonChoose}
           titleStyle={styles.titleButtonChoose}
@@ -82,7 +80,15 @@ const Welcome = () => {
         />
       </Svg>
 
-      <Regions ref={regionsRef} onContinue={onContinue} />
+      <Modal
+        ref={modalRef}
+        onContinue={onContinue}
+        title={'Selecione o Estado'}
+        confirm={'OK'}
+        itemHeight={48.5}
+        itemsSize={regions.length}>
+        <Regions ref={regionsRef} regions={regions} />
+      </Modal>
     </View>
   );
 };

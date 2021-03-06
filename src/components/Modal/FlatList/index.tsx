@@ -6,20 +6,11 @@ import React, {
   useEffect,
   useImperativeHandle,
   useMemo,
-  useRef,
   useState,
 } from 'react';
-import {
-  BackHandler,
-  Dimensions,
-  LayoutChangeEvent,
-  Text,
-  View,
-} from 'react-native';
+import { BackHandler, Dimensions, Text, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
-  Extrapolate,
-  interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -28,7 +19,6 @@ import WithoutFeedbackButton from '~/components/Buttons/WithoutFeedback';
 
 import Indicator from '~/components/Indicator';
 import ModalBackground from '~/components/ModalBackground';
-import ScrollView from '~/components/ScrollView';
 import { useInteractivePanGestureHandler } from '~/hooks/useInteractivePanGestureHandler';
 
 import {
@@ -38,7 +28,7 @@ import {
 
 import { MODAL_SNAP_POINTS } from './constants';
 
-import getStyles from './styles';
+import getStyles, { headerHeight } from './styles';
 import { useTheme } from '~/contexts/ThemeContext';
 
 const { height } = Dimensions.get('window');
@@ -48,6 +38,8 @@ type ModalProps = {
   title: string;
   children: ReactNode;
   confirm: string;
+  itemHeight: number;
+  itemsSize: number;
 };
 
 export type ModalHandler = {
@@ -55,7 +47,7 @@ export type ModalHandler = {
 };
 
 const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
-  { onContinue, title, children, confirm },
+  { onContinue, title, children, confirm, itemHeight = 0, itemsSize = 0 },
   ref,
 ) => {
   const { palette } = useTheme();
@@ -64,7 +56,19 @@ const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
     return getStyles(palette);
   }, [palette]);
 
-  const [snapPoints, setSnapPoints] = useState(MODAL_SNAP_POINTS);
+  const snapPoints = useMemo(() => {
+    const contentHeight = height - (itemHeight * itemsSize + headerHeight);
+
+    const [first, second, third] = MODAL_SNAP_POINTS;
+
+    console.log(contentHeight, third);
+    // if (contentHeight > third) {
+    //   return [first, contentHeight, third];
+    // }
+
+    return [first, Math.max(contentHeight, second), third];
+  }, [itemHeight, itemsSize]);
+
   const translateY = useSharedValue(snapPoints[MODAL_SNAP_POINTS.length - 1]);
 
   const style = useAnimatedStyle(() => {
@@ -118,7 +122,7 @@ const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => {
-      const modalOpen = translateY.value !== snapPoints[2];
+      const modalOpen = translateY.value !== snapPoints[snapPoints.length - 1];
       if (modalOpen) {
         hidden();
 

@@ -22,8 +22,9 @@ import { FavoriteRadios, PlaylistRadios } from './components/Radios/types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Error from '~/components/Error';
-import { useRegion } from '~/contexts/RegionContext';
+
 import useStyles from '~/hooks/useStyles';
+import { STATES, useLocation } from '~/contexts/LocationContext';
 
 function daysIntoYear() {
   const date = new Date();
@@ -90,7 +91,7 @@ type StateType = {
 
 const Home: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
-  const { STATES, regionId } = useRegion();
+  const { regionId } = useLocation();
   const [state, setState] = useState<StateType>({});
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const welcomeShowedRef = useRef(false);
@@ -148,7 +149,7 @@ const Home: React.FC = () => {
     if (regionId === STATES.EMPTY) {
       navigate('Welcome');
     }
-  }, [STATES.EMPTY, navigate, regionId]);
+  }, [navigate, regionId]);
 
   if (regionId === STATES.EMPTY) {
     return <Loader />;

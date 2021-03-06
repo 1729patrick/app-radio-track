@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Image, View, Text } from 'react-native';
+import { Image, View, Text, ImageSourcePropType } from 'react-native';
 import { RegionType } from '~/screens/Explore/components/Regions';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import getStyles from './styles';
@@ -12,13 +12,16 @@ type RegionProps = RegionType & {
   checked: boolean;
   onPress: (id: string) => void;
   disabled?: boolean;
+  image?: ImageSourcePropType;
+  id: string;
+  name: string;
 };
 
 const Region: React.FC<RegionProps> = ({
-  image,
-  title,
-  checked,
   id,
+  name,
+  image,
+  checked,
   onPress,
   disabled,
 }) => {
@@ -27,13 +30,14 @@ const Region: React.FC<RegionProps> = ({
 
   return (
     <RectButton
+      // onLayout={(e) => console.log(e.nativeEvent.layout.height)}
       enabled={!disabled}
       onPress={() => onPress(id)}
       rippleColor={palette.secondary}
       style={[styles.container, disabled ? styles.disabled : {}]}>
       <View style={[styles.info]}>
-        <Image source={image} style={styles.image} />
-        <Text style={[styles.title]}>{title}</Text>
+        {image && <Image source={image} style={styles.image} />}
+        <Text style={[styles.title]}>{name}</Text>
       </View>
       {!checked && (
         <Icon

@@ -19,13 +19,9 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import useStyles from '~/hooks/useStyles';
 import { useTheme } from '~/contexts/ThemeContext';
-import Modal from '../Modal/ScrollView';
-import {
-  BorderlessButton,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
-import { useCountry } from '~/contexts/CountryContext';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { flag } from '~/services/api';
+import { useLocation } from '~/contexts/LocationContext';
 
 type HeaderProps = {
   translateY: Animated.SharedValue<number>;
@@ -47,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({
   const { navigate, pop } = useNavigation<StackNavigationProp<any>>();
   const styles = useStyles(getStyles);
   const { palette } = useTheme();
-  const { show } = useCountry();
+  const { showCountries } = useLocation();
 
   const y = useDerivedValue(() => {
     const validY = interpolate(
@@ -112,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({
             <BorderlessButton
               rippleColor={palette.secondary}
               hitSlop={{ top: 58, bottom: 58, left: 58, right: 58 }}
-              onPress={show}
+              onPress={showCountries}
               style={styles.flagButton}>
               <Image source={{ uri: flag('br') }} style={styles.flag} />
             </BorderlessButton>

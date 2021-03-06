@@ -2,11 +2,11 @@ import React, { memo, useCallback } from 'react';
 import { Dimensions, Image, Text, View } from 'react-native';
 import { FlatList, RectButton } from 'react-native-gesture-handler';
 import getStyles from './styles';
-import { REGIONS } from './data';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import useStyles from '~/hooks/useStyles';
 import { useTheme } from '~/contexts/ThemeContext';
+import { useLocation } from '~/contexts/LocationContext';
 
 const { width } = Dimensions.get('window');
 
@@ -16,6 +16,7 @@ const Regions = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const styles = useStyles(getStyles);
   const { palette } = useTheme();
+  const { regions } = useLocation();
 
   const onShowRegion = useCallback(
     ({ title, id }: RegionType) => {
@@ -60,7 +61,7 @@ const Regions = () => {
 
       <FlatList
         horizontal
-        data={REGIONS}
+        data={regions}
         renderItem={renderItem}
         snapToInterval={width * 0.75}
         contentContainerStyle={styles.contentContainer}

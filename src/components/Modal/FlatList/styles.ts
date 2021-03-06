@@ -6,7 +6,7 @@ import {
 import { INDICATOR_TOTAL_HEIGHT } from '~/components/Indicator/constants';
 import StyleGuide from '~/utils/StyleGuide';
 
-const headerHeight = HEADER_HEIGHT + STATUS_BAR_HEIGHT;
+export const headerHeight = HEADER_HEIGHT + STATUS_BAR_HEIGHT;
 const { height } = Dimensions.get('window');
 
 import { PalleteType } from '~/contexts/ThemeContext';

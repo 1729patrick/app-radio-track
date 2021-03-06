@@ -14,8 +14,7 @@ import { useTheme } from '~/contexts/ThemeContext';
 import { useIAP } from '~/contexts/IAPContext';
 import Header from '~/components/Header';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
-import { useRegion } from '~/contexts/RegionContext';
-import { REGIONS } from '~/data/regions';
+import { useLocation } from '~/contexts/LocationContext';
 
 const Profile = () => {
   const { translateY } = useAnimatedHeader();
@@ -24,13 +23,13 @@ const Profile = () => {
 
   const { palette } = useTheme();
   const { navigate } = useNavigation<StackNavigationProp<any>>();
-  const { regionId } = useRegion();
+  const { regionId, regions } = useLocation();
 
   const screens = useMemo(
     () => [
       {
-        title: 'Região/Estado',
-        description: REGIONS.find((r) => r.id === regionId)?.title,
+        title: 'Estado',
+        description: regions.find((r) => r.id === regionId)?.name,
         icon: 'earth',
         Icon: IconMDI,
         onPress: () => navigate('Location'),
@@ -65,7 +64,7 @@ const Profile = () => {
           ),
       },
     ],
-    [isPremium, regionId, navigate],
+    [regions, isPremium, regionId, navigate],
   );
 
   return (

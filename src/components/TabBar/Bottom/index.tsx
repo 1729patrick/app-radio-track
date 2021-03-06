@@ -21,9 +21,10 @@ import { ActiveCompass, InactiveCompass } from './Icons/Compass';
 import { ActiveHome, InactiveHome } from './Icons/Home';
 import { ActiveLibrary, InactiveLibrary } from './Icons/Library';
 import { ActiveProfile, InactiveProfile } from './Icons/Profile';
-import { useRegion } from '~/contexts/RegionContext';
+
 import useStyles from '~/hooks/useStyles';
 import { useTheme } from '~/contexts/ThemeContext';
+import { STATES, useLocation } from '~/contexts/LocationContext';
 
 const { width } = Dimensions.get('window');
 
@@ -57,7 +58,7 @@ const TABS = [
 type TabBarProps = BottomTabBarProps<BottomTabBarOptions>;
 
 const TabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation }) => {
-  const { STATES, regionId } = useRegion();
+  const { regionId } = useLocation();
   const { playerRef, translateY } = usePlayer();
   const styles = useStyles(getStyles);
   const { palette } = useTheme();

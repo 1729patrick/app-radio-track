@@ -1,17 +1,24 @@
-import React from 'react';
-import Region from '~/components/Region';
-import { REGIONS } from '~/data/regions';
+import React, { useEffect, useRef } from 'react';
+
 import Header from '~/components/Header';
-import { FlatList, View } from 'react-native';
+import { View } from 'react-native';
 import { useTheme } from '~/contexts/ThemeContext';
 import useAnimatedHeader from '~/hooks/useAnimatedHeader';
 import styles from './styles';
-import { useRegion } from '~/contexts/RegionContext';
+import Regions, { RegionsHandler } from '~/components/Regions';
+import { useLocation } from '~/contexts/LocationContext';
 
 const Location = () => {
-  const { regionId, setRegionId } = useRegion();
   const { palette } = useTheme();
   const { translateY } = useAnimatedHeader();
+  const { regions, setRegionId } = useLocation();
+  const regionsRef = useRef<RegionsHandler>(null);
+
+  useEffect(() => {
+    return () => {
+      setRegionId(regionsRef.current?.regionId || '');
+    };
+  }, [setRegionId]);
 
   return (
     <View style={styles.container}>
@@ -22,20 +29,7 @@ const Location = () => {
         elevation={5}
         showRightButtons={false}
       />
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.contentContainer}
-        data={REGIONS}
-        keyExtractor={(region) => region.id}
-        renderItem={({ item: region }) => (
-          <Region
-            {...region}
-            key={region.id}
-            checked={region.id === regionId}
-            onPress={() => setRegionId(region.id)}
-          />
-        )}
-      />
+      <Regions regions={regions} ref={regionsRef} />
     </View>
   );
 };

@@ -6,12 +6,11 @@ import { HistoryProvider } from './contexts/HistoryContext';
 import { PlayingProvider } from './contexts/PlayingContext';
 import { AdProvider } from './ads/contexts/AdContext';
 import { ReviewProvider } from './contexts/ReviewContext';
-import { RegionProvider } from './contexts/RegionContext';
 import { SearchHistoryProvider } from './contexts/SearchHistoryContext';
 import { AppearanceProvider } from 'react-native-appearance';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { IAPProvider } from './contexts/IAPContext';
-import { CountryProvider } from './contexts/CountryContext';
+import { LocationProvider } from './contexts/LocationContext';
 
 export default () => {
   return (
@@ -24,13 +23,11 @@ export default () => {
                 <PlayingProvider>
                   <ReviewProvider>
                     <AdProvider>
-                      <RegionProvider>
+                      <LocationProvider>
                         <SearchHistoryProvider>
-                          <CountryProvider>
-                            <App />
-                          </CountryProvider>
+                          <App />
                         </SearchHistoryProvider>
-                      </RegionProvider>
+                      </LocationProvider>
                     </AdProvider>
                   </ReviewProvider>
                 </PlayingProvider>

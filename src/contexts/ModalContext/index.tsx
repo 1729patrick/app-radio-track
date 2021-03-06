@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import Counties from '~/components/Countries';
+import Countries from '~/components/Countries';
 import Modal, { ModalHandler } from '~/components/Modal/ScrollView';
 
 type setContentArgs = {
@@ -65,7 +65,7 @@ export const ModalProvider: React.FC = ({ children }) => {
         id={'countries'}
         title={'Selecione o País'}
         confirm={'OK'}>
-        <Counties />
+        <Countries />
       </Modal>
     </ModalContext.Provider>
   );

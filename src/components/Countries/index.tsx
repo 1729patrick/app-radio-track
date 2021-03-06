@@ -1,15 +1,31 @@
-import React, { memo } from 'react';
+import React, { forwardRef, memo, useImperativeHandle, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import COUNTRIES from '~/data/countries';
 import Region from '../Region';
 import { flag } from '~/services/api';
 
-type CountiesProps = {
-  countryId: string;
+type CountriesProps = {};
+
+export type CountriesHandler = {
   setCountryId: (countryId: string) => void;
+  countryId: string;
 };
 
-const Counties: React.FC<CountiesProps> = ({ countryId, setCountryId }) => {
+const Countries: React.ForwardRefRenderFunction<
+  CountriesHandler,
+  CountriesProps
+> = (_, ref) => {
+  const [countryId, setCountryId] = useState('');
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      setCountryId,
+      countryId,
+    }),
+    [countryId],
+  );
+
   return (
     <FlatList
       data={COUNTRIES}
@@ -18,10 +34,10 @@ const Counties: React.FC<CountiesProps> = ({ countryId, setCountryId }) => {
       renderItem={({ item: country }) => {
         return (
           <Region
-            disabled={country.code !== 'br'}
+            // disabled={country.slug !== countryId}
             id={country.id}
-            title={country.name}
-            checked={country.code === 'br'}
+            name={country.name}
+            checked={country.id === countryId}
             image={{ uri: flag(country.code) }}
             onPress={setCountryId}
           />
@@ -31,4 +47,4 @@ const Counties: React.FC<CountiesProps> = ({ countryId, setCountryId }) => {
   );
 };
 
-export default memo(Counties);
+export default memo(forwardRef(Countries));
