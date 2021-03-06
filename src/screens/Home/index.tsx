@@ -26,51 +26,37 @@ import Error from '~/components/Error';
 import useStyles from '~/hooks/useStyles';
 import { STATES, useLocation } from '~/contexts/LocationContext';
 
-function daysIntoYear() {
-  const date = new Date();
-  return (
-    (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
-      Date.UTC(date.getFullYear(), 0, 0)) /
-    24 /
-    60 /
-    60 /
-    1000
-  );
-}
-
-const dateOfYear = daysIntoYear();
-
 const PLAYLISTS = [
   {
     key: 'recommend',
     url: 'playlists/recommend',
     title: 'Rádios recomendadas',
-    initialPage: (dateOfYear + 10) % 228,
+    initialPage: 1,
   },
   {
     key: 'news',
     url: 'genres/["gvfajea1","i59vt6nq","rdqj0603","se14b6m5"]',
     title: 'Acompanhe as notícias',
-    initialPage: dateOfYear % 16,
+    initialPage: 1,
     initialPageAllList: 1,
   },
   {
     key: 'sports',
     url: 'genres/["iq5fvulg"]',
     title: 'Tudo sobre esportes',
-    initialPage: dateOfYear % 9,
+    initialPage: 1,
     initialPageAllList: 1,
   },
   {
     key: 'popular',
     url: 'playlists/popular',
     title: 'Rádios populares',
-    initialPage: (dateOfYear + 20) % 228,
+    initialPage: 1,
     initialPageAllList: 1,
   },
   {
     key: 'location',
-    url: 'playlists/region/br/',
+    url: 'playlists/region',
     title: 'Rádios da sua região',
     initialPage: 1,
   },
@@ -78,7 +64,7 @@ const PLAYLISTS = [
     key: 'random',
     url: 'playlists/random',
     title: 'Descubra novas rádios',
-    initialPage: (dateOfYear + 30) % 228,
+    initialPage: 1,
   },
 ];
 
@@ -122,6 +108,7 @@ const Home: React.FC = () => {
     (args: { key: string; success: boolean; error: string }) => {
       const { key, success, error } = args;
 
+      // console.log(args);
       if (key === 'location') {
         return;
       }

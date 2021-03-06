@@ -33,6 +33,7 @@ export const AdProvider: React.FC = ({ children }) => {
   const showAdRef = useRef(true);
 
   const show = useCallback(({ showAd }: { showAd: () => void }) => {
+    return;
     if (!showAdRef.current) {
       return;
     }

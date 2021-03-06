@@ -57,6 +57,7 @@ const Banner = ({ media, id, backgroundColor }: BannerProps) => {
     setAspectRatio(event.aspectRatio);
   };
 
+  return null;
   if (isPremium) {
     return null;
   }

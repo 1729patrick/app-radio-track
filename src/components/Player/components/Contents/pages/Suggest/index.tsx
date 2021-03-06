@@ -32,11 +32,15 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
   }, [routeProps?.radio]);
 
   const close = useFetch<RadioType[]>(
-    `radio/${radio.id}/closes/${JSON.stringify(radio.genres)}`,
+    radio.id
+      ? `radio/${radio.id}/closes/${JSON.stringify(radio.genres)}`
+      : null,
   );
 
   const location = useFetch<RadioType[]>(
-    `radio/${radio.id}/location/${radio.countryCode}/${radio.regionId}/${radio.cityId}`,
+    radio.id
+      ? `radio/${radio.id}/location/${radio.countryCode}/${radio.regionId}/${radio.cityId}`
+      : null,
   );
 
   const onSetRadio = useCallback(

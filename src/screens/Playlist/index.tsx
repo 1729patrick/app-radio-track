@@ -44,6 +44,7 @@ const Explore: React.FC = () => {
     params.initialPage,
   );
 
+  console.log(data, error);
   const { onExpandPlayer } = usePlayer();
 
   const onExpandPlayerPress = useCallback(

@@ -6,25 +6,33 @@ import React, {
   useEffect,
   useState,
   useRef,
+  useMemo,
 } from 'react';
 import Countries, { CountriesHandler } from '~/components/Countries';
-import Loader from '~/components/Loader';
+import { cache } from 'swr';
 import Modal, { ModalHandler } from '~/components/Modal/FlatList';
 import { useFetch } from '~/hooks/useFetch';
 import COUNTRIES from '~/data/countries';
+import usePublicIp from '~/hooks/usePublicIp';
+import useIpLocation from '~/hooks/useIpLocation';
+import countries from '~/data/countries';
 
 export enum STATES {
   EMPTY = 'empty',
   REQUEST_LATER = 'request-later',
 }
 
-export type RegionsType = { id: string; name: string }[];
+type RegionType = { id?: string; name?: string; code?: string };
+
+export type RegionsType = RegionType[];
 
 type ContextProps = {
   regionId: string;
   regions: RegionsType;
   setRegionId: (regionId: string) => void;
   showCountries: () => void;
+  country: RegionType;
+  region: RegionType;
 };
 
 const LocationContext = createContext<ContextProps>({
@@ -32,20 +40,33 @@ const LocationContext = createContext<ContextProps>({
   regions: [],
   setRegionId: () => {},
   showCountries: () => {},
+  country: {},
+  region: {},
 });
 
 export const LocationProvider: React.FC = ({ children }) => {
   const [countryId, setCountryId] = useState('');
   const [regionId, setRegionId] = useState<STATES | string>('');
+  const { ip } = usePublicIp();
+  const { getCountryCode } = useIpLocation();
 
   const { getItem, setItem } = useAsyncStorage('@location:location');
-
-  const [loading, setLoading] = useState(false);
 
   const modalRef = useRef<ModalHandler>(null);
   const countriesRef = useRef<CountriesHandler>(null);
 
-  const regions = useFetch<RegionsType>(`/regions/${countryId}`);
+  const country = useMemo<RegionType>(() => {
+    return countries.find(({ id }) => id === countryId) || {};
+  }, [countryId]);
+
+  const regions = useFetch<RegionsType>(
+    countryId ? `/regions/${countryId}` : null,
+    true,
+  );
+
+  const region = useMemo<RegionType>(() => {
+    return regions.data?.find(({ id }) => id === regionId) || {};
+  }, [regionId, regions]);
 
   useEffect(() => {
     countriesRef.current?.setCountryId(countryId);
@@ -62,18 +83,23 @@ export const LocationProvider: React.FC = ({ children }) => {
     countryId: string;
     regionId: string;
   }) => {
+    cache.clear();
     setItem(JSON.stringify({ countryId, regionId }));
   };
 
   const onConfirm = () => {
-    const countryId = countriesRef.current?.countryId || '';
+    const newCountryId = countriesRef.current?.countryId || '';
 
     updateStorage({
-      countryId,
+      countryId: newCountryId,
       regionId,
     });
 
-    setCountryId(countryId);
+    setCountryId(newCountryId);
+
+    if (newCountryId !== countryId) {
+      onSetRegionId('');
+    }
   };
 
   const onSetRegionId = (regionId: string) => {
@@ -84,13 +110,20 @@ export const LocationProvider: React.FC = ({ children }) => {
 
   const readLocationFromStorage = useCallback(async () => {
     const location = await getItem();
-    if (location) {
-      const { regionId, countryId } = JSON.parse(location);
+    let { regionId, countryId } = { regionId: '', countryId: '' };
 
-      console.log({ regionId, countryId });
-      setRegionId(regionId);
+    if (location) {
+      ({ regionId, countryId } = JSON.parse(location));
     }
-  }, [getItem]);
+
+    if (!countryId) {
+      countryId = await getCountryCode(ip);
+    }
+
+    setCountryId(countryId);
+    setRegionId(regionId);
+    return;
+  }, [getCountryCode, getItem, ip]);
 
   useEffect(() => {
     readLocationFromStorage();
@@ -104,6 +137,8 @@ export const LocationProvider: React.FC = ({ children }) => {
         setRegionId: onSetRegionId,
         regions: regions.data || [],
         showCountries,
+        country,
+        region,
       }}>
       {children}
       <Modal
@@ -115,7 +150,6 @@ export const LocationProvider: React.FC = ({ children }) => {
         itemsSize={COUNTRIES.length}>
         <Countries ref={countriesRef} />
       </Modal>
-      {loading && <Loader />}
     </LocationContext.Provider>
   );
 };

@@ -22,7 +22,7 @@ const WithoutFeedbackButton = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+      hitSlop={{ top: 32, bottom: 32, left: 32, right: 32 }}
       disabled={disabled}>
       <Text style={[styles.title, titleStyle, disabled ? styles.disabled : {}]}>
         {title}

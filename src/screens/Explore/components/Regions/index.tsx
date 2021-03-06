@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { Dimensions, Image, Text, View } from 'react-native';
 import { FlatList, RectButton } from 'react-native-gesture-handler';
 import getStyles from './styles';
@@ -10,20 +10,30 @@ import { useLocation } from '~/contexts/LocationContext';
 
 const { width } = Dimensions.get('window');
 
-export type RegionType = { id: string; image: any; title: string };
+export type RegionType = { name: string; image: any; title: string };
 
 const Regions = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const styles = useStyles(getStyles);
   const { palette } = useTheme();
-  const { regions } = useLocation();
+  const { regions, country } = useLocation();
+
+  const regionsGrouped = useMemo(() => {
+    let original = [...regions];
+    const splitted = [];
+    while (original.length > 0) {
+      splitted.push(original.splice(0, 4));
+    }
+
+    return splitted;
+  }, [regions]);
 
   const onShowRegion = useCallback(
-    ({ title, id }: RegionType) => {
-      const url = `playlists/region/br/${id}`;
-      navigate('Playlist', { title, url });
+    ({ name, code }: RegionType) => {
+      const url = `playlists/region/${country.code}/${code}`;
+      navigate('Playlist', { title: name, url });
     },
-    [navigate],
+    [navigate, country],
   );
 
   const renderItem = useCallback(
@@ -36,8 +46,8 @@ const Regions = () => {
                 rippleColor={palette.background}
                 style={styles.button}
                 onPress={() => onShowRegion(region)}>
-                <Image style={styles.image} source={region.image} />
-                <Text style={styles.regionTitle}>{region.title}</Text>
+                {/* <Image style={styles.image} source={region.image} /> */}
+                <Text style={styles.regionTitle}>{region.name}</Text>
               </RectButton>
             </View>
           ))}
@@ -49,19 +59,22 @@ const Regions = () => {
       palette.background,
       styles.button,
       styles.group,
-      styles.image,
       styles.region,
       styles.regionTitle,
     ],
   );
 
+  // if (!regions.length) {
+  //   return null;
+  // }
+
   return (
     <View>
-      <Text style={[styles.title]}>Regiões</Text>
+      <Text style={[styles.title]}>Estados</Text>
 
       <FlatList
         horizontal
-        data={regions}
+        data={regionsGrouped}
         renderItem={renderItem}
         snapToInterval={width * 0.75}
         contentContainerStyle={styles.contentContainer}

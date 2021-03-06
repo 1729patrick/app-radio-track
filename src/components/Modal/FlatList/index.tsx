@@ -61,7 +61,6 @@ const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
 
     const [first, second, third] = MODAL_SNAP_POINTS;
 
-    console.log(contentHeight, third);
     // if (contentHeight > third) {
     //   return [first, contentHeight, third];
     // }
@@ -160,6 +159,7 @@ const Modal: React.ForwardRefRenderFunction<ModalHandler, ModalProps> = (
               title={confirm}
               onPress={onComplete}
               titleStyle={styles.titleButtonOK}
+              hitSlop={{ top: 32, bottom: 32, left: 32, right: 32 }}
             />
           </View>
 

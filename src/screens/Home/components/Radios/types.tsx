@@ -56,7 +56,7 @@ export const PlaylistRadios: React.FC<TypesProps & PlaylistType> = ({
   useEffect(() => {
     toggleState({
       key: playlist.key,
-      success: !!data?.items?.length,
+      success: !!data,
       error: error?.message,
     });
   }, [data, toggleState, error, playlist.key]);

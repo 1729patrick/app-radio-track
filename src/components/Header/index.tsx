@@ -43,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({
   const { navigate, pop } = useNavigation<StackNavigationProp<any>>();
   const styles = useStyles(getStyles);
   const { palette } = useTheme();
-  const { showCountries } = useLocation();
+  const { showCountries, country } = useLocation();
 
   const y = useDerivedValue(() => {
     const validY = interpolate(
@@ -110,7 +110,12 @@ const Header: React.FC<HeaderProps> = ({
               hitSlop={{ top: 58, bottom: 58, left: 58, right: 58 }}
               onPress={showCountries}
               style={styles.flagButton}>
-              <Image source={{ uri: flag('br') }} style={styles.flag} />
+              {!!flag(country?.code) && (
+                <Image
+                  source={{ uri: flag(country?.code) }}
+                  style={styles.flag}
+                />
+              )}
             </BorderlessButton>
           </View>
         )}

@@ -11,7 +11,7 @@ import { useLocation } from '~/contexts/LocationContext';
 const Location = () => {
   const { palette } = useTheme();
   const { translateY } = useAnimatedHeader();
-  const { regions, setRegionId } = useLocation();
+  const { regions, setRegionId, regionId } = useLocation();
   const regionsRef = useRef<RegionsHandler>(null);
 
   useEffect(() => {
@@ -24,12 +24,12 @@ const Location = () => {
     <View style={styles.container}>
       <Header
         translateY={translateY}
-        title={'Região/Estado'}
+        title={'Estado'}
         backgroundColor={palette.backgroundPrimary}
         elevation={5}
         showRightButtons={false}
       />
-      <Regions regions={regions} ref={regionsRef} />
+      <Regions regions={regions} ref={regionsRef} initialRegionId={regionId} />
     </View>
   );
 };

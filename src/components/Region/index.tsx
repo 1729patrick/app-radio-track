@@ -30,7 +30,6 @@ const Region: React.FC<RegionProps> = ({
 
   return (
     <RectButton
-      // onLayout={(e) => console.log(e.nativeEvent.layout.height)}
       enabled={!disabled}
       onPress={() => onPress(id)}
       rippleColor={palette.secondary}

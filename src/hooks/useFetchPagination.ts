@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
+import { useLocation } from '~/contexts/LocationContext';
 import api from '~/services/api';
 import { FetchWithPagination } from '~/types/Fetch';
 
-const fetcher = (url: string) => api.get(url).then((res) => res.data);
+const fetcher = (url: string) => {
+  console.log({ url });
+  return api.get(url).then((res) => res.data);
+};
 
 export function useFetchPagination<Error = any>(
   url: string | null,
@@ -11,12 +15,21 @@ export function useFetchPagination<Error = any>(
 ) {
   const [page, setPage] = useState(initialPage || 1);
   const [allData, setAllData] = useState<FetchWithPagination>();
+  const { regionId, country } = useLocation();
   const indexesMapRef = useRef<any>({});
 
   const { data, error } = useSWR<FetchWithPagination, Error>(
-    () => (page ? `${url}?page=${page}` : url),
+    country.code && url
+      ? page
+        ? `${url}?page=${page}&countryCode=${country.code}&regionId=${regionId}`
+        : `${url}?countryCode=${country.code}&regionId=${regionId}`
+      : null,
     fetcher,
-    { revalidateOnMount: true },
+    {
+      revalidateOnMount: true,
+      revalidateOnReconnect: true,
+      revalidateOnFocus: true,
+    },
   );
 
   useEffect(() => {
@@ -40,6 +53,12 @@ export function useFetchPagination<Error = any>(
   const fetchMore = useCallback(() => {
     setPage(allData?.hasNextPage ? allData.nextPage : page);
   }, [allData?.hasNextPage, allData?.nextPage, page]);
+
+  useEffect(() => {
+    if (country.id) {
+      setAllData();
+    }
+  }, [country.id]);
 
   return {
     data: allData,

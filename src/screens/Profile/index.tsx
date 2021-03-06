@@ -23,16 +23,17 @@ const Profile = () => {
 
   const { palette } = useTheme();
   const { navigate } = useNavigation<StackNavigationProp<any>>();
-  const { regionId, regions } = useLocation();
+  const { regionId, regions, region } = useLocation();
 
   const screens = useMemo(
     () => [
       {
         title: 'Estado',
-        description: regions.find((r) => r.id === regionId)?.name,
+        description: region.name,
         icon: 'earth',
         Icon: IconMDI,
         onPress: () => navigate('Location'),
+        hidden: !regions.length,
       },
       {
         title: 'Tema',

@@ -8,6 +8,7 @@ import { BOTTOM_TAB_BAR_HEIGHT } from '../TabBar/Bottom/constants';
 
 type RegionsProps = {
   regions: RegionsType;
+  initialRegionId: string;
 };
 
 export type RegionsHandler = {
@@ -16,10 +17,10 @@ export type RegionsHandler = {
 };
 
 const Regions: React.ForwardRefRenderFunction<RegionsHandler, RegionsProps> = (
-  { regions },
+  { regions, initialRegionId = '' },
   ref,
 ) => {
-  const [regionId, setRegionId] = useState('');
+  const [regionId, setRegionId] = useState(initialRegionId);
 
   useImperativeHandle(
     ref,
