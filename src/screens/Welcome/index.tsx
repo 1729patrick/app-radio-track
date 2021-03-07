@@ -87,7 +87,7 @@ const Welcome = () => {
         confirm={'OK'}
         itemHeight={48.5}
         itemsSize={regions.length}>
-        <Regions ref={regionsRef} regions={regions} />
+        <Regions ref={regionsRef} regions={regions} paddingBottom={0} />
       </Modal>
     </View>
   );

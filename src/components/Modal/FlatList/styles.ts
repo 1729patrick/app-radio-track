@@ -3,7 +3,6 @@ import {
   HEADER_HEIGHT,
   STATUS_BAR_HEIGHT,
 } from '~/components/Header/constants';
-import { INDICATOR_TOTAL_HEIGHT } from '~/components/Indicator/constants';
 import StyleGuide from '~/utils/StyleGuide';
 
 export const headerHeight = HEADER_HEIGHT + STATUS_BAR_HEIGHT;
@@ -19,8 +18,7 @@ export default (palette: PalleteType) =>
     fakeBackground: {},
     contentContainer: {
       backgroundColor: palette.backgroundSecondary,
-      height,
-      paddingBottom: headerHeight,
+      height: height + 10,
     },
     header: {
       backgroundColor: palette.backgroundSecondary,
@@ -30,7 +28,6 @@ export default (palette: PalleteType) =>
     },
     headerContent: {
       flexDirection: 'row',
-      // marginTop: -INDICATOR_TOTAL_HEIGHT,
       height: HEADER_HEIGHT,
       alignItems: 'center',
       justifyContent: 'space-between',

@@ -50,7 +50,7 @@ export const FavoriteProvider: React.FC = ({ children }) => {
 
   const isFavorite = useCallback(
     (favorite: RadioType): boolean => {
-      return !!favorites.find((radio) => radio.id === favorite.id);
+      return !!favorites.find((radio) => radio.id === favorite?.id);
     },
     [favorites],
   );

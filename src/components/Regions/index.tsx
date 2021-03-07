@@ -8,7 +8,8 @@ import { BOTTOM_TAB_BAR_HEIGHT } from '../TabBar/Bottom/constants';
 
 type RegionsProps = {
   regions: RegionsType;
-  initialRegionId: string;
+  initialRegionId?: string;
+  paddingBottom?: number;
 };
 
 export type RegionsHandler = {
@@ -17,7 +18,11 @@ export type RegionsHandler = {
 };
 
 const Regions: React.ForwardRefRenderFunction<RegionsHandler, RegionsProps> = (
-  { regions, initialRegionId = '' },
+  {
+    regions,
+    initialRegionId = '',
+    paddingBottom = BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT,
+  },
   ref,
 ) => {
   const [regionId, setRegionId] = useState(initialRegionId);
@@ -35,7 +40,7 @@ const Regions: React.ForwardRefRenderFunction<RegionsHandler, RegionsProps> = (
     <FlatList
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        paddingBottom: BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT,
+        paddingBottom,
       }}
       data={regions}
       keyExtractor={(region) => region.id}

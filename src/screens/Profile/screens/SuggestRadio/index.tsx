@@ -21,6 +21,7 @@ const keys = [
   { key: 'name', error: 'Preencha o Nome da rádio.' },
   { key: 'slogan', error: 'Preencha o Slogan da rádio.' },
   { key: 'streamURL', error: 'Preencha a Stream URL da rádio.' },
+  { key: 'logoURL', error: 'Preencha a Logo URL da rádio.' },
   { key: 'genres', error: 'Preencha os Gêneros da rádio.' },
   { key: 'website', error: 'Preencha o Website da rádio.' },
   { key: 'address', error: 'Preencha o Endereço da rádio.' },
@@ -36,6 +37,7 @@ const SuggestRadio = () => {
   const nameRef = useRef<TextInput>(null);
   const sloganRef = useRef<TextInput>(null);
   const streamRef = useRef<TextInput>(null);
+  const logoRef = useRef<TextInput>(null);
   const genresRef = useRef<TextInput>(null);
   const websiteRef = useRef<TextInput>(null);
   const addressRef = useRef<TextInput>(null);
@@ -126,6 +128,15 @@ const SuggestRadio = () => {
           autoCapitalize={'none'}
           returnKeyType="next"
           ref={streamRef}
+          style={styles.input}
+          onSubmitEditing={() => focus(logoRef)}
+        />
+        <Input
+          placeholder={'Logo URL'}
+          onChangeText={(value) => onChangeText('logoURL', value)}
+          autoCapitalize={'none'}
+          returnKeyType="next"
+          ref={logoRef}
           style={styles.input}
           onSubmitEditing={() => focus(genresRef)}
         />

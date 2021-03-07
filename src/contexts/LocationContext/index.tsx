@@ -116,12 +116,13 @@ export const LocationProvider: React.FC = ({ children }) => {
       ({ regionId, countryId } = JSON.parse(location));
     }
 
+    setRegionId(!countryId && !regionId ? STATES.EMPTY : regionId);
+    // setRegionId(STATES.EMPTY);
+
     if (!countryId) {
       countryId = await getCountryCode(ip);
     }
-
     setCountryId(countryId);
-    setRegionId(regionId);
     return;
   }, [getCountryCode, getItem, ip]);
 
