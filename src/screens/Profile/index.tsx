@@ -55,6 +55,12 @@ const Profile = () => {
         onPress: () => navigate('PolicyPrivacy'),
       },
       {
+        title: 'Whatsapp',
+        icon: 'whatsapp',
+        Icon: IconMDI,
+        onPress: () => Linking.openURL('https://wa.me/message/WDF3HYJHEM6RB1'),
+      },
+      {
         title: 'Cancelar Assinatura',
         icon: 'cancel',
         hidden: !isPremium,
@@ -64,8 +70,14 @@ const Profile = () => {
             'https://play.google.com/store/account/subscriptions?package=pax.radio.brasil&sku=mensal_sub',
           ),
       },
+      {
+        title: 'Sobre',
+        icon: 'information',
+        Icon: IconMDI,
+        onPress: () => navigate('About'),
+      },
     ],
-    [regions, isPremium, regionId, navigate],
+    [region.name, regions.length, isPremium, navigate],
   );
 
   return (

@@ -6,6 +6,7 @@ import LottieView from 'lottie-react-native';
 import { RadioType } from '~/types/Station';
 import { image } from '~/services/api';
 import useStyles from '~/hooks/useStyles';
+import { useTheme } from '~/contexts/ThemeContext';
 
 type RadioProps = {
   playing: boolean;
@@ -20,6 +21,7 @@ const Radio: React.FC<RadioProps> = ({
   index,
   onExpandPlayer,
 }) => {
+  const { palette } = useTheme();
   const styles = useStyles(getStyles);
 
   return (
@@ -43,6 +45,20 @@ const Radio: React.FC<RadioProps> = ({
               loop
               style={styles.playing}
               speed={1}
+              colorFilters={[
+                {
+                  keypath: 'Path 6',
+                  color: palette.app,
+                },
+                {
+                  keypath: 'Path 7',
+                  color: palette.app,
+                },
+                {
+                  keypath: 'Path 8',
+                  color: palette.app,
+                },
+              ]}
             />
           </View>
         )}

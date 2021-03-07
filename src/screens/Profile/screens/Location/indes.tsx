@@ -14,12 +14,6 @@ const Location = () => {
   const { regions, setRegionId, regionId } = useLocation();
   const regionsRef = useRef<RegionsHandler>(null);
 
-  useEffect(() => {
-    return () => {
-      setRegionId(regionsRef.current?.regionId || '');
-    };
-  }, [setRegionId]);
-
   return (
     <View style={styles.container}>
       <Header
@@ -29,7 +23,12 @@ const Location = () => {
         elevation={5}
         showRightButtons={false}
       />
-      <Regions regions={regions} ref={regionsRef} initialRegionId={regionId} />
+      <Regions
+        regions={regions}
+        ref={regionsRef}
+        initialRegionId={regionId}
+        onEffectRegionId={setRegionId}
+      />
     </View>
   );
 };

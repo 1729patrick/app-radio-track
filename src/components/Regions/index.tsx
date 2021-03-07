@@ -1,4 +1,11 @@
-import React, { forwardRef, memo, useImperativeHandle, useState } from 'react';
+import React, {
+  forwardRef,
+  memo,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
 import { RegionsType } from '~/contexts/LocationContext';
@@ -10,6 +17,7 @@ type RegionsProps = {
   regions: RegionsType;
   initialRegionId?: string;
   paddingBottom?: number;
+  onEffectRegionId?: (regionId: string) => void;
 };
 
 export type RegionsHandler = {
@@ -22,10 +30,15 @@ const Regions: React.ForwardRefRenderFunction<RegionsHandler, RegionsProps> = (
     regions,
     initialRegionId = '',
     paddingBottom = BOTTOM_TAB_BAR_HEIGHT + COMPACT_HEIGHT,
+    onEffectRegionId,
   },
   ref,
 ) => {
   const [regionId, setRegionId] = useState(initialRegionId);
+
+  useEffect(() => {
+    onEffectRegionId?.(regionId);
+  }, [onEffectRegionId, regionId]);
 
   useImperativeHandle(
     ref,

@@ -22,6 +22,7 @@ import { useTheme } from '~/contexts/ThemeContext';
 import Theme from '~/screens/Profile/screens/Theme';
 import Location from '~/screens/Profile/screens/Location/indes';
 import SuggestRadio from '~/screens/Profile/screens/SuggestRadio';
+import About from '~/screens/Profile/screens/About';
 
 const Tab = createBottomTabNavigator();
 
@@ -139,6 +140,7 @@ function ProfileStackScreen() {
         component={SuggestRadio}
         options={options}
       />
+      <ProfileStack.Screen name="About" component={About} options={options} />
       <ProfileStack.Screen name="Theme" component={Theme} options={options} />
     </ProfileStack.Navigator>
   );
