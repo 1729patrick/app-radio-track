@@ -64,6 +64,7 @@ const Welcome = () => {
           onPress={openRegions}
           containerStyle={styles.containerButtonChoose}
           titleStyle={styles.titleButtonChoose}
+          loading={!regions.length}
         />
 
         <WithoutFeedbackButton
@@ -80,15 +81,17 @@ const Welcome = () => {
         />
       </Svg>
 
-      <Modal
-        ref={modalRef}
-        onContinue={onContinue}
-        title={'Selecione o Estado'}
-        confirm={'OK'}
-        itemHeight={48.5}
-        itemsSize={regions.length}>
-        <Regions ref={regionsRef} regions={regions} paddingBottom={0} />
-      </Modal>
+      {!!regions.length && (
+        <Modal
+          ref={modalRef}
+          onContinue={onContinue}
+          title={'Selecione o Estado'}
+          confirm={'OK'}
+          itemHeight={48.5}
+          itemsSize={regions.length}>
+          <Regions ref={regionsRef} regions={regions} paddingBottom={0} />
+        </Modal>
+      )}
     </View>
   );
 };

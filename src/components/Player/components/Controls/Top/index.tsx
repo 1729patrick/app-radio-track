@@ -25,6 +25,7 @@ type TopControlsProps = {
 };
 import { SNAP_POINTS as CONTENT_SNAP_POINTS } from '../../Contents/constants';
 import useStyles from '~/hooks/useStyles';
+import { useTheme } from '~/contexts/ThemeContext';
 
 const TopControls: React.FC<TopControlsProps> = ({
   y,
@@ -35,6 +36,7 @@ const TopControls: React.FC<TopControlsProps> = ({
 }) => {
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
   const styles = useStyles(getStyles);
+  const { palette } = useTheme();
 
   const style = useAnimatedStyle(() => {
     return {
@@ -85,6 +87,7 @@ const TopControls: React.FC<TopControlsProps> = ({
           size={25}
           onPress={() => removeFavorite(radio)}
           Icon={Icon}
+          color={palette.red}
         />
       ) : (
         <RoundButton

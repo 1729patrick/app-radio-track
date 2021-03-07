@@ -39,6 +39,8 @@ const GetPremium = () => {
           onPress={() => IAP.requestSubscription('mensal_sub')}
           containerStyle={{ backgroundColor: palette.app }}
         />
+
+        <Text style={styles.price}>R$ 1,99/mês</Text>
       </View>
 
       <View style={styles.line} />

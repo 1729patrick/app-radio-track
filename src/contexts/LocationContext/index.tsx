@@ -9,11 +9,9 @@ import React, {
   useMemo,
 } from 'react';
 import Countries, { CountriesHandler } from '~/components/Countries';
-import { cache } from 'swr';
 import Modal, { ModalHandler } from '~/components/Modal/FlatList';
 import { useFetch } from '~/hooks/useFetch';
 import COUNTRIES from '~/data/countries';
-import usePublicIp from '~/hooks/usePublicIp';
 import useIpLocation from '~/hooks/useIpLocation';
 import countries from '~/data/countries';
 
@@ -47,7 +45,7 @@ const LocationContext = createContext<ContextProps>({
 export const LocationProvider: React.FC = ({ children }) => {
   const [countryId, setCountryId] = useState('');
   const [regionId, setRegionId] = useState<STATES | string>('');
-  const { ip } = usePublicIp();
+
   const { getCountryCode } = useIpLocation();
 
   const { getItem, setItem } = useAsyncStorage('@location:location');
@@ -83,7 +81,6 @@ export const LocationProvider: React.FC = ({ children }) => {
     countryId: string;
     regionId: string;
   }) => {
-    cache.clear();
     setItem(JSON.stringify({ countryId, regionId }));
   };
 
@@ -116,15 +113,17 @@ export const LocationProvider: React.FC = ({ children }) => {
       ({ regionId, countryId } = JSON.parse(location));
     }
 
-    setRegionId(!countryId && !regionId ? STATES.EMPTY : regionId);
+    setRegionId(
+      regionId && regionId !== STATES.REQUEST_LATER ? regionId : STATES.EMPTY,
+    );
     // setRegionId(STATES.EMPTY);
 
     if (!countryId) {
-      countryId = await getCountryCode(ip);
+      countryId = await getCountryCode();
     }
+
     setCountryId(countryId);
-    return;
-  }, [getCountryCode, getItem, ip]);
+  }, [getCountryCode, getItem]);
 
   useEffect(() => {
     readLocationFromStorage();

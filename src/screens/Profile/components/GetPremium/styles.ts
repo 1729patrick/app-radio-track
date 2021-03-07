@@ -36,4 +36,10 @@ export default (palette: PalleteType) =>
       height: 1,
       marginTop: StyleGuide.spacing * 2,
     },
+    price: {
+      ...StyleGuide.typography.subhead,
+      color: palette.primary,
+      textAlign: 'center',
+      marginTop: StyleGuide.spacing,
+    },
   });

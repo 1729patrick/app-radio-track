@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { StyleSheet, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 import { Appearance, ColorSchemeName } from 'react-native-appearance';
 import { palette } from '~/utils/StyleGuide';
 import SplashScreen from 'react-native-splash-screen';
@@ -20,6 +20,7 @@ export type PalleteType = {
   backgroundSecondary: string;
   border: string;
   app: string;
+  red: string;
 };
 
 type ContextProps = {

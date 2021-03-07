@@ -118,6 +118,7 @@ const CompactPlayer: React.FC<CompactPlayerProps> = ({
                 size={23}
                 onPress={() => removeFavorite(radio)}
                 Icon={Icon}
+                color={palette.red}
               />
             ) : (
               <RoundButton
