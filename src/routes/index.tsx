@@ -17,7 +17,7 @@ import Welcome from '~/screens/Welcome';
 import Profile from '~/screens/Profile';
 import TermsAndConditions from '~/screens/Profile/screens/TermsAndConditions';
 import PolicyPrivacy from '~/screens/Profile/screens/PolicyPrivacy';
-import StyleGuide, { palette } from '~/utils/StyleGuide';
+import { palette } from '~/utils/StyleGuide';
 import { useTheme } from '~/contexts/ThemeContext';
 import Theme from '~/screens/Profile/screens/Theme';
 import Location from '~/screens/Profile/screens/Location/indes';

@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { Dimensions, Image, Text, View } from 'react-native';
+import { ActivityIndicator, Dimensions, Image, Text, View } from 'react-native';
 import { FlatList, RectButton } from 'react-native-gesture-handler';
 import getStyles from './styles';
 import { useNavigation } from '@react-navigation/native';
@@ -7,6 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import useStyles from '~/hooks/useStyles';
 import { useTheme } from '~/contexts/ThemeContext';
 import { useLocation } from '~/contexts/LocationContext';
+import Loader from '~/components/Loader';
 
 const { width } = Dimensions.get('window');
 
@@ -64,10 +65,6 @@ const Regions = () => {
     ],
   );
 
-  // if (!regions.length) {
-  //   return null;
-  // }
-
   return (
     <View>
       <Text style={[styles.title]}>Estados</Text>
@@ -82,6 +79,8 @@ const Regions = () => {
         showsHorizontalScrollIndicator={false}
         keyExtractor={(_, index) => `${index}`}
       />
+
+      {!regions.length && <ActivityIndicator color={palette.app} size={40} />}
     </View>
   );
 };

@@ -26,6 +26,7 @@ type PlaylistType = {
   };
   toggleState: (args: { key: string; success: boolean; error: string }) => void;
   param?: string;
+  description?: string;
 };
 
 export const FavoriteRadios: React.FC<TypesProps> = ({
@@ -43,6 +44,7 @@ export const FavoriteRadios: React.FC<TypesProps> = ({
 
 export const PlaylistRadios: React.FC<TypesProps & PlaylistType> = ({
   playlist,
+  description,
   param,
   toggleState,
   onShowAll,
@@ -69,6 +71,7 @@ export const PlaylistRadios: React.FC<TypesProps & PlaylistType> = ({
     <Radios
       {...props}
       title={playlist.title}
+      description={description}
       radios={data?.items}
       onEndReached={fetchMore}
       onShowAll={() =>

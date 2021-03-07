@@ -57,7 +57,7 @@ const PLAYLISTS = [
   {
     key: 'location',
     url: 'playlists/region',
-    title: 'Rádios da sua região',
+    title: 'Rádios do seu estado',
     initialPage: 1,
   },
   {
@@ -77,7 +77,7 @@ type StateType = {
 
 const Home: React.FC = () => {
   const { translateY, scrollHandler } = useAnimatedHeader();
-  const { regionId } = useLocation();
+  const { region, country, regionId } = useLocation();
   const [state, setState] = useState<StateType>({});
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const welcomeShowedRef = useRef(false);
@@ -159,11 +159,16 @@ const Home: React.FC = () => {
           <PlaylistRadios
             key={playlist.key}
             playlist={playlist}
+            description={playlist.key === 'location' ? region.name : ''}
             onExpandPlayer={onExpandPlayer}
             toggleState={toggleState}
             showAll
             onShowAll={onShowPlaylist}
-            param={playlist.key === 'location' ? regionId : ''}
+            param={
+              playlist.key === 'location'
+                ? `/${country?.code || ''}/${region?.code}`
+                : ''
+            }
           />
         ))}
       </Animated.ScrollView>

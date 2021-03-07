@@ -9,9 +9,9 @@ import { useTheme } from '~/contexts/ThemeContext';
 import IAP from '~/utils/IAP';
 
 const advantages = [
-  'Ouça sem propagandas',
+  'Escute rádios do mundo inteiro',
   'Áudio de alta qualidade',
-  'Escute rádios de mais de 100 países',
+  'Ouça quando quiser',
 ];
 
 const GetPremium = () => {

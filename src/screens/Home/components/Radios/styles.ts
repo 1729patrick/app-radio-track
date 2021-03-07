@@ -21,6 +21,10 @@ export default (palette: PalleteType) =>
       flexWrap: 'wrap',
       paddingRight: StyleGuide.spacing * 2,
     },
+    description: {
+      ...StyleGuide.typography.subhead,
+      color: palette.secondary,
+    },
     contentContainer: {
       paddingHorizontal: StyleGuide.spacing - 1,
       marginTop: StyleGuide.spacing * 2,

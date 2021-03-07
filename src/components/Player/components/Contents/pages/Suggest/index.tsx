@@ -33,7 +33,9 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
 
   const close = useFetch<RadioType[]>(
     radio.id
-      ? `radio/${radio.id}/closes/${JSON.stringify(radio.genres)}`
+      ? `radio/${radio.id}/closes/${JSON.stringify(radio.genres)}/${
+          radio.countryCode
+        }`
       : null,
   );
 
@@ -79,7 +81,7 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
         </View>
       );
     },
-    [close.data, onSetRadio, palette.backgroundSecondary],
+    [close.data, mode, onSetRadio, palette.backgroundSecondary],
   );
 
   const renderItemRegion = useCallback(
@@ -99,12 +101,12 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
   );
 
   const locationEmpty = useMemo(() => {
-    return !location.data?.length;
-  }, [location.data?.length]);
+    return !location.data;
+  }, [location.data]);
 
   const closeEmpty = useMemo(() => {
-    return !close.data?.length;
-  }, [close.data?.length]);
+    return !close.data;
+  }, [close.data]);
 
   const closeData = useMemo(() => {
     return close.data?.slice(0, 5) || [];
@@ -121,7 +123,7 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
     <ScrollView
       contentContainerStyle={[styles.contentContainer]}
       showsVerticalScrollIndicator={false}>
-      {!closeEmpty && !close.error && (
+      {!!close.data.length && !close.error && (
         <Text style={[styles.title, { paddingTop: StyleGuide.spacing * 2 }]}>
           Rádios parecidas
         </Text>
@@ -129,7 +131,7 @@ const Suggest: React.FC<SuggestProps> = ({ routeProps, show }) => {
 
       {closeData.map(renderItemSimilar)}
 
-      {!locationEmpty && !location.error && (
+      {!!location.data.length && !location.error && (
         <Text style={styles.title}>Rádios da mesma região</Text>
       )}
 

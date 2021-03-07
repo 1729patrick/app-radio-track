@@ -30,7 +30,7 @@ export default (palette: PalleteType) =>
     },
     headerContent: {
       flexDirection: 'row',
-      marginTop: STATUS_BAR_HEIGHT - INDICATOR_TOTAL_HEIGHT,
+      // marginTop: -INDICATOR_TOTAL_HEIGHT,
       height: HEADER_HEIGHT,
       alignItems: 'center',
       justifyContent: 'space-between',

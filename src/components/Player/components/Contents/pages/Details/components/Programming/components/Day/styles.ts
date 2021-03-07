@@ -15,7 +15,7 @@ export default (palette: PalleteType) =>
       paddingBottom: 30,
     },
     content: {
-      backgroundColor: lighten(0.05, palette.backgroundPrimary),
+      backgroundColor: lighten(0.12, palette.backgroundPrimary),
       borderRadius: StyleGuide.borderRadius * 2.5,
       padding: CARD_PADDING,
       paddingBottom: 30,

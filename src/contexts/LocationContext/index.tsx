@@ -60,7 +60,7 @@ export const LocationProvider: React.FC = ({ children }) => {
   }, [countryId]);
 
   const regions = useFetch<RegionsType>(
-    countryId ? `/regions/${countryId}` : null,
+    countryId ? `regions/${countryId}` : null,
     true,
   );
 

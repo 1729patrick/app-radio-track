@@ -15,7 +15,9 @@ export function useFetch<Data = any, Error = any>(
 
   const { data, error } = useSWR<Data, Error>(
     (ignoreCountry || country.code) && url
-      ? `${url}?countryCode=${country.code}&regionId=${regionId}`
+      ? `${url}${url.includes('?') ? '&' : '?'}countryCode=${
+          country.code
+        }&regionId=${regionId}`
       : null,
     fetcher,
     {

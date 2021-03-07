@@ -44,24 +44,18 @@ export function useFetchPagination<Error = any>(
 
       data?.items.forEach(({ id }) => (indexesMapRef.current[id] = true));
 
-      const items = [...(all?.items || []), ...(newItems || [])];
+      const items = [...(all?.[country.id]?.items || []), ...(newItems || [])];
 
-      return { ...data, items };
+      return { [country.id]: { ...data, items } };
     });
-  }, [data]);
+  }, [data, country.id]);
 
   const fetchMore = useCallback(() => {
     setPage(allData?.hasNextPage ? allData.nextPage : page);
   }, [allData?.hasNextPage, allData?.nextPage, page]);
 
-  useEffect(() => {
-    if (country.id) {
-      setAllData();
-    }
-  }, [country.id]);
-
   return {
-    data: allData,
+    data: allData?.[country.id],
     error,
     fetchMore,
   };

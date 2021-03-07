@@ -49,9 +49,11 @@ const Radio: React.FC<RadioProps> = ({
           {item.name}
         </Text>
 
-        <Text style={[styles.description]} numberOfLines={1}>
-          {item.slogan || item.city?.name}
-        </Text>
+        {(!!item.slogan || !!item.city?.name) && (
+          <Text style={[styles.description]} numberOfLines={1}>
+            {item.slogan || item.city?.name}
+          </Text>
+        )}
       </View>
 
       {playing ? (

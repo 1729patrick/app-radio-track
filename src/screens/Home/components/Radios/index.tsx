@@ -22,18 +22,20 @@ export type RadiosProps = {
   showAll?: boolean;
   onShowAll?: (title: string) => void;
   onEndReached?: () => void;
+  description?: string;
 };
 
 const Radios: React.FC<RadiosProps> = ({
   title,
   radios = [],
+  description,
   onExpandPlayer,
   showAll,
   onShowAll,
   onEndReached,
 }) => {
   const { playingRadioId } = usePlaying();
-const { palette } = useTheme();
+  const { palette } = useTheme();
   const styles = useStyles(getStyles);
 
   const renderItem = useCallback(
@@ -62,6 +64,9 @@ const { palette } = useTheme();
         <View style={styles.titleContainer}>
           <TouchableOpacity activeOpacity={0.4} onPress={onShowAllPress}>
             <Text style={styles.title}>{title}</Text>
+            {!!description && (
+              <Text style={styles.description}>{description}</Text>
+            )}
           </TouchableOpacity>
         </View>
 
