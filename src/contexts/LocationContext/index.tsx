@@ -74,17 +74,16 @@ export const LocationProvider: React.FC = ({ children }) => {
     modalRef.current?.show();
   };
 
-  const updateStorage = ({
-    countryId,
-    regionId,
-  }: {
-    countryId: string;
-    regionId: string;
-  }) => {
-    setItem(JSON.stringify({ countryId, regionId }));
-  };
+  const updateStorage = useCallback(
+    ({ countryId, regionId }: { countryId: string; regionId: string }) => {
+      console.log('updateStorage', { countryId, regionId });
 
-  const onConfirm = () => {
+      setItem(JSON.stringify({ countryId, regionId }));
+    },
+    [setItem],
+  );
+
+  const onConfirm = useCallback(() => {
     const newCountryId = countriesRef.current?.countryId || '';
 
     updateStorage({
@@ -93,17 +92,16 @@ export const LocationProvider: React.FC = ({ children }) => {
     });
 
     setCountryId(newCountryId);
+  }, [regionId, updateStorage]);
 
-    if (newCountryId !== countryId) {
-      onSetRegionId('');
-    }
-  };
+  const onSetRegionId = useCallback(
+    (regionId: string) => {
+      updateStorage({ regionId, countryId });
 
-  const onSetRegionId = (regionId: string) => {
-    updateStorage({ regionId, countryId });
-
-    setRegionId(regionId);
-  };
+      setRegionId(regionId);
+    },
+    [countryId, updateStorage],
+  );
 
   const readLocationFromStorage = useCallback(async () => {
     const location = await getItem();
@@ -122,6 +120,7 @@ export const LocationProvider: React.FC = ({ children }) => {
       countryId = await getCountryCode();
     }
 
+    console.log('readLocationFromStorage', { countryId, regionId });
     setCountryId(countryId);
   }, [getCountryCode, getItem]);
 

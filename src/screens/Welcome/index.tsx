@@ -81,17 +81,15 @@ const Welcome = () => {
         />
       </Svg>
 
-      {!!regions.length && (
-        <Modal
-          ref={modalRef}
-          onContinue={onContinue}
-          title={'Selecione o Estado'}
-          confirm={'OK'}
-          itemHeight={48.5}
-          itemsSize={regions.length}>
-          <Regions ref={regionsRef} regions={regions} paddingBottom={0} />
-        </Modal>
-      )}
+      <Modal
+        ref={modalRef}
+        onContinue={onContinue}
+        title={'Selecione o Estado'}
+        confirm={'OK'}
+        itemHeight={48.5}
+        itemsSize={regions.length}>
+        <Regions ref={regionsRef} regions={regions} paddingBottom={0} />
+      </Modal>
     </View>
   );
 };

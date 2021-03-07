@@ -12,6 +12,8 @@ const advantages = [
   'Escute rádios do mundo inteiro',
   'Áudio de alta qualidade',
   'Ouça quando quiser',
+  'Sem anúncios',
+  ,
 ];
 
 const GetPremium = () => {

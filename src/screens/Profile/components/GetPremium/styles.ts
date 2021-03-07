@@ -40,6 +40,6 @@ export default (palette: PalleteType) =>
       ...StyleGuide.typography.subhead,
       color: palette.primary,
       textAlign: 'center',
-      marginTop: StyleGuide.spacing,
+      marginTop: StyleGuide.spacing * 1.5,
     },
   });
