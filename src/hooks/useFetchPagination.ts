@@ -46,7 +46,7 @@ export function useFetchPagination<Error = any>(
 
       const items = [...(all?.[country.id]?.items || []), ...(newItems || [])];
 
-      return { [country.id]: { ...data, items } };
+      return { ...all, [country.id]: { ...data, items } };
     });
   }, [data, country.id]);
 

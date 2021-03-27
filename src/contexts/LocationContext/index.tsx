@@ -14,6 +14,7 @@ import { useFetch } from '~/hooks/useFetch';
 import COUNTRIES from '~/data/countries';
 import useIpLocation from '~/hooks/useIpLocation';
 import countries from '~/data/countries';
+import { cache } from 'swr';
 
 export enum STATES {
   EMPTY = 'empty',
@@ -76,7 +77,7 @@ export const LocationProvider: React.FC = ({ children }) => {
 
   const updateStorage = useCallback(
     ({ countryId, regionId }: { countryId: string; regionId: string }) => {
-      console.log('updateStorage', { countryId, regionId });
+      cache.clear();
 
       setItem(JSON.stringify({ countryId, regionId }));
     },
