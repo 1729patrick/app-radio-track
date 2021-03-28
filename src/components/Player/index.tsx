@@ -196,7 +196,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
     await TrackPlayer.updateOptions({
       stopWithApp: true,
       //@ts-ignore
-      alwaysPauseOnInterruption: true,
+      alwaysPauseOnInterruption: false,
       icon: require('../../assets/notification/logo.png'),
       capabilities: [
         TrackPlayer.CAPABILITY_PLAY,
@@ -510,7 +510,7 @@ const Player: React.ForwardRefRenderFunction<PlayerHandler, PlayerProps> = (
         duckTimeoutRef.current = BackgroundTimer.setTimeout(() => {
           payingOnDisconnectMoment.current = false;
           playTrackPlayer();
-        }, 1000);
+        }, 1729);
         return;
       }
 
