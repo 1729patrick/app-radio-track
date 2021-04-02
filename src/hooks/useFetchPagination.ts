@@ -51,8 +51,12 @@ export function useFetchPagination<Error = any>(
   }, [data, country.id]);
 
   const fetchMore = useCallback(() => {
-    setPage(allData?.hasNextPage ? allData.nextPage : page);
-  }, [allData?.hasNextPage, allData?.nextPage, page]);
+    if (!country.id) {
+      return;
+    }
+
+    setPage(allData?.[country.id]?.nextPage || page);
+  }, [allData, country.id, page]);
 
   return {
     data: allData?.[country.id],
